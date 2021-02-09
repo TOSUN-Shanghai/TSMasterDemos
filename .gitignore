@@ -1,0 +1,17 @@
+*.jdbg
+*.tvsconfig
+*.ini
+*.stat
+*.orig
+*.eof
+*.db
+Debug/
+*.opendb
+.vscode/
+debug/
+.vs/
+__pycache__/
+App.config
+bin/
+obj/
+Release/
