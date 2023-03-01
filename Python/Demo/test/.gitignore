@@ -1,0 +1,13 @@
+*.mp
+*.~*
+*.blf
+*.asc
+*.mat
+*.mdf
+*.mf4
+*.dll
+*.exe
+*.o
+temp\
+Logging\
+backup\

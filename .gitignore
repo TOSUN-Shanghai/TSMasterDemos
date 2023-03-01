@@ -7,3 +7,8 @@
 *.db
 Debug/
 *.opendb
+.vscode/
+*.dll
+debug/
+.vs/
+__pycache__/
