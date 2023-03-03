@@ -11,6 +11,7 @@ import os
 from sys import getsizeof
 import time
 import winreg
+from cantools.database.can import database,message,signal
 
 
 TSMaster_location = r"Software\TOSUN\TSMaster"
@@ -1593,6 +1594,11 @@ def tsdb_load_flexray_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
     if not isinstance(ASupportedChannels,bytes):
         ASupportedChannels = bytes(ASupportedChannels)
     ret = dll.tsdb_load_flexray_db(AFliepath,ASupportedChannels,byref(AId))
+    if ret == 0:
+        try:
+            ret = flexray_db_parse((AId.value-1)) 
+        except:
+            return ret  
     return ret
 
 
@@ -1785,7 +1791,7 @@ def tsdb_get_flexray_signal_properties_by_index_verbose(ADBIndex:c_int32,AECUInd
 
 def tsdb_get_flexray_db_id(AIndex:c_int32):
     Aid = c_int32(0)
-    ret = tsdb_get_flexray_db_id(AIndex,byref(Aid))
+    ret = dll.tsdb_get_flexray_db_id(AIndex,byref(Aid))
     if ret == 0 :
         return Aid
     return tsapp_get_error_description(ret)
@@ -1953,6 +1959,35 @@ tscom_flexray_get_signal_value_in_raw_frame.restype = c_double
 def tscom_flexray_set_signal_value_in_raw_frame(AFlexRaySignal:TFlexRaySignal,AData:bytes,AValue:c_double):
     return dll.tscom_flexray_set_signal_value_in_raw_frame(byref(AFlexRaySignal),AData,AValue)
 
+def flexray_db_parse(index):
+    ecu_list = {}
+    ecuCount, fmeCount, sgnCount, supportedChannelMask, sName, sComment = tsdb_get_flexray_db_properties_by_index_verbose(index)
+    for idxECU in range(ecuCount.value):
+        message_list = []
+        ATxFrameCount, ARxFrameCount, ecuName, sComment = tsdb_get_flexray_ecu_properties_by_index_verbose(index, idxECU)
+        # print("ECUName = ",ecuName)
+        for idxFme in range(ATxFrameCount.value):
+            chnMask, baseCycle, cycleRep, isStartup, slotId, cycleMask, sgnCount, AFRDLC,sName, sComment= ret = tsdb_get_flexray_frame_properties_by_index_verbose(index, idxECU, idxFme, True)
+            # print('Tx Frame', sName, ', comment:', sComment, ', base cycle:', baseCycle, ', cycle repetition:', cycleRep, ', slot Id:', slotId, ', cycle mask:', hex(cycleMask.value), ', signal count:', sgnCount)
+            _message = message.Message(frame_id=(slotId.value<<16)+(baseCycle.value<<8)+cycleRep.value,name=sName,length= AFRDLC.value,signals=[],is_extended_frame = True,unused_bit_pattern=0xff)
+            for idxSgn in range(sgnCount.value):
+                    sgnType, compuMethod, isIntel, startBit, updateBit, sgnLen, factor, offset, initValue, sName, sComment = tsdb_get_flexray_signal_properties_by_index_verbose(index, idxECU, idxFme, idxSgn, True)
+                    _message.signals.append(signal.Signal(sName,startBit.value,sgnLen.value,byte_order='little_endian' if isIntel else 'big_endian',scale=factor.value,offset=offset.value,initial=initValue.value)) 
+            _message = message.Message(_message.frame_id,_message.name,_message.length,_message.signals,is_extended_frame=True,unused_bit_pattern=0xff)
+            message_list.append(_message)
+                    # print('     Tx Signal', sName, ', comment:', sComment, ', start bit:', startBit, ', len:', sgnLen, ', factor:', factor, ', offset:', offset)
+        for idxFme in range(ARxFrameCount.value):   
+            chnMask, baseCycle, cycleRep, isStartup, slotId, cycleMask, sgnCount,AFRDLC, sName, sComment = tsdb_get_flexray_frame_properties_by_index_verbose(index, idxECU, idxFme, False)
+            # print('Rx Frame', sName, ', comment:', sComment, ', base cycle:', baseCycle, ', cycle repetition:', cycleRep, ', slot Id:', slotId, ', cycle mask:', hex(cycleMask.value), ', signal count:', sgnCount)
+            _message = message.Message(frame_id=(slotId.value<<16)+(baseCycle.value<<8)+cycleRep.value,name=sName,length= AFRDLC.value,signals=[],is_extended_frame = True,unused_bit_pattern=0xff)
+            for idxSgn in range(sgnCount.value):
+                    sgnType, compuMethod, isIntel, startBit, updateBit, sgnLen, factor, offset, initValue, sName, sComment = tsdb_get_flexray_signal_properties_by_index_verbose(index, idxECU, idxFme, idxSgn, False)
+                    _message.signals.append(signal.Signal(sName,startBit.value,sgnLen.value,byte_order='little_endian' if isIntel else 'big_endian',scale=factor.value,offset=offset.value,initial=initValue.value)) 
+            _message = message.Message(_message.frame_id,_message.name,_message.length,_message.signals,is_extended_frame=True,unused_bit_pattern=0xff)
+            message_list.append(_message)
+                    # print('     Rx Signal', sName, ', comment:', sComment, ', start bit:', startBit, ', len:', sgnLen, ', factor:', factor, ', offset:', offset)
+        ecu_list[ecuName] = message_list
+    return ecu_list
 
 
 

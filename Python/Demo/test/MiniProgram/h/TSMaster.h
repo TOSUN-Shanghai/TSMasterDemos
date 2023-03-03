@@ -1967,6 +1967,7 @@ typedef s32 (__stdcall* TTestSetVerdictNOK)(const void* AObj, const char* AStr);
 typedef s32 (__stdcall* TTestSetVerdictCOK)(const void* AObj, const char* AStr);
 typedef s32 (__stdcall* TTestCheckVerdict)(const void* AObj, const char* AName, const double AValue, const double AMin, const double AMax);
 typedef s32 (__stdcall* TTestLog)(const void* AObj, const char* AStr, const TLogLevel ALevel);
+typedef s32 (__stdcall* TTestLogValue)(const void* AObj, const char* AStr, const double AValue, const TLogLevel ALevel);
 typedef s32 (__stdcall* TTestDebugLog)(const void* AObj, const char* AFile, const char* AFunc, const s32 ALine, const char* AStr, const TLogLevel ALevel);
 typedef s32 (__stdcall* TTestWriteResultString)(const void* AObj, const char* AName, const char* AValue, const TLogLevel ALevel);
 typedef s32 (__stdcall* TTestWriteResultValue)(const void* AObj, const char* AName, const double AValue, const TLogLevel ALevel);
@@ -2036,9 +2037,10 @@ typedef struct _TTSTest {
     TTestSignalCheckerAddUnChangeWithTime            signal_checker_add_unchange_with_time;
     TTestSignalCheckerAddUnChangeWithTrigger         signal_checker_add_unchange_with_trigger;
     TTestSignalCheckerCheckStatistics                internal_signal_checker_check_statistics;
+    TTestLogValue                                    internal_log_value;
     // >>> mp test end <<<
     // place holder
-    s32                    FDummy[971];
+    s32                    FDummy[970];
     void set_verdict_ok(const char* AStr) {
         internal_set_verdict_ok(FObj, AStr);
     }
@@ -2053,6 +2055,9 @@ typedef struct _TTSTest {
     }
     void log_info(const char* AStr, const TLogLevel ALevel) {
         internal_log_info(FObj, AStr, ALevel);
+    }
+    void log_value(const char* AStr, const double AValue, const TLogLevel ALevel) {
+        internal_log_value(FObj, AStr, AValue, ALevel);
     }
     void debug_log_info(const char* AFile, const char* AFunc, const s32 ALine, const char* AStr, const TLogLevel ALevel) {
         internal_debug_log_info(FObj, AFile, AFunc, ALine, AStr, ALevel);
