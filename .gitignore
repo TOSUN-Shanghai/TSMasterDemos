@@ -12,3 +12,6 @@ Debug/
 debug/
 .vs/
 __pycache__/
+App.config
+bin/
+obj/
