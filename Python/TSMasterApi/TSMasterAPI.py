@@ -1594,11 +1594,11 @@ def tsdb_load_flexray_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
     if not isinstance(ASupportedChannels,bytes):
         ASupportedChannels = bytes(ASupportedChannels)
     ret = dll.tsdb_load_flexray_db(AFliepath,ASupportedChannels,byref(AId))
-    if ret == 0:
-        try:
-            ret = flexray_db_parse((AId.value-1)) 
-        except:
-            return ret  
+    # if ret == 0:
+    #     try:
+    #         ret = flexray_db_parse((AId.value-1)) 
+    #     except:
+    #         return ret  
     return ret
 
 
