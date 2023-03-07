@@ -10,10 +10,8 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 0
@@ -22,15 +20,13 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
     Height = 3
     Cursor = crVSplit
     Align = alBottom
-    ExplicitTop = 0
-    ExplicitWidth = 661
   end
   object page: TPageControl
     Left = 0
     Top = 0
     Width = 1227
     Height = 549
-    ActivePage = shtApplication
+    ActivePage = tsLogger
     Align = alClient
     TabOrder = 0
     object shtApplication: TTabSheet
@@ -144,7 +140,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtApplication: TEdit
         Left = 584
         Top = 48
-        Width = 209
+        Width = 205
         Height = 21
         Alignment = taCenter
         Anchors = [akLeft, akTop, akRight]
@@ -244,7 +240,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtApplicationList: TEdit
         Left = 584
         Top = 79
-        Width = 609
+        Width = 605
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         ReadOnly = True
@@ -296,7 +292,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object Panel1: TPanel
         Left = 256
         Top = 201
-        Width = 937
+        Width = 933
         Height = 25
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 15
@@ -412,7 +408,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object Panel2: TPanel
         Left = 256
         Top = 232
-        Width = 937
+        Width = 933
         Height = 25
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 17
@@ -785,7 +781,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtLibTSMaster: TEdit
         Left = 640
         Top = 17
-        Width = 553
+        Width = 549
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 43
@@ -1322,7 +1318,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtDBCFile: TEdit
         Left = 336
         Top = 13
-        Width = 849
+        Width = 845
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 1
@@ -1349,7 +1345,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtDBCId: TEdit
         Left = 336
         Top = 44
-        Width = 849
+        Width = 845
         Height = 21
         Alignment = taCenter
         Anchors = [akLeft, akTop, akRight]
@@ -2167,7 +2163,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtMPLibraryFileName: TEdit
         Left = 312
         Top = 13
-        Width = 889
+        Width = 885
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 1
@@ -2185,7 +2181,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtUnloadMPLib: TEdit
         Left = 312
         Top = 44
-        Width = 889
+        Width = 885
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 3
@@ -2212,7 +2208,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtRunMPLib: TEdit
         Left = 312
         Top = 106
-        Width = 889
+        Width = 885
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 6
@@ -2230,7 +2226,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtCheckMPRun: TEdit
         Left = 312
         Top = 137
-        Width = 889
+        Width = 885
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 8
@@ -2248,7 +2244,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtStopMPLib: TEdit
         Left = 312
         Top = 168
-        Width = 889
+        Width = 885
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 10
@@ -2300,7 +2296,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtFuncInputPara: TEdit
         Left = 840
         Top = 199
-        Width = 361
+        Width = 357
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 16
@@ -2505,7 +2501,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object edtBlfFile: TEdit
         Left = 200
         Top = 16
-        Width = 993
+        Width = 989
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         TabOrder = 11
@@ -2642,7 +2638,7 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
       object GroupBox4: TGroupBox
         Left = 16
         Top = 272
-        Width = 1200
+        Width = 1196
         Height = 113
         Anchors = [akLeft, akTop, akRight]
         Caption = 'Vendor Detect Options'
@@ -2985,6 +2981,24 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
         end
       end
     end
+    object tsLogger: TTabSheet
+      Caption = 'tsLogger'
+      ImageIndex = 8
+      object tvDataLogger: TTreeView
+        Left = 0
+        Top = 0
+        Width = 1219
+        Height = 521
+        Align = alClient
+        Indent = 19
+        PopupMenu = pm1
+        ReadOnly = True
+        TabOrder = 0
+        Items.NodeData = {
+          0301000000280000000000000000000000FFFFFFFFFFFFFFFF00000000000000
+          00000000000105460069006C0065007300}
+      end
+    end
   end
   object MM: TMemo
     Left = 0
@@ -2995,5 +3009,50 @@ object frmTestLibTSMaster: TfrmTestLibTSMaster
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
+  end
+  object pbPrg: TProgressBar
+    Left = 856
+    Top = 616
+    Width = 150
+    Height = 17
+    TabOrder = 2
+  end
+  object pm1: TPopupMenu
+    Left = 260
+    Top = 120
+    object ConnectTLog1: TMenuItem
+      Caption = 'Connect TLog'
+    end
+    object RefreshDataLoggerList1: TMenuItem
+      Caption = 'Refresh Data Logger List'
+      OnClick = RefreshDataLoggerList1Click
+    end
+    object StartLoggerReplay1: TMenuItem
+      Caption = 'Start Logger Replay'
+    end
+    object StopLoggerReplay1: TMenuItem
+      Caption = 'Stop Logger Replay'
+    end
+    object EraseLogger1: TMenuItem
+      Caption = 'Erase Logger'
+    end
+    object ExportBlfFile1: TMenuItem
+      Caption = 'Export Blf File'
+      OnClick = ExportBlfFile1Click
+    end
+    object ResetGPSModule1: TMenuItem
+      Caption = 'Reset GPS Module'
+    end
+  end
+  object dlgSaveBlf: TSaveDialog
+    DefaultExt = '*.blf'
+    Filter = 'Blf|*.blf'
+    Left = 224
+    Top = 280
+  end
+  object LCTime: TTimer
+    OnTimer = LCTimeTimer
+    Left = 384
+    Top = 304
   end
 end
