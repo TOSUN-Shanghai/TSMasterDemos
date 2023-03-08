@@ -8,10 +8,10 @@
 Debug/
 *.opendb
 .vscode/
-*.dll
 debug/
 .vs/
 __pycache__/
 App.config
 bin/
 obj/
+Release/
