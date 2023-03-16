@@ -197,42 +197,35 @@ type
 
   // FlexRay Frame 300 B
   TLIBFlexRay = packed record
-	  FIdxChn: byte;               // channel index starting from 0
-	  FChannelMask: byte;          // 0: reserved, 1: A, 2: B, 3: AB
-	  FDir: byte;                  // 0: Rx, 1: Tx, 2: Tx Request
-	  FPayloadLength: byte;        // payload length in bytes
-	  FActualPayloadLength: byte;  // actual data bytes
-	  FCycleNumber: byte;          // cycle number: 0~63
-	  FCCType: byte;               // 0 = Architecture independent, 1 = Invalid CC type, 2 = Cyclone I, 3 = BUSDOCTOR, 4 = Cyclone II, 5 = Vector VN interface, 6 = VN - Sync - Pulse(only in Status Event, for debugging purposes only)
-	  FReserved0: byte;            // 1 reserved byte
+	  FIdxChn: byte;                // channel index starting from 0
+	  FChannelMask: byte;           // 0: reserved, 1: A, 2: B, 3: AB
+	  FDir: byte;                   // 0: Rx, 1: Tx, 2: Tx Request
+	  FPayloadLength: byte;         // payload length in bytes
+	  FActualPayloadLength: byte;   // actual data bytes
+	  FCycleNumber: byte;           // cycle number: 0~63
+	  FCCType: byte;                // 0 = Architecture independent, 1 = Invalid CC type, 2 = Cyclone I, 3 = BUSDOCTOR, 4 = Cyclone II, 5 = Vector VN interface, 6 = VN - Sync - Pulse(only in Status Event, for debugging purposes only)
+	  FReserved0: byte;             // 1 reserved byte
 	  FHeaderCRCA: UInt16;          // header crc A
 	  FHeaderCRCB: UInt16;          // header crc B
 	  FFrameStateInfo: UInt16;      // bit 0~15, error flags
 	  FSlotId: UInt16;              // static seg: 0~1023
     FFrameFlags: UInt32;          // bit 0~22
-                               // 0 1 = Null frame.
-                               // 1 1 = Data segment contains valid data
-                               // 2 1 = Sync bit
-                               // 3 1 = Startup flag
-                               // 4 1 = Payload preamble bit
-                               // 5 1 = Reserved bit
-                               // 6 1 = Error flag(error frame or invalid frame)
-                               // 7 Reserved
-                               // 8 Internally used in CANoe / CANalyzer
-                               // 9 Internally used in CANoe / CANalyzer
-                               // 10 Internally used in CANoe / CANalyzer
-                               // 11 Internally used in CANoe / CANalyzer
-                               // 12 Internally used in CANoe / CANalyzer
-                               // 13 Internally used in CANoe / CANalyzer
-                               // 14 Internally used in CANoe / CANalyzer
-                               // 15 1 = Async.monitoring has generated this event
-                               // 16 1 = Event is a PDU
-                               // 17 Valid for PDUs only.The bit is set if the PDU is valid(either if the PDU has no  // update bit, or the update bit for the PDU was set in the received frame).
-                               // 18 Reserved
-                               // 19 1 = Raw frame(only valid if PDUs are used in the configuration).A raw frame may  // contain PDUs in its payload
-                               // 20 1 = Dynamic segment	0 = Static segment
-                               // 21 This flag is only valid for frames and not for PDUs.	1 = The PDUs in the payload of  // this frame are logged in separate logging entries. 0 = The PDUs in the payload of this  // frame must be extracted out of this frame.The logging file does not contain separate  // PDU - entries.
-                               // 22 Valid for PDUs only.The bit is set if the PDU has an update bit
+                                  // 0 1 = Null frame.
+                                  // 1 1 = Data segment contains valid data
+                                  // 2 1 = Sync bit
+                                  // 3 1 = Startup flag
+                                  // 4 1 = Payload preamble bit
+                                  // 5 1 = Reserved bit
+                                  // 6 1 = Error flag(error frame or invalid frame)
+                                  // 7..14 Reserved
+                                  // 15 1 = Async.monitoring has generated this event
+                                  // 16 1 = Event is a PDU
+                                  // 17 Valid for PDUs only.The bit is set if the PDU is valid(either if the PDU has no  // update bit, or the update bit for the PDU was set in the received frame).
+                                  // 18 Reserved
+                                  // 19 1 = Raw frame(only valid if PDUs are used in the configuration).A raw frame may  // contain PDUs in its payload
+                                  // 20 1 = Dynamic segment	0 = Static segment
+                                  // 21 This flag is only valid for frames and not for PDUs.	1 = The PDUs in the payload of  // this frame are logged in separate logging entries. 0 = The PDUs in the payload of this  // frame must be extracted out of this frame.The logging file does not contain separate  // PDU - entries.
+                                  // 22 Valid for PDUs only.The bit is set if the PDU has an update bit
 	  FFrameCRC: UInt32;            // frame crc
 	  FReserved1: UInt64;           // 8 reserved bytes
 	  FReserved2: UInt64;           // 8 reserved bytes
@@ -739,28 +732,28 @@ type
 
   ISO_TP_RESAULT = (
       N_OK = 0
-      , IDX_ERR_TP_TIMEOUT_AS= 139   //Maximum time for the sender to transmit data to the receiver, default 1000
-      , IDX_ERR_TP_TIMEOUT_AR= 140   //Maximum time for the receiver to transmit flow control to the sender, default 1000
-      , IDX_ERR_TP_TIMEOUT_BS= 141   //
-      , IDX_ERR_TP_TIMEOUT_CR= 142
-      , IDX_ERR_TP_WRONG_SN  = 143
-      , IDX_ERR_TP_INVALID_FS= 144
-      , IDX_ERR_TP_UNEXP_PDU = 145
-      , IDX_ERR_TP_WFT_OVRN  = 146
-      , IDX_ERR_TP_BUFFER_OVFLW          = 147
-      , IDX_ERR_TP_NOT_IDLE              = 148
-      , IDX_ERR_TP_ERROR_FROM_CAN_DRIVER = 149
-      , IDX_ERR_LIN_MASTER_TRANSMIT_N_AS_TIMEOUT   = 202
-      , IDX_ERR_LIN_MASTER_TRANSMIT_TRANSMIT_ERROR = 203
-      , IDX_ERR_LIN_MASTER_REV_N_CR_TIMEOUT        = 204
-      , IDX_ERR_LIN_MASTER_REV_ERROR               = 205
-      , IDX_ERR_LIN_MASTER_REV_INTERLLEAVE_TIMEOUT = 206
-      , IDX_ERR_LIN_MASTER_REV_NO_RESPONSE         = 207
-      , IDX_ERR_LIN_MASTER_REV_SN_ERROR            = 208
-      , IDX_ERR_LIN_SLAVE_TRANSMIT_N_CR_TIMEOUT    = 209
-      , IDX_ERR_LIN_SLAVE_REV_N_CR_TIMEOUT         = 210
-      , IDX_ERR_LIN_SLAVE_TRANSMIT_ERROR           = 211
-      , IDX_ERR_LIN_SLAVE_REV_ERROR                = 212
+      , N_TP_TIMEOUT_AS= 139   //Maximum time for the sender to transmit data to the receiver, default 1000
+      , N_TP_TIMEOUT_AR= 140   //Maximum time for the receiver to transmit flow control to the sender, default 1000
+      , N_TP_TIMEOUT_BS= 141   //
+      , N_TP_TIMEOUT_CR= 142
+      , N_TP_WRONG_SN  = 143
+      , N_TP_INVALID_FS= 144
+      , N_TP_UNEXP_PDU = 145
+      , N_TP_WFT_OVRN  = 146
+      , N_TP_BUFFER_OVFLW          = 147
+      , N_TP_NOT_IDLE              = 148
+      , N_TP_ERROR_FROM_CAN_DRIVER = 149
+      , N_LIN_MASTER_TRANSMIT_N_AS_TIMEOUT   = 202
+      , N_LIN_MASTER_TRANSMIT_TRANSMIT_ERROR = 203
+      , N_LIN_MASTER_REV_N_CR_TIMEOUT        = 204
+      , N_LIN_MASTER_REV_ERROR               = 205
+      , N_LIN_MASTER_REV_INTERLLEAVE_TIMEOUT = 206
+      , N_LIN_MASTER_REV_NO_RESPONSE         = 207
+      , N_LIN_MASTER_REV_SN_ERROR            = 208
+      , N_LIN_SLAVE_TRANSMIT_N_CR_TIMEOUT    = 209
+      , N_LIN_SLAVE_REV_N_CR_TIMEOUT         = 210
+      , N_LIN_SLAVE_TRANSMIT_ERROR           = 211
+      , N_LIN_SLAVE_REV_ERROR                = 212
   );
 
   N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
@@ -1071,7 +1064,103 @@ const
   IDX_ERR_API_CHECK_FAILED               = 134;
   IDX_ERR_CANABLE_GENERIC_ERROR          = 135;
   IDX_ERR_WAIT_CRITERIA_NOT_SATISFIED    = 136;
-  ERR_CODE_COUNT                         = 137;
+  IDX_ERR_REQUIRE_APP_CONNECTED          = 137;
+  IDX_ERR_PROJECT_PATH_ALREADY_USED      = 138;
+  IDX_ERR_TP_TIMEOUT_AS                  = 139;  {CAN Diagnostic}
+  IDX_ERR_TP_TIMEOUT_AR                  = 140;
+  IDX_ERR_TP_TIMEOUT_BS                  = 141;
+  IDX_ERR_TP_TIMEOUT_CR                  = 142;
+  IDX_ERR_TP_WRONG_SN                    = 143;
+  IDX_ERR_TP_INVALID_FS                  = 144;
+  IDX_ERR_TP_UNEXP_PDU                   = 145;
+  IDX_ERR_TP_WFT_OVRN                    = 146;
+  IDX_ERR_TP_BUFFER_OVFLW                = 147;
+  IDX_ERR_TP_NOT_IDLE                    = 148;
+  IDX_ERR_TP_ERROR_FROM_CAN_DRIVER       = 149;
+  IDX_ERR_TP_HANDLE_NOT_EXIST            = 150;
+  IDX_ERR_UDS_EVENT_BUFFER_IS_FULL       = 151;
+  IDX_ERR_UDS_HANDLE_POOL_IS_FULL        = 152;
+  IDX_ERR_UDS_NULL_POINTER               = 153;
+  IDX_ERR_UDS_MESSAGE_INVALID            = 154;
+  IDX_ERR_UDS_NO_DATA                    = 155;
+  IDX_ERR_UDS_MODULE_NOT_EXISTING        = 156;
+  IDX_ERR_UDS_MODULE_NOT_READY           = 157;
+  IDX_ERR_UDS_SEND_DATA_FAILED           = 158;
+  IDX_ERR_UDS_NOT_SUPPORTED              = 159;
+  IDX_ERR_UDS_TIMEOUT_SENDING_REQUEST    = 160;
+  IDX_ERR_UDS_TIMEOUT_GET_RESPONSE       = 161;
+  IDX_ERR_UDS_NEGATIVE_RESPONSE          = 162;
+  IDX_ERR_UDS_NEGATIVE_WITH_EXPECTED_NRC = 163;
+  IDX_ERR_UDS_NEGATIVE_UNEXPECTED_NRC    = 164;
+  IDX_ERR_UDS_CANTOOL_NOT_READY          = 165;
+  IDX_ERR_UDS_DATA_OUTOF_RANGE           = 166;
+  IDX_ERR_UDS_UNEXPECTED_FRAME           = 167;
+  IDX_ERR_UDS_UNEXPECTED_POSTIVE_RESPONSE           = 168; // 此服务不想收到肯定答复，结果收到了肯定答复
+  IDX_ERR_UDS_POSITIVE_REPONSE_WITH_WRONG_DATA      = 169;
+  IDX_ERR_UDS_GET_POSITIVE_RESPONSE_FAILED          = 170;
+  IDX_ERR_UDS_MaxNumOfBlockLen_OVER_FLOW            = 171;
+  IDX_ERR_UDS_NEGATIVE_RESPONSE_WITH_UNEXPECTED_NRC = 172;
+  IDX_ERR_UDS_SERVICE_IS_RUNNING         = 173;
+  IDX_ERR_UDS_NEED_APPLY_DOWNLOAD_FIRST  = 174;
+  IDX_ERR_UDS_RESPONSE_DATA_LENGTH_ERR   = 175;
+  IDX_ERR_TEST_CHECK_LOWER               = 176;
+  IDX_ERR_TEST_CHECK_UPPER               = 177;
+  IDX_ERR_TEST_VERDICT_CHECK_FAILED      = 178;
+  IDX_ERR_AM_NOT_LOADED                  = 179;
+  IDX_ERR_PANEL_NOT_FOUND                = 180;
+  IDX_ERR_CONTROL_NOT_FOUND_IN_PANEL     = 181;
+  IDX_ERR_PANEL_NOT_LOADED               = 182;
+  IDX_ERR_STIM_SIGNAL_NOT_FOUND          = 183;
+  IDX_ERR_AM_SUB_MODULE_NOT_AVAIL        = 184;
+  IDX_ERR_AM_VARIANT_GROUP_NOT_FOUND     = 185;
+  IDX_ERR_PANEL_CONTROL_NOT_FOUND        = 186;
+  IDX_ERR_PANEL_CONTROL_NOT_SUPPORT_THIS = 187;
+  IDX_ERR_RBS_NOT_RUNNING                = 188;
+  IDX_ERR_MSG_NOT_SUPPORT_PDU_CONTAINER  = 189;
+  IDX_ERR_DATA_NOT_AVAILABLE             = 190;
+  IDX_ERR_J1939_NOT_SUPPORTED            = 191;
+  IDX_ERR_J1939_ANOTHER_PDU_IS_SENDING   = 192;
+  IDX_ERR_J1939_TX_FAILED_PROTOCOL_ERROR = 193;
+  IDX_ERR_J1939_TX_FAILED_NODE_INACTIVE  = 194;
+  IDX_ERR_NO_LICENSE                     = 195;
+  IDX_ERR_SIGNAL_CHECK_RANGE_VIOLATION   = 196;
+  IDX_ERR_LOG_READ_CATEGORY_FAILED       = 197;
+  IDX_ERR_CHECK_BOOT_VERSION_FAILED      = 198;
+  IDX_ERR_LOG_FILE_NOT_CREATED           = 199;
+  IDX_ERR_MODULE_IS_BEING_EDITED_BY_USER = 200;
+  IDX_ERR_LOG_DEVICE_IS_BUSY             = 201;
+  IDX_ERR_LIN_MASTER_TRANSMIT_N_AS_TIMEOUT   = 202;
+  IDX_ERR_LIN_MASTER_TRANSMIT_TRANSMIT_ERROR = 203;
+  IDX_ERR_LIN_MASTER_REV_N_CR_TIMEOUT        = 204;
+  IDX_ERR_LIN_MASTER_REV_ERROR               = 205;
+  IDX_ERR_LIN_MASTER_REV_INTERLLEAVE_TIMEOUT = 206;
+  IDX_ERR_LIN_MASTER_REV_NO_RESPONSE         = 207;
+  IDX_ERR_LIN_MASTER_REV_SN_ERROR            = 208;
+  IDX_ERR_LIN_SLAVE_TRANSMIT_N_CR_TIMEOUT    = 209;
+  IDX_ERR_LIN_SLAVE_REV_N_CR_TIMEOUT         = 210;
+  IDX_ERR_LIN_SLAVE_TRANSMIT_ERROR           = 211;
+  IDX_ERR_LIN_SLAVE_REV_ERROR                = 212;
+  IDX_ERR_CLOSE_FILE_FAILED                  = 213;
+  IDX_ERR_CONF_LOG_FILE_FAILED               = 214;
+  IDX_ERR_CONVERT_LOG_FAILED                 = 215;
+  IDX_ERR_HALTED_DUE_TO_USER_BREAK           = 216;
+  IDX_ERR_WRITE_FILE_FAILED                  = 217;
+  IDX_ERR_UNKNOWN_OBJECT_DETECTED            = 218;
+  IDX_ERR_THIS_FUNC_SHOULD_BE_CALLED_IN_MP   = 219;
+  IDX_ERR_USER_CANCEL_WAIT                   = 220;
+  IDX_ERR_DECOMPRESS_DATA_FAILED             = 221;
+  IDX_ERR_AUTOMATION_OBJ_NOT_CREATED         = 222;
+  IDX_ERR_ITEM_DUPLICATED                    = 223;
+  IDX_ERR_DIVIDE_BY_ZERO                     = 224;
+  IDX_ERR_REQUIRE_MINI_PROGRAM_RUNNING       = 225;
+  IDX_ERR_FORM_NOT_EXIST                     = 226;
+  IDX_ERR_CANNOT_CONFIG_WHEN_DEVICE_RUNNING  = 227;
+  IDX_ERR_DATA_NOT_READY                     = 228;
+  IDX_ERR_STOP_DEVICE_FAILED                 = 229;
+  IDX_ERR_PYTHON_CODE_CRASH                  = 230;
+  IDX_ERR_CONDITION_NOT_MET                  = 231;
+  IDX_ERR_PYTHON_MODULE_NOT_DEPLOYED         = 232;
+  ERR_CODE_COUNT                             = 233;
 
 // Note: Should also update C API!!!
 
