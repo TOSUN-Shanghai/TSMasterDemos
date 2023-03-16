@@ -1463,6 +1463,36 @@ function tsdb_get_flexray_signal_properties_by_index_verbose(ADBIndex: Integer; 
                                                     out AInitValue: Double; AName: ppansichar;
                                                     AComment: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_flexray_db_id(const AIndex: Integer; out AId: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_properties_by_index(const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_properties_by_index(const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_properties_by_index(const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_ecu_properties_by_index(const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_ecu_properties_by_index(const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_ecu_properties_by_index(const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_frame_properties_by_index(const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_frame_properties_by_index(const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_frame_properties_by_index(const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_signal_properties_by_index(const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_signal_properties_by_index(const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_signal_properties_by_index(const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_properties_by_address(const AAddr: pansichar; const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_properties_by_address(const AAddr: pansichar; const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_properties_by_address(const AAddr: pansichar; const AValue: PMPDBProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_ecu_properties_by_address(const AAddr: pansichar; const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_ecu_properties_by_address(const AAddr: pansichar; const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_ecu_properties_by_address(const AAddr: pansichar; const AValue: PMPDBECUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_frame_properties_by_address(const AAddr: pansichar; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_frame_properties_by_address(const AAddr: pansichar; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_frame_properties_by_address(const AAddr: pansichar; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_signal_properties_by_address(const AAddr: pansichar; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_signal_properties_by_address(const AAddr: pansichar; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_signal_properties_by_address(const AAddr: pansichar; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_load_lin_db(const ALDF: PAnsiChar; const ASupportedChannelsBased0: PAnsiChar; out AId: Cardinal): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_unload_lin_db(const AId: Cardinal): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_unload_lin_dbs(): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_count(out ACount: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_id(const AIndex: integer; out AId: Cardinal): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+
 // database signal
 function tsdb_set_signal_value_can(const ACAN: PLIBCAN; const AMsgName: PAnsiChar; const ASgnName: PAnsiChar; const AValue: Double): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_signal_value_can(const ACAN: PLIBCAN; const AMsgName: PAnsiChar; const ASgnName: PAnsiChar; out AValue: Double): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
