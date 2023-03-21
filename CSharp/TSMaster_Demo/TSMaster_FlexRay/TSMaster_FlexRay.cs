@@ -188,17 +188,27 @@ namespace TSMaster_FlexRay
                 if (is_load_project)
                 {
                     TsMasterApi.finalize_lib_tsmaster();
-
+                    //tv_rbs
                     is_load_project = false;
                 }
                 //String savePath = dialog.SelectedPath;
                 int ret = TsMasterApi.initialize_lib_tsmaster_with_project(AppName, dialog.SelectedPath);
+
                 if (ret == 0)
                 {
+                    uint AID = 0;
+                    TsMasterApi.tsfifo_enable_receive_fifo();
                     TsMasterApi.tsdb_get_flexray_db_count(ref db_count);
                     for (int i = 0; i < db_count; i++)
                     {
-                        Flexray_dbParse.load_treeview(i, chns, tv_rbs, Flexray_dbParse.db_parse(i));
+                        //load_tree load_ = new load_tree();
+                        //load_.dbc_index = i;
+                        //load_.chns = chns;
+                        //load_.treeView = tv_rbs;
+                        //load_.flexray_Network = Flexray_dbParse.db_parse(i);
+                        //Thread thread = new Thread(new ParameterizedThreadStart(Flexray_dbParse.load_treeview_thread));
+                        //thread.Start(load_);
+                        //Flexray_dbParse.load_treeview(i, chns, tv_rbs, Flexray_dbParse.db_parse(i));
                     }
                     is_load_project = true;
                     log("加载成功\r\n");
@@ -479,8 +489,19 @@ namespace TSMaster_FlexRay
 
         private void btn_hwconfig_Click(object sender, EventArgs e)
         {
+            if (!is_load_project)
+            {
+                MessageBox.Show("未加载工程");
+                return;
+            }
             TsMasterApi.tsapp_show_tsmaster_window("Hardware",false);
         }
 
+        private void btn_receive_Click(object sender, EventArgs e)
+        {
+            int buffersize = 100;
+            TLIBFlexray[] a = TsMasterApi.ReceiveFRMsgList(ref buffersize, 0, 0);
+
+        }
     }
 }

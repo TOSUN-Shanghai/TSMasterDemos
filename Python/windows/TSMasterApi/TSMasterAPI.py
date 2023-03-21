@@ -1,9 +1,9 @@
-#!/usr/bin/env python
-# @Time   :2023/2/17 10:10
-# @Author :SEVEN
-# @File   :TSMaterApi.py
-# @Comment:use func with TSMaster.dll
-# ------------------------------------------------
+'''
+Author: seven 865762826@qq.com
+Date: 2023-03-06 16:36:32
+LastEditors: seven 865762826@qq.com
+LastEditTime: 2023-03-21 15:49:19
+'''
 from ctypes import *
 from enum import Enum
 import copy
@@ -205,9 +205,9 @@ class TLIBCAN(Structure):
 class TLIBCANFD(Structure):
     _pack_ = 1
     _fields_ = [("FIdxChn", c_uint8),
-                ("FProperties", c_uint8),  # 定义canfd数据类型  1:FD标准帧 5:FD扩展帧
+                ("FProperties", c_uint8),  
                 ("FDLC", c_uint8),
-                ("FFDProperties", c_uint8),  # 0:普通can数据帧 1：canfd数据帧
+                ("FFDProperties", c_uint8),  
                 ("FIdentifier", c_int32),
                 ("FTimeUs", c_ulonglong),
                 ("FData", c_ubyte * 64),
@@ -969,7 +969,7 @@ def tsapp_unregister_pretx_events_can(obj: c_int32):
 
 
 # 注销lin预发送事件
-def tsapp_unregister_pretx_events_lin(obj: int):
+def tsapp_unregister_pretx_events_lin(obj: c_int32):
     r = dll.tsapp_unregister_pretx_events_lin(byref(obj))
     return r
 
@@ -981,26 +981,26 @@ def tsapp_unregister_events_canfd(obj: c_int32):
 
 
 # 注销can发送—接收事件
-def tsapp_unregister_events_can(obj: int):
+def tsapp_unregister_events_can(obj: c_int32):
     r = dll.tsapp_unregister_events_can(byref(obj))
     return r
 
 
 # 注销lin发送—接收事件
-def tsapp_unregister_events_lin(obj: int):
-    r = dll.tsapp_unregister_events_lin(byref(obj),)
+def tsapp_unregister_events_lin(obj: c_int32):
+    r = dll.tsapp_unregister_events_lin(byref(obj))
     return r
 
 
 # 注销预发送事件
-def tsapp_unregister_pretx_events_all():
-    r = dll.tsapp_unregister_pretx_events_all()
+def tsapp_unregister_pretx_events_all(obj: c_int32):
+    r = dll.tsapp_unregister_pretx_events_all(byref(obj))
     return r
 
 
 # 注销发送—接收事件
-def tsapp_unregister_events_all():
-    r = dll.tsapp_unregister_events_all()
+def tsapp_unregister_events_all(obj: c_int32):
+    r = dll.tsapp_unregister_events_all(byref(obj))
     return r
 
 

@@ -88,6 +88,7 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btn_receive = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panle.SuspendLayout();
@@ -134,6 +135,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btn_receive);
             this.tabPage1.Controls.Add(this.btn_hwconfig);
             this.tabPage1.Controls.Add(this.Channle_Mask);
             this.tabPage1.Controls.Add(this.tb_Mask);
@@ -620,6 +622,16 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btn_receive
+            // 
+            this.btn_receive.Location = new System.Drawing.Point(342, 7);
+            this.btn_receive.Name = "btn_receive";
+            this.btn_receive.Size = new System.Drawing.Size(75, 23);
+            this.btn_receive.TabIndex = 20;
+            this.btn_receive.Text = "接收";
+            this.btn_receive.UseVisualStyleBackColor = true;
+            this.btn_receive.Click += new System.EventHandler(this.btn_receive_Click);
+            // 
             // TSMaster_FlexRay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -711,6 +723,7 @@
         private System.Windows.Forms.Label Channle_Mask;
         private System.Windows.Forms.TextBox tb_Mask;
         private System.Windows.Forms.Button btn_hwconfig;
+        private System.Windows.Forms.Button btn_receive;
     }
 }
 
