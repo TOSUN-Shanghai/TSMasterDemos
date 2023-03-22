@@ -71,6 +71,8 @@ class TLIB_TS_Device_Sub_Type(Enum):
     TC1016 = c_int(11)
     TC1012 = c_int(12)
     TC1013 = c_int(13)
+    TLog1002 = c_int(14)
+    TC1034 = c_int(15)
 
 
 class TLIBBusToolDeviceType(Enum):
