@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2022-12-24 12:29:39
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-28 13:33:33
+LastEditTime: 2023-03-31 18:06:31
 FilePath: \window_linux_Repd:\Envs\python39_32\Lib\site-packages\libTOSUN\libTOSUN.py
 '''
 
@@ -52,7 +52,12 @@ else:
 # dll = cdll.LoadLibrary("./libTSCANApiOnLinux.so")
 
 
+
 class CHANNEL_INDEX():
+    """
+    channle index 
+
+    """
     (
         CHN1, CHN2, CHN3, CHN4, CHN5, CHN6, CHN7, CHN8, CHN9, CHN10, CHN11, CHN12, CHN13, CHN14, CHN15, CHN16, CHN17,
         CHN18, CHN19, CHN20, CHN21, CHN22, CHN23, CHN24, CHN25, CHN26, CHN27, CHN28, CHN29, CHN30, CHN31, CHN32) = (
@@ -68,11 +73,27 @@ class CHANNEL_INDEX():
 
 
 class READ_TX_RX_DEF():
+    '''
+    ONLY_RX_MESSAGES:receive msg inclued tx and rx msg   
+    TX_RX_MESSAGES: only receive rx msg
+    
+    receive function:
+    tsfifo_receive_can_msgs           #receive can message
+    tsfifo_receive_canfd_msgs         #receive canfd message include can message
+    tsfifo_receive_lin_msgs           #receive lin message
+    tsfifo_receive_flexray_msgs       #receive flexray message
+    '''
     ONLY_RX_MESSAGES = c_int(0)
     TX_RX_MESSAGES = c_int(1)
 
 
 class LIN_PROTOCOL():
+    """
+    set LIN protocol include 1.3 2.0 2.1 and j2602
+    
+    function:
+    tsapp_configure_baudrate_lin
+    """
     LIN_PROTOCOL_13 = c_int(0)
     LIN_PROTOCOL_20 = c_int(1)
     LIN_PROTOCOL_21 = c_int(2)
@@ -80,29 +101,52 @@ class LIN_PROTOCOL():
 
 
 class T_LIN_NODE_FUNCTION():
+    """
+    set LIN node include MASTER  SLAVE 
+    function:
+    tslin_set_node_funtiontype
+    """
     T_MASTER_NODE = c_int(0)
     T_SLAVE_NODE = c_int(1)
     T_MONITOR_NODE = c_int(2)
 
 
 class TLIBCANFDControllerType():
+    """
+    set canfd baudrate and canfd mode : can isocanfd non-isocanfd
+    function:
+    tsapp_configure_baudrate_canfd
+    """
     lfdtCAN = c_int(0)
     lfdtISOCAN = c_int(1)
     lfdtNonISOCAN = c_int(2)
 
 
 class TLIBCANFDControllerMode():
+    """
+    set canfd Controller Mode :Normal ACKoff Restricted
+    function:
+    tsapp_configure_baudrate_canfd
+    """
     lfdmNormal = c_int(0)
     lfdmACKOff = c_int(1)
     lfdmRestricted = c_int(2)
 
 
 class A120():
+    """
+    set hardware termination resistor 
+    function:
+    tsapp_configure_baudrate_canfd
+    """
     DEABLEA120 = c_int(0)
     ENABLEA120 = c_int(1)
 
 
 class CONVERTTYPE():
+    '''
+    log converstion type
+    '''
     BLF = 0
     ASC = 1
     CSV = 2
@@ -112,11 +156,23 @@ class CONVERTTYPE():
 
 
 class TLIBCAN(Structure):
+    '''
+    CAN Structure
+    funciton:
+    tsapp_transmit_can_async            async send can msg
+    tsapp_transmit_can_sync             sync send can msg
+    tscan_add_cyclic_msg_can            cyclic send can msg
+    tsfifo_receive_can_msgs             receive can msg
+    '''
     _pack_ = 1
-    _fields_ = [("FIdxChn", c_uint8),
-                # 定义can数据类型  1:标准数据帄1 7 3:标准远程帄1 7 5:扩展数据帧 7:扩展远程帧
-                ("FProperties", c_uint8),
-                ("FDLC", c_uint8),
+    _fields_ = [("FIdxChn", c_uint8),           # channel index starting from 0
+                ("FProperties", c_uint8),       # [7] 0-normal frame, 1-error frame
+                                                # [6] 0-not logged, 1-already logged
+                                                # [5-3] tbd
+                                                # [2] 0-std frame, 1-extended frame
+                                                # [1] 0-data frame, 1-remote frame
+                                                # [0] dir: 0-RX, 1-TX 
+                ("FDLC", c_uint8),              # dlc from 0 to 8
                 ("FReserved", c_uint8),
                 ("FIdentifier", c_int32),
                 ("FTimeUs", c_uint64),
@@ -169,10 +225,17 @@ class TLIBCAN(Structure):
 
 class TLIBCANFD(Structure):
     _pack_ = 1
-    _fields_ = [("FIdxChn", c_uint8),
-                ("FProperties", c_uint8),  # 定义canfd数据类型  1:FD标准帄1 7 5:FD扩展帄1 7
-                ("FDLC", c_uint8),
-                ("FFDProperties", c_uint8),  # 0:普  can数据帄1 7 1:canfd数据帄1 7
+    _fields_ = [("FIdxChn", c_uint8),       # channel index starting from 0
+                ("FProperties", c_uint8),   # [7] 0-normal frame, 1-error frame
+                                            # [6] 0-not logged, 1-already logged
+                                            # [5-3] tbd
+                                            # [2] 0-std frame, 1-extended frame
+                                            # [1] 0-data frame, 1-remote frame
+                                            # [0] dir: 0-RX, 1-TX 
+                ("FDLC", c_uint8),          # dlc from 0 to 15 (0 to 64)
+                ("FFDProperties", c_uint8), # [2] ESI, The E RROR S TATE I NDICATOR (ESI) flag is transmitted dominant by error active nodes, recessive by error passive nodes. ESI does not exist in CAN format frames
+                                            # [1] BRS, If the bit is transmitted recessive, the bit rate is switched from the standard bit rate of the A RBITRATION P HASE to the preconfigured alternate bit rate of the D ATA P HASE . If it is transmitted dominant, the bit rate is not switched. BRS does not exist in CAN format frames.
+                                            # [0] EDL: 0-normal CAN frame, 1-FD frame, added 2020-02-12, The E XTENDED D 
                 ("FIdentifier", c_int32),
                 ("FTimeUs", c_ulonglong),
                 ("FData", c_ubyte * 64),
@@ -229,10 +292,16 @@ class TLIBCANFD(Structure):
 
 class TLIBLIN(Structure):
     _pack_ = 1
-    _fields_ = [("FIdxChn", c_ubyte),
-                ("FErrCode", c_ubyte),
-                ("FProperties", c_ubyte),
-                ("FDLC", c_uint8),
+    _fields_ = [("FIdxChn", c_ubyte),           # channel index starting from 0
+                ("FErrCode", c_ubyte),          #  0: normal
+                ("FProperties", c_ubyte),       # [7] tbd
+                                                # [6] 0-not logged, 1-already logged
+                                                # [5-4] FHWType #DEV_MASTER,DEV_SLAVE,DEV_LISTENER
+                                                # [3] 0-not ReceivedSync, 1- ReceivedSync
+                                                # [2] 0-not received FReceiveBreak, 1-Received Break
+                                                # [1] 0-not send FReceiveBreak, 1-send Break
+                                                # [0] dir: 0-RX, 1-TX
+                ("FDLC", c_uint8),              # dlc from 0 to 8
                 ("FIdentifier", c_ubyte),
                 ("FChecksum", c_ubyte),
                 ("FStatus", c_ubyte),
@@ -243,29 +312,45 @@ class TLIBLIN(Structure):
 
 class TLIBFlexray(Structure):
     _pack_ = 1
-    _fields_ = [("FIdxChn", c_uint8),
-                ("FChannelMask", c_uint8),
-                ("FDir", c_uint8),
-                ("FPayloadLength", c_uint8),
-                ("FActualPayloadLength", c_uint8),
-                ("FCycleNumber", c_uint8),
-                ("FCCType", c_uint8),
-                ("FReserved0", c_uint8),
-                ("FHeaderCRCA", c_uint16),
-                ("FHeaderCRCB", c_uint16),
-                ("FFrameStateInfo", c_uint16),
-                ("FSlotId", c_uint16),
-                ("FFrameFlags", c_uint32),
-                ("FFrameCRC", c_uint32),
+    _fields_ = [("FIdxChn", c_uint8),                       # channel index starting from 0
+                ("FChannelMask", c_uint8),                  # 0: reserved, 1: A, 2: B, 3: AB 
+                ("FDir", c_uint8),                          # 0: Rx, 1: Tx, 2: Tx Request
+                ("FPayloadLength", c_uint8),                # payload length in bytes
+                ("FActualPayloadLength", c_uint8),          # actual data bytes
+                ("FCycleNumber", c_uint8),                  # cycle number: 0~63
+                ("FCCType", c_uint8),                       # 0 = Architecture independent, 1 = Invalid CC type, 2 = Cyclone I, 3 = BUSDOCTOR, 4 = Cyclone II, 5 = Vector VN interface, 6 = VN - Sync - Pulse(only in Status Event, for debugging purposes only)
+                ("FReserved0", c_uint8),                    
+                ("FHeaderCRCA", c_uint16),                  # header crc A
+                ("FHeaderCRCB", c_uint16),                  # header crc B
+                ("FFrameStateInfo", c_uint16),              # bit 0~15, error flags
+                ("FSlotId", c_uint16),                      # static seg: 0~1023
+                ("FFrameFlags", c_uint32),                  # bit 0~22
+                                                            # 0 1 = Null frame.
+                                                            # 1 1 = Data segment contains valid data
+                                                            # 2 1 = Sync bit
+                                                            # 3 1 = Startup flag
+                                                            # 4 1 = Payload preamble bit
+                                                            # 5 1 = Reserved bit
+                                                            # 6 1 = Error flag(error frame or invalid frame)
+                                                            # 7..14 Reserved
+                                                            # 15 1 = Async.monitoring has generated this event
+                                                            # 16 1 = Event is a PDU
+                                                            # 17 Valid for PDUs only.The bit is set if the PDU is valid(either if the PDU has no  # update bit, or the update bit for the PDU was set in the received frame).
+                                                            # 18 Reserved
+                                                            # 19 1 = Raw frame(only valid if PDUs are used in the configuration).A raw frame may  # contain PDUs in its payload
+                                                            # 20 1 = Dynamic segment	0 = Static segment
+                                                            # 21 This flag is only valid for frames and not for PDUs.	1 = The PDUs in the payload of  # this frame are logged in separate logging entries. 0 = The PDUs in the payload of this  # frame must be extracted out of this frame.The logging file does not contain separate  # PDU - entries.
+                                                            # 22 Valid for PDUs only.The bit is set if the PDU has an update bit
+                ("FFrameCRC", c_uint32),                    # frame crc
                 ("FReserved1", c_uint64),
                 ("FReserved2", c_uint64),
                 ("FTimeUs", c_uint64),
-                ("FData", c_uint8 * 254),
+                ("FData", c_uint8 * 254),                   # 254 data bytes
                 ]
     def __init__(self,FIdxChn=0,FSlotId=1,FChannelMask=1,FActualPayloadLength=32,FCycleNumber=1,FData=[]):
         self.FIdxChn = FIdxChn
         self.FSlotId = FSlotId
-        self.FChannelMask = FChannelMask|0x04
+        self.FChannelMask = FChannelMask
         self.FActualPayloadLength = FActualPayloadLength
         self.FCycleNumber = FCycleNumber    
         datalen = len(FData)
@@ -282,72 +367,92 @@ class TLIBFlexray(Structure):
         
 
 class TLibFlexray_controller_config(Structure):
+    """
+    Most of the structural parameters are obtained from the database
+    """
     _pack_ = 1
     _fields_ = [("NETWORK_MANAGEMENT_VECTOR_LENGTH", c_uint8),
                 ("PAYLOAD_LENGTH_STATIC", c_uint8),
                 ("FReserved", c_uint16),
                 ("LATEST_TX", c_uint16),
+                # __ prtc1Control
                 ("T_S_S_TRANSMITTER", c_uint16),
                 ("CAS_RX_LOW_MAX", c_uint8),
-                ("SPEED", c_uint8),
+                ("SPEED", c_uint8),                                          #0 for 10m, 1 for 5m, 2 for 2.5m, convert from Database
                 ("WAKE_UP_SYMBOL_RX_WINDOW", c_uint16),
                 ("WAKE_UP_PATTERN", c_uint8),
+                # __ prtc2Control
                 ("WAKE_UP_SYMBOL_RX_IDLE", c_uint8),
                 ("WAKE_UP_SYMBOL_RX_LOW", c_uint8),
                 ("WAKE_UP_SYMBOL_TX_IDLE", c_uint8),
                 ("WAKE_UP_SYMBOL_TX_LOW", c_uint8),
-                ("channelAConnectedNode", c_uint8),
-                ("channelBConnectedNode", c_uint8),
-                ("channelASymbolTransmitted", c_uint8),
-                ("channelBSymbolTransmitted", c_uint8),
+                # __ succ1Config
+                ("channelAConnectedNode", c_uint8),                          # Enable ChannelA: 0: Disable 1: Enable
+                ("channelBConnectedNode", c_uint8),                          # Enable ChannelB: 0: Disable 1: Enable
+                ("channelASymbolTransmitted", c_uint8),                      # Enable Symble Transmit function of Channel A: 0: Disable 1: Enable
+                ("channelBSymbolTransmitted", c_uint8),                      # Enable Symble Transmit function of Channel B: 0: Disable 1: Enable
                 ("ALLOW_HALT_DUE_TO_CLOCK", c_uint8),
-                ("SINGLE_SLOT_ENABLED", c_uint8),
-                ("wake_up_idx", c_uint8),
-                ("ALLOW_PASSIVE_TO_ACTIVE", c_uint8),
-                ("COLD_START_ATTEMPTS", c_uint8),
-                ("synchFrameTransmitted", c_uint8),
-                ("startupFrameTransmitted", c_uint8),
+                ("SINGLE_SLOT_ENABLED", c_uint8),                            # FALSE_0, TRUE_1
+                ("wake_up_idx", c_uint8),                                    # Wake up channe: 0:ChannelA， 1:ChannelB
+                ("ALLOW_PASSIVE_TO_ACTIVE", c_uint8),                        
+                ("COLD_START_ATTEMPTS", c_uint8),                           
+                ("synchFrameTransmitted", c_uint8),                          # Need to transmit sync frame
+                ("startupFrameTransmitted", c_uint8),                        # Need to transmit startup frame
+                # __ succ2Config
                 ("LISTEN_TIMEOUT", c_uint32),
-                ("LISTEN_NOISE", c_uint8),
+                ("LISTEN_NOISE", c_uint8),                                   #2_16
+                # __ succ3Config
                 ("MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE", c_uint8),
                 ("MAX_WITHOUT_CLOCK_CORRECTION_FATAL", c_uint8),
                 ("REVERS0", c_uint8),
+                # __ gtuConfig
+                # __ gtu01Config
                 ("MICRO_PER_CYCLE", c_uint32),
+                # __ gtu02Config
                 ("Macro_Per_Cycle", c_uint16),
                 ("SYNC_NODE_MAX", c_uint8),
                 ("REVERS1", c_uint8),
+                # __ gtu03Config
                 ("MICRO_INITIAL_OFFSET_A", c_uint8),
                 ("MICRO_INITIAL_OFFSET_B", c_uint8),
                 ("MACRO_INITIAL_OFFSET_A", c_uint8),
                 ("MACRO_INITIAL_OFFSET_B", c_uint8),
+                # __ gtu04Config
                 ("N_I_T", c_uint16),
                 ("OFFSET_CORRECTION_START", c_uint16),
+                # __ gtu05Config
                 ("DELAY_COMPENSATION_A", c_uint8),
                 ("DELAY_COMPENSATION_B", c_uint8),
                 ("CLUSTER_DRIFT_DAMPING", c_uint8),
                 ("DECODING_CORRECTION", c_uint8),
+                # __ gtu06Config
                 ("ACCEPTED_STARTUP_RANGE", c_uint16),
                 ("MAX_DRIFT", c_uint16),
+                # __ gtu07Config
                 ("STATIC_SLOT", c_uint16),
                 ("NUMBER_OF_STATIC_SLOTS", c_uint16),
+                # __ gtu08Config
                 ("MINISLOT", c_uint8),
                 ("REVERS2", c_uint8),
                 ("NUMBER_OF_MINISLOTS", c_uint16),
+                # __ gtu09Config
                 ("DYNAMIC_SLOT_IDLE_PHASE", c_uint8),
                 ("ACTION_POINT_OFFSET", c_uint8),
                 ("MINISLOT_ACTION_POINT_OFFSET", c_uint8),
                 ("REVERS3", c_uint8),
+                # __ gtu10Config
                 ("OFFSET_CORRECTION_OUT", c_uint16),
                 ("RATE_CORRECTION_OUT", c_uint16),
+                # __ gtu11Config
                 ("EXTERN_OFFSET_CORRECTION", c_uint8),
                 ("EXTERN_RATE_CORRECTION", c_uint8),
                 ("config1_byte", c_uint8),
-                ("config_byte", c_uint8),  # bit0: 1:启用cha上终端电阻 0:不启用
-                # bit1: 1:启用chb上终端电阻 0:不启用
-                # bit2: 1:启用接收FIFO     0:不启用
-                # bit4: 1:cha桥接使能    0:不使能
-                # bit5: 1:chb桥接使能    0:不使能
-                # bit6: 1:not ignore NULL Frame  0: ignore NULL Frame
+                ("config_byte", c_uint8),   # bit0: 1:Channel A set termination resistor  0:Channel A not set termination resistor
+                                            # bit1: 1:Channel B set termination resistor  0:Channel B not set termination resistor
+                                            # bit2: 1:enable FIFO     0:disable FIFO
+                                            # bit4: 1:cha enable Bridging    0:cha disable Bridging
+                                            # bit5: 1:chb enable Bridging    0:chb disable Bridging
+                                            # bit6: 1:not ignore NULL Frame  0: ignore NULL Frame
                 ]
 
     def __init__(self, is_open_a=True, is_open_b=True, wakeup_chn=0, enable100_a=True, enable100_b=True,
@@ -437,17 +542,18 @@ class TLibFlexray_controller_config(Structure):
 
 class TLibTrigger_def(Structure):
     _pack_ = 1
-    _fields_ = [("slot_id", c_uint16),
-                ("frame_idx", c_uint8),
-                ("cycle_code", c_uint8),
-                ("config_byte", c_uint8),  # bit0: 是否使能通道A
-                # bit1: 是否使能通道B
-                # bit2: 是否网络管理报文
-                # bit3: 传输模式，0 表示连续传输，1表示单次触发
-                # bit4: 是否为冷启动报文，只有缓冲区0可以置1
-                # bit5: 是否为同步报文，只有缓冲区0 / 1 可以置1
-                # bit6:
-                # bit7: 帧类型:0 - 静态，1 - 动态
+    _fields_ = [("slot_id", c_uint16),      # Slot id
+                ("frame_idx", c_uint8),     # frame index
+
+                ("cycle_code", c_uint8),    #BASE-CYCLE + CYCLE-REPETITION
+                ("config_byte", c_uint8),   # bit0: enanle A
+                                            # bit1: enanle B
+                                            # bit2: is NM msg
+                                            # bit3: 0 :cycle ，1:Single trigger
+                                            # bit4: Whether it is a cold start message, only buffer 0 can be set to 1
+                                            # bit5: Whether it is a synchronization message, only the buffer 0/1 can be set to 1
+                                            # bit6:
+                                            # bit7: 0 - static，1 - Dynamic
                 ("recv", c_uint8),
                 ]
     def __init__(self, frame_idx=0, slot_id=1, cycle_code=1, config_byte=0x33):
@@ -464,6 +570,10 @@ DLC_DATA_BYTE_CNT = (
 
 
 def tosun_convert_msg(msg):
+    """
+    TLIBCAN  TLIBCANFD msg convert to can.Message
+    Easy python-can to use
+    """
     if isinstance(msg, TLIBCAN):
         return Message(
             timestamp=blf_start_time + float(msg.FTimeUs) / 1000000,
@@ -499,6 +609,10 @@ def tosun_convert_msg(msg):
 
 
 def msg_convert_tosun(msg):
+    """
+    can.Message convert to  TLIBCAN  TLIBCANFD msg 
+    Easy python-can to use
+    """
     if isinstance(msg, TLIBCAN):
         return msg
     elif isinstance(msg, TLIBCANFD):
@@ -537,26 +651,97 @@ start_time = 0
 
 
 def finalize_lib_tscan():
+    """
+    Release function 
+    There is no need to call now because I will automatically release it at the end of the program
+    """
     dll.finalize_lib_tscan()
 
 
 # 初始化函数（是否使能fifo,是否濢 活极速模式）
 def initialize_lib_tsmaster(AEnableFIFO: c_bool, AEnableTurbe: c_bool):
+    """
+    Initialization function 
+    There is no need to call it now because I will automatically call it when the program loads
+    """
     dll.initialize_lib_tscan(AEnableFIFO, AEnableTurbe, True)
 
 
-# 连接硬件(ADeviceSerial为null为任意硬仄1 7,ADeviceSerial == ""为连接任意设备，不为空时连接指定序列叄1 7 设备)
+# connect hw
 def tsapp_connect(ADeviceSerial: str, AHandle: c_size_t):
+    """
+    Args:
+        ADeviceSerial (str): Equipment serial number example: b"1234568798DFE" if ADeviceSerial =='': Connect directly to any device
+        AHandle (c_size_t): handle For specified hardware
+
+    Returns:
+        r:error_code AHandle:handle For specified hardware
+    
+    example:
+        AHandle = c_size_t(0)
+        r = tsapp_connect(b"1234568798DFE",AHandle) or tsapp_connect("",AHandle) 
+        if(r==0 or r==5):  #0 or 5 :connect success
+            print(AHandle)
+    """
     r = dll.tscan_connect(ADeviceSerial, byref(AHandle))
     return r
 
 
 def tscan_scan_devices(ADeviceCount: c_uint32):
+    """
+    Args:
+        ADeviceCount (c_uint32): _description_ :get devices count 
+
+    Returns:
+        r:error_code ADeviceCount:get devices count
+    example:
+        ADeviceCount = c_uint32(0)
+        r = tscan_scan_devices(ADeviceCount)
+        if r==0:       #0 :get success   
+            print(ADeviceCount)
+    """
     r = dll.tscan_scan_devices(byref(ADeviceCount))
     return r
 
+def tscan_get_device_info(ADeviceCount: c_uint32):
+    """
+    get hw info
+    Args:
+        ADeviceCount (c_uint32): hw_index 
+
+    Returns:
+        FManufacturer, FProduct, FSerial
+    example:
+        ADeviceCount = c_uint32(0)
+        r = tscan_scan_devices(ADeviceCount)
+        if r==0:       #0 :get success   
+            for i in range(ADeviceCount):
+                print(tscan_get_device_info(i))
+                
+    """
+    AFManufacturer = POINTER(POINTER(c_char))()
+    AFProduct = POINTER(POINTER(c_char))()
+    AFSerial = POINTER(POINTER(c_char))()
+    r = dll.tscan_get_device_info(ADeviceCount, byref(
+        AFManufacturer), byref(AFProduct), byref(AFSerial))
+    if r == 0:
+        FManufacturer = string_at(AFManufacturer).decode("utf8")
+        FProduct = string_at(AFProduct).decode("utf8")
+        FSerial = string_at(AFSerial).decode("utf8")
+    else:
+        print("查找失败")
+        return 0, 0, 0
+    return FManufacturer, FProduct, FSerial
 
 def tscan_get_error_description(ACode: int):
+    """
+    Args:
+        ACode (int): _description_ :error code 
+    Returns:
+        error code  description
+    example:
+        print(tscan_get_error_description(1))
+    """
     errorcode = POINTER(POINTER(c_char))()
     if ACode == 0:
         return "确定"
@@ -574,100 +759,279 @@ def tsflexray_set_controller_frametrigger(AHandle: c_size_t, ANodeIndex: c_uint,
                                           AFrameLengthArray: bytearray,
                                           AFrameNum: c_int, AFrameTrigger: TLibTrigger_def, AFrameTriggerNum: c_int,
                                           ATimeoutMs: c_int):
+    """
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ANodeIndex (c_uint): flexray channle 0 or 1                    
+        AControllerConfig (TLibFlexray_controller_config): Controller Config from database config
+        AFrameLengthArray (bytearray): Frame Array
+        AFrameNum (c_int):  Frame len
+        AFrameTrigger (TLibTrigger_def): Triggers 
+        AFrameTriggerNum (c_int): Triggers len
+        ATimeoutMs (c_int): timeout
+
+    Returns:
+        error code
+        
+    example:
+        fr_config = TLibFlexray_controller_config(is_open_a=True, is_open_b=True, enable100_b=True, is_show_nullframe=False,
+                                        is_Bridging=True)
+        fr_trigger = (TLibTrigger_def * 3)()
+        '''(1,0,1)'''
+        fr_trigger[0].frame_idx = 0
+        fr_trigger[0].slot_id = 35
+        fr_trigger[0].cycle_code = 1
+        fr_trigger[0].config_byte = 0x33
+        fr_trigger[0].recv = 0
+        '''(3,0,4)'''
+        fr_trigger[1].frame_idx = 1
+        fr_trigger[1].slot_id = 3
+        fr_trigger[1].cycle_code = 4
+        fr_trigger[1].config_byte = 0x03
+        fr_trigger[1].recv = 0
+        '''(3,3,4)'''
+        fr_trigger[2].frame_idx = 2
+        fr_trigger[2].slot_id = 3
+        fr_trigger[2].cycle_code = 7
+        fr_trigger[2].config_byte = 0x03
+        fr_trigger[2].recv = 0
+        FrameLengthArray = (c_int * 3)(32, 32, 32)
+        ret = tsflexray_set_controller_frametrigger(handle, chn0, fr_config, FrameLengthArray, 3, fr_trigger, 3, 1000)
+    """
     r = dll.tsflexray_set_controller_frametrigger(AHandle, ANodeIndex, byref(AControllerConfig),
                                                   AFrameLengthArray, AFrameNum, AFrameTrigger,
                                                   AFrameTriggerNum, ATimeoutMs)
     return r
 
 
-def tsflexray_cmdreq(AHandle: c_size_t, ANodeIndex: c_int, Action: c_int, ATriggerIndex: c_int, ARegAddr: c_uint32,
-                     ARegVal: c_uint32, ATimeoutMs: c_int):
-    r = dll.tsflexray_cmdreq(AHandle, ANodeIndex, Action,
-                             ATriggerIndex, ARegAddr,   (ARegVal), ATimeoutMs)
-    return r
-
-
 def tsflexray_start_net(AHandle: c_size_t, ANodeIndex: c_int, ATimeoutMs: c_int):
+    """
+    start flexray network
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ANodeIndex (c_int): flexray channel 
+        ATimeoutMs (c_int): timeout in ms
+    Returns:
+        error code
+    example:
+        tsflexray_start_net(handle,0,1000)
+    """
     r = dll.tsflexray_start_net(AHandle, ANodeIndex, ATimeoutMs)
     return r
 
 
 def tsflexray_stop_net(AHandle: c_size_t, ANodeIndex: c_int, ATimeoutMs: c_int):
+    """
+    stop flexray network
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ANodeIndex (c_int): flexray channel 
+        ATimeoutMs (c_int): timeout in ms
+    Returns:
+        error code
+    example:
+        tsflexray_stop_net(handle,0,1000)
+    """
     r = dll.tsflexray_stop_net(AHandle, ANodeIndex, ATimeoutMs)
     return r
 
 
 def tsfifo_clear_flexray_receive_buffers(AHandle: c_size_t, chn: c_int):
+    """
+    clear flexray receive buffers
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        chn (c_int): flexray channel 
+    Returns:
+        error code
+    example:
+        tsfifo_clear_flexray_receive_buffers(handle,0)
+    """
     r = dll.tsfifo_clear_flexray_receive_buffers(AHandle, chn)
     return r
 
 
 def tsflexray_transmit_async(AHandle: c_size_t, AData: TLIBFlexray):
+    """
+    async send flexray msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        AData (TLIBFlexray): flexray msg
+
+    Returns:
+        error code
+    example:
+        flexray_1 = TLIBFlexray(FSlotId = 35,FChannelMask=1,FCycleNumber=1,FData=[1,2,3,4,5,6,7,8] )
+        ret =  tsflexray_transmit_async(handle, flexray_1) 
+    """
     r = dll.tsflexray_transmit_async(AHandle, byref(AData))
     return r
 
 
-def tsflexray_transmit_sync(AHandle: c_size_t, AData: TLIBFlexray, ATimeoutMs: c_int):
+def tsflexray_transmit_sync(AHandle: c_size_t, AData: TLIBFlexray, ATimeoutMs: c_int32):
+    """
+    async send flexray msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        AData (TLIBFlexray): flexray msg
+        ATimeoutMs (c_int32):timeout
+    Returns:
+        error code
+    example:
+        flexray_1 = TLIBFlexray(FSlotId = 35,FChannelMask=1,FCycleNumber=1,FData=[1,2,3,4,5,6,7,8] )
+        ret =  tsflexray_transmit_sync(handle, flexray_1,c_int32(100)) 
+    """
     r = dll.tsflexray_transmit_sync(AHandle, byref(AData), ATimeoutMs)
     return r
 
 
-def tsfifo_read_flexray_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int, ACount: c_int):
+def tsfifo_read_flexray_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int32, ACount: c_int32):
+    """
+    get flexray buffer frame count
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        AIdxChn (c_int32): flexray channel 
+        ACount (c_int32): get count
+
+    Returns:
+        error code
+    
+    example:
+        ACount = c_int32(0)
+        tsfifo_read_flexray_buffer_frame_count(AHandle,0,ACount)
+        print(ACount)
+    """
     r = dll.tsfifo_read_flexray_buffer_frame_count(
         AHandle, AIdxChn, byref(ACount))
     return r
 
 
-def tsfifo_read_flexray_tx_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int, ACount: c_int):
+def tsfifo_read_flexray_tx_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int32, ACount: c_int32):
+    """
+    get flexray buffer tx frame count
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        AIdxChn (c_int32): flexray channel 
+        ACount (c_int32): get count
+
+    Returns:
+        error code
+    
+    example:
+        ACount = c_int32(0)
+        tsfifo_read_flexray_tx_buffer_frame_count(AHandle,0,ACount)
+        print(ACount)
+    """
     r = dll.tsfifo_read_flexray_tx_buffer_frame_count(
         AHandle, AIdxChn, byref(ACount))
     return r
 
 
-def tsfifo_read_flexray_rx_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int, ACount: c_int):
+def tsfifo_read_flexray_rx_buffer_frame_count(AHandle: c_size_t, AIdxChn: c_int32, ACount: c_int32):
+    """
+    get flexray buffer rx frame count
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        AIdxChn (c_int32): flexray channel 
+        ACount (c_int32): get count
+
+    Returns:
+        error code
+    
+    example:
+        ACount = c_int32(0)
+        tsfifo_read_flexray_rx_buffer_frame_count(AHandle,0,ACount)
+        print(ACount)
+    """
     r = dll.tsfifo_read_flexray_rx_buffer_frame_count(
         AHandle, AIdxChn, byref(ACount))
     return r
 
 
-def tsfifo_receive_flexray_msgs(AHandle: c_size_t, ADataBuffers: TLIBFlexray, ADataBufferSize: c_int, chn: c_int,
+def tsfifo_receive_flexray_msgs(AHandle: c_size_t, ADataBuffers: TLIBFlexray, ADataBufferSize: c_int32, chn: c_int32,
                                 ARxTx: c_int8):
+    """
+    receive flexray msgs
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ADataBuffers (TLIBFlexray): flexray buffer 
+        ADataBufferSize (c_int32): flexray buffer size
+        chn (c_int32): flexray channel
+        ARxTx (c_int8): include tx
+
+    Returns:
+        error_code TLIBFlexray_buffer ADataBufferSize
+    example:    
+        flexray_2 = (TLIBFlexray * 100)()
+        size = c_int32(100)
+        tsfifo_receive_flexray_msgs(handle, flexray_2, size, 0, 1)
+        for i in flexray_2:
+            string = ''
+            for index in range(i.FActualPayloadLength):
+                string += hex(i.FData[index]) + ' '
+            print(i.FTimeUs, ' ', i.FSlotId, ' ', i.FCycleNumber, ' ', ('tx' if i.FDir else 'rx'), "  ", string)
+    """
     r = dll.tsfifo_receive_flexray_msgs(
         AHandle, ADataBuffers, byref(ADataBufferSize), chn, ARxTx)
     return r
 
 
-def tscan_get_device_info(ADeviceCount: c_uint64):
-    AFManufacturer = POINTER(POINTER(c_char))()
-
-    AFProduct = POINTER(POINTER(c_char))()
-    AFSerial = POINTER(POINTER(c_char))()
-    r = dll.tscan_get_device_info(ADeviceCount, byref(
-        AFManufacturer), byref(AFProduct), byref(AFSerial))
-    if r == 0:
-        FManufacturer = string_at(AFManufacturer).decode("utf8")
-        FProduct = string_at(AFProduct).decode("utf8")
-        FSerial = string_at(AFSerial).decode("utf8")
-    else:
-        print("查找失败")
-        return 0, 0, 0
-    return FManufacturer, FProduct, FSerial
-
-
 # 断开指定硬件连接
 def tsapp_disconnect_by_handle(AHandle: c_size_t):
+    """
+    disconnect by handle
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+
+    Returns:
+        error code
+    
+    example:
+        tsapp_disconnect_by_handle(handle)
+    """
     r = dll.tscan_disconnect_by_handle(AHandle)
     return r
 
 
-# 断开扢 有硬件连掄1 7
+
 def tsapp_disconnect_all():
+    """
+    disconnect all hw
+
+    Returns:
+        error code
+        
+    example:
+        tsapp_disconnect_all()
+    """
     r = dll.tscan_disconnect_all_devices()
     return r
 
 
 # 设置can参数
 def tsapp_configure_baudrate_can(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_INDEX, ARateKbps: c_double,A120: A120):
+    """
+    set  AChnIdx can baudrate include termination resistor 
+
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AChnIdx (CHANNEL_INDEX): can channle index
+        ARateKbps (c_double): baudrate
+        A120 (A120): enable termination resistor 
+
+    Returns:
+        error code
+    example:
+        tsapp_configure_baudrate_can(handle,CHANNEL_INDEX.CHN1,500,A120.DEABLEA120)
+    """
     if not isinstance(ARateKbps, c_double):
         ARateKbps = c_double(ARateKbps)
     r = dll.tscan_config_can_by_baudrate(
@@ -680,6 +1044,23 @@ def tsapp_configure_baudrate_canfd(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_IND
                                    ADataKbps: c_double,
                                    AControllerType: TLIBCANFDControllerType, AControllerMode: TLIBCANFDControllerMode,
                                    A120: A120):
+    """
+    set  AChnIdx canfd baudrate include termination resistor
+
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AChnIdx (CHANNEL_INDEX): chn_index
+        ARateKbps (c_double): Rate baudrate
+        ADataKbps (c_double): data baudrate
+        AControllerType (TLIBCANFDControllerType): can isocanfd non-isocanfd
+        AControllerMode (TLIBCANFDControllerMode): normol ackoff 
+        A120 (A120): enable termination resistor 
+    Returns:
+        error code
+    
+    example:
+        tsapp_configure_baudrate_canfd(handle,CHANNEL_INDEX.CHN1,500,2000,TLIBCANFDControllerType.lfdtCAN,TLIBCANFDControllerMode.lfdmNormal,A120.A120_ENABLE)
+    """
     if not isinstance(ARateKbps, c_double):
         ARateKbps = c_double(ARateKbps)
     if not isinstance(ADataKbps, c_double):
@@ -689,16 +1070,35 @@ def tsapp_configure_baudrate_canfd(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_IND
     return r
 
 
-# can brs 采样率设罄1 7
+# can brs 采样率
 def tsapp_configure_can_regs(ADeviceHandle: c_size_t, AIdxChn: CHANNEL_INDEX, ABaudrateKbps: float, ASEG1: int,
                              ASEG2: int, APrescaler: int,
                              ASJ2: int, AOnlyListen: c_uint32, A120: c_uint32):
+    """
+    configure can regs include baudrate and termination resistor
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AIdxChn (CHANNEL_INDEX): chn_index
+        ABaudrateKbps (float): baudrate
+        ASEG1 (int): Phase buffer section1
+        ASEG2 (int): Phase buffer section2
+        APrescaler (int): APrescaler
+        ASJ2 (int): BTL count
+        AOnlyListen (c_uint32): is only listen
+        A120 (c_uint32): enable termination resistor 
+
+    Returns:
+        error code
+    
+    example:
+        tsapp_configure_can_regs(handle, CHANNEL_INDEX.CHN1, 500, 63, 16, 1, 80, 0, A120.A120_ENABLE)
+    """
     r = dll.tscan_configure_can_regs(ADeviceHandle, AIdxChn, c_float(ABaudrateKbps), c_uint32(ASEG1), c_uint32(ASEG2),
                                      c_uint32(APrescaler), c_uint32(ASJ2), AOnlyListen, A120)
     return r
 
 
-# canfd brs 采样率设罄1 7
+# canfd brs 采样率
 def tsapp_configure_canfd_regs(ADeviceHandle: c_size_t, AIdxChn: CHANNEL_INDEX, AArbBaudrateKbps: float, AArbSEG1: int,
                                AArbSEG2: int,
                                AArbPrescaler: int,
@@ -707,6 +1107,31 @@ def tsapp_configure_canfd_regs(ADeviceHandle: c_size_t, AIdxChn: CHANNEL_INDEX, 
                                ADataSJ2: int, AControllerType: TLIBCANFDControllerType,
                                AControllerMode: TLIBCANFDControllerMode,
                                AInstallTermResistor120Ohm: c_bool):
+    """
+    configure canfd regs include baudrate and termination resistor
+
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AIdxChn (CHANNEL_INDEX): chn_index
+        AArbBaudrateKbps (float): Arbbaudrate
+        AArbSEG1 (int): Arb Phase buffer section1
+        AArbSEG2 (int): Arb Phase buffer section2
+        AArbPrescaler (int): ArbPrescaler
+        AArbSJ2 (int): Arb BTL count
+        ADataBaudrateKbps (float): Databaudrate
+        ADataSEG1 (int): Data Phase buffer section1
+        ADataSEG2 (int): Data Phase buffer section2
+        ADataPrescaler (int): Data Prescaler
+        ADataSJ2 (int): Data BTL count
+        AControllerType (TLIBCANFDControllerType): can isocanfd non-isocanfd
+        AControllerMode (TLIBCANFDControllerMode): normol ackoff
+        AInstallTermResistor120Ohm (c_bool): enable termination resistor 
+
+    Returns:
+        error code
+    example:
+        error = tsapp_canfd_config(handle, CHANNEL_INDEX.CHN1, 500, 63, 16, 1, 80, 2000,63,16,1,80,TLIBCANFDControllerType.lfdtCAN,TLIBCANFDControllerMode.lfdmNormal, A120.A120_ENABLE)
+    """
     r = dll.tscan_configure_canfd_regs(ADeviceHandle, AIdxChn, c_float(AArbBaudrateKbps), c_uint32(AArbSEG1),
                                        c_uint32(AArbSEG2),
                                        c_uint32(AArbPrescaler), c_uint32(
@@ -723,24 +1148,61 @@ def tsapp_configure_canfd_regs(ADeviceHandle: c_size_t, AIdxChn: CHANNEL_INDEX, 
 
 # 设置lin参数
 def tsapp_configure_baudrate_lin(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_INDEX, ARateKbps: c_double):
+    """
+    set lin baudrate
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AChnIdx (CHANNEL_INDEX): lin chnidx
+        ARateKbps (c_double): baudrate
+
+    Returns:
+        error code
+    example:
+        tsapp_configure_baudrate_lin(handle,0,c_double(19.2))
+    """
     r = dll.tslin_config_baudrate(ADeviceHandle, AChnIdx, ARateKbps)
     return r
 
 
-# lin设置主节炄1 7
+# lin设置主节点
 def tsapp_set_node_funtiontype(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_INDEX, AFunctionType: T_LIN_NODE_FUNCTION):
+    """
+    set lin node funtiontype
+
+    Args:
+        ADeviceHandle (c_size_t): tsapp_connect retrun handle
+        AChnIdx (CHANNEL_INDEX): lin chnidx
+        AFunctionType (T_LIN_NODE_FUNCTION): T_MASTER_NODE T_SLAVE_NODE
+    example:
+        tsapp_set_node_funtiontype(handle,0,T_LIN_NODE_FUNCTION.T_MASTER_NODE)
+
+    Returns:
+        error code
+    """
     r = dll.tslin_set_node_funtiontype(ADeviceHandle, AChnIdx, AFunctionType)
     return r
 
 
-# 下载ldf
-def tsapp_apply_download_new_ldf(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_INDEX):
-    r = dll.tslin_apply_download_new_ldf(ADeviceHandle, AChnIdx)
-    return r
+# # 下载ldf
+# def tsapp_apply_download_new_ldf(ADeviceHandle: c_size_t, AChnIdx: CHANNEL_INDEX):
+#     r = dll.tslin_apply_download_new_ldf(ADeviceHandle, AChnIdx)
+#     return r
 
 
 # 异步发  can报文
 def tsapp_transmit_can_async(AHandle: c_size_t, Msg: TLIBCAN):
+    """
+    sync send can msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCAN): can msg
+    example:    
+        msg = TLIBCAN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_can_async(handle,msg)
+    Returns:
+        error code
+    """
     r = dll.tscan_transmit_can_async(AHandle, byref(Msg))
     if r != 0:
         print("msg send failed")
@@ -749,6 +1211,20 @@ def tsapp_transmit_can_async(AHandle: c_size_t, Msg: TLIBCAN):
 
 # 同步发  can报文
 def tsapp_transmit_can_sync(AHandle: c_size_t, Msg: TLIBCAN, ATimeoutMS: c_int32):
+    """
+    sync send can msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCAN): can msg
+        ATimeoutMS (c_int32): timeout in ms
+
+    Returns:
+        error code
+    example:
+        msg = TLIBCAN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_can_sync(handle,msg,100)
+    """
     if not isinstance(ATimeoutMS, c_int32):
         ATimeoutMS = c_float(ATimeoutMS)
     r = dll.tscan_transmit_can_sync(AHandle, byref(Msg), ATimeoutMS)
@@ -759,6 +1235,18 @@ def tsapp_transmit_can_sync(AHandle: c_size_t, Msg: TLIBCAN, ATimeoutMS: c_int32
 
 # 异步发  canfd报文
 def tsapp_transmit_canfd_async(AHandle: c_size_t, Msg: TLIBCANFD):
+    """
+    async send canfd msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCANFD): canfd msg
+    example:    
+        msg = TLIBCANFD(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_canfd_async(handle,msg)
+    Returns:
+        error code
+    """
     r = dll.tscan_transmit_canfd_async(AHandle, byref(Msg))
     if r != 0:
         print("msg send failed")
@@ -767,6 +1255,19 @@ def tsapp_transmit_canfd_async(AHandle: c_size_t, Msg: TLIBCANFD):
 
 # 同步发  canfd报文
 def tsapp_transmit_canfd_sync(AHandle: c_size_t, Msg: TLIBCANFD, ATimeoutMS: c_int32):
+    """
+    sync send canfd msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCANFD): canfd msg
+        ATimeoutMS (c_int32): timeout in ms
+    example:    
+        msg = TLIBCANFD(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_canfd_sync(handle,msg,100)
+    Returns:
+        error code
+    """
     if not isinstance(ATimeoutMS, c_int32):
         ATimeoutMS = c_float(ATimeoutMS)
     r = dll.tscan_transmit_canfd_sync(AHandle, byref(Msg), ATimeoutMS)
@@ -774,41 +1275,98 @@ def tsapp_transmit_canfd_sync(AHandle: c_size_t, Msg: TLIBCANFD, ATimeoutMS: c_i
         print("msg send failed")
     return r
 
-
-# 循环发  canfd报文
-def tscan_add_cyclic_msg_canfd(AHandle: c_size_t, Msg: TLIBCANFD, ATimeoutMS: c_float):
-    if not isinstance(ATimeoutMS, c_float):
-        ATimeoutMS = c_float(ATimeoutMS)
-    r = dll.tscan_add_cyclic_msg_canfd(AHandle, byref(Msg), ATimeoutMS)
-    if r != 0:
-        print("msg send failed")
-    return r
-
-
-# 删除循环发  canfd报文
-def tscan_delete_cyclic_msg_canfd(AHandle: c_size_t, Msg: TLIBCANFD):
-    r = dll.tscan_delete_cyclic_msg_canfd(AHandle, byref(Msg))
-    return r
-
-
 # 周期发  canfd报文
 def tscan_add_cyclic_msg_can(AHandle: c_size_t, Msg: TLIBCAN, ATimeoutMS: c_float):
+    """
+    cyclic send can msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCAN): can msg
+        ATimeoutMS (c_int32): timeout in ms
+    example:    
+        msg = TLIBCAN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tscan_add_cyclic_msg_can(handle,msg,c_float(100))
+    Returns:
+        error code
+    """
     if not isinstance(ATimeoutMS, c_float):
         ATimeoutMS = c_float(ATimeoutMS)
     r = dll.tscan_add_cyclic_msg_can(AHandle, byref(Msg), ATimeoutMS)
     if r != 0:
         print("msg send failed")
     return r
+# 循环发  canfd报文
+def tscan_add_cyclic_msg_canfd(AHandle: c_size_t, Msg: TLIBCANFD, ATimeoutMS: c_float):
+    """
+    cyclic send canfd msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCANFD): canfd msg
+        ATimeoutMS (c_int32): timeout in ms
+    example:    
+        msg = TLIBCANFD(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tscan_add_cyclic_msg_canfd(handle,msg,c_float(100))
+    Returns:
+        error code
+    """
+    if not isinstance(ATimeoutMS, c_float):
+        ATimeoutMS = c_float(ATimeoutMS)
+    r = dll.tscan_add_cyclic_msg_canfd(AHandle, byref(Msg), ATimeoutMS)
+    return r
+
+
+# 删除循环发  canfd报文
+def tscan_delete_cyclic_msg_canfd(AHandle: c_size_t, Msg: TLIBCANFD):
+    """
+    delete cyclic send canfd msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCANFD): canfd msg
+    example:    
+        msg = TLIBCANFD(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tscan_delete_cyclic_msg_canfd(handle,msg)
+    Returns:
+        error code
+    """
+    r = dll.tscan_delete_cyclic_msg_canfd(AHandle, byref(Msg))
+    return r
 
 
 # 删除循环发  can报文
 def tscan_delete_cyclic_msg_can(AHandle: c_size_t, Msg: TLIBCAN):
+    """
+    delete cyclic send can msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBCAN): can msg
+    example:    
+        msg = TLIBCAN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tscan_delete_cyclic_msg_can(handle,msg)
+    Returns:
+        error code
+    """
     r = dll.tscan_delete_cyclic_msg_can(AHandle, byref(Msg))
     return r
 
 
 # 异步发  lin报文
 def tsapp_transmit_lin_async(AHandle: c_size_t, Msg: TLIBLIN):
+    """
+    async send lin msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBLIN): lin msg
+    Returns:
+        error code
+    example:
+        msg = TLIBLIN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_lin_async(handle,msg)
+    """
     r = dll.tslin_transmit_lin_async(AHandle, byref(Msg))
     if r != 0:
         print("msg send failed")
@@ -817,6 +1375,20 @@ def tsapp_transmit_lin_async(AHandle: c_size_t, Msg: TLIBLIN):
 
 # 同步发  lin报文
 def tsapp_transmit_lin_sync(AHandle: c_size_t, Msg: TLIBLIN, ATimeoutMS: c_int32):
+    """
+    sync send lin msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        Msg (TLIBLIN): lin msg
+        ATimeoutMS (c_int32): timeout in ms
+
+    Returns:
+        error code
+    example:
+        msg = TLIBLIN(FIdentifier = 1,FData=[1,2,3,4,5,6,7,8])
+        tsapp_transmit_lin_sync(handle,msg,100)
+    """
     r = dll.tslin_transmit_lin_sync(AHandle, byref(Msg), ATimeoutMS)
     return r
 
@@ -824,6 +1396,26 @@ def tsapp_transmit_lin_sync(AHandle: c_size_t, Msg: TLIBLIN, ATimeoutMS: c_int32
 # can报文接收
 def tsapp_receive_can_msgs(AHandle: c_size_t, ACANBuffers: TLIBCAN, ACANBufferSize: c_uint32, AChn: CHANNEL_INDEX,
                            ARxTx: READ_TX_RX_DEF):
+    """
+    receive can msgs
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ADataBuffers (TLIBCAN): can buffer 
+        ADataBufferSize (c_int32): can buffer size
+        chn (c_int32): can channel
+        ARxTx (c_int8): include tx
+    Returns:
+        error_code TLIBCAN_buffer TLIBCAN_bufferSize
+    example:    
+        canbuffer = (TLIBCAN * 100)()
+        size = c_int32(100)
+        tsapp_receive_can_msgs(handle, canbuffer, size, 0, 1)
+        for i in canbuffer:
+            string = ''
+            for index in range(i.FActualPayloadLength):
+                string += hex(i.FData[index]) + ' '
+    """
     r = dll.tsfifo_receive_can_msgs(
         AHandle, ACANBuffers, byref(ACANBufferSize), AChn, ARxTx)
     return r
@@ -833,6 +1425,26 @@ def tsapp_receive_can_msgs(AHandle: c_size_t, ACANBuffers: TLIBCAN, ACANBufferSi
 def tsapp_receive_canfd_msgs(AHandle: c_size_t, ACANFDBuffers: TLIBCANFD, ACANFDBufferSize: c_uint32,
                              AChn: CHANNEL_INDEX,
                              ARxTx: READ_TX_RX_DEF):
+    """
+    receive canfd msgs
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ADataBuffers (TLIBCANFD): can buffer 
+        ADataBufferSize (c_int32): can buffer size
+        chn (c_int32): can channel
+        ARxTx (c_int8): include tx
+    Returns:
+        error_code TLIBCANFD_buffer TLIBCANFD_bufferSize
+    example:    
+        canbuffer = (TLIBCANFD * 100)()
+        size = c_int32(100)
+        tsapp_receive_canfd_msgs(handle, canbuffer, size, 0, 1)
+        for i in canbuffer:
+            string = ''
+            for index in range(i.FActualPayloadLength):
+                string += hex(i.FData[index]) + ' '
+    """
     r = dll.tsfifo_receive_canfd_msgs(
         AHandle, ACANFDBuffers, byref(ACANFDBufferSize), AChn, ARxTx)
 
@@ -842,6 +1454,27 @@ def tsapp_receive_canfd_msgs(AHandle: c_size_t, ACANFDBuffers: TLIBCANFD, ACANFD
 # lin报文接收
 def tsapp_receive_lin_msgs(AHandle: c_size_t, ALINBuffers: TLIBLIN, ALINBufferSize: c_uint, AChn: CHANNEL_INDEX,
                            ARxTx: READ_TX_RX_DEF):
+    """
+    receive lin msgs
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ADataBuffers (TLIBLIN): can buffer 
+        ADataBufferSize (c_int32): can buffer size
+        chn (c_int32): can channel
+        ARxTx (c_int8): include tx
+    Returns:
+        error_code TLIBLIN_buffer TLIBLIN_bufferSize
+    example:    
+        linbuffer = (TLIBLIN * 100)()
+        size = c_int32(100)
+        tsapp_receive_lin_msgs(handle, linbuffer, size, 0, 1)
+        for i in linbuffer:
+            string = ''
+            for index in range(i.FActualPayloadLength):
+                string += hex(i.FData[index]) + ' '
+            
+    """
     temp = copy.copy(ALINBufferSize)
     data = POINTER(TLIBLIN * len(ALINBuffers)
                    )((TLIBLIN * len(ALINBuffers))(*ALINBuffers))
@@ -853,14 +1486,53 @@ def tsapp_receive_lin_msgs(AHandle: c_size_t, ALINBuffers: TLIBLIN, ALINBufferSi
 
 # 清除buffer
 def tsfifo_clear_can_receive_buffers(AHandle: c_size_t, CHN: CHANNEL_INDEX):
+    """
+    clear can receive buffers
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        CHN (CHANNEL_INDEX): can channel idnex
+
+    Returns:
+        error code
+        
+    example:
+        tsfifo_clear_can_receive_buffers(handle,CHANNEL_INDEX.CHN1)
+    """
     return dll.tsfifo_clear_can_receive_buffers(AHandle, CHN)
 
 
 def tsfifo_clear_canfd_receive_buffers(AHandle: c_size_t, CHN: CHANNEL_INDEX):
+    """
+    clear canfd receive buffers
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        CHN (CHANNEL_INDEX): canfd channel idnex
+
+    Returns:
+        error code
+        
+    example:
+        tsfifo_clear_canfd_receive_buffers(handle,CHANNEL_INDEX.CHN1)
+    """
     return dll.tsfifo_clear_canfd_receive_buffers(AHandle, CHN)
 
 
 def tsfifo_clear_lin_receive_buffers(AHandle: c_size_t, CHN: CHANNEL_INDEX):
+    """
+    clear lin receive buffers
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        CHN (CHANNEL_INDEX): canfd channel idnex
+
+    Returns:
+        error code
+        
+    example:
+        tsfifo_clear_lin_receive_buffers(handle,CHANNEL_INDEX.CHN1)
+    """
     return dll.tsfifo_clear_lin_receive_buffers(AHandle, CHN)
 
 
@@ -889,15 +1561,16 @@ if 'windows' in _os.lower():
 else:
     OnTx_RxFUNC_CANFD = CFUNCTYPE(None, PCANFD)
 
+ps64 = POINTER(c_int64)
 if 'windows' in _os.lower():
-    On_Connect_FUNC = WINFUNCTYPE(None, POINTER(c_int64))
+    On_Connect_FUNC = WINFUNCTYPE(None,ps64 )
 else:
-    On_Connect_FUNC = CFUNCTYPE(None, POINTER(c_int64))
+    On_Connect_FUNC = CFUNCTYPE(None, ps64)
 
 if 'windows' in _os.lower():
-    On_disConnect_FUNC = WINFUNCTYPE(None, POINTER(c_int64))
+    On_disConnect_FUNC = WINFUNCTYPE(None, ps64)
 else:
-    On_disConnect_FUNC = CFUNCTYPE(None, POINTER(c_int64))
+    On_disConnect_FUNC = CFUNCTYPE(None, ps64)
 
 blfName = ''
 blf_start_time = 0
@@ -921,6 +1594,16 @@ On_LOG_EVENT = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
 
 
 def tslog_start(AHandle: c_size_t, filePathName: str):
+    """
+    logging can msg include canfd msg
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        filePathName (str): save log_file path_name (blf file) Absolute path
+    
+    example:
+        tslog_start(handle,Absolute path)
+    """
     global blfName
     blfName = blfFile(filePathName)
     if 0 == tsapp_register_event_canfd(AHandle, On_LOG_EVENT):
@@ -930,6 +1613,9 @@ def tslog_start(AHandle: c_size_t, filePathName: str):
 
 
 def tslog_stop():
+    """
+    stop logging
+    """
     global blfName
     global blf_start_time
     blfName.stop_timestamp = time.time()
@@ -940,6 +1626,16 @@ def tslog_stop():
 
 def blf_to_convert(oldpathName: str, newpathName: str,
                    convertType: CONVERTTYPE):  # oldpathName:blf location, newpathName: asc location
+    """_summary_
+
+    Args:
+        oldpathName (str): old log file
+        newpathName (str): new log file 
+        convertType (CONVERTTYPE): convert type
+    
+    example:
+        blf_to_convert("1.blf","2.asc".CONVERTTYPE.ASC)
+    """
     if convertType == CONVERTTYPE.ASC:
         with can.BLFReader(oldpathName) as Reader_file:
             with can.ASCWriter(newpathName) as WriterFile:
@@ -975,6 +1671,16 @@ def blf_to_convert(oldpathName: str, newpathName: str,
 
 
 def tslog_start_online_replay(handle: c_size_t, PathFileName: str, include_rx: bool):
+    """
+    online repaly
+
+    Args:
+        handle (c_size_t): tsapp_connect retrun handle
+        PathFileName (str): blf path name Absolute path
+        include_rx (bool): include rx
+    exampel:
+        tslog_start_online_replay(handle,"/home/1.blf",False)
+    """
     messagelist = []
     with can.BLFReader(PathFileName) as Reader_file:
         Reader_file.start_timestamp = 0
@@ -1050,86 +1756,397 @@ def Reader_file(PathName, convertType: CONVERTTYPE):
 
 # 注册连接事件
 def tscan_register_event_connected(ACallback: On_Connect_FUNC):
+    """
+    register connect event
+    What happens when the device is successfully connected
+    
+    Args:
+        ACallback (On_Connect_FUNC): function
+
+    Returns:
+        error code
+    example:
+        def on_connect(ps64):
+            print("connect")
+            
+        on_connect_event = On_Connect_FUNC(on_connect)
+        tscan_register_event_connected(on_connect_event)
+    """
     ret = dll.tscan_register_event_connected(ACallback)
     return ret
 
 
 # 注册断开事件
-def tscan_register_event_disconnected(ACallback: On_Connect_FUNC):
+def tscan_register_event_disconnected(ACallback: On_disConnect_FUNC):
+    """
+    register disconnect event
+    What happens when the device is successfully disconnected
+    Args:
+        ACallback (On_disConnect_FUNC): function
+
+    Returns:
+        error code
+    example:
+        def on_disconnect(ps64):
+            print("disconnect")
+            
+        on_disconnect_event = On_disConnect_FUNC(on_disconnect)
+        tscan_register_event_disconnected(on_disconnect_event)
+    """
     ret = dll.tscan_register_event_disconnected(ACallback)
     return ret
 
 
-# 注册can发  接收事仄1 7
+# 注册can发接
 def tsapp_register_event_can(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CAN):
+    """
+    register can event
+    Triggered when there is message transmission on the bus
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CAN): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            print(ACAN.contents.FData[0])
+            
+        on_can_event = OnTx_RxFUNC_CAN(on_can)
+        tsapp_register_event_can(Handle,on_can_event)
+    """
     r = dll.tscan_register_event_can(AHandle, ACallback)
     return r
 
 
-# 注销can发  接收事仄1 7
+# 注销can发接
 def tsapp_unregister_event_can(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CAN):
+    """
+    unregister can event
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CAN): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            print(ACAN.contents.FData[0])
+            
+        on_can_event = OnTx_RxFUNC_CAN(on_can)
+        tsapp_unregister_event_can(Handle,on_can_event)
+    """
     r = dll.tscan_unregister_event_can(AHandle, ACallback)
     return r
 
 def tsapp_register_pretx_event_can(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CAN):
+    """
+    register pre tx can event
+    Sending a message will trigger and can modify the message data
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CAN): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            ACAN.contents.FData[0] = 1 #All message FData[0] will only be 1
+            if ACAN.contents.FIdentifier == 1:
+                ACAN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_can_event = OnTx_RxFUNC_CAN(on_can)
+        tsapp_register_event_can(Handle,on_can_event)
+    """
     return dll.tscan_register_pretx_event_can(AHandle, ACallback)
 
 def tsapp_unregister_pretx_event_can(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CAN):
+    """
+    unregister pre tx can event
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CAN): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            ACAN.contents.FData[0] = 1 #All message FData[0] will only be 1
+            if ACAN.contents.FIdentifier == 1:
+                ACAN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_can_event = OnTx_RxFUNC_CAN(on_can)
+        tsapp_unregister_event_can(Handle,on_can_event)
+    """
     return dll.tscan_unregister_pretx_event_can(AHandle, ACallback)
 
 def tsapp_register_pretx_event_canfd(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CANFD):
+    """
+    register pre tx canfd event
+    Sending a message will trigger and can modify the message data
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CANFD): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            ACAN.contents.FData[0] = 1 #All message FData[0] will only be 1
+            if ACAN.contents.FIdentifier == 1:
+                ACAN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_can_event = OnTx_RxFUNC_CANFD(on_can)
+        tsapp_register_pretx_event_canfd(Handle,on_can_event)
+    """
     return dll.tscan_register_pretx_event_canfd(AHandle, ACallback)
 
 def tsapp_unregister_pretx_event_canfd(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CANFD):
+    """
+    unregister pre tx canfd event
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CANFD): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            ACAN.contents.FData[0] = 1 #All message FData[0] will only be 1
+            if ACAN.contents.FIdentifier == 1:
+                ACAN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_can_event = OnTx_RxFUNC_CANFD(on_can)
+        tsapp_unregister_pretx_event_canfd(Handle,on_can_event)
+    """
     return dll.tscan_unregister_pretx_event_canfd(AHandle, ACallback)
 
 
-# 注册canfd发  接收事仄1 7
+# 注册canfd发接
 def tsapp_register_event_canfd(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CANFD):
+    """
+    register canfd event
+    Triggered when there is message transmission on the bus
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CANFD): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            print(ACAN.contents.FData[0])
+            
+        on_can_event = OnTx_RxFUNC_CANFD(on_can)
+        tsapp_register_event_canfd(Handle,on_can_event)
+    """
     r = dll.tscan_register_event_canfd(AHandle, ACallback)
     return r
 
-# 注销canfd发  接收事仄1 7
+# 注销canfd发接
 def tsapp_unregister_event_canfd(AHandle: c_size_t, ACallback: OnTx_RxFUNC_CANFD):
+    """
+    unregister canfd event
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_CANFD): function
+
+    Returns:
+        error code
+    example:
+        def on_can(ACAN):
+            print(ACAN.contents.FData[0])
+            
+        on_can_event = OnTx_RxFUNC_CANFD(on_can)
+        tsapp_unregister_event_canfd(Handle,on_can_event)
+    """
     r = dll.tscan_unregister_event_canfd(AHandle, ACallback)
     return r
 
 def tsapp_register_event_flexray(AHandle: c_size_t, ACallback: OnTx_RxFUNC_Flexray):
+    """
+    register flexray event
+    Triggered when there is message transmission on the bus
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_Flexray): function
+
+    Returns:
+        error code
+    example:
+        def on_flexray(AFlexray):
+            print(AFlexray.contents.FData[0])
+            
+        on_flexray_event = OnTx_RxFUNC_Flexray(on_flexray)
+        tsapp_register_event_flexray(Handle,on_flexray_event)
+    """
     r = dll.tsflexray_register_event_flexray(AHandle, ACallback)
     return r
 
 
-# 注销flexray发  接收
+# 注销flexray发接
 def tsapp_unregister_event_flexray(AHandle: c_size_t, ACallback: OnTx_RxFUNC_Flexray):
+    """
+    unregister flexray event
+
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_Flexray): function
+
+    Returns:
+        error code
+    example:
+        def on_flexray(AFlexray):
+            print(AFlexray.contents.FData[0])
+            
+        on_flexray_event = OnTx_RxFUNC_Flexray(on_flexray)
+        tsapp_unregister_event_flexray(Handle,on_flexray_event)
+    """
     r = dll.tsflexray_unregister_event_flexray(AHandle, ACallback)
     return r
 
 def tsapp_register_pretx_event_flexray(AHandle: c_size_t, ACallback: OnTx_RxFUNC_Flexray):
+    """
+    register pre tx flexray event
+    Sending a message will trigger and can modify the message data(use transmit_flexray trigger)
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_Flexray): function
+
+    Returns:
+        error code
+    example:
+        def on_flexray(AFlexray):
+            AFlexray.contents.FData[0] = 1 #All transmit tx message FData[0] will only be 1
+            if AFlexray.contents.FIdentifier == 1:
+                AFlexray.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_flexray_event = OnTx_RxFUNC_Flexray(on_flexray)
+        tsapp_register_pretx_event_flexray(Handle,on_flexray_event)
+    """
     r = dll.tsflexray_register_pretx_event_flexray(AHandle, ACallback)
     return r
 
 
 # 注销flexray预发送事件
 def tsapp_unregister_pretx_event_flexray(AHandle: c_size_t, ACallback: OnTx_RxFUNC_Flexray):
+    """
+    unregister pre tx flexray event
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_Flexray): function
+
+    Returns:
+        error code
+    example:
+        def on_flexray(AFlexray):
+            AFlexray.contents.FData[0] = 1 #All transmit tx message FData[0] will only be 1
+            if AFlexray.contents.FIdentifier == 1:
+                AFlexray.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_flexray_event = OnTx_RxFUNC_Flexray(on_flexray)
+        tsapp_unregister_pretx_event_flexray(Handle,on_flexray_event)
+    """
     r = dll.tsflexray_unregister_pretx_event_flexray(AHandle, ACallback)
     return r
 
 
 # 注册lin发 接事件
 def tsapp_register_event_lin(AHandle: c_size_t, ACallback: OnTx_RxFUNC_LIN):
+    """
+    register lin event
+    Triggered when there is message transmission on the bus
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_LIN): function
+
+    Returns:
+        error code
+    example:
+        def on_lin(ALIN):
+            print(ALIN.contents.FData[0])
+            
+        on_lin_event = OnTx_RxFUNC_LIN(on_lin)
+        tsapp_register_event_lin(Handle,on_flexray_event)
+    """
     r = dll.tslin_register_event_lin(AHandle, ACallback)
     return r
 
 
 # 注销lin发 接事件
 def tsapp_unregister_event_lin(AHandle: c_size_t, ACallback: OnTx_RxFUNC_LIN):
+    """
+    unregister lin event
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_LIN): function
+
+    Returns:
+        error code
+    example:
+        def on_lin(ALIN):
+            print(ALIN.contents.FData[0])
+            
+        on_lin_event = OnTx_RxFUNC_LIN(on_lin)
+        tsapp_unregister_event_lin(Handle,on_flexray_event)
+    """
     r = dll.tslin_unregister_event_lin(AHandle, ACallback)
     return r
 
 def tsapp_register_pretx_event_lin(AHandle: c_size_t, ACallback: OnTx_RxFUNC_LIN):
+    """
+    register pre tx lin event
+    Sending a message will trigger and can modify the message data(use transmit_flexray trigger)
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_LIN): function
+
+    Returns:
+        error code
+    example:
+        def on_lin(ALIN):
+            ALIN.contents.FData[0] = 1 #All transmit tx message FData[0] will only be 1
+            if ALIN.contents.FIdentifier == 1:
+                ALIN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_lin_event = OnTx_RxFUNC_LIN(on_lin)
+        tsapp_register_pretx_event_lin(Handle,on_flexray_event)
+    """
     return dll.tslin_register_pretx_event_can(AHandle, ACallback)
 
 def tsapp_unregister_pretx_event_lin(AHandle: c_size_t, ACallback: OnTx_RxFUNC_LIN):
+    """
+    unregister pre tx lin event
+    Sending a message will trigger and can modify the message data(use transmit_flexray trigger)
+    
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+        ACallback (OnTx_RxFUNC_LIN): function
+
+    Returns:
+        error code
+    example:
+        def on_lin(ALIN):
+            ALIN.contents.FData[0] = 1 #All transmit tx message FData[0] will only be 1
+            if ALIN.contents.FIdentifier == 1:
+                ALIN.contents.FData[0] = 2  #only id=1 can message FData[0] will  be 2
+            
+        on_lin_event = OnTx_RxFUNC_LIN(on_lin)
+        tsapp_register_pretx_event_lin(Handle,on_flexray_event)
+        
+    """
     return dll.tslin_unregister_pretx_event_lin(AHandle, ACallback)
 
 # normal_rx_msg = queue.Queue(maxsize=0)
@@ -1154,7 +2171,6 @@ def tsapp_unregister_pretx_event_lin(AHandle: c_size_t, ACallback: OnTx_RxFUNC_L
 #         normal_rx_msg.put(msg)
 class TSuds():
     msg_list = queue.Queue(maxsize=10000)
-
     def __init__(self, HwHandle, channel=0, dlc=8, request_id=0x1, respond_id=0x2, is_fd=False, is_std=True,
                  fuction_id=0x3, timeout=0.1, bitrate_switch=False):
         self.HwHandle = HwHandle
