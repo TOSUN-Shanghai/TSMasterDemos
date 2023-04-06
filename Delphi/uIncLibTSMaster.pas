@@ -1492,6 +1492,9 @@ function tsdb_unload_lin_db(const AId: Cardinal): Integer; stdcall; {$IFNDEF LIB
 function tsdb_unload_lin_dbs(): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_lin_db_count(out ACount: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_lin_db_id(const AIndex: integer; out AId: Cardinal): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_can_db_frame_properties_by_db_index(const AIdxDB: integer; const AIndex: integer; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_lin_db_frame_properties_by_db_index(const AIdxDB: integer; const AIndex: integer; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdb_get_flexray_db_frame_properties_by_db_index(const AIdxDB: integer; const AIndex: integer; const AValue: PMPDBFrameProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_can_db_signal_properties_by_frame_index(const AIdxDB: integer; const AIdxFrame: integer; const ASgnIndexInFrame: integer; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_lin_db_signal_properties_by_frame_index(const AIdxDB: integer; const AIdxFrame: integer; const ASgnIndexInFrame: integer; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_flexray_db_signal_properties_by_frame_index(const AIdxDB: integer; const AIdxFrame: integer; const ASgnIndexInFrame: integer; const AValue: PMPDBSignalProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
