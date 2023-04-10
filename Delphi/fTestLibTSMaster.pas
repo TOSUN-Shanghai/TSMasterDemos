@@ -10,7 +10,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, uIncLibTSMaster,
-  Vcl.ExtCtrls, Vcl.Buttons;
+  Vcl.ExtCtrls, Vcl.Buttons, Vcl.Menus;
 
 type
   TfrmTestLibTSMaster = class(TForm)
@@ -286,6 +286,19 @@ type
     chkIntrepidcs: TCheckBox;
     chkCANable: TCheckBox;
     Button87: TButton;
+    tsLogger: TTabSheet;
+    tvDataLogger: TTreeView;
+    pm1: TPopupMenu;
+    ConnectTLog1: TMenuItem;
+    RefreshDataLoggerList1: TMenuItem;
+    StartLoggerReplay1: TMenuItem;
+    StopLoggerReplay1: TMenuItem;
+    EraseLogger1: TMenuItem;
+    ExportBlfFile1: TMenuItem;
+    ResetGPSModule1: TMenuItem;
+    dlgSaveBlf: TSaveDialog;
+    pbPrg: TProgressBar;
+    LCTime: TTimer;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -395,8 +408,15 @@ type
     procedure Button85Click(Sender: TObject);
     procedure Button86Click(Sender: TObject);
     procedure Button87Click(Sender: TObject);
+    procedure RefreshDataLoggerList1Click(Sender: TObject);
+    procedure ExportBlfFile1Click(Sender: TObject);
+    procedure LCTimeTimer(Sender: TObject);
   private
+    FHeaderList: PEMMC_RECORD_NODE;
+    FExportRetValue: Integer;
     FApplicationName: ansistring;
+    FProgressValue: Double;
+    FExportBlfCompleted: boolean;
     function GetMyApplication: PAnsiChar;
     function GetMyApplicationString: string;
     function CheckOK(const AResultCode: integer): Boolean;
@@ -1823,7 +1843,7 @@ end;
 var
   vPrg: integer;
 
-procedure OnConvertProgress(const AProgress100: Double); stdcall;
+procedure OnConvertProgress(const AObj: pointer; const AProgress100: Double); stdcall;
 begin
   if aprogress100 > vprg then begin
     vprg := vprg + 10;
@@ -1836,9 +1856,11 @@ procedure TfrmTestLibTSMaster.Button77Click(Sender: TObject);
 begin
   vprg := 0;
   if checkok(tslog_blf_to_asc(
+    self,
     pansichar(ansistring(edtBlfToASC.text)),
     pansichar(ansistring(edtASCToBlf.text)),
-    OnConvertProgress)) then begin
+    OnConvertProgress
+  )) then begin
     log('convert done');
     prgconvert.position := 100;
   end else begin
@@ -1851,9 +1873,11 @@ procedure TfrmTestLibTSMaster.Button78Click(Sender: TObject);
 begin
   vprg := 0;
   if checkok(tslog_asc_to_blf(
+    self,
     pansichar(ansistring(edtASCToBlf.text)),
     pansichar(ansistring(edtBlfToASC.text)),
-    OnConvertProgress)) then begin
+    OnConvertProgress
+  )) then begin
     log('convert done');
     prgconvert.position := 100;
   end else begin
@@ -2155,10 +2179,55 @@ begin
 
 end;
 
+procedure TfrmTestLibTSMaster.ExportBlfFile1Click(Sender: TObject);
+var
+  tmpNode: TTreeNode;
+  fileName: ansistring;
+  tmpEMMCNode: PEMMC_RECORD_NODE;
+begin
+  if dlgSaveBlf.Execute = false then
+  begin
+    exit;
+  end;
+  if Assigned(FHeaderList) = false then
+  begin
+    exit;
+  end;
+  fileName := ansistring(string(dlgSaveBlf.FileName));
+    tmpNode := tvDataLogger.Selected;
+    if assigned(tmpNode) and (tmpNode.StateIndex >= 0) then
+    begin
+      FProgressValue := 0;
+      pbPrg.Max := 100;
+      pbPrg.Position := 0;
+      FExportRetValue := 0;
+      FExportBlfCompleted := false;
+      tmpEMMCNode := FHeaderList.GetSlibingNode(tmpNode.StateIndex);
+      TThread.CreateAnonymousThread(
+      procedure
+      var
+        startDateTime: TDateTime;
+        fyear, fmonth, fday, fhour, fminute, fsecond, fminisecond: word;
+      begin
+        startDateTime := tmpEMMCNode.FRecordData.FDateTime(8);
+        DecodeDate(startDateTime, fYear, fMonth, fDay);
+        DecodeTime(startDateTime, fHour, fminute, fsecond, fminisecond);
+        FExportRetValue := tslog_logger_start_export_blf_file(0, tmpNode.StateIndex,
+                  @filename[1], 0, tmpEMMCNode.FRecordData.FSectorSize , @FProgressValue,
+                  fyear, fmonth, fday,
+                  fhour, fminute, fsecond, fminisecond,
+                  1000);
+        FExportBlfCompleted := true;
+      end
+    ).Start;
+    end;
+
+end;
+
 procedure TfrmTestLibTSMaster.FormCreate(Sender: TObject);
 begin
 {$IFDEF INIT_WITH_PROJECT}
-  initialize_lib_tsmaster_with_project(GetMyApplication, 'C:\LC_Ramdisk\XCPSim.T7z');
+  initialize_lib_tsmaster_with_project(GetMyApplication, 'C:\LC_Ramdisk\ProjDir\');
 {$ELSE}
   initialize_lib_tsmaster(GetMyApplication);
 {$ENDIF}
@@ -2174,7 +2243,33 @@ begin
   cbDeviceType2Change(cbDeviceType2);
   page.TabIndex := 0;
   LoadHardwareDevices;
+  FExportBlfCompleted := false;
   Log('Current directory: ' + GetCurrentDir);
+
+end;
+
+procedure TfrmTestLibTSMaster.LCTimeTimer(Sender: TObject);
+begin
+  //stat.Panels[0].Text := CalcPerformanceStat;
+  //lblPosition.Caption := FProgressValue.ToString;
+  pbPrg.Position := round(FProgressValue * 100);
+  if FExportBlfCompleted then
+  begin
+    if FProgressValue >= 1 then
+    begin
+      Log('Start Logger Replay Success');
+    end
+    else
+    begin
+      if FExportRetValue > 0 then
+      begin
+        Log('Start Logger Replay Fail:' + FExportRetValue.ToString);
+        Log('Current Percent:' + format('%.2f',[FProgressValue * 100]));
+      end;
+    end;
+    FExportBlfCompleted := false;
+  end;
+
 
 end;
 
@@ -2227,6 +2322,30 @@ begin
     mm.lines.Delete(0);
   end;
   mm.lines.Add(TimeToStr(Now) + ': ' + AStr);
+
+end;
+
+procedure TfrmTestLibTSMaster.RefreshDataLoggerList1Click(Sender: TObject);
+var
+  subNode,tmpSubNode: TTreenode;
+  tmpHeaderList: PEMMC_RECORD_NODE;
+begin
+  tslog_logger_get_file_catelog(0, @FHeaderList, 1000);
+  tmpHeaderList := FHeaderList;
+  tvDataLogger.Items.clear;
+  subNode := tvDataLogger.items.addchild(nil, 'File Logger');
+  subNode.ImageIndex := 0;
+  subNode.SelectedIndex := subNode.imageindex;
+  subNode.StateIndex := -1;
+  while tmpHeaderList <> nil do
+  begin
+    tmpSubNode := tvDataLogger.Items.addchild(subNode, tmpHeaderList.RecordString);
+    tmpSubNode.ImageIndex := 1;
+    tmpSubNode.SelectedIndex := tmpSubNode.imageindex;
+    tmpSubNode.StateIndex := tmpHeaderList.FIndex;
+    tmpHeaderList := tmpHeaderList.FNext;
+  end;
+  subNode.Expanded := true;
 
 end;
 
