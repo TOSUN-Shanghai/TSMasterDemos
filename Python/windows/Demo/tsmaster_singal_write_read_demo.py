@@ -1,5 +1,6 @@
 from TSMasterAPI import *
 
+_curr_path = os.path.dirname(__file__)
 # 本示例基于TC1016
 ProjectName = "TSMaster_signal".encode("utf8")
 # 初始化
@@ -63,7 +64,7 @@ dbchandle = c_int32(0)
 
 
 def connect():
-    tsdb_load_can_db("./CAN_FD_Powertrain.dbc", "0,1", dbchandle)
+    tsdb_load_can_db(_curr_path+"/CAN_FD_Powertrain.dbc", "0,1", dbchandle)
     # 设置CAN通道
     tsapp_set_can_channel_count(1)
     # 设置LIN通道数 默认为0  但是还是建议调用函数来设置LIN通道为0
@@ -71,14 +72,14 @@ def connect():
 
     # 此处将TC1016的1通道绑定至软件1通道
     # tosun其他硬件只需修改第6个参数，找到对应型号即可
-    tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN.value,
-                              CHANNEL_INDEX.CHN1.value,
-                              "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE.value,
-                              TLIB_TS_Device_Sub_Type.TC1016.value, CHANNEL_INDEX.CHN1.value, True)
+    tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN,
+                              CHANNEL_INDEX.CHN1,
+                              "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
+                              TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True)
 
     # 设置1通道波特率
-    tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1.value, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN.value,
-                                   TLIBCANFDControllerMode.lfdmNormal.value, True)
+    tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN,
+                                   TLIBCANFDControllerMode.lfdmNormal, True)
     ret = tsapp_connect()
     if ret == 0:
         print("连接成功")

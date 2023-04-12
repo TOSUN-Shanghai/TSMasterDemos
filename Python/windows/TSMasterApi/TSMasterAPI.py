@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-27 11:54:01
+LastEditTime: 2023-04-12 10:23:45
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -604,6 +604,123 @@ class TLIBHWInfo(Structure):
                 ("FDeviceName", c_char * 32),
                 ("FSerialString", c_char * 64),
                 ]
+    
+DATABASE_STR_LEN = 512    
+class TDBProperties(Structure):
+    _pack_ = 1
+    _fields_ = [("FCANSgnType", c_uint8),
+                ("FIsIntel", c_bool),
+                ("FStartBit", c_int32),
+                ("FLength", c_int32),
+                ("FFactor", c_double),
+                ("FOffset", c_double),
+                ]
+
+class TCANSignal(Structure):
+    _pack_ = 1
+    _fields_ = [("FCANSgnType", c_uint8),
+                ("FIsIntel", c_bool),
+                ("FStartBit", c_int32),
+                ("FLength", c_int32),
+                ("FFactor", c_double),
+                ("FOffset", c_double),
+                ]
+    
+class TLINSignal(Structure):
+    _pack_ = 1
+    _fields_ = [("FLINSgnType", c_uint8),
+                ("FIsIntel", c_bool),
+                ("FStartBit", c_int32),
+                ("FLength", c_int32),
+                ("FFactor", c_double),
+                ("FOffset", c_double),
+                ]
+    
+class TFlexRaySignal(Structure):
+    _pack_ = 1
+    _fields_ = [("FCANSgnType", c_uint8),
+                ("FCompuMethod", c_uint8),
+                ("FReserved", c_uint8),
+                ("FIsIntel", c_bool),
+                ("FStartBit", c_int32),
+                ("FUpdateBit", c_int32),
+                ("FLength", c_int32),
+                ("FFactor", c_double),
+                ("FOffset", c_double),
+                ]  
+class TDBProperties(Structure):
+    _pack_ = 1
+    _fields_ = [("FDBIndex", c_int32),
+                ("FSignalCount", c_int32),
+                ("FFrameCount", c_int32),
+                ("FECUCount", c_int32),
+                ("FSupportedChannelMask", c_uint64),
+                ("FName", c_char * DATABASE_STR_LEN),
+                ("FComment", c_char * DATABASE_STR_LEN),
+                ]
+class TDBECUProperties(Structure):
+    _pack_ = 1
+    _fields_ = [("FDBIndex", c_int32),
+                ("FECUIndex", c_int32),
+                ("FTxFrameCount", c_int32),
+                ("FRxFrameCount", c_int32),
+                ("FName", c_char * DATABASE_STR_LEN),
+                ("FComment", c_char * DATABASE_STR_LEN),
+                ] 
+class TDBFrameProperties(Structure):
+    _pack_ = 1
+    _fields_ = [("FDBIndex", c_int32),
+                ("FECUIndex", c_int32),
+                ("FFrameIndex", c_int32),
+                ("FIsTx", c_uint8),
+                ("FReserved1", c_uint8),
+                ("FReserved2", c_uint8),
+                ("FReserved3", c_uint8),
+                ("FFrameType", c_int32),
+                # CAN
+                ("FCANIsDataFrame", c_uint8),
+                ("FCANIsStdFrame", c_uint8),
+                ("FCANIsEdl", c_uint8),
+                ("FCANIsBrs", c_uint8),
+                ("FCANIdentifier", c_int32),
+                ("FCANDLC", c_int32),
+                ("FCANDataBytes", c_int32),
+                #LIN
+                ("FLINIdentifier", c_int32),
+                ("FLINDLC", c_int32),
+                #FLEXRAY
+                ("FFRChannelMask", c_uint8),
+                ("FFRBaseCycle", c_uint8),
+                ("FFRCycleRepetition", c_uint8),
+                ("FFRIsStartupFrame", c_uint8),
+                ("FFRSlotId", c_uint16),
+                ("FFRDLC", c_uint16),
+                ("FFRCycleMask", c_uint64),
+                ("FSignalCount", c_int32),
+                ("FName", c_char * DATABASE_STR_LEN),
+                ("FComment", c_char * DATABASE_STR_LEN),
+                ] 
+class TDBSignalProperties(Structure):
+    _pack_ = 1
+    _fields_ = [("FDBIndex", c_int32),
+                ("FECUIndex", c_int32),
+                ("FFrameIndex", c_int32),
+                ("FSignalIndex", c_int32),
+                ("FIsTx", c_uint8),
+                ("FReserved1", c_uint8),
+                ("FReserved2", c_uint8),
+                ("FReserved3", c_uint8),
+                ("FSignalType", c_int32),
+                ("FCANSignal", TCANSignal),
+                ("FLINSignal", TLINSignal),
+                ("FFlexRaySignal", TFlexRaySignal),
+                ("FParentFrameId", c_int32),
+                ("FInitValue", c_double),
+                ("FName", c_char * DATABASE_STR_LEN),
+                ("FComment", c_char * DATABASE_STR_LEN),
+                ] 
+
+
 #回调函数
 PCANFD = POINTER(TLIBCANFD)
 OnTx_RxFUNC_CANFD = WINFUNCTYPE(None, POINTER(c_int32), PCANFD)
@@ -1858,46 +1975,7 @@ def tsdb_set_signal_value_canfd(ACANFD: TLIBCANFD, AMsgName: str, ASgnName: str,
     return r
 
 
-# 加载dbc并绑定通道 注意idDBC 必须是c_uint32类型
-def tsdb_load_can_db(DBC_ADDRESS:bytes, ASupportedChannelsBased:bytes, idDBC: c_uint32):
-    """
-    id1 = c_int32(0)
-    tsdb_load_can_db(b"C:/1.dbc", b"0,1", id1)
-    """
-    if isinstance(idDBC,int) or isinstance(idDBC,float):
-        idDBC = c_int32(idDBC)
-    r = dll.tsdb_load_can_db(DBC_ADDRESS, ASupportedChannelsBased, byref(idDBC))
-    return r
 
-
-# 解绑所有dbc
-def tsdb_unload_can_dbs():
-    r = dll.tsdb_unload_can_dbs()
-    return r
-
-
-# 获取dbc数量
-def tsdb_get_can_db_count(ACount: c_uint32):
-    """
-    ACount = c_uint32(0)
-    tsdb_get_can_db_count(ACount)
-    print(ACount)
-    """
-    if isinstance(ACount,int) or isinstance(ACount,float):
-        ACount = c_uint32(ACount)
-    r = dll.tsdb_get_can_db_count(byref(ACount))
-    return r
-
-
-# 获取dbc AId
-def tsdb_get_can_db_id(AIndex: c_int32, AId: c_uint32):
-    """
-    ACount = c_uint32(0)
-    tsdb_get_can_db_id(0,ACount)
-    print(ACount)
-    """
-    r = dll.tsdb_get_can_db_id(AIndex, byref(AId))
-    return r
 
 
 # 获取dbc信息
@@ -2733,51 +2811,9 @@ def tsflexray_wakeup_pattern(AChnIdx: CHANNEL_INDEX,ATimeout:c_int32):
 
 #tsdb_Flexray api
 
-# 载入flexray数据库
-def tsdb_load_flexray_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
-    """
-    AId = c_int32(0)
-    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
-    """
-    if not isinstance(AFliepath,bytes):
-        AFliepath = bytes(AFliepath)
-    if not isinstance(ASupportedChannels,bytes):
-        ASupportedChannels = bytes(ASupportedChannels)
-    ret = dll.tsdb_load_flexray_db(AFliepath,ASupportedChannels,byref(AId))
-    # if ret == 0:
-    #     try:
-    #         ret = flexray_db_parse((AId.value-1)) 
-    #     except:
-    #         return ret  
-    return ret
 
-# 卸载flexray数据库
-def tsdb_unload_flexray_db(AId:c_int32):
-    """
-    AId = c_int32(0)
-    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
-    tsdb_unload_flexray_db(AId)
-    """
-    return dll.tsdb_unload_flexray_db(AId)
 
-# 卸载所有flexray数据库 
-def tsdb_unload_flexray_dbs():
-    """
-    AId = c_int32(0)
-    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
-    tsdb_unload_flexray_dbs()
-    """
-    return dll.tsdb_unload_flexray_dbs()
-
-# 获取加载的flexray数据库数量
-def tsdb_get_flexray_db_count(Acount:c_int32):
-    """
-    Acount = c_int32(0)
-    tsdb_get_flexray_db_count(Acount)
-    """
-    return dll.tsdb_get_flexray_db_count(byref(Acount))
-
-# 通过地址获取flexray数据库属性信息
+# 通过地址获取数据库属性信息
 def tsdb_get_flexray_db_properties_by_address_verbose(AAddr:str):
     '''
     db_msg =  app.db_get_flexray_database_properties_by_address(b"0/network1")
@@ -2803,8 +2839,8 @@ def tsdb_get_flexray_db_properties_by_address_verbose(AAddr:str):
     print(tsapp_get_error_description(ret))
     return AECUCount,AFrameCount,ASignalCount,ASupportedChannelMask,string_at(AName),AComment     
 
-# 通过索引获取flexray数据库属性信息
-def tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex:c_int32):
+# 通过索引获取数据库属性信息
+def tsdb_get_flexray_db_properties_by_indexx_verbose(ADBIndex:c_int32):
     '''
     db_msg =  app.db_get_flexray_database_properties_by_address(0)
     print(db_msg)
@@ -2816,7 +2852,7 @@ def tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex:c_int32):
     AName = POINTER(POINTER(c_char))()
     AComment = POINTER(POINTER(c_char))()
 
-    ret = dll.tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex,byref(ASignalCount),byref(AFrameCount),byref(AECUCount),byref(ASupportedChannelMask),byref(AName),byref(AComment))
+    ret = dll.tsdb_get_flexray_db_properties_by_indexx_verbose(ADBIndex,byref(ASignalCount),byref(AFrameCount),byref(AECUCount),byref(ASupportedChannelMask),byref(AName),byref(AComment))
 
     if ret ==0:
         try:
@@ -3000,16 +3036,7 @@ def tsdb_get_flexray_signal_properties_by_index_verbose(ADBIndex:c_int32,AECUInd
     print(tsapp_get_error_description(ret))
     return ASignalType,ACompuMethod,AIsIntel,AStartBit,AUpdateBit,ALength,AFactor,AOffset,AInitValue,AName,AComment
 
-# 通过索引获取数据库id
-def tsdb_get_flexray_db_id(AIndex:c_int32):
-    '''
-    print(tsdb_get_flexray_db_id(0))
-    '''
-    Aid = c_int32(0)
-    ret = dll.tsdb_get_flexray_db_id(AIndex,byref(Aid))
-    if ret == 0 :
-        return Aid
-    return tsapp_get_error_description(ret)
+
 
 # 启动flexray rbs
 def tscom_flexray_rbs_start():
@@ -3326,7 +3353,7 @@ def tsapp_unregister_pretx_events_flexray(obj:c_int32):
     """
     return dll.tsapp_unregister_pretx_events_flexray(byref(obj))
 
-# 获取flexray数据库中信号定义
+# 获取数据库中信号定义
 def tscom_flexray_get_signal_definition(ASignalAddress:bytes):
     """
     TSignal_ = tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight')
@@ -3363,9 +3390,666 @@ def tscom_flexray_set_signal_value_in_raw_frame(AFlexRaySignal:TFlexRaySignal,AD
     '''
     return dll.tscom_flexray_set_signal_value_in_raw_frame(byref(AFlexRaySignal),AData,AValue)
 
+# Flexray db info 
+# 载入数据库
+def tsdb_load_flexray_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
+    """
+    if not isinstance(AFliepath,bytes):
+        AFliepath = bytes(AFliepath)
+    if not isinstance(ASupportedChannels,bytes):
+        ASupportedChannels = bytes(ASupportedChannels)
+    ret = dll.tsdb_load_flexray_db(AFliepath,ASupportedChannels,byref(AId))
+    # if ret == 0:
+    #     try:
+    #         ret = flexray_db_parse((AId.value-1)) 
+    #     except:
+    #         return ret  
+    return ret
+
+# 卸载数据库
+def tsdb_unload_flexray_db(AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_flexray_db(AId)
+    """
+    return dll.tsdb_unload_flexray_db(AId)
+
+# 卸载所有数据库 
+def tsdb_unload_flexray_dbs():
+    """
+    AId = c_int32(0)
+    tsdb_load_flexray_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_flexray_dbs()
+    """
+    return dll.tsdb_unload_flexray_dbs()
+
+# 获取加载的数据库数量
+def tsdb_get_flexray_db_count(Acount:c_int32):
+    """
+    Acount = c_int32(0)
+    tsdb_get_flexray_db_count(Acount)
+    """
+    return dll.tsdb_get_flexray_db_count(byref(Acount))
+
+# 通过索引获取数据库id
+def tsdb_get_flexray_db_id(AIndex:c_int32):
+    """
+    Args:
+        获取AIndex数据库的ID
+
+    Returns:
+        DBID  or  error description
+    
+    example:
+        Acount = c_int32(0)
+        tsdb_get_flexray_db_count(Acount)
+        for i in range(0,Acount.value):
+            dbid = tsdb_get_flexray_db_id(i)
+
+    """
+    Aid = c_int32(0)
+    ret = dll.tsdb_get_flexray_db_id(AIndex,byref(Aid))
+    if ret == 0 :
+        return Aid
+    return tsapp_get_error_description(ret)
+
+def tsdb_get_flexray_db_properties_by_address(AAddr:bytes,Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        tsdb_get_flexray_db_properties_by_address(b'0/network1',db)
+
+    """
+    return dll.tsdb_get_flexray_db_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_flexray_db_properties_by_index(Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        db.FDBIndex = 0
+        tsdb_get_flexray_db_properties_by_index(db)
+    """
+    return dll.tsdb_get_flexray_db_properties_by_index(byref(Avalue))
+
+def tsdb_get_flexray_db_ecu_properties_by_address(AAddr:bytes,Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        tsdb_get_flexray_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
+    """
+    return dll.tsdb_get_flexray_db_ecu_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_flexray_db_ecu_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        db_ecu.FDBIndex = 0
+        db_ecu.FECUIndex = 0
+        tsdb_get_flexray_db_ecu_properties_by_index(db_ecu)
+    """
+    return dll.tsdb_get_flexray_db_ecu_properties_by_index(byref(Avalue))
+
+def tsdb_get_flexray_db_frame_properties_by_address(AAddr:bytes,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_flexray_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
+    """
+    return dll.tsdb_get_flexray_db_frame_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_flexray_db_frame_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        db_ecu_frame.FDBIndex = 0
+        db_ecu_frame.FECUIndex = 0
+        db_ecu_frame.FFrameIndex = 0
+        db_ecu_frame.FIsTx = 1
+        tsdb_get_flexray_db_frame_properties_by_index(db_ecu_frame)
+    """
+    return dll.tsdb_get_flexray_db_frame_properties_by_index(byref(Avalue))
+
+def tsdb_get_flexray_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_flexray_db_frame_properties_by_db_index(0,0,db_ecu_frame)
+    """
+    return dll.tsdb_get_flexray_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+
+def tsdb_get_flexray_db_signal_properties_by_address(AAddr:bytes,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_flexray_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_flexray_db_signal_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_flexray_db_signal_properties_by_index(Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        db_ecu_frame_signal.FDBIndex = 0
+        db_ecu_frame_signal.FECUIndex = 0
+        db_ecu_frame_signal.FFrameIndex = 0
+        db_ecu_frame_signal.FSignalIndex = 0
+        db_ecu_frame_signal.FIsTx = 1
+        tsdb_get_flexray_db_signal_properties_by_index(db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_flexray_db_signal_properties_by_index(byref(Avalue))
+
+def tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_flexray_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+def tsdb_get_flexray_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_flexray_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_flexray_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
+
+# can db info
+
+# 加载dbc并绑定通道 注意idDBC 必须是c_uint32类型
+def tsdb_load_can_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_can_db(b"C:/1.xml",b'0,1',AId)
+    """
+    if not isinstance(AFliepath,bytes):
+        AFliepath = bytes(AFliepath)
+    if not isinstance(ASupportedChannels,bytes):
+        ASupportedChannels = bytes(ASupportedChannels)
+    ret = dll.tsdb_load_can_db(AFliepath,ASupportedChannels,byref(AId))
+    # if ret == 0:
+    #     try:
+    #         ret = flexray_db_parse((AId.value-1)) 
+    #     except:
+    #         return ret  
+    return ret
+
+# 卸载数据库
+def tsdb_unload_can_db(AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_can_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_can_db(AId)
+    """
+    return dll.tsdb_unload_can_db(AId)
+
+# 卸载所有数据库 
+def tsdb_unload_can_dbs():
+    """
+    AId = c_int32(0)
+    tsdb_load_can_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_can_dbs()
+    """
+    return dll.tsdb_unload_can_dbs()
+
+# 获取加载的数据库数量
+def tsdb_get_can_db_count(Acount:c_int32):
+    """
+    Acount = c_int32(0)
+    tsdb_get_can_db_count(Acount)
+    """
+    return dll.tsdb_get_can_db_count(byref(Acount))
+
+# 通过索引获取数据库id
+def tsdb_get_can_db_id(AIndex:c_int32):
+    """
+    Args:
+        获取AIndex数据库的ID
+
+    Returns:
+        DBID  or  error description
+    
+    example:
+        Acount = c_int32(0)
+        tsdb_get_can_db_count(Acount)
+        for i in range(0,Acount.value):
+            dbid = tsdb_get_can_db_id(i)
+
+    """
+    Aid = c_int32(0)
+    ret = dll.tsdb_get_can_db_id(AIndex,byref(Aid))
+    if ret == 0 :
+        return Aid
+    return tsapp_get_error_description(ret)
+
+def tsdb_get_can_db_properties_by_address(AAddr:bytes,Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        tsdb_get_can_db_properties_by_address(b'0/network1',db)
+
+    """
+    return dll.tsdb_get_can_db_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_can_db_properties_by_index(Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        db.FDBIndex = 0
+        tsdb_get_can_db_properties_by_index(db)
+    """
+    return dll.tsdb_get_can_db_properties_by_index(byref(Avalue))
+
+def tsdb_get_can_db_ecu_properties_by_address(AAddr:bytes,Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        tsdb_get_can_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
+    """
+    return dll.tsdb_get_can_db_ecu_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_can_db_ecu_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        db_ecu.FDBIndex = 0
+        db_ecu.FECUIndex = 0
+        tsdb_get_can_db_ecu_properties_by_index(db_ecu)
+    """
+    return dll.tsdb_get_can_db_ecu_properties_by_index(byref(Avalue))
+
+def tsdb_get_can_db_frame_properties_by_address(AAddr:bytes,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_can_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
+    """
+    return dll.tsdb_get_can_db_frame_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_can_db_frame_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        db_ecu_frame.FDBIndex = 0
+        db_ecu_frame.FECUIndex = 0
+        db_ecu_frame.FFrameIndex = 0
+        db_ecu_frame.FIsTx = 1
+        tsdb_get_can_db_frame_properties_by_index(db_ecu_frame)
+    """
+    return dll.tsdb_get_can_db_frame_properties_by_index(byref(Avalue))
+
+def tsdb_get_can_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_can_db_frame_properties_by_db_index(0,0,db_ecu_frame)
+    """
+    return dll.tsdb_get_can_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+
+def tsdb_get_can_db_signal_properties_by_address(AAddr:bytes,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_can_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_can_db_signal_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_can_db_signal_properties_by_index(Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        db_ecu_frame_signal.FDBIndex = 0
+        db_ecu_frame_signal.FECUIndex = 0
+        db_ecu_frame_signal.FFrameIndex = 0
+        db_ecu_frame_signal.FSignalIndex = 0
+        db_ecu_frame_signal.FIsTx = 1
+        tsdb_get_can_db_signal_properties_by_index(db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_can_db_signal_properties_by_index(byref(Avalue))
+
+def tsdb_get_can_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_can_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_can_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+def tsdb_get_can_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_can_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_can_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
+
+# lin db info
+def tsdb_load_lin_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_lin_db(b"C:/1.xml",b'0,1',AId)
+    """
+    if not isinstance(AFliepath,bytes):
+        AFliepat数h = bytes(AFliepath)
+    if not isinstance(ASupportedChannels,bytes):
+        ASupportedChannels = bytes(ASupportedChannels)
+    ret = dll.tsdb_load_lin_db(AFliepath,ASupportedChannels,byref(AId))
+    return ret
+
+# 卸载数据库
+def tsdb_unload_lin_db(AId:c_int32):
+    """
+    AId = c_int32(0)
+    tsdb_load_lin_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_lin_db(AId)
+    """
+    return dll.tsdb_unload_lin_db(AId)
+
+# 卸载所有数据库 
+def tsdb_unload_lin_dbs():
+    """
+    AId = c_int32(0)
+    tsdb_load_lin_db(b"C:/1.xml",b'0,1',AId)
+    tsdb_unload_lin_dbs()
+    """
+    return dll.tsdb_unload_lin_dbs()
+
+# 获取加载的数据库数量
+def tsdb_get_lin_db_count(Acount:c_int32):
+    """
+    Acount = c_int32(0)
+    tsdb_get_lin_db_count(Acount)
+    """
+    return dll.tsdb_get_lin_db_count(byref(Acount))
+
+# 通过索引获取数据库id
+def tsdb_get_lin_db_id(AIndex:c_int32):
+    """
+    Args:
+        获取AIndex数据库的ID
+
+    Returns:
+        DBID  or  error description
+    
+    example:
+        Acount = c_int32(0)
+        tsdb_get_lin_db_count(Acount)
+        for i in range(0,Acount.value):
+            dbid = tsdb_get_lin_db_id(i)
+
+    """
+    Aid = c_int32(0)
+    ret = dll.tsdb_get_lin_db_id(AIndex,byref(Aid))
+    if ret == 0 :
+        return Aid
+    return tsapp_get_error_description(ret)
+
+def tsdb_get_lin_db_properties_by_address(AAddr:bytes,Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        tsdb_get_lin_db_properties_by_address(b'0/network1',db)
+
+    """
+    return dll.tsdb_get_lin_db_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_lin_db_properties_by_index(Avalue:TDBProperties):
+    """
+    Args:
+        获取数据库信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db = TDBProperties()
+        db.FDBIndex = 0
+        tsdb_get_lin_db_properties_by_index(db)
+    """
+    return dll.tsdb_get_lin_db_properties_by_index(byref(Avalue))
+
+def tsdb_get_lin_db_ecu_properties_by_address(AAddr:bytes,Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        tsdb_get_lin_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
+    """
+    return dll.tsdb_get_lin_db_ecu_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_lin_db_ecu_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库ecu信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu = TDBECUProperties()
+        db_ecu.FDBIndex = 0
+        db_ecu.FECUIndex = 0
+        tsdb_get_lin_db_ecu_properties_by_index(db_ecu)
+    """
+    return dll.tsdb_get_lin_db_ecu_properties_by_index(byref(Avalue))
+
+def tsdb_get_lin_db_frame_properties_by_address(AAddr:bytes,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_lin_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
+    """
+    return dll.tsdb_get_lin_db_frame_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_lin_db_frame_properties_by_index(Avalue:TDBECUProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        db_ecu_frame.FDBIndex = 0
+        db_ecu_frame.FECUIndex = 0
+        db_ecu_frame.FFrameIndex = 0
+        db_ecu_frame.FIsTx = 1
+        tsdb_get_lin_db_frame_properties_by_index(db_ecu_frame)
+    """
+    return dll.tsdb_get_lin_db_frame_properties_by_index(byref(Avalue))
+
+def tsdb_get_lin_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBFrameProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame = TDBFrameProperties()
+        tsdb_get_lin_db_frame_properties_by_db_index(0,0,db_ecu_frame)
+    """
+    return dll.tsdb_get_lin_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+
+def tsdb_get_lin_db_signal_properties_by_address(AAddr:bytes,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_lin_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_lin_db_signal_properties_by_address(AAddr,byref(Avalue))
+
+def tsdb_get_lin_db_signal_properties_by_index(Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库signal信息
+    Returns:
+        error code  0:ok  other:error
+    
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        db_ecu_frame_signal.FDBIndex = 0
+        db_ecu_frame_signal.FECUIndex = 0
+        db_ecu_frame_signal.FFrameIndex = 0
+        db_ecu_frame_signal.FSignalIndex = 0
+        db_ecu_frame_signal.FIsTx = 1
+        tsdb_get_lin_db_signal_properties_by_index(db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_lin_db_signal_properties_by_index(byref(Avalue))
+
+def tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_lin_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+
+def tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:TDBSignalProperties):
+    """
+    Args:
+        获取数据库frame信息
+    Returns:
+        error code  0:ok  other:error
+    example:
+        db_ecu_frame_signal = TDBSignalProperties()
+        tsdb_get_lin_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
+    """
+    return dll.tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
 # def flexray_db_parse(index):
 #     ecu_list = {}
-#     ecuCount, fmeCount, sgnCount, supportedChannelMask, sName, sComment = tsdb_get_flexray_db_properties_by_index_verbose(index)
+#     ecuCount, fmeCount, sgnCount, supportedChannelMask, sName, sComment = tsdb_get_flexray_db_properties_by_indexx_verbose(index)
 #     for idxECU in range(ecuCount.value):
 #         message_list = []
 #         ATxFrameCount, ARxFrameCount, ecuName, sComment = tsdb_get_flexray_ecu_properties_by_index_verbose(index, idxECU)
