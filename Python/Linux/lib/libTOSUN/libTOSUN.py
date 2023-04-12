@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2022-12-24 12:29:39
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-31 18:06:31
+LastEditTime: 2023-04-12 12:19:05
 FilePath: \window_linux_Repd:\Envs\python39_32\Lib\site-packages\libTOSUN\libTOSUN.py
 '''
 
@@ -686,6 +686,59 @@ def tsapp_connect(ADeviceSerial: str, AHandle: c_size_t):
     r = dll.tscan_connect(ADeviceSerial, byref(AHandle))
     return r
 
+def tscan_get_can_channel_count(ADeviceSerial):
+    """
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+    Returns:
+        r:can channel count
+    
+    example:
+        AHandle = c_size_t(0)
+        r = tsapp_connect(b"1234568798DFE",AHandle) or tsapp_connect("",AHandle) 
+        if(r==0 or r==5):  #0 or 5 :connect success
+            print(AHandle)
+            can_count = tscan_get_can_channel_count(ADeviceSerial)
+    """
+    ACount = c_int32(0)
+    dll.tscan_get_can_channel_count(ADeviceSerial,byref(ACount))
+    return ACount.value
+
+def tscan_get_lin_channel_count(ADeviceSerial):
+    """
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+    Returns:
+        r:lin channel count
+    
+    example:
+        AHandle = c_size_t(0)
+        r = tsapp_connect(b"1234568798DFE",AHandle) or tsapp_connect("",AHandle) 
+        if(r==0 or r==5):  #0 or 5 :connect success
+            print(AHandle)
+            lin_count = tscan_get_lin_channel_count(ADeviceSerial)
+    """
+    ACount = c_int32(0)
+    dll.tscan_get_lin_channel_count(ADeviceSerial,byref(ACount))
+    return ACount.value
+
+def tscan_get_flexray_channel_count(ADeviceSerial):
+    """
+    Args:
+        AHandle (c_size_t): tsapp_connect retrun handle
+    Returns:
+        r:flexray channel count
+    
+    example:
+        AHandle = c_size_t(0)
+        r = tsapp_connect(b"1234568798DFE",AHandle) or tsapp_connect("",AHandle) 
+        if(r==0 or r==5):  #0 or 5 :connect success
+            print(AHandle)
+            flexray_count = tscan_get_flexray_channel_count(ADeviceSerial)
+    """
+    ACount = c_int32(0)
+    dll.tscan_get_flexray_channel_count(ADeviceSerial,byref(ACount))
+    return ACount.value
 
 def tscan_scan_devices(ADeviceCount: c_uint32):
     """
@@ -732,6 +785,9 @@ def tscan_get_device_info(ADeviceCount: c_uint32):
         print("查找失败")
         return 0, 0, 0
     return FManufacturer, FProduct, FSerial
+
+
+
 
 def tscan_get_error_description(ACode: int):
     """
