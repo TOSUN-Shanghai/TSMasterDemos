@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-04-12 10:23:45
+LastEditTime: 2023-04-12 15:36:07
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -404,27 +404,7 @@ class TLIBFlexray(Structure):
             self.FData[i] = data[i]
 
 
-class TFlexRaySignal(Structure):
-    '''
-    获取信号在数据库中的定义 通过该结构体 可获取对报文中该信号值以及设置对应报文该信号值
-    相关函数：
-    tscom_flexray_get_signal_definition
-    tscom_flexray_set_signal_value_in_raw_frame
-    tscom_flexray_get_signal_value_in_raw_frame
-    函数使用示例可在Flexray_demo中找到
-    '''
-    _pack_ =1
-    _fields_ = [
-                ("FFRSgnType",c_uint8),
-                ("FCompuMethod",c_uint8),
-                ("FReserved",c_uint8),
-                ("FIsIntel",c_bool),
-                ("FStartBit",c_int32),
-                ("FUpdateBit",c_int32),
-                ("FLength",c_int32),
-                ("FFactor",c_double),
-                ("FOffset",c_double),
-                ]
+
 
 class TLibFlexray_controller_config(Structure):
     """
@@ -606,15 +586,6 @@ class TLIBHWInfo(Structure):
                 ]
     
 DATABASE_STR_LEN = 512    
-class TDBProperties(Structure):
-    _pack_ = 1
-    _fields_ = [("FCANSgnType", c_uint8),
-                ("FIsIntel", c_bool),
-                ("FStartBit", c_int32),
-                ("FLength", c_int32),
-                ("FFactor", c_double),
-                ("FOffset", c_double),
-                ]
 
 class TCANSignal(Structure):
     _pack_ = 1
@@ -637,17 +608,26 @@ class TLINSignal(Structure):
                 ]
     
 class TFlexRaySignal(Structure):
-    _pack_ = 1
-    _fields_ = [("FCANSgnType", c_uint8),
-                ("FCompuMethod", c_uint8),
-                ("FReserved", c_uint8),
-                ("FIsIntel", c_bool),
-                ("FStartBit", c_int32),
-                ("FUpdateBit", c_int32),
-                ("FLength", c_int32),
-                ("FFactor", c_double),
-                ("FOffset", c_double),
-                ]  
+    '''
+    获取信号在数据库中的定义 通过该结构体 可获取对报文中该信号值以及设置对应报文该信号值
+    相关函数：
+    tscom_flexray_get_signal_definition
+    tscom_flexray_set_signal_value_in_raw_frame
+    tscom_flexray_get_signal_value_in_raw_frame
+    函数使用示例可在Flexray_demo中找到
+    '''
+    _pack_ =1
+    _fields_ = [
+                ("FFRSgnType",c_uint8),
+                ("FCompuMethod",c_uint8),
+                ("FReserved",c_uint8),
+                ("FIsIntel",c_bool),
+                ("FStartBit",c_int32),
+                ("FUpdateBit",c_int32),
+                ("FLength",c_int32),
+                ("FFactor",c_double),
+                ("FOffset",c_double),
+                ] 
 class TDBProperties(Structure):
     _pack_ = 1
     _fields_ = [("FDBIndex", c_int32),
