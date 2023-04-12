@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-04-12 16:17:50
+LastEditTime: 2023-04-12 17:52:14
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -3820,7 +3820,7 @@ def tsdb_load_lin_db(AFliepath:str,ASupportedChannels:str,AId:c_int32):
     tsdb_load_lin_db(b"C:/1.xml",b'0,1',AId)
     """
     if not isinstance(AFliepath,bytes):
-        AFliepat数h = bytes(AFliepath)
+        AFliepath = bytes(AFliepath)
     if not isinstance(ASupportedChannels,bytes):
         ASupportedChannels = bytes(ASupportedChannels)
     ret = dll.tsdb_load_lin_db(AFliepath,ASupportedChannels,byref(AId))
