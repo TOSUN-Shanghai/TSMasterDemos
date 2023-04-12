@@ -9,6 +9,15 @@ using TSMaster;
 
 namespace TSMaster_FlexRay
 {
+    public struct load_tree
+    {
+        public int dbc_index;
+        public APP_CHANNEL[] chns;
+        public TreeView treeView; 
+        public flexray_network flexray_Network;
+
+
+    }
     public struct flexray_network
     {
         public string network_name;
@@ -120,6 +129,10 @@ namespace TSMaster_FlexRay
             return flexray_Network;
         }
 
+
+        
+
+
         public static void load_treeview(int dbc_index, APP_CHANNEL[] chns, TreeView tv_rbs, flexray_network flexray_Network)  
         {
             for (int i = 0; i < chns.Length; i++)
@@ -171,5 +184,12 @@ namespace TSMaster_FlexRay
                         }
             }
         }
+
+        public static void load_treeview_thread(object load_Tree)
+        {
+            load_tree load_ = (load_tree)load_Tree;
+            load_treeview(load_.dbc_index, load_.chns, load_.treeView, load_.flexray_Network);
+        }
+
     }
 }

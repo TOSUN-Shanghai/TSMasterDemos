@@ -1,3 +1,11 @@
+'''
+Author: seven 865762826@qq.com
+Date: 2023-03-24 11:22:42
+LastEditors: seven 865762826@qq.com
+LastEditTime: 2023-03-24 11:44:58
+FilePath: \TSMasterAPI\TSMasterApi\demo\tsmasterAPI_lin_Demo.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 from TSMasterAPI import *
 import time
 
@@ -24,9 +32,9 @@ def On_LIN_EVENT(OBJ, ACAN):
 
 
 OnLINevent = OnTx_RxFUNC_LIN(On_LIN_EVENT)
-obj1 = 0
+obj1 = c_int32(0)
 
-
+AppName = b'TSMaster_lin'
 def connect():
     # 初始化函数，所需所有函数调用的接口
     initialize_lib_tsmaster(AppName)
@@ -41,13 +49,13 @@ def connect():
     else:
         print("LIN通道设置失败")
     # 硬件通道映射至软件通道
-    if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_LIN.value, CHANNEL_INDEX.CHN1.value,
-                                      "TC1026".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE.value,
-                                      TLIB_TS_Device_Sub_Type.TC1026.value, 0, True):
+    if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_LIN, CHANNEL_INDEX.CHN1,
+                                      "TC1026".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
+                                      TLIB_TS_Device_Sub_Type.TC1016, 0, True):
         print("1通道映射成功")
     else:
         print("1通道映射失败")
-    if 0 == tsapp_configure_baudrate_lin(CHANNEL_INDEX.CHN1.value, 19.2, LIN_PROTOCOL.LIN_PROTOCOL_21.value):
+    if 0 == tsapp_configure_baudrate_lin(CHANNEL_INDEX.CHN1, 19.2, LIN_PROTOCOL.LIN_PROTOCOL_21):
         print("LIN波特率成功")
     else:
         print("LIN波特率失败")
@@ -58,7 +66,7 @@ def connect():
         print("LIN工具连接成功")
         # 硬件开启成功后，开启fifo接收
         tsfifo_enable_receive_fifo()
-        tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1.value, T_LIN_NODE_FUNCTION.T_MASTER_NODE.value)
+        tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1, T_LIN_NODE_FUNCTION.T_MASTER_NODE)
     else:
         print("LIN工具连接失败")
 
@@ -66,11 +74,11 @@ def connect():
 def send_LIN_message():
     tsapp_transmit_lin_async(LINmsg)
     TLIN1 = TLIBLIN(FProperties=0)
-    r = tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1.value, 0X3D, 8, TLIN1, c_int(20))
+    r = tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
 
     # listLINmsg = (TLIBLIN*100)
     # size = c_uint32(100)
-    # r = tsapp_receive_lin_msgs(listLINmsg, size, CHANNEL_INDEX.CHN1.value,False)
+    # r = tsapp_receive_lin_msgs(listLINmsg, size, CHANNEL_INDEX.CHN1,False)
     if r == 0:
         print("LIN发送接收成功")
     else:

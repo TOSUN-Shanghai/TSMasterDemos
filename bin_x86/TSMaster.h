@@ -102,6 +102,108 @@ const u8 DLC_DATA_BYTE_CNT[16] = {
 	0, 1, 2, 3, 4, 5, 6, 7,
 	8, 12, 16, 20, 24, 32, 48, 64
 };
+#define DATABASE_STR_LEN 512
+typedef struct _TCANSignal {
+	u8     FCANSgnType; // 0 - Unsigned, 1 - Signed, 2 - Single 32, 3 - Double 64
+	bool   FIsIntel;
+	s32    FStartBit;
+	s32    FLength;
+	double FFactor;
+	double FOffset;
+} TCANSignal, * PCANSignal;
+// LIN signal record, size = 26
+typedef struct _TLINSignal {
+	u8     FLINSgnType; // 0 - Unsigned, 1 - Signed, 2 - Single 32, 3 - Double 64
+	bool   FIsIntel;
+	s32    FStartBit;
+	s32    FLength;
+	double FFactor;
+	double FOffset;
+} TLINSignal, * PLINSignal;
+// FlexRay signal record, size = 32
+typedef struct _TFlexRaySignal {
+	u8     FFRSgnType;   // 0 - Unsigned, 1 - Signed, 2 - Single 32, 3 - Double 64
+	u8     FCompuMethod; // 0 - Identical, 1 - Linear, 2 - Scale Linear, 3 - TextTable, 4 - TABNoIntp, 5 - Formula
+	u8     FReserved;
+	bool   FIsIntel;
+	s32    FStartBit;
+	s32    FUpdateBit;
+	s32    FLength;
+	double FFactor;
+	double FOffset;
+} TFlexRaySignal, * PFlexRaySignal;
+
+typedef struct _TDBProperties {
+	s32 FDBIndex;
+	s32 FSignalCount;
+	s32 FFrameCount;
+	s32 FECUCount;
+	u64 FSupportedChannelMask;
+	char FName[DATABASE_STR_LEN];
+	char FComment[DATABASE_STR_LEN];
+} TDBProperties, * PDBProperties;
+
+// TDBECUProperties for database ECU properties, size = 1040
+typedef struct _TDBECUProperties {
+	s32 FDBIndex;
+	s32 FECUIndex;
+	s32 FTxFrameCount;
+	s32 FRxFrameCount;
+	char FName[DATABASE_STR_LEN];
+	char FComment[DATABASE_STR_LEN];
+} TDBECUProperties, * PDBECUProperties;
+
+typedef struct _TDBFrameProperties {
+	s32 FDBIndex;
+	s32 FECUIndex;
+	s32 FFrameIndex;
+	u8  FIsTx;
+	u8  FReserved1;
+	u8  FReserved2;
+	u8  FReserved3;
+	s32 FFrameType;
+	// CAN
+	u8  FCANIsDataFrame;
+	u8  FCANIsStdFrame;
+	u8  FCANIsEdl;
+	u8  FCANIsBrs;
+	s32 FCANIdentifier;
+	s32 FCANDLC;
+	s32 FCANDataBytes;
+	// LIN
+	s32 FLINIdentifier;
+	s32 FLINDLC;
+	// FlexRay
+	u8  FFRChannelMask;
+	u8  FFRBaseCycle;
+	u8  FFRCycleRepetition;
+	u8  FFRIsStartupFrame;
+	u16 FFRSlotId;
+	u16 FFRDLC;
+	u64 FFRCycleMask;
+	s32 FSignalCount;
+	char FName[DATABASE_STR_LEN];
+	char FComment[DATABASE_STR_LEN];
+} TDBFrameProperties, * PDBFrameProperties;
+// TDBSignalProperties for database signal properties, size = 1144
+typedef struct _TDBSignalProperties {
+	s32 FDBIndex;
+	s32 FECUIndex;
+	s32 FFrameIndex;
+	s32 FSignalIndex;
+	u8  FIsTx;
+	u8  FReserved1;
+	u8  FReserved2;
+	u8  FReserved3;
+	s32    FSignalType;
+	TCANSignal     FCANSignal;
+	TLINSignal     FLINSignal;
+	TFlexRaySignal FFlexRaySignal;
+	s32            FParentFrameId;
+	double         FInitValue;
+	char FName[DATABASE_STR_LEN];
+	char FComment[DATABASE_STR_LEN];
+} TDBSignalProperties, * PDBSignalProperties;
 
 // CAN frame type ================================================
 typedef struct _TCAN {
@@ -621,7 +723,7 @@ typedef enum {
 	cbsFpsExtData, cbsAllExtData, cbsFpsStdRemote, cbsAllStdRemote,
 	cbsFpsExtRemote, cbsAllExtRemote, cbsFpsErrorFrame, cbsAllErrorFrame
 } TLIBCANBusStatistics;
-typedef enum { stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay }TSignalType,* PSignalType;
+typedef enum { stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay }TSignalType,*PSignalType;
 typedef enum { fcmIdentical = 0, fcmLinear, fcmScaleLinear, fcmTextTable, fcmTABNoIntp, fcmFormula }TFlexRayCompuMethod, * PFlexRayCompuMethod;
 #define VENDOR_NAME_LENGTH            (32)
 #define DEVICE_SERIAL_STRING_LENGTH   (64)
@@ -678,27 +780,7 @@ typedef enum { fdmNormal = 0, fdmACKOff = 1, fdmRestricted = 2 } TCANFDControlle
 // log def
 typedef enum { ortImmediately = 0, ortAsLog = 1, ortDelayed = 2 } TLIBOnlineReplayTimingMode;
 typedef enum { orsNotStarted = 0, orsRunning = 1, orsPaused = 2, orsCompleted = 3, orsTerminated = 4 } TLIBOnlineReplayStatus;
-// database utilities
-typedef struct {
-	u8     FCANSgnType; // 0 - Unsigned, 1 - Signed, 2 - Single 32, 3 - Double 64
-	bool   FIsIntel;
-	s32    FStartBit;
-	s32    FLength;
-	double FFactor;
-	double FOffset;
-} TCANSignal, * PCANSignal;
 
-typedef struct {
-	u8     FFRSgnType;   // 0 - Unsigned, 1 - Signed, 2 - Single 32, 3 - Double 64
-	u8     FCompuMethod; // 0 - Identical, 1 - Linear, 2 - Scale Linear, 3 - TextTable, 4 - TABNoIntp, 5 - Formula
-	u8     FReserved;
-	bool   FIsIntel;
-	s32    FStartBit;
-	s32    FUpdateBit;
-	s32    FLength;
-	double FFactor;
-	double FOffset;
-} TFlexRaySignal, * PFlexRaySignal;
 #define CANMsgDecl(typ, name, chn, prop, dlc, id) const typ name = {{chn, prop, dlc, 0, id, 0, {0}}};
 #define CANSgnDecl(name, typ, isIntel, startBit, len, factor, offset) const TCANSignal name = {typ, isIntel, startBit, len, factor, offset};
 // Realtime comment
@@ -722,6 +804,8 @@ extern "C" {
 #endif
 	TSAPI(void) finalize_lib_tsmaster(void);
 	TSAPI(s32) initialize_lib_tsmaster(const char* AAppName);
+	TSAPI(s32) initialize_lib_tsmaster_with_project(const char* AAppName, const char* ProjectPath);
+
 	TSAPI(s32) tsapp_add_application(const char* AAppName);
 	TSAPI(s32) tsapp_add_cyclic_msg_can(const PCAN ACAN, const float APeriodMS);
 	TSAPI(s32) tsapp_add_cyclic_msg_canfd(const PCANFD ACANFD, const float APeriodMS);
@@ -899,24 +983,25 @@ extern "C" {
 	//flexray 
 
 	//blf
-	TSAPI(s32) tslog_blf_write_start(char* AFileName, int* AHandle); //stdcall
-	TSAPI(s32) tslog_blf_write_can(int AHandle, PCAN ACAN);
-	TSAPI(s32) tslog_blf_write_can_fd(int AHandle, PCANFD ACANFD);
-	TSAPI(s32) tslog_blf_write_lin(int AHandle, PLIN ALIN);
-	TSAPI(s32) tslog_blf_write_realtime_comment(int AHandle, s64 ATimeUs, char* AComment);
-	TSAPI(s32) tslog_blf_write_end(int AHandle);
-	TSAPI(s32) tslog_blf_read_start(char* AFileName, int* AHandle, int* AObjCount);
-	TSAPI(s32) tsLog_blf_read_start_verbose(char* AFileName, int* AHandle, int* AObjCount,
+	TSAPI(s32) tslog_blf_write_start(char* AFileName, ps32 AHandle); //stdcall
+	TSAPI(s32) tslog_blf_write_set_max_count(s32 AHandle, u32 ACount);
+	TSAPI(s32) tslog_blf_write_can(s32 AHandle, PCAN ACAN);
+	TSAPI(s32) tslog_blf_write_can_fd(s32 AHandle, PCANFD ACANFD);
+	TSAPI(s32) tslog_blf_write_lin(s32 AHandle, PLIN ALIN);
+	TSAPI(s32) tslog_blf_write_realtime_comment(s32 AHandle, s64 ATimeUs, char* AComment);
+	TSAPI(s32) tslog_blf_write_end(s32 AHandle);
+	TSAPI(s32) tslog_blf_read_start(char* AFileName, ps32 AHandle, ps32 AObjCount);
+	TSAPI(s32) tsLog_blf_read_start_verbose(char* AFileName, ps32 AHandle, ps32 AObjCount,
 		u16* AYear, u16* AMonth, u16* ADayOfWeek,
 		u16* ADay, u16* AHour, u16* AMinute,
 		u16* ASecond, u16* AMilliseconds);
-	TSAPI(s32) tslog_blf_read_status(int AHandle, int* AObjReadCount);
-	TSAPI(s32) tslog_blf_read_object(int AHandle, int* AProgressedCnt, int* AType/* PSupportedObjType*/, PCAN ACAN,
+	TSAPI(s32) tslog_blf_read_status(s32 AHandle, ps32 AObjReadCount);
+	TSAPI(s32) tslog_blf_read_object(s32 AHandle, ps32 AProgressedCnt, ps32 AType/* PSupportedObjType*/, PCAN ACAN,
 		PLIN ALIN, PCANFD ACANFD);
-	TSAPI(s32) tslog_blf_read_object_w_comment(int AHandle, int* AProgressedCnt, int* AType/* PSupportedObjType*/,
+	TSAPI(s32) tslog_blf_read_object_w_comment(s32 AHandle, ps32 AProgressedCnt, ps32 AType/* PSupportedObjType*/,
 		PCAN ACAN, PLIN ALIN, PCANFD ACANFD, Prealtime_comment_t AComment);
-	TSAPI(s32) tslog_blf_read_end(int AHandle);
-	TSAPI(s32) tslog_blf_seek_object_time(int AHandle, const double AProg100, s64* ATime, int* AProgressedCnt);
+	TSAPI(s32) tslog_blf_read_end(s32 AHandle);
+	TSAPI(s32) tslog_blf_seek_object_time(s32 AHandle, const double AProg100, s64* ATime, ps32 AProgressedCnt);
 	//TSAPI(s32) tslog_blf_to_asc(char* ABLFFileName, char* AASCFileName, TProgressCallback AProgressCallback);
 	//TSAPI(s32) tslog_asc_to_blf(char* AASCFileName, char* ABLFFileName , TProgressCallback AProgressCallback);
 
@@ -948,24 +1033,88 @@ extern "C" {
 	TSAPI(double) tscom_flexray_get_signal_value_in_raw_frame(const PFlexRaySignal ASignal, pu8 data);
 	TSAPI(s32) tscom_flexray_set_signal_value_in_raw_frame(const PFlexRaySignal ASignal, pu8 data, double AValue);
 
-	TSAPI(s32) tsdb_load_flexray_db(const char* AFRFile, const char* ASupportedChannels, ps32 AId);
+	
+	//system constant
+	TSAPI(s32)tsapp_get_system_constant_count(s32 AIdxType, ps32 ACount);
+	TSAPI(s32)tsapp_get_system_constant_value_by_index(s32 AIdxType, s32 AIdxValue,char** AName,pdouble AValue,char**ADesc);
+
+	//Flexray db info
+	TSAPI(s32) tsdb_load_flexray_db(const char* AFRFile, const char* ASupportedChannels, pu32 AId);
 	TSAPI(s32) tsdb_unload_flexray_db(const s32 AId);
 	TSAPI(s32) tsdb_unload_flexray_dbs();
 	TSAPI(s32) tsdb_get_flexray_db_count(ps32 AId);
-	TSAPI(s32) tsdb_get_flexray_db_properties_by_address_verbose(const char* AAddr,ps32 ADBIndex,ps32 ASignalCount,ps32 AFrameCount,ps32 AECUCount,ps64 ASupportedChannelMask,char** AName,char** AComment);
+	TSAPI(s32) tsdb_get_flexray_db_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, char** AName, char** AComment);
 	TSAPI(s32) tsdb_get_flexray_db_properties_by_index_verbose(s32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, char** AName, char** AComment);
 
 	TSAPI(s32) tsdb_get_flexray_ecu_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 ATxFrameCount, ps32 ARxFrameCount, char** AName, char** AComment);
 	TSAPI(s32) tsdb_get_flexray_ecu_properties_by_index_verbose(s32 ADBIndex, s32 AECUIndex, ps32 ATxFrameCount, ps32 ARxFrameCount, char** AName, char** AComment);
 
-	TSAPI(s32) tsdb_get_flexray_frame_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 AFrameIndex,bool* AIsTx, ps32 AFRChannelMask, ps32 AFRBaseCycle,ps32 AFRCycleRepetition,bool* AFRIsStartupFrame,ps32 AFRSlotId,ps64 AFRCycleMask,ps32 ASignalCount,char** AName, char** AComment);
+	TSAPI(s32) tsdb_get_flexray_frame_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 AFrameIndex, bool* AIsTx, ps32 AFRChannelMask, ps32 AFRBaseCycle, ps32 AFRCycleRepetition, bool* AFRIsStartupFrame, ps32 AFRSlotId, ps64 AFRCycleMask, ps32 ASignalCount, char** AName, char** AComment);
 	TSAPI(s32) tsdb_get_flexray_frame_properties_by_index_verbose(s32 ADBIndex, s32 AECUIndex, s32 AFrameIndex, bool AIsTx, ps32 AFRChannelMask, ps32 AFRBaseCycle, ps32 AFRCycleRepetition, bool* AFRIsStartupFrame, ps32 AFRSlotId, ps64 AFRCycleMask, ps32 ASignalCount, char** AName, char** AComment);
 
-	TSAPI(s32) tsdb_get_flexray_signal_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 AFrameIndex, ps32 ASignalIndex,bool* AIsTx, PSignalType ASignalType, PFlexRayCompuMethod ACompuMethod,bool* AIsIntel, ps32 AStartBit, ps32 AUpdateBit, ps32 ALength, pdouble AFactor, pdouble AOffset, pdouble AInitValue, char** AName, char** AComment);
+	TSAPI(s32) tsdb_get_flexray_signal_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 AFrameIndex, ps32 ASignalIndex, bool* AIsTx, PSignalType ASignalType, PFlexRayCompuMethod ACompuMethod, bool* AIsIntel, ps32 AStartBit, ps32 AUpdateBit, ps32 ALength, pdouble AFactor, pdouble AOffset, pdouble AInitValue, char** AName, char** AComment);
 	TSAPI(s32) tsdb_get_flexray_signal_properties_by_index_verbose(s32 ADBIndex, s32 AECUIndex, s32 AFrameIndex, s32 ASignalIndex, bool AIsTx, PSignalType ASignalType, PFlexRayCompuMethod ACompuMethod, bool* AIsIntel, ps32 AStartBit, ps32 AUpdateBit, ps32 ALength, pdouble AFactor, pdouble AOffset, pdouble AInitValue, char** AName, char** AComment);
-	TSAPI(s32) tsdb_get_flexray_db_id(const s32 AIndex,ps32 AId);
+	TSAPI(s32) tsdb_get_flexray_db_id(const s32 AIndex, ps32 AId);
+	
+	TSAPI(s32) tsdb_get_flexray_db_properties_by_address(const char* AAddr, PDBProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_properties_by_index(PDBProperties Avalue);
 
+	TSAPI(s32) tsdb_get_flexray_db_ecu_properties_by_address(const char* AAddr, PDBECUProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_ecu_properties_by_index(PDBECUProperties Avalue);
 
+	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_index(PDBFrameProperties Avalue);
+
+	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_index(PDBSignalProperties Avalue);
+
+	//CAN DB INFO
+	TSAPI(s32) tsdb_load_can_db(const char* ADBC, const char* ASupportedChannelsBased0, u32* AId);
+	TSAPI(s32) tsdb_unload_can_db(const u32 AId);
+	TSAPI(s32) tsdb_unload_can_dbs(void);
+	TSAPI(s32) tsdb_get_can_db_count(s32* ACount);
+	TSAPI(s32) tsdb_get_can_db_id(const s32 AIndex, u32* AId);
+	TSAPI(s32) tsdb_get_can_db_info(const u32 ADatabaseId, const s32 AType, const s32 AIndex, const s32 ASubIndex, char** AValue);
+
+	TSAPI(s32) tsdb_get_can_db_properties_by_address(const char* AAddr, PDBProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_properties_by_index(PDBProperties Avalue);
+
+	TSAPI(s32) tsdb_get_can_db_ecu_properties_by_address(const char* AAddr, PDBECUProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_ecu_properties_by_index(PDBECUProperties Avalue);
+
+	TSAPI(s32) tsdb_get_can_db_frame_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_frame_properties_by_index(PDBFrameProperties Avalue);
+
+	TSAPI(s32) tsdb_get_can_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_signal_properties_by_index(PDBSignalProperties Avalue);
+
+	//LIN DB INFO
+	TSAPI(s32) tsdb_load_lin_db(const char* ADBC, const char* ASupportedChannelsBased0, u32* AId);
+	TSAPI(s32) tsdb_unload_lin_db(const u32 AId);
+	TSAPI(s32) tsdb_unload_lin_dbs(void);
+	TSAPI(s32) tsdb_get_lin_db_count(s32* ACount);
+	TSAPI(s32) tsdb_get_lin_db_id(const s32 AIndex, u32* AId);
+	
+	TSAPI(s32) tsdb_get_lin_db_properties_by_address(const char* AAddr, PDBProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_properties_by_index(PDBProperties Avalue);
+
+	TSAPI(s32) tsdb_get_lin_db_ecu_properties_by_address(const char* AAddr, PDBECUProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_ecu_properties_by_index(PDBECUProperties Avalue);
+
+	TSAPI(s32) tsdb_get_lin_db_frame_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_frame_properties_by_index(PDBFrameProperties Avalue);
+
+	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_index(PDBSignalProperties Avalue);
 
 
 

@@ -12,12 +12,12 @@ initialize_lib_tsmaster("TSMaster_demo".encode("utf8"))
 tsapp_set_can_channel_count(1)
 tsapp_set_lin_channel_count(0)
 # tosun其他硬件只需修改第6个参数，找到对应型号即可
-tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN.value,
-                          CHANNEL_INDEX.CHN1.value,
-                          "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE.value,
-                          TLIB_TS_Device_Sub_Type.TC1016.value, CHANNEL_INDEX.CHN1.value, True)
-tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1.value, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN.value,
-                               TLIBCANFDControllerMode.lfdmNormal.value, True)
+tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN,
+                          CHANNEL_INDEX.CHN1,
+                          "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
+                          TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True)
+tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN,
+                               TLIBCANFDControllerMode.lfdmNormal, True)
 
 if 0 == tsapp_connect():
     print("successful")
@@ -26,7 +26,7 @@ if 0 == tsapp_connect():
 idHandle = c_int32(0)
 udsHandle = c_byte(0)
 
-if 0 == tsdiag_can_create(udsHandle, CHANNEL_INDEX.CHN1.value, 0, 8, 0x1, True, 0X2, True, 0X3, True):
+if 0 == tsdiag_can_create(udsHandle, CHANNEL_INDEX.CHN1, 0, 8, 0x1, True, 0X2, True, 0X3, True):
     print("UDS_SUCCESSFUL,udsHandle = ", udsHandle)
 
 AReqDataArray = (c_uint8 * 100)()

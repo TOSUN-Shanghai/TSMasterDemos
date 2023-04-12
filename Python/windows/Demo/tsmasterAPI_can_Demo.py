@@ -50,17 +50,17 @@ def connect():
         print("LIN通道设置失败")
     # 硬件通道映射至软件通道
     # tosun其他硬件只需修改第6个参数，找到对应型号即可
-    if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN.value, CHANNEL_INDEX.CHN1.value,
-                                      "TC1016".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE.value,
-                                      TLIB_TS_Device_Sub_Type.TC1016.value, 0, True):
+    if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN1,
+                                      "TC1016".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
+                                      TLIB_TS_Device_Sub_Type.TC1016, 0, True):
         print("1通道映射成功")
     else:
         print("1通道映射失败")
 
     # 设置canfd波特率
-    if 0 == tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1.value, 500.0, 2000.0,
-                                           TLIBCANFDControllerType.lfdtISOCAN.value,
-                                           TLIBCANFDControllerMode.lfdmNormal.value, True):
+    if 0 == tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500.0, 2000.0,
+                                           TLIBCANFDControllerType.lfdtISOCAN,
+                                           TLIBCANFDControllerMode.lfdmNormal, True):
         print("1通道canfd波特率成功")
     else:
         print("1通道canfd波特率失败")
@@ -110,13 +110,13 @@ def receive_can_message():
     cansize = c_int32(100)
 
     canfdsize = c_int32(100)
-    r = tsfifo_receive_can_msgs(listcanmsg, cansize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES.value)
+    r = tsfifo_receive_can_msgs(listcanmsg, cansize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
 
-    r = tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES.value)
+    r = tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
     print("接收返回值=", r)
-    for i in range(cansize.value):
+    for i in range(cansize):
         print("fifo接收canID=", listcanmsg[i].FIdentifier)
-    for i in range(canfdsize.value):
+    for i in range(canfdsize):
         print("fifo接收canfdID=", listcanfdmsg[i].FIdentifier)
 
 
@@ -164,7 +164,7 @@ udsHandle = c_byte(0)
 
 def creat_uds_module():
     global udsHandle
-    r = tsdiag_can_create(udsHandle, CHANNEL_INDEX.CHN1.value, 0, 8, 0X1, True, 0X2, True, 0X3, True)
+    r = tsdiag_can_create(udsHandle, CHANNEL_INDEX.CHN1, 0, 8, 0X1, True, 0X2, True, 0X3, True)
     if r == 0:
         print("udsHandle = ", udsHandle)
     else:
@@ -184,9 +184,9 @@ def req_and_res_can():
     #     AResponseDataArray.append(item)
     r = tstp_can_request_and_get_response(udsHandle, AReqDataArray, 3, AResponseDataArray, AResSize)
     print(AResSize)
-    for i in range(AResSize.value):
+    for i in range(AResSize):
         print(hex(AResponseDataArray[i]), end="  ")
-        if i == AResSize.value - 1:
+        if i == AResSize - 1:
             print(end='\n')
 
 
@@ -208,20 +208,20 @@ def read_blf():
 def read_blf_datas():
     global blfID, count
     realCount = c_ulong(0)
-    messageType = TSupportedObjType.sotUnknown.value
+    messageType = TSupportedObjType.sotUnknown
     CANtemp = TLIBCAN()
     CANFDtemp = TLIBCANFD()
     LINtemp = TLIBLIN()
     for i in range(count.value):
         tslog_blf_read_object(blfID, realCount, messageType, CANtemp, LINtemp, CANFDtemp)
-        if messageType.value == TSupportedObjType.sotCAN.value.value:
+        if messageType.value == TSupportedObjType.sotCAN.value:
             print(CANtemp.FTimeUs / 1000000, CANtemp.FIdxChn, CANtemp.FIdentifier, CANtemp.FProperties, CANtemp.FDLC,
                   CANtemp.FData[0], CANtemp.FData[1], CANtemp.FData[2], CANtemp.FData[3], CANtemp.FData[4],
                   CANtemp.FData[5], CANtemp.FData[6], CANtemp.FData[7])
     tslog_blf_read_end(blfID)
 
-
-writefileName = "E:\\sofewareIDE\\python\\py36_32\\tsmaster_test\\2.blf".encode("utf8")
+_curr_path = os.path.dirname(__file__)
+writefileName = (_curr_path+"\\2.blf").encode('utf8')
 writeHandle = c_int32(0)
 
 
@@ -230,13 +230,13 @@ def write_blf_start():
     if r == 0:
         global blfID, count
         realCount = c_ulong(0)
-        messageType = TSupportedObjType.sotUnknown.value
+        messageType = TSupportedObjType.sotUnknown
         CANtemp = TLIBCAN()
         CANFDtemp = TLIBCANFD()
         LINtemp = TLIBLIN()
         for i in range(count.value):
             tslog_blf_read_object(blfID, realCount, messageType, CANtemp, LINtemp, CANFDtemp)
-            if messageType.value == TSupportedObjType.sotCAN.value.value:
+            if messageType.value == TSupportedObjType.sotCAN.value:
                 CANtemp.FIdxChn = 2
                 tslog_blf_write_can(writeHandle, CANtemp)
         tslog_blf_read_end(blfID)
@@ -300,20 +300,8 @@ if __name__ == '__main__':
         elif key == '7':  # 停止录制
             stop_logging()
         elif key == '8':  # 诊断相关，创建诊断模块需要在连接函数之前创建模块
-            # uds_create_can(udsHandle, 0, False, 8, 0X1, False, 0X2, False)
             creat_uds_module()
         elif key == '9':  # 请求并获的回复
-            # AReqDataArray = [0x22, 0xf1, 0x90]
-            # AResSize = c_int32(0)
-            # AResponseDataArray = []
-            # for i in range(100):
-            #     item = 0
-            #     AResponseDataArray.append(item)
-            # tx_diag_req_and_get_res(udsHandle,AReqDataArray,3,AResponseDataArray,AResSize,20)
-            # for i in range(AResSize.value):
-            #     print("%#x"%AResponseDataArray[i],end=" ")
-            #     if i == 8:
-            #         print(end='\r\n')
             req_and_res_can()
         elif key == 'a':
             read_blf()  # 读取blf

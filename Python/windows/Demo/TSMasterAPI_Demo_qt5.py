@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QTimer
 import tkinter as tk
 from tkinter import filedialog
-
+AppName = b'TSMaster_gui'
 msg = TLIBCAN()
 msg.FIdxChn = 0
 msg.FIdentifier = 0x100
@@ -143,7 +143,6 @@ class MyWindows(QMainWindow, Ui_MainWindow):
         self.btn_read_blf_Data.clicked.connect(self.read_blf)
 
     def get_hw_devices(self):
-
         r = tsapp_enumerate_hw_devices(self.ACount)
         if r == 0:
             self.comboBox.clear()
@@ -151,14 +150,14 @@ class MyWindows(QMainWindow, Ui_MainWindow):
                 self.comboBox.addItem(i.__str__())
 
     def show_Hardware_window(self):
-        tsapp_show_tsmaster_window("Hardware".encode("utf8"))
+        tsapp_show_tsmaster_window(b"Hardware",True)
         self.textBrowser.append("硬件配置成功\r\n")
         self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
     def connect_Hardware(self):
         if 0 == tsapp_connect():
             tsfifo_enable_receive_fifo()
-            tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1.value, T_LIN_NODE_FUNCTION.T_MASTER_NODE.value)
+            tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1, T_LIN_NODE_FUNCTION.T_MASTER_NODE)
             self.textBrowser.append("连接成功\r\n")
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
@@ -169,15 +168,18 @@ class MyWindows(QMainWindow, Ui_MainWindow):
 
     def get_hw_info(self):
         PTLIBHWInfo = TLIBHWInfo()
-        acount = int(self.comboBox.currentText())
-        if 0 == tsapp_get_hw_info_by_index(acount, PTLIBHWInfo):
-            self.tb_FVendorName.setText(PTLIBHWInfo.FVendorName.decode("utf8"))
-            self.tb_FDeviceName.setText(PTLIBHWInfo.FDeviceName.decode("utf8"))
-            self.tb_FSerialString.setText(PTLIBHWInfo.FSerialString.decode("utf8"))
+        if self.comboBox.currentText()!='':
+            acount = int(self.comboBox.currentText())
+            if 0 == tsapp_get_hw_info_by_index(acount, PTLIBHWInfo):
+                self.tb_FVendorName.setText(PTLIBHWInfo.FVendorName.decode("utf8"))
+                self.tb_FDeviceName.setText(PTLIBHWInfo.FDeviceName.decode("utf8"))
+                self.tb_FSerialString.setText(PTLIBHWInfo.FSerialString.decode("utf8"))
 
-        print(PTLIBHWInfo.FDeviceType, PTLIBHWInfo.FDeviceIndex, PTLIBHWInfo.FVendorName.decode("utf8"),
-              PTLIBHWInfo.FDeviceName.decode("utf8"),
-              PTLIBHWInfo.FSerialString.decode("utf8"))
+            print(PTLIBHWInfo.FDeviceType, PTLIBHWInfo.FDeviceIndex, PTLIBHWInfo.FVendorName.decode("utf8"),
+                PTLIBHWInfo.FDeviceName.decode("utf8"),
+                PTLIBHWInfo.FSerialString.decode("utf8"))
+        else:
+            self.textBrowser.append("请先获取在线硬件数量\r\n")
 
     def register_event_can(self):
         if 0 == tsapp_register_event_can(self.CANobj, OnCANevent):
@@ -248,7 +250,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
     def receive_can_msg(self):
         listcanmsg = (TLIBCAN*100)()
         size = c_int32(100)
-        r = tsfifo_receive_can_msgs(listcanmsg, size, 0, READ_TX_RX_DEF.ONLY_RX_MESSAGES.value)
+        r = tsfifo_receive_can_msgs(listcanmsg, size, 1, READ_TX_RX_DEF.ONLY_RX_MESSAGES)
         if r == 0:
             for i in range(size.value):
                 a = ' '
@@ -265,7 +267,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
     def receive_canfd_msg(self):
         listcanmsg = (TLIBCANFD*100)()
         size = c_int32(100)
-        r = tsfifo_receive_canfd_msgs(listcanmsg, size, 0, READ_TX_RX_DEF.ONLY_RX_MESSAGES.value)
+        r = tsfifo_receive_canfd_msgs(listcanmsg, size, 1, READ_TX_RX_DEF.ONLY_RX_MESSAGES)
         if r == 0:
             for i in range(size.value):
                 a = ' '
@@ -285,12 +287,12 @@ class MyWindows(QMainWindow, Ui_MainWindow):
 
     def transmit_header_and_receive_msg(self):
         TLIN1 = TLIBLIN()
-        tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1.value, 0X3D, 8, TLIN1, c_int(20))
+        tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
 
     def creat_uds_module(self):
         # uds_create_can(self.udsHandle, 0, False, 8, 0X1, False, 0X2, False)
 
-        r = tsdiag_can_create(self.udsHandle, CHANNEL_INDEX.CHN1.value, 0, 8, 0X1, True, 0X2, True, 0X3, True)
+        r = tsdiag_can_create(self.udsHandle, CHANNEL_INDEX.CHN1, 0, 8, 0X1, True, 0X2, True, 0X3, True)
 
     def req_and_get_res(self):
         AReqDataArray = (c_uint8 * 100)()
@@ -302,7 +304,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
         r = tstp_can_request_and_get_response(self.udsHandle, AReqDataArray, 3, AResponseDataArray, AResSize)
         if r == 0:
             a = ' '
-            self.textBrowser.append(a.join(hex(i) for i in AResponseDataArray[0:AResSize.value]) + "\r\n")
+            self.textBrowser.append(a.join(hex(i) for i in AResponseDataArray[0:AResSize]) + "\r\n")
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
         # AReqDataArray = [0x22, 0xf1, 0x90]
         # AResSize = c_int(0)
@@ -360,14 +362,14 @@ class MyWindows(QMainWindow, Ui_MainWindow):
 
     def read_blf(self):
         realCount = c_ulong(0)
-        messageType = TSupportedObjType.sotUnknown.value
+        messageType = TSupportedObjType.sotUnknown
         CANtemp = TLIBCAN()
         CANFDtemp = TLIBCANFD()
         LINtemp = TLIBLIN()
         a = ' '
         for i in range(self.blf_count.value):
             r = tslog_blf_read_object(self.blf_id, realCount, messageType, CANtemp, LINtemp, CANFDtemp)
-            if messageType.value == TSupportedObjType.sotCAN.value.value:
+            if messageType.value == TSupportedObjType.sotCAN.value:
 
                 str1 = ("CAN",
                         str(CANtemp.FTimeUs / 1000000), str(CANtemp.FIdxChn),
@@ -377,7 +379,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
                         hex(CANtemp.FData[5]), hex(CANtemp.FData[6]), hex(CANtemp.FData[7]))
                 self.textBrowser.append(a.join(str1) + "\r\n")
                 self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
-            elif messageType.value == TSupportedObjType.sotCANFD.value.value:
+            elif messageType.value == TSupportedObjType.sotCANFD.value:
                 str1 = ("CANFD",
                         str(CANFDtemp.FTimeUs / 1000000), str(CANFDtemp.FIdxChn),
                         hex(CANFDtemp.FIdentifier),
@@ -386,7 +388,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
                         hex(CANFDtemp.FData[5]), hex(CANFDtemp.FData[6]), hex(CANFDtemp.FData[7]))
                 self.textBrowser.append(a.join(str1) + "\r\n")
                 self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
-            elif messageType.value == TSupportedObjType.sotLIN.value.value:
+            elif messageType.value == TSupportedObjType.sotLIN.value:
                 str1 = ("LIN",
                         str(LINtemp.FTimeUs / 1000000), str(LINtemp.FIdxChn),
                         hex(LINtemp.FIdentifier),
