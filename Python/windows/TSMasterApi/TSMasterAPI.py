@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-04-12 15:36:07
+LastEditTime: 2023-04-12 16:17:50
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -2820,7 +2820,7 @@ def tsdb_get_flexray_db_properties_by_address_verbose(AAddr:str):
     return AECUCount,AFrameCount,ASignalCount,ASupportedChannelMask,string_at(AName),AComment     
 
 # 通过索引获取数据库属性信息
-def tsdb_get_flexray_db_properties_by_indexx_verbose(ADBIndex:c_int32):
+def tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex:c_int32):
     '''
     db_msg =  app.db_get_flexray_database_properties_by_address(0)
     print(db_msg)
@@ -2832,7 +2832,7 @@ def tsdb_get_flexray_db_properties_by_indexx_verbose(ADBIndex:c_int32):
     AName = POINTER(POINTER(c_char))()
     AComment = POINTER(POINTER(c_char))()
 
-    ret = dll.tsdb_get_flexray_db_properties_by_indexx_verbose(ADBIndex,byref(ASignalCount),byref(AFrameCount),byref(AECUCount),byref(ASupportedChannelMask),byref(AName),byref(AComment))
+    ret = dll.tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex,byref(ASignalCount),byref(AFrameCount),byref(AECUCount),byref(ASupportedChannelMask),byref(AName),byref(AComment))
 
     if ret ==0:
         try:
@@ -4029,7 +4029,7 @@ def tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_i
     return dll.tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
 # def flexray_db_parse(index):
 #     ecu_list = {}
-#     ecuCount, fmeCount, sgnCount, supportedChannelMask, sName, sComment = tsdb_get_flexray_db_properties_by_indexx_verbose(index)
+#     ecuCount, fmeCount, sgnCount, supportedChannelMask, sName, sComment = tsdb_get_flexray_db_properties_by_index_verbose(index)
 #     for idxECU in range(ecuCount.value):
 #         message_list = []
 #         ATxFrameCount, ARxFrameCount, ecuName, sComment = tsdb_get_flexray_ecu_properties_by_index_verbose(index, idxECU)
