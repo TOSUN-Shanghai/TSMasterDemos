@@ -754,12 +754,30 @@ type
       , N_LIN_SLAVE_REV_N_CR_TIMEOUT         = 210
       , N_LIN_SLAVE_TRANSMIT_ERROR           = 211
       , N_LIN_SLAVE_REV_ERROR                = 212
+      , N_ETH_GENERIC_ACK                    = 234
+      , N_ETH_VEHILCE_INFO_RES               = 235
+      , N_ETH_ACTIVATE_RES                   = 236
+      , N_ETH_ALIVE_RES                      = 237
+      , N_ETH_NODE_STATE_RES                 = 238
+      , N_ETH_DIAG_POWER_MODE_RES            = 239
+      , N_ETH_DIAG_POSIVE_ACK                = 240
+      , N_ETH_DIAG_NEGATIVE_ACK              = 241
+      , N_ETH_VEHICLE_REQ_ID                 = 242
+      , N_ETH_VEHICLE_REQ_EID_ID             = 243
+      , N_ETH_VEHICLE_REQ_VIN_ID             = 244
+      , N_ETH_ACTIVE_REQ                     = 245
+      , N_ETH_ALIVE_REQ                      = 246
+      , N_ETH_NODE_STATE_REQ                 = 247
+      , N_ETH_DIAG_POWER_MODE_REQ            = 248
+      , N_ETH_DIAG_REQ_RES                   = 249
+      , N_ETH_RESERVED0                      = 250
+      , N_ETH_RESERVED1                      = 251
   );
 
   N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
                                        const AChn:Integer;
                                        const ABusType: byte;
-                                       const ANAD: byte;
+                                       const ANAD: Integer; //byte->UInt16;
                                        const AIdentifier: Integer;
                                        const ATimeStamp: UInt64;
                                        const APayLoad:PByte; const ASize:UInt32;
@@ -1160,7 +1178,26 @@ const
   IDX_ERR_PYTHON_CODE_CRASH                  = 230;
   IDX_ERR_CONDITION_NOT_MET                  = 231;
   IDX_ERR_PYTHON_MODULE_NOT_DEPLOYED         = 232;
-  ERR_CODE_COUNT                             = 233;
+  IDX_ERR_UDS_CONNECT_DUT_FAILED             = 233;
+  IDX_ETH_GENERIC_ACK                        = 234;
+  IDX_ETH_VEHILCE_INFO_RES                   = 235;
+  IDX_ETH_ACTIVATE_RES                       = 236;
+  IDX_ETH_ALIVE_RES                          = 237;
+  IDX_ETH_NODE_STATE_RES                     = 238;  //诊断实体状态响应
+  IDX_ETH_DIAG_POWER_MODE_RES                = 239;  //诊断电源模式响应
+  IDX_ETH_DIAG_POSIVE_ACK                    = 240;
+  IDX_ETH_DIAG_NEGATIVE_ACK                  = 241;
+  IDX_ETH_VEHICLE_REQ_ID                     = 242;
+  IDX_ETH_VEHICLE_REQ_EID_ID                 = 243;
+  IDX_ETH_VEHICLE_REQ_VIN_ID                 = 244;
+  IDX_ETH_ACTIVE_REQ                         = 245;
+  IDX_ETH_ALIVE_REQ                          = 246;
+  IDX_ETH_NODE_STATE_REQ                     = 247;
+  IDX_ETH_DIAG_POWER_MODE_REQ                = 248;
+  IDX_ETH_DIAG_REQ_RES                       = 249;
+  IDX_ETH_RESERVED0                          = 250;
+  IDX_ETH_RESERVED1                          = 251;
+  ERR_CODE_COUNT                             = 252;
 
 // Note: Should also update C API!!!
 
