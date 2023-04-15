@@ -760,7 +760,7 @@ type
       , N_ETH_ALIVE_RES                      = 237
       , N_ETH_NODE_STATE_RES                 = 238
       , N_ETH_DIAG_POWER_MODE_RES            = 239
-      , N_ETH_DIAG_POSIVE_ACK                = 240
+      , N_ETH_DIAG_POSITIVE_ACK                = 240
       , N_ETH_DIAG_NEGATIVE_ACK              = 241
       , N_ETH_VEHICLE_REQ_ID                 = 242
       , N_ETH_VEHICLE_REQ_EID_ID             = 243
@@ -1185,7 +1185,7 @@ const
   IDX_ETH_ALIVE_RES                          = 237;
   IDX_ETH_NODE_STATE_RES                     = 238;  //诊断实体状态响应
   IDX_ETH_DIAG_POWER_MODE_RES                = 239;  //诊断电源模式响应
-  IDX_ETH_DIAG_POSIVE_ACK                    = 240;
+  IDX_ETH_DIAG_POSITIVE_ACK                    = 240;
   IDX_ETH_DIAG_NEGATIVE_ACK                  = 241;
   IDX_ETH_VEHICLE_REQ_ID                     = 242;
   IDX_ETH_VEHICLE_REQ_EID_ID                 = 243;
@@ -1218,8 +1218,10 @@ function tsapp_add_application(const AAppName: PAnsiChar): integer; stdcall; {$I
 function tsapp_get_application_list(const AAppNameList: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_can_channel_count(const ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_lin_channel_count(const ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_set_flexray_channel_count(const ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_get_can_channel_count(out ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_get_lin_channel_count(out ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_get_flexray_channel_count(out ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_mapping(const AMapping: PLIBTSMapping): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_mapping_verbose(const AAppName:PAnsiChar;
                                    const AAppChannelType:TLIBApplicationChannelType;
