@@ -1279,9 +1279,9 @@ function tsapp_configure_can_regs(
 function tsapp_configure_canfd_regs(
       const AIdxChn:Integer;
       const AArbBaudrate:Single;
-      const AArbSEG1, AArbSEG2, AArbPrescaler, AArbSJW:Integer;
+      const AArbSEG1, AArbSEG2, AArbPrescaler, AArbSJW: Integer;
       const ADataBaudrate:Single;
-      const ADataSEG1, ADataSEG2, ADataPrescaler, ADataSJW:Integer;
+      const ADataSEG1, ADataSEG2, ADataPrescaler, ADataSJW: Integer;
       const AControllerType: TLIBCANFDControllerType;
       const AControllerMode: TLIBCANFDControllerMode;
       const A120OhmConnected: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -1290,6 +1290,9 @@ function tsapp_transmit_can_async(const ACAN: PLIBCAN): integer; stdcall; {$IFND
 function tsapp_transmit_canfd_async(const ACANFD: PLIBCANFD): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_transmit_lin_async(const ALIN: PLIBLIN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_transmit_fastlin_async(const ALIN: PLIBLIN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_transmit_lin_wakeup_async(const AIdxChn: Integer; const AWakeupLength: Integer;
+                   const AWakeupIntervalTime: Integer; const AWakeupTimes: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_transmit_lin_gotosleep_async(const AIdxChn: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // communication sync functions
 function tsapp_transmit_can_sync(const ACAN: PLIBCAN; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_transmit_canfd_sync(const ACANfd: PLIBCANfd; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -1649,7 +1652,7 @@ function tslin_stop_lin_channel(const AChnIdx: Integer): Integer;stdcall; {$IFND
 function tslin_start_lin_channel(const AChnIdx: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslin_set_node_funtiontype(const AChnIdx: Integer; const AFunctionType: TLINNodeType): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //LIN_Diag_Tp_Layer
-function tstp_lin_master_request(const AChnIdx: Integer; const ANAD:Byte; const AData: PByte; const ADataNum: Integer; const ATimeoutMs: Integer): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tstp_lin_master_request(const AChnIdx: Integer; const ANAD: Byte; const AData: PByte; const ADataNum: Integer; const ATimeoutMs: Integer): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_lin_master_request_intervalms(const AChnIdx: Integer; const AData: UInt16): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_lin_reset(const AChnIdx: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_lin_slave_response_intervalms(const AChnIdx: Integer; const AData: UInt16): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -1728,9 +1731,9 @@ function tstp_can_register_rx_completed_recall_internal(ADiagModuleIndex:Integer
            ARxcompleted:N_USData_TranslateCompleted_Recall_Obj):Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 {Diagnostic}
-function tsdiag_can_session_control(ADiagModuleIndex:Integer;ASubSession:Byte):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_routine_control(ADiagModuleIndex:Integer;ARoutineControlType:Byte;ARoutintID:UInt16):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_communication_control(ADiagModuleIndex:Integer;AControlType:Byte):integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_session_control(ADiagModuleIndex:Integer;ASubSession: Byte):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_routine_control(ADiagModuleIndex:Integer;ARoutineControlType: Byte; ARoutintID:UInt16):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_communication_control(ADiagModuleIndex:Integer;AControlType: Byte):integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_can_security_access_request_seed(ADiagModuleIndex:Integer;ALevel: Integer;
       ARecSeed: PByte;ARecSeedSize:PInteger): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_can_security_access_send_key(ADiagModuleIndex:Integer;ALevel: Integer; AKeyValue: Pbyte; AKeySize:Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
