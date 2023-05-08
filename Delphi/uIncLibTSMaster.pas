@@ -603,7 +603,7 @@ type
 	  FOffset: Double;
   end;
   PMPFlexRaySignal = ^TMPFlexRaySignal;
-  // TMPDBProperties for database properties, size = 1048
+  // TMPDBProperties for database properties, size = 1056
   TMPDBProperties = packed record
     FDBIndex: int32;
     FSignalCount: int32;
@@ -612,6 +612,7 @@ type
     FSupportedChannelMask: uint64;
     FName: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
     FComment: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
+    FFlags: UInt64;                                        // Bit 0: whether generate mp header
   end;
   PMPDBProperties = ^TMPDBProperties;
   // TMPDBECUProperties for database ECU properties, size = 1040
