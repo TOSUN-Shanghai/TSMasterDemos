@@ -1714,7 +1714,7 @@ function tsdiag_set_stmin(ADiagModuleIndex: Integer; ASTMin:Integer): Integer; s
 function tsdiag_set_blocksize(ADiagModuleIndex: Integer; ABlockSize:Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_maxlength(ADiagModuleIndex: Integer; AMaxLength:Integer): Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_fcdelay(ADiagModuleIndex: Integer; AFCDelay:Integer): Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_Set_filled_byte(ADiagModuleIndex: Integer; AFilledByte:Byte):Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_filled_byte(ADiagModuleIndex: Integer; AFilledByte:Byte):Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_p2_timeout(ADiagModuleIndex: Integer; ATimeMs:Integer):Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_p2_extended(ADiagModuleIndex: Integer; ATimeMs:Integer):Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_s3_servertime(ADiagModuleIndex: Integer; ATimeMs:Integer):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
