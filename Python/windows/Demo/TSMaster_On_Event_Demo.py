@@ -2,9 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-24 11:22:42
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-24 12:12:26
-FilePath: \TSMasterAPI\TSMasterApi\Demo\TSMaster_On_Event_Demo.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+LastEditTime: 2023-05-06 16:46:41
 '''
 from TSMasterAPI import *
 import libTOSUN
@@ -35,7 +33,7 @@ def On_CANFD_pre_EVENT(OBJ, ACANFD):
 OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
 OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
 OnCANpreEVENT = OnTx_RxFUNC_CAN(On_CAN_pre_EVENT)
-OnCANFDpreEVENT = OnTx_RxFUNC_CAN(On_CANFD_pre_EVENT)
+OnCANFDpreEVENT = OnTx_RxFUNC_CANFD(On_CANFD_pre_EVENT)
 
 # 初始化函数，调用TsMaster.dll 必须先调用初始化函数，否则其他函数无法使用
 initialize_lib_tsmaster("TSMaster_demo".encode("utf8"))
@@ -49,7 +47,7 @@ tsapp_set_lin_channel_count(0)
 tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN,
                           CHANNEL_INDEX.CHN1,
                           "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                          TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True)
+                          TLIB_TS_Device_Sub_Type.TC1016,0, CHANNEL_INDEX.CHN1, True)
 
 # 设置1通道波特率
 tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN,

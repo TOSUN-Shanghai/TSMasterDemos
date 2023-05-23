@@ -399,8 +399,8 @@ class MyWindows(QMainWindow, Ui_MainWindow):
                 self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
         tslog_blf_read_end(self.blf_id)
 
-    def closeEvent(self):
-        finalize_lib_tsmaster()
+    # def closeEvent(self):
+    #     finalize_lib_tsmaster()
 
 
 if __name__ == '__main__':

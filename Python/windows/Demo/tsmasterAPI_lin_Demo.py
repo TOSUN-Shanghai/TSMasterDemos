@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-24 11:22:42
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-24 11:44:58
+LastEditTime: 2023-05-06 16:47:33
 FilePath: \TSMasterAPI\TSMasterApi\demo\tsmasterAPI_lin_Demo.py
 Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 '''
@@ -51,7 +51,7 @@ def connect():
     # 硬件通道映射至软件通道
     if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_LIN, CHANNEL_INDEX.CHN1,
                                       "TC1026".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                                      TLIB_TS_Device_Sub_Type.TC1016, 0, True):
+                                      TLIB_TS_Device_Sub_Type.TC1016,0, 0, True):
         print("1通道映射成功")
     else:
         print("1通道映射失败")

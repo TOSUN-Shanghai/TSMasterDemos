@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-04-12 17:52:14
+LastEditTime: 2023-04-23 09:16:58
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -555,6 +555,68 @@ class TLibFlexray_controller_config(Structure):
         self.config_byte = self.config_byte | (0x1 if enable100_a else 0x00) | (0x2 if enable100_b else 0x00) | (
             0x40 if is_show_nullframe else 0x00)
         # self.config_byte = 0x3f
+    def set_controller_config(self,xml_,is_open_a=True, is_open_b=True, wakeup_chn=0, enable100_a=True, enable100_b=True,is_show_nullframe=True, is_Bridging=False):
+        if isinstance(xml_,dict):
+            self.NETWORK_MANAGEMENT_VECTOR_LENGTH = xml_['NETWORK_MANAGEMENT_VECTOR_LENGTH']
+            self.PAYLOAD_LENGTH_STATIC = xml_['PAYLOAD_LENGTH_STATIC']
+            self.LATEST_TX = xml_['LATEST_TX']
+            self.T_S_S_TRANSMITTER = xml_['T_S_S_TRANSMITTER']
+            self.CAS_RX_LOW_MAX = xml_['CAS_RX_LOW_MAX']
+            self.SPEED = xml_['SPEED']
+            self.WAKE_UP_SYMBOL_RX_WINDOW = xml_['WAKE_UP_SYMBOL_RX_WINDOW']
+            self.WAKE_UP_PATTERN = xml_['WAKE_UP_PATTERN']
+            self.WAKE_UP_SYMBOL_RX_IDLE = xml_['WAKE_UP_SYMBOL_RX_IDLE']
+            self.WAKE_UP_SYMBOL_RX_LOW = xml_['WAKE_UP_SYMBOL_RX_LOW']
+            self.WAKE_UP_SYMBOL_TX_IDLE = xml_['WAKE_UP_SYMBOL_TX_IDLE']
+            self.WAKE_UP_SYMBOL_TX_LOW = xml_['WAKE_UP_SYMBOL_TX_LOW']
+            self.channelAConnectedNode = 1 if is_open_a else 0
+            self.channelBConnectedNode = 1 if is_open_b else 0
+            self.channelASymbolTransmitted = 1  
+            self.channelBSymbolTransmitted = 1  
+            self.ALLOW_HALT_DUE_TO_CLOCK = xml_['ALLOW_HALT_DUE_TO_CLOCK']
+            self.SINGLE_SLOT_ENABLED = xml_['SINGLE_SLOT_ENABLED']
+            self.wake_up_idx = wakeup_chn
+            self.ALLOW_PASSIVE_TO_ACTIVE = xml_['ALLOW_PASSIVE_TO_ACTIVE']
+            self.COLD_START_ATTEMPTS = xml_['COLD_START_ATTEMPTS']
+            self.synchFrameTransmitted = 1
+            self.startupFrameTransmitted = xml_['startupFrameTransmitted']
+            self.LISTEN_TIMEOUT = xml_['LISTEN_TIMEOUT']
+            self.LISTEN_NOISE = xml_['LISTEN_NOISE']
+            self.MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE = xml_['MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE']
+            self.MAX_WITHOUT_CLOCK_CORRECTION_FATAL = xml_['MAX_WITHOUT_CLOCK_CORRECTION_FATAL']
+            self.MICRO_PER_CYCLE = xml_['MICRO_PER_CYCLE']
+            self.Macro_Per_Cycle = xml_['MACRO_PER_CYCLE']
+            self.SYNC_NODE_MAX = xml_['SYNC_NODE_MAX']
+            self.MICRO_INITIAL_OFFSET_A = xml_['MICRO_INITIAL_OFFSET_A']
+            self.MICRO_INITIAL_OFFSET_B = xml_['MICRO_INITIAL_OFFSET_B']
+            self.MACRO_INITIAL_OFFSET_A = xml_['MACRO_INITIAL_OFFSET_A']
+            self.MACRO_INITIAL_OFFSET_B = xml_['MACRO_INITIAL_OFFSET_B']
+            self.N_I_T = xml_['N_I_T']
+            self.OFFSET_CORRECTION_START = xml_['OFFSET_CORRECTION_START']
+            self.DELAY_COMPENSATION_A = xml_['DELAY_COMPENSATION_A']
+            self.DELAY_COMPENSATION_B = xml_['DELAY_COMPENSATION_B']
+            self.CLUSTER_DRIFT_DAMPING = xml_['CLUSTER_DRIFT_DAMPING']
+            self.DECODING_CORRECTION = xml_['DECODING_CORRECTION']
+            self.ACCEPTED_STARTUP_RANGE = xml_['ACCEPTED_STARTUP_RANGE']
+            self.MAX_DRIFT = xml_['MAX_DRIFT']
+            self.STATIC_SLOT = xml_['STATIC_SLOT']
+            self.NUMBER_OF_STATIC_SLOTS = xml_['NUMBER_OF_STATIC_SLOTS']
+            self.MINISLOT = xml_['MINISLOT']
+            self.NUMBER_OF_MINISLOTS = xml_['NUMBER_OF_MINISLOTS']
+            self.DYNAMIC_SLOT_IDLE_PHASE = xml_['DYNAMIC_SLOT_IDLE_PHASE']
+            self.ACTION_POINT_OFFSET = xml_['ACTION_POINT_OFFSET']
+            self.MINISLOT_ACTION_POINT_OFFSET = xml_['MINISLOT_ACTION_POINT_OFFSET']
+            self.OFFSET_CORRECTION_OUT = xml_['OFFSET_CORRECTION_OUT']
+            self.RATE_CORRECTION_OUT = xml_['RATE_CORRECTION_OUT']
+            self.EXTERN_OFFSET_CORRECTION = xml_['EXTERN_OFFSET_CORRECTION']
+            self.EXTERN_RATE_CORRECTION = xml_['EXTERN_RATE_CORRECTION']
+            self.config1_byte = 1
+                # if
+            self.config_byte = 0xc
+            if is_Bridging:
+                    self.config_byte = 0x3c
+            self.config_byte = self.config_byte | (0x1 if enable100_a else 0x00) | (0x2 if enable100_b else 0x00) | (0x40 if is_show_nullframe else 0x00)
+        return self
 class TLibTrigger_def(Structure):
     """
     Trigger 结构体
@@ -1875,9 +1937,6 @@ def tscom_can_rbs_activate_all_networks(AEnable: bool, AIncludingChildren: bool)
     return dll.tscom_can_rbs_activate_all_networks(AEnable, AIncludingChildren)
 
 
-def tscom_can_rbs_enable(AEnable: bool):
-    return dll.tscom_can_rbs_enable(AEnable)
-
 
 def tscom_can_rbs_get_signal_value_by_address(ASymboladdress: str, Avalue: c_double):
     return dll.tscom_can_rbs_get_signal_value_by_address(ASymboladdress, byref(Avalue))
@@ -1975,7 +2034,7 @@ def tslog_add_online_replay_config(AFileName: str, AIndex: c_int32):
 # 设置在线回放配置
 def tslog_set_online_replay_config(AIndex: c_int32, AName: str, AFileName: str, AAutoStart: c_bool,
                                    AIsRepetitiveMode: c_bool, AStartTimingMode: c_int32, AStartDelayTimeMs: c_int32,
-                                   ASendTx: c_bool, ASendRx: c_bool, AMappings: c_char * 32):
+                                   ASendTx: c_bool, ASendRx: c_bool, AMappings: c_char_p):
     r = dll.tslog_set_online_replay_config(AIndex, AName, AFileName, AAutoStart, AIsRepetitiveMode, AStartTimingMode,
                                            AStartDelayTimeMs, ASendTx, ASendRx, AMappings)
     return r
@@ -2140,7 +2199,7 @@ def tslog_blf_write_can(AHeadle: c_int32, ACAN: TLIBCAN):
     return r
 
 
-def tslog_blf_write_canfd(AHeadle: c_int32, ACANFD: TLIBCANFD):
+def tslog_blf_write_can_fd(AHeadle: c_int32, ACANFD: TLIBCANFD):
     """
     blfID = c_int32(0)
     count = c_ulong(0)
@@ -2158,7 +2217,7 @@ def tslog_blf_write_canfd(AHeadle: c_int32, ACANFD: TLIBCANFD):
     tslog_blf_read_end(blfID)
     tslog_blf_write_end(writeHandle)
     """
-    r = dll.tslog_blf_write_canfd(AHeadle, byref(ACANFD))
+    r = dll.tslog_blf_write_can_fd(AHeadle, byref(ACANFD))
     return r
 
 
@@ -2651,7 +2710,7 @@ def tstp_lin_master_request(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AData: bytearr
     return r
 
 
-def tstp_lin_master_request_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_int8):
+def tstp_lin_master_request_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_uint16):
     r = dll.tstp_lin_master_request_intervalms(AChnIdx, AData)
     return r
 
@@ -2661,7 +2720,7 @@ def tstp_lin_reset(AChnIdx: CHANNEL_INDEX):
     return r
 
 
-def tstp_lin_slave_response_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_int8):
+def tstp_lin_slave_response_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_uint16):
     r = dll.tstp_lin_slave_response_intervalms(AChnIdx, AData)
     return r
 
