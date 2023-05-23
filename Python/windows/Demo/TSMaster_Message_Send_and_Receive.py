@@ -13,10 +13,10 @@ tsapp_set_lin_channel_count(0)
 tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN,
                           CHANNEL_INDEX.CHN1,
                           "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                          TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True)
+                          TLIB_TS_Device_Sub_Type.TC1016,0, CHANNEL_INDEX.CHN1, True)
 
 # 设置1通道波特率
-tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1alue, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN ,
+tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN ,
                                TLIBCANFDControllerMode.lfdmNormal, True)
 
 if 0 == tsapp_connect():
@@ -52,7 +52,7 @@ listcanfdmsg = (TLIBCANFD * 10000)()
 
 r = tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
 if r == 0:
-    for i in range(canfdsize):
+    for i in range(canfdsize.value):
         if listcanfdmsg[i].FFDProperties == 1: #canfd接收会包含can报文, 所以在此处加一个判断 改属性为1表示为CANFD 0表示为CAN
             print("canfdid:", listcanfdmsg[i].FIdentifier, "canfd报文时间", listcanfdmsg[i].FTimeUs / 1000000)
 

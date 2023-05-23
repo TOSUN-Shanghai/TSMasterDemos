@@ -15,7 +15,7 @@ tsapp_set_lin_channel_count(0)
 tsapp_set_mapping_verbose("TSMaster_demo".encode("utf8"), TLIBApplicationChannelType.APP_CAN,
                           CHANNEL_INDEX.CHN1,
                           "TC1016".encode("utf8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                          TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True)
+                          TLIB_TS_Device_Sub_Type.TC1016,0, CHANNEL_INDEX.CHN1, True)
 tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN,
                                TLIBCANFDControllerMode.lfdmNormal, True)
 
@@ -24,7 +24,7 @@ if 0 == tsapp_connect():
     tsfifo_enable_receive_fifo()
 
 idHandle = c_int32(0)
-udsHandle = c_byte(0)
+udsHandle = u8(0)
 
 if 0 == tsdiag_can_create(udsHandle, CHANNEL_INDEX.CHN1, 0, 8, 0x1, True, 0X2, True, 0X3, True):
     print("UDS_SUCCESSFUL,udsHandle = ", udsHandle)

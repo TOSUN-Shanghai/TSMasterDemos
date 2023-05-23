@@ -52,7 +52,7 @@ def connect():
     # tosun其他硬件只需修改第6个参数，找到对应型号即可
     if 0 == tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN1,
                                       "TC1016".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                                      TLIB_TS_Device_Sub_Type.TC1016, 0, True):
+                                      TLIB_TS_Device_Sub_Type.TC1016,0, 0, True):
         print("1通道映射成功")
     else:
         print("1通道映射失败")

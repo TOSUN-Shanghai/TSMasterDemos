@@ -2,9 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-02-12 18:18:44
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-03-01 11:08:00
-FilePath: \VSCode_Pro\Python_Pro\TSMasterApi\TSMasterApi\flexray_demo.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+LastEditTime: 2023-05-06 16:53:21
 '''
 import time
 import TSMasterAPI

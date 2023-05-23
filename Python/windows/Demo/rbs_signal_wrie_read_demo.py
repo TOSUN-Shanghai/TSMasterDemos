@@ -28,13 +28,13 @@ def connect():
     # 硬件通道映射至软件通道
     if 0 == tsapp_set_mapping_verbose(ProjectName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN1,
                                       "TC1026".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                                      TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN1, True):
+                                      TLIB_TS_Device_Sub_Type.TC1016,0, CHANNEL_INDEX.CHN1, True):
         print("1通道映射成功")
     else:
         print("1通道映射失败")
     if 0 == tsapp_set_mapping_verbose(ProjectName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN2,
                                       "TC1026".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
-                                      TLIB_TS_Device_Sub_Type.TC1016, CHANNEL_INDEX.CHN2, True):
+                                      TLIB_TS_Device_Sub_Type.TC1016, 0,CHANNEL_INDEX.CHN2, True):
         print("2通道映射成功")
     else:
         print("2通道映射失败")
