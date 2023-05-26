@@ -60,6 +60,7 @@ const
   CH32 = 31;
 
   MP_DATABASE_STR_LEN = 512;
+  GENERIC_STRING_MAX_LENGTH = 32;
 
   //Data Logger
   MAX_SUPPORT_LOGGER_FILE_NUM  = 128;
@@ -233,6 +234,97 @@ type
 	  FData: array[0..253] of Byte;// 254 data bytes
   end;
   PLIBFlexRay = ^TLIBFlexRay;
+
+  TLibFlexRayClusterParameters = packed record
+    // general parameters
+    FShortName: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FLongName: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FDescription: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FSpeed: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FChannels: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FBitCountingPolicy: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FProtocol: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FProtocolVersion: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FMedium: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FIsHighLowBitOrder: Integer;
+    FMaxFrameLengthByte: Integer;
+    FNumberOfCycles: Integer;
+    // cycle parameters
+    FCycle_us: Integer;
+    FBit_us: Double;
+    FSampleClockPeriod_us: Double;
+    FMacrotick_us: Double;
+    FMacroPerCycle: Integer;
+    FNumberOfStaticSlots: Integer;
+    FStaticSlot_MT: Integer;
+    FActionPointOffset_MT: Integer;
+    FTSSTransmitter_gdBit: Integer;
+    FPayloadLengthStatic_WORD: Integer;
+    FNumberOfMiniSlots: Integer;
+    FMiniSlot_MT: Integer;
+    FMiniSlotActionPointOffset_MT: Integer;
+    FDynamicSlotIdlePhase_MiniSlots: Integer;
+    FSymbolWindow_MT: Integer;
+    FNIT_MT: Integer;
+    FSyncNodeMax: Integer;
+    FNetworkManagementVectorLength: Integer;
+    // Wakeup and startup parameters
+    FListenNoise: Integer;
+    FColdStartAttempts: Integer;
+    FCASRxLowMax_gdBit: Integer;
+    FWakeupSymbolRxIdle_gdBit: Integer;
+    FWakeupSymbolRxLow_gdBit: Integer;
+    FWakeupSymbolRxWindow_gdBit: Integer;
+    FWakeupSymbolTxIdle_gdBit: Integer;
+    FWakeupSymbolTxLow_gdBit: Integer;
+    FMaxInitializationError_us: Double;
+    // clock correction parameters
+    FClusterDriftDamping_uT: Integer;
+    FOffsetCorrectionStart_MT: Integer;
+    FMaxWithoutClockCorrectionFatal: Integer;
+    FMaxWithoutClockCorrectionPassive: Integer;
+  end;
+  PLibFlexRayClusterParameters = ^TLibFlexRayClusterParameters;
+
+  TLibFlexRayControllerParameters = packed record
+    // general parameters
+    FShortName: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FConnectedChannels: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    // cycle parameters
+    FMicroPerCycle_uT: Integer;
+    FMicroPerMacroNom_uT: Integer;
+    FMicroTick_us: Double;
+    FSamplesPerMicrotick: Integer;
+    // wakeup & startup parameters
+    FWakeupChannelA: Integer;
+    FWakeupChannelB: Integer;
+    FMaxDrift_uT: Integer;
+    FWakeupPattern: Integer;
+    FListenTimeout_uT: Integer;
+    FAcceptedStartupRange_uT: Integer;
+    FMacroInitialOffsetA_MT: Integer;
+    FMacroInitialOffsetB_MT: Integer;
+    FMicroInitialOffsetA_uT: Integer;
+    FMicroInitialOffsetB_uT: Integer;
+    // clock correction parameters
+    FKeySlotUsage: array[0..GENERIC_STRING_MAX_LENGTH-1] of AnsiChar;
+    FKeySlotID: Integer;
+    FSingleSlotEnabled: Integer;
+    FClusterDriftDamping_uT: Integer;
+    FDocodingCorrection_uT: Integer;
+    FDelayCompensationA_uT: Integer;
+    FDelayCompensationB_uT: Integer;
+    FOffsetCorrectionOut_uT: Integer;
+    FExternRateCorrection_uT: Integer;
+    FRateCorrectionOut_uT: Integer;
+    FExternOffsetCorrection_uT: Integer;
+    FAllowHaltDueToClock: Integer;
+    FAllowPassivToActive: Integer;
+    // latesttx
+    FLatestTx: Integer;
+    FMaxDynamicPayloadLength: Integer;
+  end;
+  PLibFlexRayControllerParameters = ^TLibFlexRayControllerParameters;
 
     //Flexray
   PLibFlexray_controller_config = ^TLibFlexray_controller_config;
@@ -1789,6 +1881,8 @@ function tsmp_get_function_prototype(const AGroupName: pansichar; const AFuncNam
 function tsmp_get_mp_function_list(const AGroupName: pansichar; const AList: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsmp_get_mp_list(const AList: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
+// MP DLL function import end (do not modify this line)
+
 {$ENDIF}
 
 implementation
@@ -2634,5 +2728,7 @@ initialization
   Assert(sizeof(TLIBEthernet) = 38, 'TEthernet.size = 38');
   Assert(sizeof(Trealtime_comment_t) = 24, 'Trealtime_comment_t.size = 24');
   Assert(sizeof(TLibSystemVar) = 36, 'TLibSystemVar.size = 36');
+  Assert(SizeOf(TLibFlexRayClusterParameters) = 440, 'TLibFlexRayClusterParameters.size = 440');
+  Assert(SizeOf(TLibFlexRayControllerParameters) = 212, 'TLibFlexRayControllerParameters.size = 212');
 
 end.
