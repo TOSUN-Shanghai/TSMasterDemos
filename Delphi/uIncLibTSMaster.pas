@@ -67,6 +67,8 @@ const
   READ_LOGGER_FILE_NUM_ONCE_TIME = 30;
 
 type
+  pInt32 = ^Int32;
+  ppInt32 = ^pInt32;
   // CAN frame definition = 24 B
   PLIBCAN = ^TLIBCAN;
   TLIBCAN = packed record
@@ -1881,6 +1883,13 @@ function tsmp_get_function_prototype(const AGroupName: pansichar; const AFuncNam
 function tsmp_get_mp_function_list(const AGroupName: pansichar; const AList: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsmp_get_mp_list(const AList: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
+function db_get_flexray_cluster_parameters(const AClusterName: PAnsiChar; AValue: PLibFlexRayClusterParameters): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_flexray_controller_parameters(const AClusterName: PAnsiChar; const AECUName: PAnsiChar; AValue: PLibFlexRayControllerParameters): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_event_support(const ACompleteName: PAnsiChar; const ASupport: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_event_support(const ACompleteName: PAnsiChar; ASupport: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_date_time(AYear: pInt32; AMonth: pInt32; ADay: pInt32; AHour: pInt32; AMinute: pInt32; ASecond: pInt32; AMilliseconds: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_disable_online_replay_filter(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_set_online_replay_filter(const AIndex: Int32; const AIsPassFilter: boolean; const ACount: int32; const AIdxChannels: pInt32; const AIdentifiers: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
