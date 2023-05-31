@@ -1890,6 +1890,12 @@ function get_system_var_event_support(const ACompleteName: PAnsiChar; ASupport: 
 function get_date_time(AYear: pInt32; AMonth: pInt32; ADay: pInt32; AHour: pInt32; AMinute: pInt32; ASecond: pInt32; AMilliseconds: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_disable_online_replay_filter(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_set_online_replay_filter(const AIndex: Int32; const AIsPassFilter: boolean; const ACount: int32; const AIdxChannels: pInt32; const AIdentifiers: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_can_signal_raw_value(const ACANSignal: PMPCANSignal; const AData: pbyte; const AValue: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_can_signal_raw_value(const ACANSignal: PMPCANSignal; const AData: pbyte): uint64; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_lin_signal_raw_value(const ALINSignal: PMPLINSignal; const AData: pbyte; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_lin_signal_raw_value(const ALINSignal: PMPLINSignal; const AData: pbyte): uint64; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_flexray_signal_raw_value(const AFlexRaySignal: PMPFlexRaySignal; const AData: pbyte; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_flexray_signal_raw_value(const AFlexRaySignal: PMPFlexRaySignal; const AData: pbyte): uint64; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
