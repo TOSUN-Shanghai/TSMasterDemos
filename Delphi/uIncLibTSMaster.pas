@@ -585,6 +585,10 @@ type
   // Graphic Program
   TLIBAutomationModuleRunningState = (amrsNotRun, amrsPrepareRun, amrsRunning, amrsPaused, amrsStepping, amrsFinished);
   PLIBAutomationModuleRunningState = ^TLIBAutomationModuleRunningState;
+  TLIBAutomationSignalType = (lastCANSignal, lastLINSignal, lastSysVar, lastLocalVar, lastConst, lastFlexRaySignal);
+  PLIBAutomationSignalType = ^TLIBAutomationSignalType;
+  TLIBMPFuncSource = (lmfsSystemFunc, lmfsMPLib, lmfsInternal);
+  TLIBSimVarType = (lvtInteger, lvtDouble, lvtString, lvtCANMsg, lvtCANFDMsg, lvtLINMsg);
   // STIM
   TSTIMSignalStatus = (sssStopped, sssRunning, sssPaused);
   PSTIMSignalStatus = ^TSTIMSignalStatus;
@@ -1896,6 +1900,37 @@ function set_lin_signal_raw_value(const ALINSignal: PMPLINSignal; const AData: p
 function get_lin_signal_raw_value(const ALINSignal: PMPLINSignal; const AData: pbyte): uint64; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_flexray_signal_raw_value(const AFlexRaySignal: PMPFlexRaySignal; const AData: pbyte; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_flexray_signal_raw_value(const AFlexRaySignal: PMPFlexRaySignal; const AData: pbyte): uint64; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_all_modules(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_create_module(const AProgramName: PAnsichar; const ADisplayName: PAnsichar; AModuleId: pint64; AEntryPointId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_module(const AModuleId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_deploy_module(const AModuleId: int64; const AGraphicProgramWindowTitle: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_action_down(const AModuleId: int64; const AUpperActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; AActionId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_action_right(const AModuleId: int64; const ALeftActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; AActionId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_goto_down(const AModuleId: int64; const AUpperActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const AJumpLabel: PAnsichar; AActionId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_goto_right(const AModuleId: int64; const ALeftActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const AJumpLabel: PAnsichar; AActionId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_from_down(const AModuleId: int64; const AUpperActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const AJumpLabel: PAnsichar; AActionId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_group_down(const AModuleId: int64; const AUpperActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; AGroupId: pint64; AEntryPointId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_group_right(const AModuleId: int64; const ALeftActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; AGroupId: pint64; AEntryPointId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_action(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_set_action_nop(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_set_action_signal_read_write(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_set_action_api_call(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_set_action_expression(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_action_basic(const AModuleId: int64; const AActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_goto(const AModuleId: int64; const AActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const AJumpLabel: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_from(const AModuleId: int64; const AActionId: int64; const ADisplayName: PAnsichar; const AComment: PAnsichar; const AJumpLabel: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_nop(const AModuleId: int64; const AActionId: int64; const ANextDirectionIsDown: boolean; const AResultOK: boolean; const AJumpBackIfEnded: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_group(const AModuleId: int64; const AActionId: int64; const ARepeatCountType: TLIBAutomationSignalType; const ARepeatCountRepr: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_signal_read_write_list_clear(const AModuleId: int64; const AActionId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_signal_write_list_append(const AModuleId: int64; const AActionId: int64; const ADestSignalType: TLIBAutomationSignalType; const ASrcSignalType: TLIBAutomationSignalType; const ADestSignalExpr: PAnsichar; const ASrcSignalExpr: PAnsichar; AItemIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_signal_read_list_append(const AModuleId: int64; const AActionId: int64; const AIsConditionAND: boolean; const ADestSignalType: TLIBAutomationSignalType; const AMinSignalType: TLIBAutomationSignalType; const AMaxSignalType: TLIBAutomationSignalType; const ADestSignalExpr: PAnsichar; const AMinSignalExpr: PAnsichar; const AMaxSignalExpr: PAnsichar; AItemIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_api_call_arguments(const AModuleId: int64; const AActionId: int64; const AAPIType: TLIBMPFuncSource; const AAPIName: PAnsichar; const AAPIArgTypes: PLIBAutomationSignalType; const AAPIArgNames: PPAnsiChar; const AAPIArgExprs: PPAnsiChar; const AArraySize: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_api_call_result(const AModuleId: int64; const AActionId: int64; const ASignalType: TLIBAutomationSignalType; const ASignalExpr: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_expression(const AModuleId: int64; const AActionId: int64; const AxCount: int32; const AExpression: PAnsichar; const AArgumentTypes: PLIBAutomationSignalType; const AArgumentExprs: PPAnsiChar; const AResultType: TLIBAutomationSignalType; const AResultExpr: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_add_local_var(const AModuleId: int64; const AType: TLIBSimVarType; const AName: PAnsichar; const AInitValue: PAnsichar; const AComment: PAnsichar; AItemIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_local_var(const AModuleId: int64; const AItemIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_all_local_vars(const AModuleId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_delete_group_items(const AModuleId: int64; const AGroupId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
