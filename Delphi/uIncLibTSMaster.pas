@@ -585,10 +585,10 @@ type
   // Graphic Program
   TLIBAutomationModuleRunningState = (amrsNotRun, amrsPrepareRun, amrsRunning, amrsPaused, amrsStepping, amrsFinished);
   PLIBAutomationModuleRunningState = ^TLIBAutomationModuleRunningState;
-  TLIBAutomationSignalType = (lastCANSignal, lastLINSignal, lastSysVar, lastLocalVar, lastConst, lastFlexRaySignal);
+  TLIBAutomationSignalType = (lastCANSignal = 0, lastLINSignal, lastSysVar, lastLocalVar, lastConst, lastFlexRaySignal, lastImmediateValue, lastUnknown = $FFFFFFF);
   PLIBAutomationSignalType = ^TLIBAutomationSignalType;
   TLIBMPFuncSource = (lmfsSystemFunc, lmfsMPLib, lmfsInternal);
-  TLIBSimVarType = (lvtInteger, lvtDouble, lvtString, lvtCANMsg, lvtCANFDMsg, lvtLINMsg);
+  TLIBSimVarType = (lvtInteger = 0, lvtDouble, lvtString, lvtCANMsg, lvtCANFDMsg, lvtLINMsg, lvtUnknown = $FFFFFFF);
   // STIM
   TSTIMSignalStatus = (sssStopped, sssRunning, sssPaused);
   PSTIMSignalStatus = ^TSTIMSignalStatus;
@@ -1931,6 +1931,7 @@ function gpg_add_local_var(const AModuleId: int64; const AType: TLIBSimVarType; 
 function gpg_delete_local_var(const AModuleId: int64; const AItemIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function gpg_delete_all_local_vars(const AModuleId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function gpg_delete_group_items(const AModuleId: int64; const AGroupId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function gpg_configure_signal_read_write_list_delete(const AModuleId: int64; const AActionId: int64; const AItemIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
