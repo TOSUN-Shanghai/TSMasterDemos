@@ -1932,6 +1932,7 @@ function gpg_delete_local_var(const AModuleId: int64; const AItemIndex: int32): 
 function gpg_delete_all_local_vars(const AModuleId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function gpg_delete_group_items(const AModuleId: int64; const AGroupId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function gpg_configure_signal_read_write_list_delete(const AModuleId: int64; const AActionId: int64; const AItemIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_rbs_update_frame_by_header(const AFlexRay: PLIBFlexRay): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
