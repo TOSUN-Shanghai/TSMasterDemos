@@ -1537,10 +1537,12 @@ function tsdb_get_flexray_db_properties_by_address_verbose(const AAddr: pansicha
                                                 out AFrameCount: Integer;
                                                 out AECUCount: Integer;
                                                 out ASupportedChannelMask: Int64;
+                                                out AFlags: Int64;
                                                 AName: ppansichar; AComment: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_flexray_db_properties_by_index_verbose(ADBIndex: Integer; out ASignalCount: Integer;
                                                 out AFrameCount: Integer; out AECUCount: Integer;
                                                 out ASupportedChannelMask: Int64;
+                                                out AFlags: Int64;
                                                 AName: ppansichar; AComment: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdb_get_flexray_ecu_properties_by_address_verbose(const AAddr: pansichar; out ADBIndex: Integer;
                                                 out AECUIndex: Integer;

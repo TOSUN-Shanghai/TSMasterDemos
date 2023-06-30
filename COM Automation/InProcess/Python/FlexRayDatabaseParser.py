@@ -33,7 +33,7 @@ def parse_fibex(db, AFileName):
 
     # extract network info...
     # each network info
-    sgnCount, fmeCount, ecuCount, supportedChannelMask, sName, sComment = db.get_flexray_db_properties_by_index(0)
+    sgnCount, fmeCount, ecuCount, supportedChannelMask, flags, sName, sComment = db.get_flexray_db_properties_by_index(0)
     print('Network name:', sName, ', Network comment:', sComment, ', signal count =', sgnCount, ', frame count =', fmeCount, ', ecu count =', ecuCount)
 
     # each ecu info
