@@ -63,7 +63,11 @@ typedef double* pdouble;
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+#ifdef DLLTEST_EXPORT
+#define TSAPI(ret) __declspec(dllexport) ret __stdcall
+#else
 #define TSAPI(ret) __declspec(dllimport) ret __stdcall
+#endif
 
 #pragma pack(push)
 #pragma pack(1)
@@ -141,6 +145,7 @@ typedef struct _TDBProperties {
 	u64 FSupportedChannelMask;
 	char FName[DATABASE_STR_LEN];
 	char FComment[DATABASE_STR_LEN];
+	u64 FFlags;
 } TDBProperties, * PDBProperties;
 
 // TDBECUProperties for database ECU properties, size = 1040
@@ -804,8 +809,7 @@ extern "C" {
 #endif
 	TSAPI(void) finalize_lib_tsmaster(void);
 	TSAPI(s32) initialize_lib_tsmaster(const char* AAppName);
-	TSAPI(s32) initialize_lib_tsmaster_with_project(const char* AAppName, const char* ProjectPath);
-
+	TSAPI(s32) initialize_lib_tsmaster_with_project(const char* AAppName,const char* ProjectPath);
 	TSAPI(s32) tsapp_add_application(const char* AAppName);
 	TSAPI(s32) tsapp_add_cyclic_msg_can(const PCAN ACAN, const float APeriodMS);
 	TSAPI(s32) tsapp_add_cyclic_msg_canfd(const PCANFD ACANFD, const float APeriodMS);
@@ -833,8 +837,8 @@ extern "C" {
 	TSAPI(s32) tsapp_disconnect(void);
 	TSAPI(s32) tsapp_enable_bus_statistics(const bool AEnable);
 	TSAPI(s32) tsapp_enumerate_hw_devices(const ps32 ACount);
-	TSAPI(s32) tsapp_execute_python_string(const char* AString, const bool AIsSync, const bool AIsX64, char** AResultLog);
-	TSAPI(s32) tsapp_execute_python_script(const char* AFilePath, const bool AIsSync, const bool AIsX64, char** AResultLog);
+	TSAPI(s32) tsapp_execute_python_string(const char* AString, const char*AArguments, const bool AIsSync, const bool AIsX64, char** AResultLog);
+	TSAPI(s32) tsapp_execute_python_script(const char* AFilePath, const char*AArguments,const bool AIsSync, const bool AIsX64, char** AResultLog);
 	TSAPI(s32) tsapp_get_application_list(char** AAppNameList);
 	TSAPI(s32) tsapp_get_bus_statistics(const TLIBApplicationChannelType ABusType, const s32 AIdxChn, const TLIBCANBusStatistics AIdxStat, pdouble AStat);
 	TSAPI(s32) tsapp_get_can_channel_count(const ps32 ACount);
@@ -868,6 +872,9 @@ extern "C" {
 	TSAPI(void) tsfifo_enable_receive_fifo(void);
 	TSAPI(void) tsfifo_disable_receive_error_frames(void);
 	TSAPI(void) tsfifo_disable_receive_fifo(void);
+	TSAPI(s32) tsfifo_receive_flexray_msgs(PFlexRay AFlexRay,ps32 BufferSize, const s32 AIdxChn, const bool includeTX);
+
+
 	TSAPI(s32) tsfifo_read_can_buffer_frame_count(const s32 AIdxChn, ps32 ACount);
 	TSAPI(s32) tsfifo_read_can_rx_buffer_frame_count(const s32 AIdxChn, ps32 ACount);
 	TSAPI(s32) tsfifo_read_can_tx_buffer_frame_count(const s32 AIdxChn, ps32 ACount);
@@ -1017,8 +1024,8 @@ extern "C" {
 	//flexray rbs
 	TSAPI(s32) tscom_flexray_rbs_set_signal_value_by_address(const char* AAdrr,const double value);
 	TSAPI(s32) tscom_flexray_rbs_get_signal_value_by_address(const char* AAdrr, pdouble value);
-	TSAPI(s32) tscom_flexray_rbs_set_signal_value_by_element(const char* AClusterName, const char* AECUName, const char* AFrameName,const char* ASignalName, const double value);
-	TSAPI(s32) tscom_flexray_rbs_get_signal_value_by_element(const char* AClusterName, const char* AECUName, const char* AFrameName, const char* ASignalName, pdouble value);
+	TSAPI(s32) tscom_flexray_rbs_set_signal_value_by_element(const s32 AIdxChn,const char* AClusterName, const char* AECUName, const char* AFrameName,const char* ASignalName, const double value);
+	TSAPI(s32) tscom_flexray_rbs_get_signal_value_by_element(const s32 AIdxChn,const char* AClusterName, const char* AECUName, const char* AFrameName, const char* ASignalName, pdouble value);
 	TSAPI(s32) tscom_flexray_rbs_start();
 	TSAPI(s32) tscom_flexray_rbs_stop();
 	TSAPI(s32) tscom_flexray_rbs_is_running(bool* AIsRunning);
@@ -1043,8 +1050,8 @@ extern "C" {
 	TSAPI(s32) tsdb_unload_flexray_db(const s32 AId);
 	TSAPI(s32) tsdb_unload_flexray_dbs();
 	TSAPI(s32) tsdb_get_flexray_db_count(ps32 AId);
-	TSAPI(s32) tsdb_get_flexray_db_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, char** AName, char** AComment);
-	TSAPI(s32) tsdb_get_flexray_db_properties_by_index_verbose(s32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, char** AName, char** AComment);
+	TSAPI(s32) tsdb_get_flexray_db_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, ps64 AFlag, char** AName, char** AComment);
+	TSAPI(s32) tsdb_get_flexray_db_properties_by_index_verbose(s32 ADBIndex, ps32 ASignalCount, ps32 AFrameCount, ps32 AECUCount, ps64 ASupportedChannelMask, ps64 AFlag, char** AName, char** AComment);
 
 	TSAPI(s32) tsdb_get_flexray_ecu_properties_by_address_verbose(const char* AAddr, ps32 ADBIndex, ps32 AECUIndex, ps32 ATxFrameCount, ps32 ARxFrameCount, char** AName, char** AComment);
 	TSAPI(s32) tsdb_get_flexray_ecu_properties_by_index_verbose(s32 ADBIndex, s32 AECUIndex, ps32 ATxFrameCount, ps32 ARxFrameCount, char** AName, char** AComment);
@@ -1065,9 +1072,9 @@ extern "C" {
 	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBFrameProperties Avalue);
 	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
 	TSAPI(s32) tsdb_get_flexray_db_frame_properties_by_index(PDBFrameProperties Avalue);
-
-	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
+	
 	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx ,const s32 AIndex, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_flexray_db_signal_properties_by_index(PDBSignalProperties Avalue);
 
@@ -1089,8 +1096,9 @@ extern "C" {
 	TSAPI(s32) tsdb_get_can_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
 	TSAPI(s32) tsdb_get_can_db_frame_properties_by_index(PDBFrameProperties Avalue);
 
-	TSAPI(s32) tsdb_get_can_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_can_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_can_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
+
 	TSAPI(s32) tsdb_get_can_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_can_db_signal_properties_by_index(PDBSignalProperties Avalue);
 
@@ -1111,11 +1119,17 @@ extern "C" {
 	TSAPI(s32) tsdb_get_lin_db_frame_properties_by_address(const char* AAddr, PDBFrameProperties Avalue);
 	TSAPI(s32) tsdb_get_lin_db_frame_properties_by_index(PDBFrameProperties Avalue);
 
-	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_db_index(const s32 AIdxDB, const s32 AIndex, PDBSignalProperties Avalue);
+	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_frame_index(const s32 AIdxDB, const s32 Frameidx, const s32 AIndex, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_address(const char* AAddr, PDBSignalProperties Avalue);
 	TSAPI(s32) tsdb_get_lin_db_signal_properties_by_index(PDBSignalProperties Avalue);
 
+	//filter
+
+	TSAPI(s32)tsfifo_add_can_canfd_pass_filter(const s32 AIdxDB, const s32 AId, const bool AIsStd);
+	TSAPI(s32)tsfifo_delete_can_canfd_pass_filter(const s32 AIdxDB, const s32 AId);
+	TSAPI(s32)tsfifo_add_lin_pass_filter(const s32 AIdxDB, const s32 AId);
+	TSAPI(s32)tsfifo_delete_lin_pass_filter(const s32 AIdxDB, const s32 AId);
 
 
 #if defined ( __cplusplus )
