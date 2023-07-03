@@ -528,7 +528,7 @@ type
     sckAlways = 0, sckAppear, sckStatistics, sckRisingEdge, sckFallingEdge,
     sckMonotonyRising, sckMonotonyFalling, sckFollow, sckJump, sckNoChange
   );
-  TSignalStatisticsKind = (sskMin = 0, sskMax, sskAverage);
+  TSignalStatisticsKind = (sskMin = 0, sskMax, sskAverage, sskStdDeviation);
   TFlexRayCompuMethod = (fcmIdentical = 0, fcmLinear, fcmScaleLinear, fcmTextTable, fcmTABNoIntp, fcmFormula);
   // CAN bus statistics
   TLIBCANBusStatistics = (
