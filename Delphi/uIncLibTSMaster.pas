@@ -1955,6 +1955,27 @@ function flexray_rbs_update_frame_by_header(const AFlexRay: PLIBFlexRay): intege
 function gpg_configure_module(const AModuleId: int64; const AProgramName: PAnsichar; const ADisplayName: PAnsichar; const ARepeatCount: int32; const ASelected: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function add_path_to_environment(const APath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function delete_path_from_environment(const APath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_double_w_time(const ACompleteName: pansichar; const AValue: double; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int32_w_time(const ACompleteName: pansichar; const AValue: int32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint32_w_time(const ACompleteName: pansichar; const AValue: uint32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int64_w_time(const ACompleteName: pansichar; const AValue: int64; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint64_w_time(const ACompleteName: pansichar; const AValue: uint64; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint8_array_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pbyte; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int32_array_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pInt32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_double_array_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pdouble; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_string_w_time(const ACompleteName: pansichar; const AValue: pansichar; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_generic_w_time(const ACompleteName: pansichar; const AValue: pansichar; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_double_async_w_time(const ACompleteName: pansichar; const AValue: double; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int32_async_w_time(const ACompleteName: pansichar; const AValue: int32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint32_async_w_time(const ACompleteName: pansichar; const AValue: uint32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int64_async_w_time(const ACompleteName: pansichar; const AValue: int64; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint64_async_w_time(const ACompleteName: pansichar; const AValue: uint64; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint8_array_async_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pbyte; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int32_array_async_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pInt32; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int64_array_async_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pint64; ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_double_array_async_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pdouble; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_string_async_w_time(const ACompleteName: pansichar; const AValue: pansichar; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_generic_async_w_time(const ACompleteName: pansichar; const AValue: pansichar; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
