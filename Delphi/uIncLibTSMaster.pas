@@ -515,7 +515,8 @@ type
     ZLG_USB_DEVICE             = 6,
     ICS_USB_DEVICE             = 7,
     TS_TC1005_DEVICE           = 8,
-    CANABLE_USB_DEVICE         = 9
+    CANABLE_USB_DEVICE         = 9,
+    BUS_DEV_TYPE_COUNT         = 10
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -922,7 +923,7 @@ const
     'TC1034',
     'TC1018'
   );
-  XL_HWTYPE_MAX_CNT = 114;
+  XL_HWTYPE_MAX_CNT = 120;
   XL_HWTYPE_NAMES: array [0..XL_HWTYPE_MAX_CNT-1] of string = (
     'None',             // 0
     'VIRTUAL',             // 1
@@ -1037,7 +1038,13 @@ const
     'None',             // 110
     'None',             // 111
     'VN1530',             // 112
-    'VN1531'             // 113
+    'VN1531',            // 113
+    'VX1161A',           // 114
+    'VX1161B',           // 115
+    'None',              // 116
+    'None',              // 117
+    'None',              // 118
+    'None'               // 119
   );
 
 
