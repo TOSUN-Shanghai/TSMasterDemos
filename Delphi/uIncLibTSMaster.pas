@@ -1983,6 +1983,7 @@ function set_system_var_int64_array_async_w_time(const ACompleteName: pansichar;
 function set_system_var_double_array_async_w_time(const ACompleteName: pansichar; const ACount: int32; const AValue: pdouble; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_system_var_string_async_w_time(const ACompleteName: pansichar; const AValue: pansichar; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_system_var_generic_async_w_time(const ACompleteName: pansichar; const AValue: pansichar; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_signal_startbit_by_pdu_offset(const AStartBitInPDU: int32; const AIsPDUIntel: boolean; const APDUStartBit: int32; const APDUBitLength: int32; AActualStartBit: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
