@@ -233,9 +233,47 @@ type
 	  FReserved1: UInt64;           // 8 reserved bytes
 	  FReserved2: UInt64;           // 8 reserved bytes
 	  FTimeUs: UInt64;              // timestamp in us
-	  FData: array[0..253] of Byte;// 254 data bytes
+	  FData: array[0..253] of Byte; // 254 data bytes
   end;
   PLIBFlexRay = ^TLIBFlexRay;
+
+  // Ethernet Frame 28 B
+  TLIBEthernetHeader = packed record
+    FIdxChn: byte;                             // app channel index starting from 0 = Network index
+	  FIdxSwitch: byte;                          // Network's switch index
+    FIdxPort: byte;                            // Network's switch's port index, 0~127: measurement port, 128~255: virtual port
+	  FDir: byte;                                // 0 = Rx, 1 = Tx, 2 = TxRq
+	  FReserved0: byte;                          // 1 padding byte
+    FReserved1: byte;                          // 1 padding byte
+    FEthernetPayloadLength: word;              // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
+	  FProperties: uint32;                       // Bit 0
+	  FTimeUs: uint64;                           // timestamp in us
+    FEthernetDataPointer: pbyte;               // data pointer
+{$IFDEF WIN32}
+    FPaddings: uint32;                         // to be compatible with x64
+{$ENDIF}
+    // actual data bytes...
+    procedure InitWithData(const AData: pbyte; const ALength: word);
+    function  ToDisplayString: string;
+    function  GetTX: Boolean;
+    procedure SetTX(const Value: Boolean);
+    function  ActualDataPointer: pbyte;
+    function  TotalEthernetPacketLength: integer;
+    function  ToETHFrameHash: integer;
+    function  EthernetPayloadPointer: pbyte;   // ethernet data pointer + destination MAC (6B) + source MAC (6B) + ethernet type (2B)
+    function  DestinationMACAddr: pbyte;
+    function  SourceMACAddr: pbyte;
+    function  EthernetTypeAddr: pbyte;
+    function  EthernetType: word;
+    // properties
+    property IsTX: Boolean read GetTX write SetTX;
+  end;
+  PLIBEthernetHeader = ^TLIBEthernetHeader;
+  TLIBEthernetMAX = packed record
+    FHeader: TLIBEthernetHeader;
+    FBytes: array[0..1612-1] of byte;        // starting by destination MAC, source MAC, ethernet type, payload...
+  end;
+  PEthernetMAX = ^TLIBEthernetMAX;
 
   TLibFlexRayClusterParameters = packed record
     // general parameters
@@ -433,25 +471,6 @@ type
     //bit 7:帧类型：0-静态，1-动态
    end;
 
-  // Ethernet Frame 38 B
-  TLIBEthernet = packed record
-    FIdxChn: byte;                             // app channel index starting from 0
-	  FDir: byte;                                // 0 = Rx, 1 = Tx, 2 = TxRq
-	  FType: byte;                               // Ethernet type field which indicates protocol for ethernet payload data
-	  FReserved0: byte;                          // 1 padding byte
-	  FSourceAddress: array[0..5] of byte;       // Source MAC Address
-	  FDestinationAddress: array[0..5] of byte;  // Destination MAC Address
-	  FTPID: word;                               // TPID when VLAN tag valid, zero when no VLAN
-	  FTCI: word;                                // TCI when VLAN tag valid, zero when no VLAN
-	  FTimeUs: int64;                            // timestamp in us
-	  FPayloadLength: word;                      // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header)
-	  FPayload: pbyte;                           // Ethernet payload data (without Ethernet header)
-{$IFDEF WIN32}
-    FPadding: Cardinal;                        // to be compatible with x64
-{$ENDIF}
-  end;
-  PLIBEthernet = ^TLIBEthernet;
-
   PLibGPSData = ^TLibGPSData;
   TLibGPSData = packed record
      FTimeUS: Uint64;          // timestamp in us
@@ -493,6 +512,7 @@ type
   TCANQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibCAN); stdcall;
   TCANFDQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibCANFD); stdcall;
   TFlexRayQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: Plibflexray); stdcall;
+  TEthernetQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibEthernetHeader); stdcall;
   TLINQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibLIN); stdcall;
   TLIBTSMasterLogger = procedure(const AStr: PAnsiChar; const ALevel: Integer); stdcall;
   TFirmwareUpdateCallback = procedure(const AOpaque: TObject; const AStatus: UInt32; const APercentage100: Single); stdcall;
@@ -1987,6 +2007,16 @@ function db_get_signal_startbit_by_pdu_offset(const ASignalStartBitInPDU: int32;
 function ui_show_save_file_dialog(const ATitle: pansichar; const AFileTypeDesc: pansichar; const AFilter: pansichar; const ASuggestFileName: pansichar; ADestinationFileName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function ui_show_open_file_dialog(const ATitle: pansichar; const AFileTypeDesc: pansichar; const AFilter: pansichar; const ASuggestFileName: pansichar; ADestinationFileName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function ui_show_select_directory_dialog(ADestinationDirectory: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function transmit_ethernet_async(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function transmit_ethernet_sync(const AEthernetHeader: PLIBEthernetHeader; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function inject_ethernet_frame(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_ethernet(const AHandle: int32; const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_ethernet_channel_count(const ACount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_ethernet_channel_count(ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function transmit_ethernet_async_wo_pretx(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_can_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_lin_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_flexray_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
@@ -2826,12 +2856,129 @@ begin
 
 end;
 
+{ TLIBEthernetHeader }
+
+function TLIBEthernetHeader.ActualDataPointer: pbyte;
+begin
+  result := pbyte(@self);
+  Inc(result, SizeOf(Self));
+
+end;
+
+function TLIBEthernetHeader.DestinationMACAddr: pbyte;
+begin
+  result := FEthernetDataPointer;
+
+end;
+
+function TLIBEthernetHeader.EthernetPayloadPointer: pbyte;
+begin
+  result := FEthernetDataPointer;
+  Inc(result, 6{dest MAC} + 6{source MAC} + 2{ethernet type});
+
+end;
+
+function TLIBEthernetHeader.EthernetType: word;
+begin
+  var p: pbyte;
+  p := FEthernetDataPointer;
+  Inc(p, 6{dest MAC} + 6{source MAC});
+  result := pword(p)^;
+
+end;
+
+function TLIBEthernetHeader.EthernetTypeAddr: pbyte;
+begin
+  result := FEthernetDataPointer;
+  Inc(result, 6{dest MAC} + 6{source MAC});
+
+end;
+
+function TLIBEthernetHeader.GetTX: Boolean;
+begin
+  result := fdir <> 0;
+
+end;
+
+procedure TLIBEthernetHeader.InitWithData(const AData: pbyte;
+  const ALength: word);
+begin
+  FIdxChn := 0;
+  FDir := 0;
+  FProperties := 0;
+  FReserved0 := 0;
+  FReserved1 := 0;
+  FIdxSwitch := 0;
+  FIdxPort := 0;
+  FTimeUs := 0;
+  FEthernetPayloadLength := ALength;
+  FEthernetDataPointer := ActualDataPointer;
+
+end;
+
+procedure TLIBEthernetHeader.SetTX(const Value: Boolean);
+begin
+  if value then begin
+    fdir := 1;
+  end else begin
+    fdir := 0;
+  end;
+
+end;
+
+function TLIBEthernetHeader.SourceMACAddr: pbyte;
+begin
+  result := FEthernetDataPointer;
+  Inc(result, 6{dest MAC});
+
+end;
+
+function TLIBEthernetHeader.ToDisplayString: string;
+var
+  i: integer;
+  p: pbyte;
+begin
+  p := EthernetPayloadPointer;
+  if Assigned(p) then begin
+    result := '';
+    for i:=0 to FEthernetPayloadLength - 1 do begin
+      result := result + p^.ToHexString(2);
+      if i < FEthernetPayloadLength-1 then result := result + ' ';
+    end;
+  end else begin
+    result := 'n.a.';
+  end;
+  result := 'IdxNetwork=' + fidxchn.tostring + ',' +
+            'IdxSwitch=' + fidxswitch.toString + ',' +
+            'IdxPort=' + fidxport.ToString + ',' +
+            'Dir=' + fdir.ToString + ',' +
+            'Properties=' + fproperties.tohexstring + ',' +
+            // 'Source=' + MACAddrToString(SourceMACAddr) + ',' +
+            // 'Destination=' + MACAddrToString(destinationmacaddr) + ',' +
+            'Time=' + (FTimeUs / 1000000.0).ToString + ',' +
+            'EthPayloadLen=' + FethernetPayloadLength.ToString + ',' +
+            'Payload=' + result;
+
+end;
+
+function TLIBEthernetHeader.ToETHFrameHash: integer;
+begin
+  result := -1;
+
+end;
+
+function TLIBEthernetHeader.TotalEthernetPacketLength: integer;
+begin
+  result := SizeOf(self) + 6 + 6 + 2 + FEthernetPayloadLength;
+
+end;
+
 initialization
   Assert(sizeof(TLIBCAN) = 24, 'TLIBCAN.size = 24');
   Assert(sizeof(TLIBLIN) = 23, 'TLIBLIN.size = 23');
   Assert(sizeof(TLIBCANFD) = 80, 'TLIBCANFD.size = 80');
   Assert(sizeof(TLIBFlexRay) = 302, 'TFlexRay.size = 302');
-  Assert(sizeof(TLIBEthernet) = 38, 'TEthernet.size = 38');
+  Assert(sizeof(TLIBEthernetHeader) = 28, 'TEthernetHeader.size = 28');
   Assert(sizeof(Trealtime_comment_t) = 24, 'Trealtime_comment_t.size = 24');
   Assert(sizeof(TLibSystemVar) = 36, 'TLibSystemVar.size = 36');
   Assert(SizeOf(TLibFlexRayClusterParameters) = 440, 'TLibFlexRayClusterParameters.size = 440');
