@@ -722,6 +722,8 @@ type
 	  FLength: int32;
 	  FFactor: Double;
 	  FOffset: Double;
+    FActualStartBit: Int32;  // added 2023-07-18
+    FActualUpdateBit: Int32; // added 2023-07-18
   end;
   PMPFlexRaySignal = ^TMPFlexRaySignal;
   // TMPDBProperties for database properties, size = 1056
@@ -1618,8 +1620,8 @@ function tsdb_get_flexray_signal_properties_by_address_verbose(const AAddr: pans
                                                     out ASignalType: TSignalType;
                                                     out ACompuMethod: TFlexRayCompuMethod;
                                                     out AIsIntel: WordBool;
-                                                    out AStartBit: Integer;
-                                                    out AUpdateBit: Integer;
+                                                    out AActualStartBit: Integer;
+                                                    out AActualUpdateBit: Integer;
                                                     out ALength: Integer; out AFactor: Double;
                                                     out AOffset: Double; out AInitValue: Double;
                                                     AName: ppansichar;
@@ -1630,8 +1632,8 @@ function tsdb_get_flexray_signal_properties_by_index_verbose(ADBIndex: Integer; 
                                                     out ASignalType: TSignalType;
                                                     out ACompuMethod: TFlexRayCompuMethod;
                                                     out AIsIntel: WordBool;
-                                                    out AStartBit: Integer;
-                                                    out AUpdateBit: Integer; out ALength: Integer;
+                                                    out AActualStartBit: Integer;
+                                                    out AActualUpdateBit: Integer; out ALength: Integer;
                                                     out AFactor: Double; out AOffset: Double;
                                                     out AInitValue: Double; AName: ppansichar;
                                                     AComment: ppansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2027,6 +2029,7 @@ function eth_build_ipv4_udp_packet(const AHeader: PLIBEthernetHeader; const ASrc
 function register_system_var_change_event(const ACompleteName: pansichar; const AEvent: TlibOnSysVarChange): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function unregister_system_var_change_event(const ACompleteName: pansichar; const AEvent: TlibOnSysVarChange): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function unregister_system_var_change_events(const AEvent: TlibOnSysVarChange): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function block_current_pretx(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
