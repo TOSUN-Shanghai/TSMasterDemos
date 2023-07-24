@@ -539,7 +539,8 @@ type
     ICS_USB_DEVICE             = 7,
     TS_TC1005_DEVICE           = 8,
     CANABLE_USB_DEVICE         = 9,
-    BUS_DEV_TYPE_COUNT         = 10
+    TS_WIRELESS_OBD            = 10,
+    BUS_DEV_TYPE_COUNT         = 11
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -916,7 +917,7 @@ type
                                        const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
 
 const
-  BUS_TOOL_DEVICE_TYPE_COUNT = 9;
+  BUS_TOOL_DEVICE_TYPE_COUNT = 11;
   BUS_TOOL_DEVICE_NAMES: array [0..BUS_TOOL_DEVICE_TYPE_COUNT-1] of string = (
     'Unknown bus tool',
     'TS Virtual Device',
@@ -926,7 +927,9 @@ const
     'Kvaser',
     'ZLG',
     'IntrepidCS',
-    'TOSUN TC1005'
+    'TOSUN TC1005',
+    'CANAble',
+    'TOSUN Wireless-OBD'
   );
   TS_HWTYPE_MAX_CNT = 17;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
