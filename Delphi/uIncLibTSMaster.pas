@@ -542,7 +542,8 @@ type
     TS_TC1005_DEVICE           = 8,
     CANABLE_USB_DEVICE         = 9,
     TS_WIRELESS_OBD            = 10,
-    BUS_DEV_TYPE_COUNT         = 11
+    TS_USB_DEVICE_EX           = 11,
+    BUS_DEV_TYPE_COUNT         = 12
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
