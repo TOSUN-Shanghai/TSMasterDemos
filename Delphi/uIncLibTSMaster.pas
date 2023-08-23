@@ -366,7 +366,7 @@ type
   end;
   PLibFlexRayControllerParameters = ^TLibFlexRayControllerParameters;
 
-    //Flexray
+  //Flexray
   PLibFlexray_controller_config = ^TLibFlexray_controller_config;
   TLibFlexray_controller_config = packed record
      NETWORK_MANAGEMENT_VECTOR_LENGTH: UInt8;
@@ -487,6 +487,63 @@ type
      FIdxChn:Byte;
   end;
 
+  //Ethernet
+  PLibEth_CMD_config = ^TLibEth_CMD_config;
+  TLibEth_CMD_config = packed record
+    eth_config0: Byte;
+    //bit 0-1 phy_type:2; //0: 100base-Tx/1000Base-T, 1: 100/1000Base-T1, 2,3: rev
+    //bit2 auto_neg : 1;
+    //bit3-4: speed : 2; //0-10mbps, 1-100mbps, 2-1000mbps
+    //bit5: is_master : 1;
+    //bit6-7 loop : 2;//0: no loop, 1: mac_loop, 2: phy-loop, 3: phy_remote loop
+    eth_config1: Byte;
+    //bit0 wakeup : 1;//0-disable, 1-enable
+    //bit1-4 test_mode : 4;
+    //  0x00 normal operation  other test mode
+    //bit5-6 tx_mode : 2;
+    //  0x00 enable 0x01 disable
+    //bit7  enable : 1;
+    eth_config2: Byte;
+    //bit0-4 phy_addr : 5;
+    //bit5 accept wrong crc frame:1
+    eth_config3: Byte;
+    //bit0: disable_promiscuous_mode
+    //bit1: enable_recieve_all
+    //bit2-3: enable_srouce_fileter: 0 disable 1: enable 2 inverse
+    //bit4: inverse_dest_fileter
+    //bit5-6: ControlFrames: 0: block all  1: forward all  2: forward by filter
+    //bit7: enable rx broadcast frame
+    filter_config0: Byte;
+    //bit0-1: multicast frame filter: 0: no filter  1: perfect 2: hash 3: hash and perfect
+    //bit2-3: unicast frame filter: 0: perfect 1: hash 2: hash and perfect
+    filter_config1: Byte;
+    filter_hash_table: UInt64;
+    //bit0-47: mac addr For example, if 0x112233445566 is received
+    //          (0x11 in lane 0 of the first column) on the MII as the destination address, then the
+    //          MacAddress0 Register [47:0] is compared with 0x665544332211
+    //          perfect0 is always enable
+    filter_perfect0: UInt64;
+    //bit63: AE: Address Enable, When this bit is set, the address filter module uses the second MAC address for perfect
+    //          filtering. When this bit is reset, the address filter module ignores the address for filtering.
+    //bit62: SA: Source Address:
+    //          When this bit is set, the MAC Address1[47:0] is used to compare with the SA fields of the
+    //          received packet. When this bit is reset, the MAC Address x[47:0] is used to compare with the
+    //          DA fields of the received packet.
+    //bit56-61: MBC[5:0]: Mask Byte Control
+    //          These bits are mask control bits for comparing each of the MAC Address bytes. When set
+    //          high, the MAC does not compare the corresponding byte of received DA or SA with the
+    //          contents of MAC Address1 registers. Each bit controls the masking of the bytes as follows:
+    //          Bit 29: Register 194[15:8]
+    //          Bit 28: Register 194[7:0]
+    //          Bit 27: Register 195[31:24]
+    //          ..
+    //          Bit 24: Register 195[7:0]
+    //          You can filter a group of addresses (known as group address filtering) by masking one or
+    //          more bytes of the address.
+    //bit0-47:  same as filter_perfect0
+    filter_perfect1: UInt64;
+    rev: array[0..5] of UInt64;  //48
+  end; //9*8 + 6 = 80
   //TSLogger
   PEMMC_RECORD_DATA = ^TEMMC_RECORD_DATA;
   TEMMC_RECORD_DATA = packed record
