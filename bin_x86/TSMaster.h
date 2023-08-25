@@ -135,6 +135,8 @@ typedef struct _TFlexRaySignal {
 	s32    FLength;
 	double FFactor;
 	double FOffset;
+	s32    FActualStartBit;
+	s32    FActualUpdateBit;
 } TFlexRaySignal, * PFlexRaySignal;
 
 typedef struct _TDBProperties {
@@ -209,7 +211,31 @@ typedef struct _TDBSignalProperties {
 	char FName[DATABASE_STR_LEN];
 	char FComment[DATABASE_STR_LEN];
 } TDBSignalProperties, * PDBSignalProperties;
+typedef struct _TLIBGPSData
+{
+	u64 FTimeUS;
 
+	u32 UTCTime;
+	u32 UTCDate;
+
+	float Latitude;
+
+	float Longitude;
+
+	float Speed;
+
+	float Direct;
+
+	float Altitude;
+
+	u8 N_S;
+
+	u8 E_W;
+
+	u8 Satellite;
+
+	u8 FIdxChn;
+}TLIBGPSData, * PLIBGPSData;
 // CAN frame type ================================================
 typedef struct _TCAN {
 	u8 FIdxChn;
@@ -803,6 +829,7 @@ typedef void(__stdcall* TCANFDEvent)(const ps32 AObj, const PCANFD ACANFD);
 typedef void(__stdcall* TLINEvent)(const ps32 AObj, const PLIN ALIN);
 typedef void(__stdcall* TLogger)(const char* AStr, const s32 ALevel);
 typedef void(__stdcall* TFlexRayEvent)(const ps32 AObj, const PFlexRay AFlexRay);
+typedef void(__stdcall* TGPSEvent)(const ps32 AObj, const PLIBGPSData AGPS);
 // imported APIs
 #if defined ( __cplusplus )
 extern "C" {
@@ -842,6 +869,8 @@ extern "C" {
 	TSAPI(s32) tsapp_get_application_list(char** AAppNameList);
 	TSAPI(s32) tsapp_get_bus_statistics(const TLIBApplicationChannelType ABusType, const s32 AIdxChn, const TLIBCANBusStatistics AIdxStat, pdouble AStat);
 	TSAPI(s32) tsapp_get_can_channel_count(const ps32 ACount);
+	TSAPI(s32) tsapp_set_flexray_channel_count(const s32 ACount);
+	TSAPI(s32) tsapp_get_flexray_channel_count(const ps32 ACount);
 	TSAPI(s32) tsapp_get_current_application(const char** AAppName);
 	TSAPI(s32) tsapp_get_error_description(const s32 ACode, char** ADesc);
 	TSAPI(s32) tsapp_get_fps_can(const s32 AIdxChn, const s32 AIdentifier, ps32 AFPS);
@@ -955,6 +984,7 @@ extern "C" {
 	TSAPI(s32) tscom_can_rbs_stop(void);
 	TSAPI(s32) tscom_can_rbs_is_running(bool* AIsRunning);
 	TSAPI(s32) tscom_can_rbs_configure(const bool AAutoStart, const bool AAutoSendOnModification, const bool AActivateNodeSimulation, const TLIBRBSInitValueOptions AInitValueOptions);
+	
 	TSAPI(s32) tscom_can_rbs_activate_all_networks(const bool AEnable, const bool AIncludingChildren);
 	TSAPI(s32) tscom_can_rbs_activate_network_by_name(const s32 AIdxChn, const bool AEnable, const char* ANetworkName, const bool AIncludingChildren);
 	TSAPI(s32) tscom_can_rbs_activate_node_by_name(const s32 AIdxChn, const bool AEnable, const char* ANetworkName, const char* ANodeName, const bool AIncludingChildren);
@@ -963,6 +993,21 @@ extern "C" {
 	TSAPI(s32) tscom_can_rbs_get_signal_value_by_address(const char* ASymbolAddress, double* AValue);
 	TSAPI(s32) tscom_can_rbs_set_signal_value_by_element(const s32 AIdxChn, const char* ANetworkName, const char* ANodeName, const char* AMsgName, const char* ASignalName, const double AValue);
 	TSAPI(s32) tscom_can_rbs_set_signal_value_by_address(const char* ASymbolAddress, const double AValue);
+	
+	TSAPI(s32) tscom_lin_rbs_start(void);
+	TSAPI(s32) tscom_lin_rbs_stop(void);
+	TSAPI(s32) tscom_lin_rbs_activate_all_networks(const bool AEnable, const bool AIncludingChildren);
+	TSAPI(s32) tscom_lin_rbs_activate_network_by_name(const s32 AIdxChn, const bool AEnable, const char* ANetworkName, const bool AIncludingChildren);
+	TSAPI(s32) tscom_lin_rbs_activate_node_by_name(const s32 AIdxChn, const bool AEnable, const char* ANetworkName, const char* ANodeName, const bool AIncludingChildren);
+	TSAPI(s32) tscom_lin_rbs_activate_message_by_name(const s32 AIdxChn, const bool AEnable, const char* ANetworkName, const char* ANodeName, const char* AMsgName);
+	TSAPI(s32) tscom_lin_rbs_get_signal_value_by_element(const s32 AIdxChn, const char* ANetworkName, const char* ANodeName, const char* AMsgName, const char* ASignalName, double* AValue);
+	TSAPI(s32) tscom_lin_rbs_get_signal_value_by_address(const char* ASymbolAddress, double* AValue);
+	TSAPI(s32) tscom_lin_rbs_set_signal_value_by_element(const s32 AIdxChn, const char* ANetworkName, const char* ANodeName, const char* AMsgName, const char* ASignalName, const double AValue);
+	TSAPI(s32) tscom_lin_rbs_set_signal_value_by_address(const char* ASymbolAddress, const double AValue);
+
+	//camera
+	TSAPI(s32) tsapp_unlock_camera_channel(const s32 AChnIdx);
+
 	TSAPI(s32) tsdb_get_signal_value_can(const PCAN ACAN, const char* AMsgName, const char* ASgnName, double* AValue);
 	TSAPI(s32) tsdb_get_signal_value_canfd(const PCANFD ACANFD, const char* AMsgName, const char* ASgnName, double* AValue);
 	TSAPI(s32) tsdb_set_signal_value_can(const PCAN ACAN, const char* AMsgName, const char* ASgnName, const double AValue);
@@ -986,6 +1031,14 @@ extern "C" {
 	TSAPI(s32) tslog_stop_online_replay(const s32 AIndex);
 	TSAPI(s32) tslog_stop_online_replays(void);
 	TSAPI(s32) tslog_get_online_replay_status(const s32 AIndex, TLIBOnlineReplayStatus* AStatus, float* AProgressPercent100);
+
+	//gps 
+	TSAPI(s32) tsapp_logger_enable_gps_module(s32 AChnIdx, s32 AEnable, s32 ATimeoutMS);
+	TSAPI(s32) tsapp_reset_gps_module(s32 AChnIdx, s32 AInitBaudrate, s32 ATargetBaudrate, s32 ATimeoutMS);
+	TSAPI(s32) tsapp_get_gps_data_async(s32 AChnIdx, PLIBGPSData GPSData);
+	TSAPI(s32) tsapp_register_event_gps(ps32 AObj,const TGPSEvent ACallBack);
+	TSAPI(s32) tsapp_unregister_event_gps(ps32 AObj, const TGPSEvent ACallBack);
+
 
 	//flexray 
 
@@ -1046,6 +1099,10 @@ extern "C" {
 	TSAPI(s32)tsapp_get_system_constant_value_by_index(s32 AIdxType, s32 AIdxValue,char** AName,pdouble AValue,char**ADesc);
 
 	//Flexray db info
+	TSAPI(s32) tsdb_save_settings(void);
+	TSAPI(s32) db_get_can_db_index_by_id(u32 AID, ps32 AIdx);
+	TSAPI(s32) db_get_lin_db_index_by_id(u32 AID, ps32 AIdx);
+	TSAPI(s32) db_get_flexray_db_index_by_id(u32 AID, ps32 AIdx);
 	TSAPI(s32) tsdb_load_flexray_db(const char* AFRFile, const char* ASupportedChannels, pu32 AId);
 	TSAPI(s32) tsdb_unload_flexray_db(const s32 AId);
 	TSAPI(s32) tsdb_unload_flexray_dbs();
