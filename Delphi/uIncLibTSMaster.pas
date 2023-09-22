@@ -2102,6 +2102,17 @@ function eth_ip_calc_header_checksum(const AHeader: PLIBEthernetHeader; const AO
 function eth_udp_calc_checksum(const AHeader: PLIBEthernetHeader; const AUDPPayloadAddr: pbyte; const AUDPPayloadLength: word; const AOverwriteChecksum: boolean; AChecksum: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_udp_calc_checksum_on_frame(const AHeader: PLIBEthernetHeader; const AOverwriteChecksum: boolean; AChecksum: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_log_ethernet_frame_data(const AHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_clear_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_load_configuration(const AFilePath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_save_configuration(const AFilePath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_run_item_by_name(const AName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_stop_item_by_name(const AName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_run_item_by_index(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_stop_item_by_index(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_verdict_by_index(const AIndex: int32; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_result_by_name(const AName: pansichar; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_result_by_index(const AIndex: int32; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_verdict_by_name(const AName: pansichar; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
