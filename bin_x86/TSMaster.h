@@ -1,4 +1,4 @@
-#ifndef _TSMaster_H
+﻿#ifndef _TSMaster_H
 #define _TSMaster_H
 
 #include <math.h>
@@ -101,6 +101,17 @@ typedef double* pdouble;
     typedef t property__tmp_type_##n
 #define GET(n) property__tmp_type_##n property__get_##n() 
 #define SET(n) void property__set_##n(const property__tmp_type_##n& value)   
+
+// C++ array property definitino
+#define ARRAY_PROPERTY(t,n,s) __declspec( property ( put = property__set_##n, get = property__get_##n ) ) t n[s];\
+    typedef t property__tmp_type_##n
+#define READONLY_ARRAY_PROPERTY(t,n,s) __declspec( property (get = property__get_##n) ) t n[s];\
+    typedef t property__tmp_type_##n
+#define WRITEONLY_ARRAY_PROPERTY(t,n,s) __declspec( property (put = property__set_##n) ) t n[s];\
+    typedef t property__tmp_type_##n
+#define ARRAY_GET(n) property__tmp_type_##n property__get_##n(int index)
+#define ARRAY_SET(n) void property__set_##n(int index, const property__tmp_type_##n& value)
+
 
 const u8 DLC_DATA_BYTE_CNT[16] = {
 	0, 1, 2, 3, 4, 5, 6, 7,
@@ -299,10 +310,11 @@ typedef struct _TCAN {
 	SET(is_err)
 	{
 		if (value) {
-			FProperties = FProperties & (~MASK_CANProp_ERROR);
+			FProperties = FProperties | MASK_CANProp_ERROR;
+			
 		}
 		else {
-			FProperties = FProperties | MASK_CANProp_ERROR;
+			FProperties = FProperties & (~MASK_CANProp_ERROR);
 		}
 	}
 	// load data bytes -------------------------------------------
@@ -412,10 +424,11 @@ typedef struct _TCANFD {
 	SET(is_err)
 	{
 		if (value) {
-			FProperties = FProperties & (~MASK_CANProp_ERROR);
+			FProperties = FProperties | MASK_CANProp_ERROR;
+
 		}
 		else {
-			FProperties = FProperties | MASK_CANProp_ERROR;
+			FProperties = FProperties & (~MASK_CANProp_ERROR);
 		}
 	}
 	// is_edl ----------------------------------------------------
@@ -716,7 +729,200 @@ typedef struct _TFlexRay {
         }
     }
 } TFlexRay, *PFlexRay;
+typedef struct _TLIBFlexray_controller_config {
+	u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;
+	u8 PAYLOAD_LENGTH_STATIC;
+	u16 FReserved;
+	u16 LATEST_TX;
+	// __ prtc1Control
+	u16 T_S_S_TRANSMITTER;
+	u8 CAS_RX_LOW_MAX;
+	u8 SPEED;      //0 for 10m, 1 for 5m, 2 for 2.5m, convert from Database
+	u16 WAKE_UP_SYMBOL_RX_WINDOW;
+	u8 WAKE_UP_PATTERN;
+	// __ prtc2Control
+	u8 WAKE_UP_SYMBOL_RX_IDLE;
+	u8 WAKE_UP_SYMBOL_RX_LOW;
+	u8 WAKE_UP_SYMBOL_TX_IDLE;
+	u8 WAKE_UP_SYMBOL_TX_LOW;
+	// __ succ1Config
+	u8 channelAConnectedNode;      // Enable ChannelA: 0: Disable 1: Enable
+	u8 channelBConnectedNode;      // Enable ChannelB: 0: Disable 1: Enable
+	u8 channelASymbolTransmitted; // Enable Symble Transmit function of Channel A: 0: Disable 1: Enable
+	u8 channelBSymbolTransmitted; // Enable Symble Transmit function of Channel B: 0: Disable 1: Enable
+	u8 ALLOW_HALT_DUE_TO_CLOCK;
+	u8 SINGLE_SLOT_ENABLED;        // FALSE_0, TRUE_1
+	u8 wake_up_idx;                // Wake up channe: 0:ChannelA�� 1:ChannelB
+	u8 ALLOW_PASSIVE_TO_ACTIVE;
+	u8 COLD_START_ATTEMPTS;
+	u8 synchFrameTransmitted;      // Need to transmit sync frame
+	u8 startupFrameTransmitted;    // Need to transmit startup frame
+	// __ succ2Config
+	u32 LISTEN_TIMEOUT;
+	u8 LISTEN_NOISE;               //2_16
+	// __ succ3Config
+	u8 MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE;
+	u8 MAX_WITHOUT_CLOCK_CORRECTION_FATAL;
+	u8 REVERS0;                    //Memory Align
+	// __ gtuConfig
+	// __ gtu01Config
+	u32 MICRO_PER_CYCLE;
+	// __ gtu02Config
+	u16 Macro_Per_Cycle;
+	u8 SYNC_NODE_MAX;
+	u8 REVERS1;  //Memory Align
+	// __ gtu03Config
+	u8 MICRO_INITIAL_OFFSET_A;
+	u8 MICRO_INITIAL_OFFSET_B;
+	u8 MACRO_INITIAL_OFFSET_A;
+	u8 MACRO_INITIAL_OFFSET_B;
+	// __ gtu04Config
+	u16 N_I_T;
+	u16 OFFSET_CORRECTION_START;
+	// __ gtu05Config
+	u8 DELAY_COMPENSATION_A;
+	u8 DELAY_COMPENSATION_B;
+	u8 CLUSTER_DRIFT_DAMPING;
+	u8 DECODING_CORRECTION;
+	// __ gtu06Config
+	u16 ACCEPTED_STARTUP_RANGE;
+	u16 MAX_DRIFT;
+	// __ gtu07Config
+	u16 STATIC_SLOT;
+	u16 NUMBER_OF_STATIC_SLOTS;
+	// __ gtu08Config
+	u8 MINISLOT;
+	u8 REVERS2;  //Memory Align
+	u16 NUMBER_OF_MINISLOTS;
+	// __ gtu09Config
+	u8 DYNAMIC_SLOT_IDLE_PHASE;
+	u8 ACTION_POINT_OFFSET;
+	u8 MINISLOT_ACTION_POINT_OFFSET;
+	u8 REVERS3;  //Memory Align
+	// __ gtu10Config
+	u16 OFFSET_CORRECTION_OUT;
+	u16 RATE_CORRECTION_OUT;
+	// __ gtu11Config
+	u8 EXTERN_OFFSET_CORRECTION;
+	u8 EXTERN_RATE_CORRECTION;
+	//
+	u8 config_byte1;  //Memory Align
 
+	u8 config_byte;  						// bit0: 1:Channel A set termination resistor  0:Channel A not set termination resistor
+	// bit1: 1:Channel B set termination resistor  0:Channel B not set termination resistor
+	// bit2: 1:enable FIFO     0:disable FIFO
+	// bit4: 1:cha enable Bridging    0:cha disable Bridging
+	// bit5: 1:chb enable Bridging    0:chb disable Bridging
+	// bit6: 1:not ignore NULL Frame  0: ignore NULL Frame
+}TLIBFlexray_controller_config, * PLibFlexray_controller_config;
+typedef struct _TLIBTrigger_def {
+	u16 slot_id;
+	u8 frame_idx;
+	u8 cycle_code;//BASE-CYCLE + CYCLE-REPETITION
+	u8 config_byte;
+	// bit0: enanle A
+	// bit1: enanle B
+	// bit2: is NM msg
+	// bit3: 0 :cycle ，1:Single trigger
+	// bit4: Whether it is a cold start message, only buffer 0 can be set to 1
+	// bit5: Whether it is a synchronization message, only the buffer 0/1 can be set to 1
+	// bit6:
+	// bit7: 0 - static，1 - Dynamic
+	u8 rev;
+}TLIBTrigger_def, * PLibTrigger_def;
+
+// Ethernet Frame Type
+typedef struct _TEthernetHeader { // size = 24 B
+	u8  FIdxChn;                 // Application channel index starting from 0 = Network index
+	u8  FIdxSwitch;              // Network's switch index
+	u8  FIdxPort;                // Network's switch's port index, 0~127: measurement port, 128~255: virtual port
+	u8  FConfig;                 // 0-1: 0 = Rx, 1 = Tx, 2 = TxRq
+	// 2: crc status, for tx, 0: crc is include in data, 1: crc is not include in data
+	//                for rx, 0: crc is ok, 1: crc is not ok
+	// 3: tx done type, 0: only report timestamp, 1: report full info(header+frame)
+	u16 FEthernetPayloadLength;  // Length of Ethernet payload data in bytes. Max 1582 (1600 packet length - 18 header) data bytes per frame
+	u16 FReserved;               // reserved for padding
+	u64 FTimeUs;                 // timestamp in us
+	pu8 FEthernetDataAddr;       // Ethernet data (with Ethernet header)
+#ifdef WIN32
+	u32 FPadding;                // to be compatible with x64
+#endif
+	ARRAY_PROPERTY(u8, Payloads, 1500);
+	ARRAY_GET(Payloads) {
+		return *(ethernet_payload_addr() + index);
+	}
+	ARRAY_SET(Payloads) {
+		*(ethernet_payload_addr() + index) = value;
+	}
+	inline bool get_tx() {
+		return (FConfig & 0x1) != 0;
+	}
+	inline void set_tx(bool a) {
+		if (a) {
+			FConfig |= 1;
+		}
+		else {
+			FConfig &= 0xFC;
+		}
+	}
+	void init(const u16 APayloadLength) {
+		FIdxChn = 0;
+		FIdxSwitch = 0;
+		FIdxPort = 0;
+		FConfig = 0;
+		FEthernetPayloadLength = APayloadLength;
+		FReserved = 0;
+		FTimeUs = 0;
+		FEthernetDataAddr = actual_data_pointer();
+#ifdef WIN32
+		FPadding = 0;
+#endif
+		s32 i;
+		pu8 p = FEthernetDataAddr;
+		s32 n = MIN(1612 - 14, APayloadLength);
+		n += 14;
+		for (i = 0; i < n; i++) {
+			*p++ = 0;
+		}
+		*(pu16)(ethernet_type_addr()) = 0x00; // IPV4 = swap(0x0800)
+		p = destination_mac_addr();
+		for (i = 0; i < 6; i++) {
+			*p++ = 0xFF;
+		}
+	}
+	bool is_virtual() {
+		return FIdxPort >= 128;
+	}
+	pu8 actual_data_pointer() {
+		return &FIdxChn + sizeof(_TEthernetHeader);
+	}
+	s32 total_ethernet_packet_length() {
+		return sizeof(_TEthernetHeader) + 6 + 6 + 2 + FEthernetPayloadLength;
+	}
+	pu8 ethernet_payload_addr() {
+		return FEthernetDataAddr + 6 + 6 + 2;
+	}
+	pu8 destination_mac_addr() {
+		return FEthernetDataAddr;
+	}
+	pu8 source_mac_addr() {
+		return FEthernetDataAddr + 6;
+	}
+	pu16 ethernet_type_addr() {
+		pu8 p = FEthernetDataAddr + 6 + 6;
+		return (pu16)(p);
+	}
+	u16 ethernet_type() {
+		pu8 p = FEthernetDataAddr + 6 + 6;
+		return *(pu16)(p);
+	}
+} TLIBEthernetHeader, * PLIBEthernetHeader;
+typedef struct _TEthernetMAX {
+	TLIBEthernetHeader FHeader;
+	u8 FBytes[1612];
+} TEthernetMAX, * PEthernetMAX;
+
+typedef enum _TSupportedBLFObjType { sotCAN = 0, sotLIN = 1, sotCANFD = 2, sotRealtimeComment = 3, sotSystemVar = 4, sotFlexRay = 5, sotEthernet = 6 } TSupportedBLFObjType;
 
 // Generic definitions ===========================================
 typedef void(__stdcall* TProcedure)(const void* AObj);
@@ -748,7 +954,7 @@ typedef enum {
 } TLIBBusToolDeviceType, * PLIBBusToolDeviceType;
 typedef enum { T_MasterNode = 0, T_SlaveNode = 1, T_MonitorNode=2} TLINNodeType;
 typedef enum { LIN_PROTOCL_13 = 0, LIN_PROTOCL_20 = 1, LIN_PROTOCL_21=2, LIN_PROTOCL_J2602=3}TLINProtocol;
-typedef enum { APP_CAN = 0, APP_LIN = 1 } TLIBApplicationChannelType;
+typedef enum { APP_CAN = 0, APP_LIN = 1, APP_FlexRay = 2,APP_Ethernet = 3} TLIBApplicationChannelType;
 typedef enum {
 	cbsBusLoad = 0, cbsPeakLoad, cbsFpsStdData, cbsAllStdData,
 	cbsFpsExtData, cbsAllExtData, cbsFpsStdRemote, cbsAllStdRemote,
@@ -834,6 +1040,8 @@ typedef void(__stdcall* TGPSEvent)(const ps32 AObj, const PLIBGPSData AGPS);
 #if defined ( __cplusplus )
 extern "C" {
 #endif
+	TSAPI(s32)set_libtsmaster_location(const char* AFilePath);
+	TSAPI(s32)get_libtsmaster_location(char** const AFilePath);
 	TSAPI(void) finalize_lib_tsmaster(void);
 	TSAPI(s32) initialize_lib_tsmaster(const char* AAppName);
 	TSAPI(s32) initialize_lib_tsmaster_with_project(const char* AAppName,const char* ProjectPath);
@@ -931,6 +1139,7 @@ extern "C" {
 	TSAPI(s32) tsapp_register_pretx_event_canfd(const ps32 AObj, const TCANFDEvent AEvent);
 	TSAPI(s32) tsapp_register_pretx_event_lin(const ps32 AObj, const TLINEvent AEvent);
 	TSAPI(s32) tsapp_set_can_channel_count(const s32 ACount);
+
 	TSAPI(s32) tsapp_set_current_application(const char* AAppName);
 	TSAPI(s32) tsapp_set_lin_channel_count(const s32 ACount);
 	TSAPI(s32) tsapp_set_logger(const TLogger ALogger);
@@ -1004,6 +1213,10 @@ extern "C" {
 	TSAPI(s32) tscom_lin_rbs_get_signal_value_by_address(const char* ASymbolAddress, double* AValue);
 	TSAPI(s32) tscom_lin_rbs_set_signal_value_by_element(const s32 AIdxChn, const char* ANetworkName, const char* ANodeName, const char* AMsgName, const char* ASignalName, const double AValue);
 	TSAPI(s32) tscom_lin_rbs_set_signal_value_by_address(const char* ASymbolAddress, const double AValue);
+	TSAPI(s32) tscom_lin_rbs_reload_settings();
+	TSAPI(s32) tscom_lin_rbs_set_message_delay_time_by_name(const s32 AIdxChn,const s32 AIntervalMs,const char* ANetworkName, const char* ANodeName, const char* AMsgName);
+
+
 
 	//camera
 	TSAPI(s32) tsapp_unlock_camera_channel(const s32 AChnIdx);
@@ -1041,6 +1254,10 @@ extern "C" {
 
 
 	//flexray 
+	TSAPI(s32) tsflexray_set_controller_frametrigger(const size_t ADeviceHandle, const int ANodeIndex,
+		const PLibFlexray_controller_config AControllerConfig,
+		const int* AFrameLengthArray, const int AFrameNum,
+		const PLibTrigger_def AFrameTrigger, const int AFrameTriggerNum, const int ATimeoutMs);
 
 	//blf
 	TSAPI(s32) tslog_blf_write_start(char* AFileName, ps32 AHandle); //stdcall
@@ -1187,6 +1404,28 @@ extern "C" {
 	TSAPI(s32)tsfifo_delete_can_canfd_pass_filter(const s32 AIdxDB, const s32 AId);
 	TSAPI(s32)tsfifo_add_lin_pass_filter(const s32 AIdxDB, const s32 AId);
 	TSAPI(s32)tsfifo_delete_lin_pass_filter(const s32 AIdxDB, const s32 AId);
+
+
+	//eth
+	TSAPI(s32) set_ethernet_channel_count(const s32 ACount);
+	TSAPI(s32) get_ethernet_channel_count(const ps32 ACount);
+	TSAPI(s32) transmit_ethernet_async(const PLIBEthernetHeader AEthernetHeader);
+	TSAPI(s32) transmit_ethernet_sync(const PLIBEthernetHeader AEthernetHeader,const s32 ATimeoutMs);
+	TSAPI(s32) inject_ethernet_frame(const PLIBEthernetHeader AEthernetHeader);
+	TSAPI(s32) tslog_blf_write_ethernet(const s32 AHandle,const PLIBEthernetHeader AEthernetHeader);
+	TSAPI(s32) transmit_ethernet_async_wo_pretx(const PLIBEthernetHeader AEthernetHeader);
+	TSAPI(s32) eth_build_ipv4_udp_packet(const PLIBEthernetHeader AHeader,const pu8 ASrcIp,const pu8 ADstIp,const u16 ASrcPort,const u16 ADstPort,const pu8 APayload,const s32 APayloadLength,const ps32 AIdentification,const ps32	AFragmentIndex);
+	TSAPI(s32) eth_is_udp_packet(const PLIBEthernetHeader AHeader, const u16 AIdentification, const u16 AUDPPacketLength, const u16 AUDPDataOffset, const bool AIsPacketEnded);
+	TSAPI(s32) eth_ip_calc_header_checksum(const PLIBEthernetHeader AHeader, const bool AOverwriteChecksum, const pu16 AChecksum);
+	TSAPI(s32) eth_udp_calc_checksum(const PLIBEthernetHeader AHeader, const pu8 AUDPPayloadAddr, const pu16 AUDPPayloadLength,const bool AOverwriteChecksum,const pu16 AChecksum);
+	TSAPI(s32) eth_udp_calc_checksum_on_frame(const PLIBEthernetHeader AHeader, const bool AOverwriteChecksum, const pu16 AChecksum);
+	TSAPI(s32) eth_log_ethernet_frame_data(const PLIBEthernetHeader AHeader, const bool AOverwriteChecksum);
+
+
+
+
+
+
 
 
 #if defined ( __cplusplus )
