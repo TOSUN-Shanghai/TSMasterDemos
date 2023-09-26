@@ -2113,6 +2113,7 @@ function signal_tester_get_item_verdict_by_index(const AIndex: int32; AIsPass: P
 function signal_tester_get_item_result_by_name(const AName: pansichar; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_get_item_result_by_index(const AIndex: int32; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_get_item_verdict_by_name(const AName: pansichar; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function ini_read_string_wo_quotes(const AHandle: int32; const ASection: pansichar; const AKey: pansichar; const AValue: pansichar; AValueCapacity: pInt32; const ADefault: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
