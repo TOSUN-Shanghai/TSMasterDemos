@@ -2109,11 +2109,13 @@ function signal_tester_run_item_by_name(const AName: pansichar): integer; stdcal
 function signal_tester_stop_item_by_name(const AName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_run_item_by_index(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_stop_item_by_index(const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function signal_tester_get_item_verdict_by_index(const AIndex: int32; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function signal_tester_get_item_result_by_name(const AName: pansichar; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function signal_tester_get_item_result_by_index(const AIndex: int32; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function signal_tester_get_item_verdict_by_name(const AName: pansichar; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_verdict_by_index(const AObj: Pointer; const AIndex: int32; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_result_by_name(const AObj: Pointer; const AName: pansichar; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_result_by_index(const AObj: Pointer; const AIndex: int32; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_verdict_by_name(const AObj: Pointer; const AName: pansichar; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function ini_read_string_wo_quotes(const AHandle: int32; const ASection: pansichar; const AKey: pansichar; const AValue: pansichar; AValueCapacity: pInt32; const ADefault: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_check_statistics_by_index(const AObj: Pointer; const AIndex: int32; const AMin: double; const AMax: double; APass: PBoolean; AResult: pdouble; AResultRepr: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_check_statistics_by_name(const AObj: Pointer; const AItemName: pansichar; const AMin: double; const AMax: double; APass: PBoolean; AResult: pdouble; AResultRepr: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
