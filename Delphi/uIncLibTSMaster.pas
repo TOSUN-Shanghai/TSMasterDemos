@@ -696,7 +696,20 @@ type
     TC1016              = 11,   //FD_4_LIN_2
     TC1012              = 12,   //FD_1_LIN_1
     TC1013              = 13,   //FD_2
-    TLog1002            = 14    //FD_2_LIN_2
+    TLog1002            = 14,   //FD_2_LIN_2
+    TC1034              = 15,
+    TC1018              = 16,
+    GW2116              = 17,
+    TC2115              = 18,
+    MP1013              = 19,
+    TC1113              = 20,
+    TC1114              = 21,
+    TP1013              = 22,
+    TC1017              = 23,
+    TP1018              = 24,
+    TF10XX              = 25,    //Such TF1011
+    TL1004_FD_4_LIN_2   = 26,    //Tlog1004OnH750
+    TE1051              = 27
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
@@ -993,7 +1006,7 @@ const
     'TOSUN Wireless-OBD',
     'TOSUN Ex'
   );
-  TS_HWTYPE_MAX_CNT = 17;
+  TS_HWTYPE_MAX_CNT = 28;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
     'Unknown',
     'TS.CAN Pro',
@@ -1011,7 +1024,18 @@ const
     'TC1013',             //13,   //FD_2
     'TLog1002',           //14    //FD_2_LIN_2
     'TC1034',
-    'TC1018'
+    'TC1018',
+    'GW2116',
+    'TC2115',
+    'MP1013',
+    'TC1113',
+    'TC1114',
+    'TP1013',
+    'TC1017',
+    'TP1018',
+    'TF10XX',
+    'TL1004_FD_4_LIN_2',
+    'TE1051'
   );
   XL_HWTYPE_MAX_CNT = 120;
   XL_HWTYPE_NAMES: array [0..XL_HWTYPE_MAX_CNT-1] of string = (
