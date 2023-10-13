@@ -609,6 +609,7 @@ type
     APP_Ethernet = 3
   );
   TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay);
+  TTimeRangeTestMode = (trmRelativeMode, trmTriggeredMode, trmAbsoluteMode);
   TTriggerSignalType = (tstCANSignal = 0, tstLINSignal, tstSystemVar, tstFlexRay, tstExpression);
   TSignalCheckKind = (
     sckAlways = 0, sckAppear, sckStatistics, sckRisingEdge, sckFallingEdge,
