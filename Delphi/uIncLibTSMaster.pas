@@ -237,24 +237,25 @@ type
   end;
   PLIBFlexRay = ^TLIBFlexRay;
 
-  // Ethernet Frame 28 B
-  TLIBEthernetHeader = packed record
+  // Ethernet Frame 24 B
+  TLibEthernetHeader = packed record
     FIdxChn: byte;                             // app channel index starting from 0 = Network index
 	  FIdxSwitch: byte;                          // Network's switch index
     FIdxPort: byte;                            // Network's switch's port index, 0~127: measurement port, 128~255: virtual port
-	  FDir: byte;                                // 0 = Rx, 1 = Tx, 2 = TxRq
-	  FReserved0: byte;                          // 1 padding byte
-    FReserved1: byte;                          // 1 padding byte
-    FEthernetPayloadLength: word;              // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
-	  FProperties: uint32;                       // Bit 0
-	  FTimeUs: uint64;                           // timestamp in us
-    FEthernetDataPointer: pbyte;               // data pointer
+	  FConfig: byte;                             // 0-1: 0 = Rx, 1 = Tx, 2 = TxRq
+                                             // 2: crc status, for tx, 0: crc is include in data, 1: crc is not include in data
+                                             //                for rx, 0: crc is ok, 1: crc is not ok
+                                             // 3: tx done type, 0: only report timestamp, 1: report full info(header+frame)
+    FEthernetPayloadLength: UInt16;             // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
+    freserved: UInt16;                          // Reserved
+	  FTimeUs: UInt64;                            // timestamp in us
+    FEthernetDataPointer: pbyte;             // data pointer
 {$IFDEF WIN32}
-    FPaddings: uint32;                         // to be compatible with x64
+    FPaddings: UInt32;                          // to be compatible with x64
 {$ENDIF}
     // actual data bytes...
     procedure InitWithData(const AData: pbyte; const ALength: word);
-    function  ToDisplayString: string;
+    function  ToDisplayString(const AIncludeData: Boolean = false): string;
     function  GetTX: Boolean;
     procedure SetTX(const Value: Boolean);
     function  ActualDataPointer: pbyte;
@@ -3024,7 +3025,7 @@ end;
 
 function TLIBEthernetHeader.GetTX: Boolean;
 begin
-  result := fdir <> 0;
+  result := (fconfig and $1) <> 0;
 
 end;
 
@@ -3032,12 +3033,10 @@ procedure TLIBEthernetHeader.InitWithData(const AData: pbyte;
   const ALength: word);
 begin
   FIdxChn := 0;
-  FDir := 0;
-  FProperties := 0;
-  FReserved0 := 0;
-  FReserved1 := 0;
   FIdxSwitch := 0;
   FIdxPort := 0;
+  fconfig := 0;
+  freserved := 0;
   FTimeUs := 0;
   FEthernetPayloadLength := ALength;
   FEthernetDataPointer := ActualDataPointer;
@@ -3047,9 +3046,9 @@ end;
 procedure TLIBEthernetHeader.SetTX(const Value: Boolean);
 begin
   if value then begin
-    fdir := 1;
+    fconfig := fconfig or $1;
   end else begin
-    fdir := 0;
+    fconfig := fconfig and $FC;
   end;
 
 end;
@@ -3061,28 +3060,41 @@ begin
 
 end;
 
-function TLIBEthernetHeader.ToDisplayString: string;
+function  MACAddrToString(const AStartByte: pbyte): string;
+begin
+  result := astartbyte^.ToHexString(2) + ':' +
+            (astartbyte+1)^.ToHexString(2) + ':' +
+            (astartbyte+2)^.ToHexString(2) + ':' +
+            (astartbyte+3)^.ToHexString(2) + ':' +
+            (astartbyte+4)^.ToHexString(2) + ':' +
+            (astartbyte+5)^.ToHexString(2);
+end;
+
+function TLIBEthernetHeader.ToDisplayString(const AIncludeData: Boolean = false): string;
 var
   i: integer;
   p: pbyte;
 begin
-  p := EthernetPayloadPointer;
-  if Assigned(p) then begin
-    result := '';
-    for i:=0 to FEthernetPayloadLength - 1 do begin
-      result := result + p^.ToHexString(2);
-      if i < FEthernetPayloadLength-1 then result := result + ' ';
+  if AIncludeData then begin
+    p := EthernetPayloadPointer;
+    if Assigned(p) then begin
+      result := '';
+      for i:=0 to FEthernetPayloadLength - 1 do begin
+        result := result + p^.ToHexString(2);
+        if i < FEthernetPayloadLength-1 then result := result + ' ';
+      end;
+    end else begin
+      result := 'n.a.';
     end;
   end else begin
-    result := 'n.a.';
+    result := 'omitted';
   end;
   result := 'IdxNetwork=' + fidxchn.tostring + ',' +
             'IdxSwitch=' + fidxswitch.toString + ',' +
             'IdxPort=' + fidxport.ToString + ',' +
-            'Dir=' + fdir.ToString + ',' +
-            'Properties=' + fproperties.tohexstring + ',' +
-            // 'Source=' + MACAddrToString(SourceMACAddr) + ',' +
-            // 'Destination=' + MACAddrToString(destinationmacaddr) + ',' +
+            'FConfig=' + fconfig.ToString + ',' +
+            'Source=' + MACAddrToString(SourceMACAddr) + ',' +
+            'Destination=' + MACAddrToString(destinationmacaddr) + ',' +
             'Time=' + (FTimeUs / 1000000.0).ToString + ',' +
             'EthPayloadLen=' + FethernetPayloadLength.ToString + ',' +
             'Payload=' + result;
@@ -3106,7 +3118,7 @@ initialization
   Assert(sizeof(TLIBLIN) = 23, 'TLIBLIN.size = 23');
   Assert(sizeof(TLIBCANFD) = 80, 'TLIBCANFD.size = 80');
   Assert(sizeof(TLIBFlexRay) = 302, 'TFlexRay.size = 302');
-  Assert(sizeof(TLIBEthernetHeader) = 28, 'TEthernetHeader.size = 28');
+  Assert(sizeof(TLIBEthernetHeader) = 24, 'TEthernetHeader.size = 24');
   Assert(sizeof(Trealtime_comment_t) = 24, 'Trealtime_comment_t.size = 24');
   Assert(sizeof(TLibSystemVar) = 36, 'TLibSystemVar.size = 36');
   Assert(SizeOf(TLibFlexRayClusterParameters) = 440, 'TLibFlexRayClusterParameters.size = 440');
