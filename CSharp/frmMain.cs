@@ -20,16 +20,18 @@ namespace TSMasterAPI_CSharp
         }
 
         private string FProgramName = "LibTSMasterDemo";
+        private int vDiagModuleHandle = -1;
         private void Form1_Load(object sender, EventArgs e)
         {
             FProgramName = Path.GetFileNameWithoutExtension(Application.ExecutablePath);  //首先获取应用程序名称
             tbApplicationName.Text = FProgramName;        
             LoadDefaultState();
-            //
+            //对于无法通过注册表查询TSMaster安装目录的程序，直接调用下面的函数接口设置路径，如果可以查询路径，则不需要
+            //TsMasterApi.set_libtsmaster_location(@"D:\Program Files (x86)\TOSUN\TSMaster\bin");
             //初始化API模块:这是后续调用所有TsMasterApi函数的前提
-            TsMasterApi.initialize_lib_tsmaster(FProgramName);
+            int ret = TsMasterApi.initialize_lib_tsmaster(FProgramName);
             //设置需要探测的硬件
-            TsMasterApi.tsapp_set_vendor_detect_preferences(true, true, true, false, false, false);
+            TsMasterApi.tsapp_set_vendor_detect_preferences(true, true, true, false, false, false, false);
             //
             vCANQueueEventObj += new TCANQueueEvent(OnCANRxEvent);
             vCANFDQueueEventObj += new TCANFDQueueEvent(OnCANFDRxEvent);
@@ -42,7 +44,7 @@ namespace TSMasterAPI_CSharp
             cbbQueryType.SelectedIndex = 0;
         }
 
-        private void CreateApplicationDemo()
+        private void CreateApplicationCANDemo()
         {
             //FProgramName:唯一名称，后面的各种映射跟他绑定
             //第一步：初始化API模块,如果已经调用，这里则不需要调用
@@ -128,6 +130,53 @@ namespace TSMasterAPI_CSharp
             }
         }
 
+        private void CreateApplicationLINDemo()
+        {
+            //FProgramName:唯一名称，后面的各种映射跟他绑定
+            //第一步：初始化API模块,如果已经调用，这里则不需要调用
+            //TsMasterApi.initialize_lib_tsmaster(FProgramName);
+            //第二步：按需设置需要的通道数，比如，这里需要2个CAN通道，0个LIN通道   
+            if (TsMasterApi.tsapp_set_can_channel_count(0) == 0)
+            {
+                Log("Set CAN Channel Count Success!");
+            }
+            else
+                Log("Set CAN Channel Count Failed!");
+            if (TsMasterApi.tsapp_set_lin_channel_count(1) == 0)
+            {
+                Log("Set LIN Channel Count Success!");
+            }
+            else
+                Log("Set LIN Channel Count Failed!");
+            //第三步：按需创建通道映射:
+            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, TLIBApplicationChannelType.APP_LIN,
+                  APP_CHANNEL.CHN1, "TC1026", TLIBBusToolDeviceType.TS_USB_DEVICE,  (int)TLIB_TS_Device_Sub_Type.TC1026, 0, HARDWARE_CHANNEL.CHN1) == 0)
+            {
+            }
+            //第四步：初始化通道参数
+            if (TsMasterApi.tsapp_configure_baudrate_lin((int)APP_CHANNEL.CHN1, (float)19.2 , LIN_PROTOCOL.LIN_PROTOCOL_21) == 0)
+            {
+                Log("LIN Channel " + (0 + 1).ToString() + " baudrate has been configured");
+            }
+            else
+            {
+                Log("LIN Channel " + (0 + 1).ToString() + " baudrate failed");
+            }
+            //第五步：连接application：连接硬件通道并开启接收FIFO
+            string connectResult = TsMasterApi.tsapp_get_error_description(TsMasterApi.tsapp_connect());
+            if ((connectResult == "OK") || (connectResult == "确定"))
+            {
+                Log("Connect Application Success!");
+                TsMasterApi.tsfifo_enable_receive_fifo();
+                Log("Start Receive FIFO!");  //如果不使能内部FIFO，无法使用Receive函数读取内部报文
+            }
+            else
+            {
+                Log(connectResult);
+                Log("Connect Application Failed! Please check the mapping table and whether the Hardware is Ready?!");
+            }
+        }
+
         private void LoadDefaultState()
         {
             //Demo Controls
@@ -150,6 +199,8 @@ namespace TSMasterAPI_CSharp
         {
             //TsMasterApi.tsapp_set_logger(nil);
             InternalUnregisterEvents();
+            TsMasterApi.tsapp_disconnect();
+            //TsMasterApi.tsdiag_can_delete_all();
             TsMasterApi.finalize_lib_tsmaster();
         }
 
@@ -206,7 +257,6 @@ namespace TSMasterAPI_CSharp
             //frm:= TfrmTestLibTSMaster(aobj);
             //c:= adata ^;
             //frm.DisplayThreadedEventMessage(c.ToString);
-
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -226,7 +276,8 @@ namespace TSMasterAPI_CSharp
         private void btnGetApplicationList_Click(object sender, EventArgs e)
         {
             IntPtr applicationList = new IntPtr();
-            if (TsMasterApi.tsapp_get_application_list(ref applicationList) == 0)
+            int ret = TsMasterApi.tsapp_get_application_list(ref applicationList);
+            if (ret == 0)
             {
                 string appList = Marshal.PtrToStringAnsi(applicationList);
                 tbApplicationList.Text = appList;
@@ -255,7 +306,19 @@ namespace TSMasterAPI_CSharp
             {
                 Log("Connect Application Success!");
                 TsMasterApi.tsfifo_enable_receive_fifo();
+                TsMasterApi.tsfifo_add_can_canfd_pass_filter(APP_CHANNEL.CHN1, 0x123, false);
+                TsMasterApi.tsfifo_add_can_canfd_pass_filter(APP_CHANNEL.CHN1, 0x124, true);
                 Log("Start Receive FIFO!");  //如果不使能内部FIFO，无法使用Receive函数读取内部报文
+                //
+                if (TsMasterApi.tsdiag_can_create(ref vDiagModuleHandle, APP_CHANNEL.CHN1, 0, 0, 0x7C0, true, 0x7C8, true, 0x7DF, true) == 0x00)
+                {
+                    Log("Start diagnostic module, module handle is :" + vDiagModuleHandle.ToString());
+                }
+                else
+                {
+                    Log("Start diagnostic module failed");
+                }
+                //
             }
             else
             {
@@ -523,7 +586,7 @@ namespace TSMasterAPI_CSharp
                     break;
                 case TLIBBusToolDeviceType.TS_USB_DEVICE:
                     {
-                        for (iTS = TLIB_TS_Device_Sub_Type.TS_UNKNOWN_DEVICE; iTS < TLIB_TS_Device_Sub_Type.TSCANFD2517; iTS++)
+                        for (iTS = TLIB_TS_Device_Sub_Type.TS_UNKNOWN_DEVICE; iTS <= TLIB_TS_Device_Sub_Type.TC1013; iTS++)
                         {
                             j = (int)(iTS);
                             ASubTypeCombo.Items.Add(TCANHardwareInfo.TS_HWTYPE_NAMES[j]);
@@ -670,9 +733,14 @@ namespace TSMasterAPI_CSharp
             if (CheckResultOK(TsMasterApi.tsdb_unload_can_dbs()))
             {
                 Log("Unload DBC Success!");
-            }  
+            }
             //Database必须是绝对路径
-            if (CheckResultOK(TsMasterApi.tsdb_load_can_db(Application.StartupPath  +  @".\" + tbDBCPath.Text, 
+            string dbcPath = tbDBCPath.Text;
+            if (File.Exists(tbDBCPath.Text) == false)
+            {
+                dbcPath = Application.StartupPath + @".\" + tbDBCPath.Text;
+            }
+            if (CheckResultOK(TsMasterApi.tsdb_load_can_db(dbcPath, 
                 new APP_CHANNEL[] { APP_CHANNEL.CHN1, APP_CHANNEL.CHN2, APP_CHANNEL.CHN3, APP_CHANNEL.CHN4 }, ref FDBCHandle)))
             {
                 tBUnloadDBCHandle.Text = FDBCHandle.ToString();
@@ -724,6 +792,34 @@ namespace TSMasterAPI_CSharp
             else
             {
                 Log("Database index invalid or parameter invalid");
+            }
+            // string retMsg1 = "";
+            unsafe
+            {
+                byte[] Array = new byte[100];
+                int ArraySize = 100;
+                fixed (byte* pData = &Array[0])
+                {
+                    if (TsMasterApi.tsdb_get_can_db_info_verbose(
+                      Convert.ToUInt32(tbDBCQueryHandle.Text),
+                      cbbQueryType.SelectedIndex,
+                      Convert.ToInt32(tbSubIdx.Text),
+                      Convert.ToInt32(tbSubSubIdx.Text),
+                     pData,
+                     &ArraySize
+                      ) == 0x00)
+                    {
+                        byte[] newByte = new byte[ArraySize];
+                        for (int k = 0; k < ArraySize; k++)
+                            newByte[k] = Array[k];
+                        tBQueryResult.Text += ASCIIEncoding.ASCII.GetString(newByte) + "\r\n";
+                        Log("Query success");
+                    }
+                    else
+                    {
+                        Log("Database index invalid or parameter invalid");
+                    }
+                }
             }
         }
 
@@ -795,7 +891,7 @@ namespace TSMasterAPI_CSharp
             int hardwareNum = 0;
             TLIBHWInfo tmpDeviceInfo = new TLIBHWInfo(0);
             string retMessage = TsMasterApi.tsapp_get_error_description(TsMasterApi.tsapp_enumerate_hw_devices(out hardwareNum));
-            if (retMessage == "OK")
+            if (retMessage == "OK" || retMessage == "确定")
             {
                 LogDeviceInformation("Hardware Num:" + hardwareNum.ToString());
             }
@@ -815,7 +911,7 @@ namespace TSMasterAPI_CSharp
 
         private void btnCreateDemoConfiguration_Click(object sender, EventArgs e)
         {
-            CreateApplicationDemo();
+            CreateApplicationCANDemo();
         }
         private void LogDeviceInformation(string AMsg)
         {
@@ -832,7 +928,7 @@ namespace TSMasterAPI_CSharp
             int hardwareNum = 0;
             TLIBHWInfo tmp = new TLIBHWInfo(0);
             string retMessage = TsMasterApi.tsapp_get_error_description(TsMasterApi.tsapp_enumerate_hw_devices(out hardwareNum));
-            if (retMessage == "OK")
+            if (retMessage == "OK" || retMessage == "确定")
             {
                 LogDeviceInformation("Hardware Num:" + hardwareNum.ToString());
                 tBDeviceNumber.Text = hardwareNum.ToString();
@@ -921,6 +1017,262 @@ namespace TSMasterAPI_CSharp
         private void btnShowHardwareConfig_Click(object sender, EventArgs e)
         {
             TsMasterApi.tsapp_show_tsmaster_window("Hardware", false);
+        }
+
+        private void btnDeleteFilter_Click(object sender, EventArgs e)
+        {
+            TsMasterApi.tsfifo_delete_can_canfd_pass_filter(APP_CHANNEL.CHN1, 0x128);
+        }
+
+        private void btnAddFilter_Click(object sender, EventArgs e)
+        {
+            TsMasterApi.tsfifo_add_can_canfd_pass_filter(APP_CHANNEL.CHN1, 0x128,true);
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            if (TsMasterApi.tsdiag_can_session_control(vDiagModuleHandle, 0x01) == 0x00)
+            {
+                Log("Session Control success!");
+            }
+        }
+
+        private void btnConfigBaudrateRegs_Click(object sender, EventArgs e)
+        {
+            TsMasterApi.tsapp_configure_canfd_regs(APP_CHANNEL.CHN1, 500, 33, 6, 2, 6, 2000, 15, 4, 1, 3, TLIBCANFDControllerType.lfdtISOFDCAN,
+                TLIBCANFDControllerMode.lfdmNormal, 1);
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x123, 0, 0, 10, 2000) == 0)
+            {
+                Log("Add precise cyclic message success");
+            }
+            else
+                Log("Add precise cyclic message fail");
+            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x456, 0, 0, 10, 2000) == 0)
+            {
+                Log("Add precise cyclic message success");
+            }
+            else
+                Log("Add precise cyclic message fail");
+            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x789, 0, 0, 10, 2000) == 0)
+            {
+                Log("Add precise cyclic message success");
+            }
+            else
+                Log("Add precise cyclic message fail");
+            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x100, 0, 0, 10, 2000) == 0)
+            {
+                Log("Add precise cyclic message success");
+            }
+            else
+                Log("Add precise cyclic message fail");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x123, 0, 0, 2000) == 0)
+            {
+                Log("Delete precise cyclic message success");
+            }
+            else
+                Log("Delete precise cyclic message fail");
+            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x456, 0, 0, 2000) == 0)
+            {
+                Log("Delete precise cyclic message success");
+            }
+            else
+                Log("Delete precise cyclic message fail");
+            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x789, 0, 0, 2000) == 0)
+            {
+                Log("Delete precise cyclic message success");
+            }
+            else
+                Log("Delete precise cyclic message fail");
+            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x100, 0, 0, 2000) == 0)
+            {
+                Log("Delete precise cyclic message success");
+            }
+            else
+                Log("Delete precise cyclic message fail");
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (cbbLINNodeType.SelectedIndex < -1)
+            {
+                MessageBox.Show("请先选择LIN节点类型","警告",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            TsMasterApi.tslin_set_node_funtiontype(APP_CHANNEL.CHN1, (TLINNodeType)cbbLINNodeType.SelectedIndex);
+        }
+
+        private void btnClearScheduleTable_Click(object sender, EventArgs e)
+        {
+            TsMasterApi.tslin_clear_schedule_tables(APP_CHANNEL.CHN1);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTransmitLIN_Click(object sender, EventArgs e)
+        {
+            TLIBLIN FLIN = new TLIBLIN((byte)APP_CHANNEL.CHN1, 0x3C, 8, true);
+            FLIN.FData[0] = 0x64;  //NAD
+            FLIN.FData[1] = 0x02;                //Data Length
+            FLIN.FData[2] = 0x10;
+            FLIN.FData[3] = 0x02; //Identifier
+            for (int j = 4; j < 7; j++)
+            {
+                FLIN.FData[j] = 0xFF;
+            }
+            if (TsMasterApi.tsapp_transmit_lin_async(
+                      ref FLIN
+                      ) == (uint)0) //Means Read Success
+            {
+            }
+        }
+
+        private void btnReceiveLINMessages_Click(object sender, EventArgs e)
+        {
+            TLIBLIN[] revMsgList = new TLIBLIN[100];
+            int retNum = TsMasterApi.tsfifo_receive_lin_message_list(ref revMsgList, 100, APP_CHANNEL.CHN1, READ_TX_RX_DEF.TX_RX_MESSAGES);
+            Log("Received:" +retNum.ToString());
+        }
+
+        private void btnSessionControl_Click(object sender, EventArgs e)
+        {
+            byte[] datas = new byte[11];
+            unsafe
+            {
+                datas[0] = 0x34;
+                datas[1] = 0x00;
+                datas[2] = 0x44;
+                datas[3] = 0x08;
+                datas[4] = 0x00;
+                datas[5] = 0xD0;
+                datas[6] = 0x00;
+                datas[7] = 0x00;
+                datas[8] = 0x01;
+                datas[9] = 0x30;
+                datas[10] = 0x00;
+                //TsCANApi.tsfifo_clear_lin_receive_buffers((IntPtr)vTSToolHandle, CHANNEL_INDEX.CHN1);
+                fixed (byte* pData = &datas[0])
+                {
+                    if(TsMasterApi.tstp_lin_master_request(APP_CHANNEL.CHN1, 0x64, pData, 11, 1000) == 0x00)
+                        Log("Transmit TP Package Success!");
+                    else
+                        Log("Transmit TP Package Failed!");
+                }
+            }
+        }
+
+        private void btnSetTPIntervalTime_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int intervalTime = Convert.ToInt32(tBIntervalTimeMs.Text);
+                if (TsMasterApi.tstp_lin_master_request_intervalms(APP_CHANNEL.CHN1, (byte)intervalTime) == 0x00)
+                    Log("Set TP Interval Time Success!");
+                else
+                    Log("Set TP Interval Time Failed!");
+            }
+            catch
+            {
+                Log("Convert Interval time failed");
+            }
+        }
+
+        private void btnCreateEthernetDemo_Click(object sender, EventArgs e)
+        {
+            //FProgramName:唯一名称，后面的各种映射跟他绑定
+            //第一步：初始化API模块,如果已经调用，这里则不需要调用
+            //TsMasterApi.initialize_lib_tsmaster(FProgramName);
+            //第二步：按需设置需要的通道数，比如，这里需要2个CAN通道，0个LIN通道   
+            if (TsMasterApi.tsapp_set_can_channel_count(0) == 0)
+            {
+                Log("Set CAN Channel Count Success!");
+            }
+            else
+                Log("Set CAN Channel Count Failed!");
+            if (TsMasterApi.tsapp_set_lin_channel_count(0) == 0)
+            {
+                Log("Set LIN Channel Count Success!");
+            }
+            else
+                Log("Set LIN Channel Count Failed!");
+            if (TsMasterApi.tsapp_set_ethernet_channel_count(1) == 0)
+            {
+                Log("Set Ethernet Channel Count Success!");
+            }
+            else
+                Log("Set Ethernet Channel Count Failed!");
+            //第三步：按需创建通道映射:
+            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, TLIBApplicationChannelType.APP_Ethernet,
+                  APP_CHANNEL.CHN1, "TE1051", TLIBBusToolDeviceType.TS_USB_DEVICE_EX, (int)TLIB_TS_Device_Sub_Type.TE1051, 0, HARDWARE_CHANNEL.CHN1) == 0)
+            {
+            }
+            //if (TsMasterApi.tsapp_configure_baudrate_can((int)APP_CHANNEL.CHN2, 500, false, true) == 0)
+            //{
+            //    Log("CAN Channel " + (1 + 1).ToString() + " baudrate has been configured");
+            //}
+            //else
+            //{
+            //    Log("CAN Channel " + (1 + 1).ToString() + " baudrate failed");
+            //}
+            //第五步：连接application：连接硬件通道并开启接收FIFO
+            string connectResult = TsMasterApi.tsapp_get_error_description(TsMasterApi.tsapp_connect());
+            if (connectResult == "OK")
+            {
+                Log("Connect Application Success!");
+                TsMasterApi.tsfifo_enable_receive_fifo();
+                Log("Start Receive FIFO!");  //如果不使能内部FIFO，无法使用Receive函数读取内部报文
+            }
+            else
+            {
+                Log(connectResult);
+                Log("Connect Application Failed! Please check the mapping table and whether the Hardware is Ready?!");
+            }
+        }
+
+        private void button4_Click_2(object sender, EventArgs e)
+        {
+            unsafe
+            {
+                TLIBEthernetHeader data = new TLIBEthernetHeader();
+                data.FIdxChn = 0;
+                byte[] FDatas = new byte[1612];
+                int i = 0;
+                for (i = 0; i < 12; i++)
+                {
+                    FDatas[i] = 0xFF;
+                }
+                FDatas[12] = 0x04;
+                FDatas[13] = 0x00;
+                for (i = 0; i < 1024; i++)
+                {
+                    FDatas[i + 14] = (byte)i;
+                }
+                data.FEthernetPayloadLength = 1024;
+                fixed (byte* p = &FDatas[0]) {
+                    data.FEthernetDataPointer = p;
+                    TsMasterApi.tsapp_transmit_ethernet_async(ref data);
+                }
+            }
+        }
+
+        private void btnEthernetCompressedMode_Click(object sender, EventArgs e)
+        {
+            TsMasterApi.tsapp_ethernet_channel_compress_mode(0, chkEtherCompressedMode.Checked);
         }
     }
 }
