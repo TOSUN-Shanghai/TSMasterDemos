@@ -806,7 +806,7 @@ namespace TSMasterAPI_CSharp
                       Convert.ToInt32(tbSubIdx.Text),
                       Convert.ToInt32(tbSubSubIdx.Text),
                      pData,
-                     &ArraySize
+                     ref ArraySize
                       ) == 0x00)
                     {
                         byte[] newByte = new byte[ArraySize];

@@ -163,15 +163,15 @@
             this.btnAddReplayEngine = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.button3 = new System.Windows.Forms.Button();
-            this.tabPageCyclicMessage = new System.Windows.Forms.TabPage();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
             this.btnDeletePreciseCyclicMessage = new System.Windows.Forms.Button();
             this.btnAddPreciseCyclicMessage = new System.Windows.Forms.Button();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.chkEtherCompressedMode = new System.Windows.Forms.CheckBox();
-            this.btnEthernetCompressedMode = new System.Windows.Forms.Button();
             this.btnTransmitData = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.btnEthernetCompressedMode = new System.Windows.Forms.Button();
+            this.chkEtherCompressedMode = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -183,7 +183,7 @@
             this.grpDBCDemoCommand.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.tabPageCyclicMessage.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -213,7 +213,7 @@
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPageCyclicMessage);
+            this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -1872,16 +1872,16 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
-            // tabPageCyclicMessage
+            // tabPage7
             // 
-            this.tabPageCyclicMessage.Controls.Add(this.btnDeletePreciseCyclicMessage);
-            this.tabPageCyclicMessage.Controls.Add(this.btnAddPreciseCyclicMessage);
-            this.tabPageCyclicMessage.Location = new System.Drawing.Point(4, 22);
-            this.tabPageCyclicMessage.Name = "tabPageCyclicMessage";
-            this.tabPageCyclicMessage.Size = new System.Drawing.Size(1273, 598);
-            this.tabPageCyclicMessage.TabIndex = 6;
-            this.tabPageCyclicMessage.Text = "Cyclic Messages";
-            this.tabPageCyclicMessage.UseVisualStyleBackColor = true;
+            this.tabPage7.Controls.Add(this.btnDeletePreciseCyclicMessage);
+            this.tabPage7.Controls.Add(this.btnAddPreciseCyclicMessage);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(1273, 598);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "tabPage7";
+            this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // btnDeletePreciseCyclicMessage
             // 
@@ -1915,28 +1915,6 @@
             this.tabPage8.Text = "Ethernet";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
-            // chkEtherCompressedMode
-            // 
-            this.chkEtherCompressedMode.AutoSize = true;
-            this.chkEtherCompressedMode.Checked = true;
-            this.chkEtherCompressedMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEtherCompressedMode.Location = new System.Drawing.Point(309, 39);
-            this.chkEtherCompressedMode.Name = "chkEtherCompressedMode";
-            this.chkEtherCompressedMode.Size = new System.Drawing.Size(120, 16);
-            this.chkEtherCompressedMode.TabIndex = 2;
-            this.chkEtherCompressedMode.Text = "IsCompressedMode";
-            this.chkEtherCompressedMode.UseVisualStyleBackColor = true;
-            // 
-            // btnEthernetCompressedMode
-            // 
-            this.btnEthernetCompressedMode.Location = new System.Drawing.Point(128, 35);
-            this.btnEthernetCompressedMode.Name = "btnEthernetCompressedMode";
-            this.btnEthernetCompressedMode.Size = new System.Drawing.Size(156, 23);
-            this.btnEthernetCompressedMode.TabIndex = 1;
-            this.btnEthernetCompressedMode.Text = "Set Compressed Mode";
-            this.btnEthernetCompressedMode.UseVisualStyleBackColor = true;
-            this.btnEthernetCompressedMode.Click += new System.EventHandler(this.btnEthernetCompressedMode_Click);
-            // 
             // btnTransmitData
             // 
             this.btnTransmitData.Location = new System.Drawing.Point(128, 87);
@@ -1957,6 +1935,28 @@
             // 
             this.timer2.Enabled = true;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // btnEthernetCompressedMode
+            // 
+            this.btnEthernetCompressedMode.Location = new System.Drawing.Point(128, 35);
+            this.btnEthernetCompressedMode.Name = "btnEthernetCompressedMode";
+            this.btnEthernetCompressedMode.Size = new System.Drawing.Size(156, 23);
+            this.btnEthernetCompressedMode.TabIndex = 1;
+            this.btnEthernetCompressedMode.Text = "Set Compressed Mode";
+            this.btnEthernetCompressedMode.UseVisualStyleBackColor = true;
+            this.btnEthernetCompressedMode.Click += new System.EventHandler(this.btnEthernetCompressedMode_Click);
+            // 
+            // chkEtherCompressedMode
+            // 
+            this.chkEtherCompressedMode.AutoSize = true;
+            this.chkEtherCompressedMode.Checked = true;
+            this.chkEtherCompressedMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEtherCompressedMode.Location = new System.Drawing.Point(309, 39);
+            this.chkEtherCompressedMode.Name = "chkEtherCompressedMode";
+            this.chkEtherCompressedMode.Size = new System.Drawing.Size(120, 16);
+            this.chkEtherCompressedMode.TabIndex = 2;
+            this.chkEtherCompressedMode.Text = "IsCompressedMode";
+            this.chkEtherCompressedMode.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
@@ -1988,7 +1988,7 @@
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.tabPage6.ResumeLayout(false);
-            this.tabPageCyclicMessage.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             this.ResumeLayout(false);
@@ -2124,7 +2124,7 @@
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnConfigBaudrateRegs;
-        private System.Windows.Forms.TabPage tabPageCyclicMessage;
+        private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.Button btnDeletePreciseCyclicMessage;
         private System.Windows.Forms.Button btnAddPreciseCyclicMessage;
         private System.Windows.Forms.Button btnSetLINNodeType;
