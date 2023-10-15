@@ -34,6 +34,11 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnCreateEthernetDemo = new System.Windows.Forms.Button();
+            this.btnConfigBaudrateRegs = new System.Windows.Forms.Button();
+            this.btnAddFilter = new System.Windows.Forms.Button();
+            this.btnDeleteFilter = new System.Windows.Forms.Button();
+            this.btnShowHardwareConfig = new System.Windows.Forms.Button();
             this.btnStartLogging = new System.Windows.Forms.Button();
             this.tbDeviceInformation = new System.Windows.Forms.TextBox();
             this.cbbDeviceIndex = new System.Windows.Forms.ComboBox();
@@ -116,6 +121,14 @@
             this.btnTransmitCANSync = new System.Windows.Forms.Button();
             this.btnTransmitCANAsync = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tBIntervalTimeMs = new System.Windows.Forms.TextBox();
+            this.btnSetTPIntervalTime = new System.Windows.Forms.Button();
+            this.btnSessionControl = new System.Windows.Forms.Button();
+            this.btnReceiveLINMessages = new System.Windows.Forms.Button();
+            this.btnTransmitLIN = new System.Windows.Forms.Button();
+            this.btnClearScheduleTable = new System.Windows.Forms.Button();
+            this.cbbLINNodeType = new System.Windows.Forms.ComboBox();
+            this.btnSetLINNodeType = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.grpDatabaseQury = new System.Windows.Forms.GroupBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -148,35 +161,47 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnAddReplayEngine = new System.Windows.Forms.Button();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.btnDeletePreciseCyclicMessage = new System.Windows.Forms.Button();
+            this.btnAddPreciseCyclicMessage = new System.Windows.Forms.Button();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.btnTransmitData = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.btnShowHardwareConfig = new System.Windows.Forms.Button();
+            this.btnEthernetCompressedMode = new System.Windows.Forms.Button();
+            this.chkEtherCompressedMode = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.grpDatabaseQury.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.grpDBCDemoCommand.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
             // 
             this.MM.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.MM.Location = new System.Drawing.Point(0, 622);
+            this.MM.Location = new System.Drawing.Point(0, 627);
             this.MM.Multiline = true;
             this.MM.Name = "MM";
-            this.MM.Size = new System.Drawing.Size(1352, 212);
+            this.MM.Size = new System.Drawing.Size(1281, 212);
             this.MM.TabIndex = 3;
             // 
             // splitter1
             // 
             this.splitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitter1.Location = new System.Drawing.Point(0, 619);
+            this.splitter1.Location = new System.Drawing.Point(0, 624);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(1352, 3);
+            this.splitter1.Size = new System.Drawing.Size(1281, 3);
             this.splitter1.TabIndex = 4;
             this.splitter1.TabStop = false;
             // 
@@ -187,15 +212,22 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1352, 619);
+            this.tabControl1.Size = new System.Drawing.Size(1281, 624);
             this.tabControl1.TabIndex = 5;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnCreateEthernetDemo);
+            this.tabPage1.Controls.Add(this.btnConfigBaudrateRegs);
+            this.tabPage1.Controls.Add(this.btnAddFilter);
+            this.tabPage1.Controls.Add(this.btnDeleteFilter);
             this.tabPage1.Controls.Add(this.btnShowHardwareConfig);
             this.tabPage1.Controls.Add(this.btnStartLogging);
             this.tabPage1.Controls.Add(this.tbDeviceInformation);
@@ -263,11 +295,61 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1344, 593);
+            this.tabPage1.Size = new System.Drawing.Size(1273, 598);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Application";
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // btnCreateEthernetDemo
+            // 
+            this.btnCreateEthernetDemo.Location = new System.Drawing.Point(941, 267);
+            this.btnCreateEthernetDemo.Name = "btnCreateEthernetDemo";
+            this.btnCreateEthernetDemo.Size = new System.Drawing.Size(223, 23);
+            this.btnCreateEthernetDemo.TabIndex = 75;
+            this.btnCreateEthernetDemo.Text = "创建Ethernet Demo Application连接";
+            this.btnCreateEthernetDemo.UseVisualStyleBackColor = true;
+            this.btnCreateEthernetDemo.Click += new System.EventHandler(this.btnCreateEthernetDemo_Click);
+            // 
+            // btnConfigBaudrateRegs
+            // 
+            this.btnConfigBaudrateRegs.Location = new System.Drawing.Point(569, 499);
+            this.btnConfigBaudrateRegs.Name = "btnConfigBaudrateRegs";
+            this.btnConfigBaudrateRegs.Size = new System.Drawing.Size(223, 23);
+            this.btnConfigBaudrateRegs.TabIndex = 74;
+            this.btnConfigBaudrateRegs.Text = "Set CANFD Channel 1 Baudrate Register";
+            this.btnConfigBaudrateRegs.UseVisualStyleBackColor = true;
+            this.btnConfigBaudrateRegs.Click += new System.EventHandler(this.btnConfigBaudrateRegs_Click);
+            // 
+            // btnAddFilter
+            // 
+            this.btnAddFilter.Location = new System.Drawing.Point(569, 456);
+            this.btnAddFilter.Name = "btnAddFilter";
+            this.btnAddFilter.Size = new System.Drawing.Size(224, 23);
+            this.btnAddFilter.TabIndex = 73;
+            this.btnAddFilter.Text = "Add Filter(0x128: Standard)";
+            this.btnAddFilter.UseVisualStyleBackColor = true;
+            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
+            // 
+            // btnDeleteFilter
+            // 
+            this.btnDeleteFilter.Location = new System.Drawing.Point(819, 456);
+            this.btnDeleteFilter.Name = "btnDeleteFilter";
+            this.btnDeleteFilter.Size = new System.Drawing.Size(228, 23);
+            this.btnDeleteFilter.TabIndex = 73;
+            this.btnDeleteFilter.Text = "DeleteFilter(0x128: Standard)";
+            this.btnDeleteFilter.UseVisualStyleBackColor = true;
+            this.btnDeleteFilter.Click += new System.EventHandler(this.btnDeleteFilter_Click);
+            // 
+            // btnShowHardwareConfig
+            // 
+            this.btnShowHardwareConfig.Location = new System.Drawing.Point(275, 557);
+            this.btnShowHardwareConfig.Name = "btnShowHardwareConfig";
+            this.btnShowHardwareConfig.Size = new System.Drawing.Size(223, 23);
+            this.btnShowHardwareConfig.TabIndex = 72;
+            this.btnShowHardwareConfig.Text = "Show HardwareConfig";
+            this.btnShowHardwareConfig.UseVisualStyleBackColor = true;
+            this.btnShowHardwareConfig.Click += new System.EventHandler(this.btnShowHardwareConfig_Click);
             // 
             // btnStartLogging
             // 
@@ -283,10 +365,10 @@
             // 
             this.tbDeviceInformation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbDeviceInformation.Location = new System.Drawing.Point(1025, 53);
+            this.tbDeviceInformation.Location = new System.Drawing.Point(1030, 53);
             this.tbDeviceInformation.Multiline = true;
             this.tbDeviceInformation.Name = "tbDeviceInformation";
-            this.tbDeviceInformation.Size = new System.Drawing.Size(313, 108);
+            this.tbDeviceInformation.Size = new System.Drawing.Size(201, 108);
             this.tbDeviceInformation.TabIndex = 70;
             // 
             // cbbDeviceIndex
@@ -360,7 +442,7 @@
             this.btnCreateDemoConfiguration.Name = "btnCreateDemoConfiguration";
             this.btnCreateDemoConfiguration.Size = new System.Drawing.Size(223, 23);
             this.btnCreateDemoConfiguration.TabIndex = 62;
-            this.btnCreateDemoConfiguration.Text = "创建Demo Application连接";
+            this.btnCreateDemoConfiguration.Text = "创建CAN Demo Application连接";
             this.btnCreateDemoConfiguration.UseVisualStyleBackColor = true;
             this.btnCreateDemoConfiguration.Click += new System.EventHandler(this.btnCreateDemoConfiguration_Click);
             // 
@@ -949,7 +1031,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1344, 593);
+            this.tabPage2.Size = new System.Drawing.Size(1273, 598);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "CAN Communication";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1119,12 +1201,101 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.tBIntervalTimeMs);
+            this.tabPage3.Controls.Add(this.btnSetTPIntervalTime);
+            this.tabPage3.Controls.Add(this.btnSessionControl);
+            this.tabPage3.Controls.Add(this.btnReceiveLINMessages);
+            this.tabPage3.Controls.Add(this.btnTransmitLIN);
+            this.tabPage3.Controls.Add(this.btnClearScheduleTable);
+            this.tabPage3.Controls.Add(this.cbbLINNodeType);
+            this.tabPage3.Controls.Add(this.btnSetLINNodeType);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1344, 593);
+            this.tabPage3.Size = new System.Drawing.Size(1273, 598);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "LIN Communication";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tBIntervalTimeMs
+            // 
+            this.tBIntervalTimeMs.Location = new System.Drawing.Point(401, 57);
+            this.tBIntervalTimeMs.Name = "tBIntervalTimeMs";
+            this.tBIntervalTimeMs.Size = new System.Drawing.Size(100, 21);
+            this.tBIntervalTimeMs.TabIndex = 7;
+            this.tBIntervalTimeMs.Text = "30";
+            this.tBIntervalTimeMs.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // btnSetTPIntervalTime
+            // 
+            this.btnSetTPIntervalTime.Location = new System.Drawing.Point(517, 57);
+            this.btnSetTPIntervalTime.Name = "btnSetTPIntervalTime";
+            this.btnSetTPIntervalTime.Size = new System.Drawing.Size(185, 23);
+            this.btnSetTPIntervalTime.TabIndex = 6;
+            this.btnSetTPIntervalTime.Text = "SetTPIntervalTime";
+            this.btnSetTPIntervalTime.UseVisualStyleBackColor = true;
+            this.btnSetTPIntervalTime.Click += new System.EventHandler(this.btnSetTPIntervalTime_Click);
+            // 
+            // btnSessionControl
+            // 
+            this.btnSessionControl.Location = new System.Drawing.Point(33, 159);
+            this.btnSessionControl.Name = "btnSessionControl";
+            this.btnSessionControl.Size = new System.Drawing.Size(335, 23);
+            this.btnSessionControl.TabIndex = 5;
+            this.btnSessionControl.Text = "Session Control";
+            this.btnSessionControl.UseVisualStyleBackColor = true;
+            this.btnSessionControl.Click += new System.EventHandler(this.btnSessionControl_Click);
+            // 
+            // btnReceiveLINMessages
+            // 
+            this.btnReceiveLINMessages.Location = new System.Drawing.Point(33, 121);
+            this.btnReceiveLINMessages.Name = "btnReceiveLINMessages";
+            this.btnReceiveLINMessages.Size = new System.Drawing.Size(335, 23);
+            this.btnReceiveLINMessages.TabIndex = 4;
+            this.btnReceiveLINMessages.Text = "Receive LIN Message";
+            this.btnReceiveLINMessages.UseVisualStyleBackColor = true;
+            this.btnReceiveLINMessages.Click += new System.EventHandler(this.btnReceiveLINMessages_Click);
+            // 
+            // btnTransmitLIN
+            // 
+            this.btnTransmitLIN.Location = new System.Drawing.Point(33, 92);
+            this.btnTransmitLIN.Name = "btnTransmitLIN";
+            this.btnTransmitLIN.Size = new System.Drawing.Size(335, 23);
+            this.btnTransmitLIN.TabIndex = 3;
+            this.btnTransmitLIN.Text = "Transmit LIN Message";
+            this.btnTransmitLIN.UseVisualStyleBackColor = true;
+            this.btnTransmitLIN.Click += new System.EventHandler(this.btnTransmitLIN_Click);
+            // 
+            // btnClearScheduleTable
+            // 
+            this.btnClearScheduleTable.Location = new System.Drawing.Point(33, 26);
+            this.btnClearScheduleTable.Name = "btnClearScheduleTable";
+            this.btnClearScheduleTable.Size = new System.Drawing.Size(335, 23);
+            this.btnClearScheduleTable.TabIndex = 2;
+            this.btnClearScheduleTable.Text = "Clear LIN Schedule Table";
+            this.btnClearScheduleTable.UseVisualStyleBackColor = true;
+            this.btnClearScheduleTable.Click += new System.EventHandler(this.btnClearScheduleTable_Click);
+            // 
+            // cbbLINNodeType
+            // 
+            this.cbbLINNodeType.FormattingEnabled = true;
+            this.cbbLINNodeType.Items.AddRange(new object[] {
+            "MasterNode",
+            "SlaveNode",
+            "MonitorNode"});
+            this.cbbLINNodeType.Location = new System.Drawing.Point(33, 55);
+            this.cbbLINNodeType.Name = "cbbLINNodeType";
+            this.cbbLINNodeType.Size = new System.Drawing.Size(121, 20);
+            this.cbbLINNodeType.TabIndex = 1;
+            // 
+            // btnSetLINNodeType
+            // 
+            this.btnSetLINNodeType.Location = new System.Drawing.Point(177, 55);
+            this.btnSetLINNodeType.Name = "btnSetLINNodeType";
+            this.btnSetLINNodeType.Size = new System.Drawing.Size(191, 23);
+            this.btnSetLINNodeType.TabIndex = 0;
+            this.btnSetLINNodeType.Text = "Set LIN Node";
+            this.btnSetLINNodeType.UseVisualStyleBackColor = true;
+            this.btnSetLINNodeType.Click += new System.EventHandler(this.button8_Click);
             // 
             // tabPage4
             // 
@@ -1133,7 +1304,7 @@
             this.tabPage4.Controls.Add(this.panel1);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1344, 593);
+            this.tabPage4.Size = new System.Drawing.Size(1273, 598);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "DataBase";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1153,7 +1324,7 @@
             this.grpDatabaseQury.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpDatabaseQury.Location = new System.Drawing.Point(0, 61);
             this.grpDatabaseQury.Name = "grpDatabaseQury";
-            this.grpDatabaseQury.Size = new System.Drawing.Size(1344, 376);
+            this.grpDatabaseQury.Size = new System.Drawing.Size(1273, 381);
             this.grpDatabaseQury.TabIndex = 10;
             this.grpDatabaseQury.TabStop = false;
             this.grpDatabaseQury.Text = "Database Query";
@@ -1163,9 +1334,9 @@
             this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(56, 134);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(65, 12);
+            this.label25.Size = new System.Drawing.Size(59, 12);
             this.label25.TabIndex = 15;
-            this.label25.Text = "DBC Handle";
+            this.label25.Text = "Sub Index";
             // 
             // tbSubSubIdx
             // 
@@ -1181,9 +1352,9 @@
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(56, 102);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(65, 12);
+            this.label24.Size = new System.Drawing.Size(35, 12);
             this.label24.TabIndex = 13;
-            this.label24.Text = "DBC Handle";
+            this.label24.Text = "Index";
             // 
             // tbSubIdx
             // 
@@ -1422,9 +1593,9 @@
                 "bidx的值",
             "DT_STR_ValTab_List_Struct = 143                               # 获取取值表中第idx取值表全部属性" +
                 "，逗号分隔 db.ValTabs[idx]"});
-            this.cbbQueryType.Location = new System.Drawing.Point(111, 67);
+            this.cbbQueryType.Location = new System.Drawing.Point(90, 67);
             this.cbbQueryType.Name = "cbbQueryType";
-            this.cbbQueryType.Size = new System.Drawing.Size(1015, 20);
+            this.cbbQueryType.Size = new System.Drawing.Size(964, 20);
             this.cbbQueryType.TabIndex = 11;
             // 
             // label23
@@ -1444,7 +1615,7 @@
             this.tBQueryResult.Location = new System.Drawing.Point(3, 172);
             this.tBQueryResult.Multiline = true;
             this.tBQueryResult.Name = "tBQueryResult";
-            this.tBQueryResult.Size = new System.Drawing.Size(1338, 201);
+            this.tBQueryResult.Size = new System.Drawing.Size(1267, 206);
             this.tBQueryResult.TabIndex = 9;
             this.tBQueryResult.Text = resources.GetString("tBQueryResult.Text");
             // 
@@ -1469,7 +1640,7 @@
             // btnQuery
             // 
             this.btnQuery.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuery.Location = new System.Drawing.Point(1167, 32);
+            this.btnQuery.Location = new System.Drawing.Point(1095, 32);
             this.btnQuery.Name = "btnQuery";
             this.btnQuery.Size = new System.Drawing.Size(116, 114);
             this.btnQuery.TabIndex = 6;
@@ -1488,7 +1659,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1344, 61);
+            this.panel2.Size = new System.Drawing.Size(1273, 61);
             this.panel2.TabIndex = 9;
             // 
             // btnUnloadDBC
@@ -1550,9 +1721,9 @@
             // 
             this.panel1.Controls.Add(this.grpDBCDemoCommand);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 437);
+            this.panel1.Location = new System.Drawing.Point(0, 442);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1344, 156);
+            this.panel1.Size = new System.Drawing.Size(1273, 156);
             this.panel1.TabIndex = 8;
             // 
             // grpDBCDemoCommand
@@ -1568,7 +1739,7 @@
             this.grpDBCDemoCommand.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpDBCDemoCommand.Location = new System.Drawing.Point(0, 0);
             this.grpDBCDemoCommand.Name = "grpDBCDemoCommand";
-            this.grpDBCDemoCommand.Size = new System.Drawing.Size(1344, 156);
+            this.grpDBCDemoCommand.Size = new System.Drawing.Size(1273, 156);
             this.grpDBCDemoCommand.TabIndex = 0;
             this.grpDBCDemoCommand.TabStop = false;
             this.grpDBCDemoCommand.Text = "Demo Command";
@@ -1657,7 +1828,7 @@
             this.tabPage5.Controls.Add(this.btnAddReplayEngine);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1344, 593);
+            this.tabPage5.Size = new System.Drawing.Size(1273, 598);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "OnlineReplay";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1680,6 +1851,80 @@
             this.btnAddReplayEngine.UseVisualStyleBackColor = true;
             this.btnAddReplayEngine.Click += new System.EventHandler(this.btnAddReplayEngine_Click);
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.button3);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(1273, 598);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "UDS Diagnostic";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(138, 50);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.btnDeletePreciseCyclicMessage);
+            this.tabPage7.Controls.Add(this.btnAddPreciseCyclicMessage);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(1273, 598);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "tabPage7";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // btnDeletePreciseCyclicMessage
+            // 
+            this.btnDeletePreciseCyclicMessage.Location = new System.Drawing.Point(37, 110);
+            this.btnDeletePreciseCyclicMessage.Name = "btnDeletePreciseCyclicMessage";
+            this.btnDeletePreciseCyclicMessage.Size = new System.Drawing.Size(213, 23);
+            this.btnDeletePreciseCyclicMessage.TabIndex = 1;
+            this.btnDeletePreciseCyclicMessage.Text = "Delete Precise Cyclic Message";
+            this.btnDeletePreciseCyclicMessage.UseVisualStyleBackColor = true;
+            this.btnDeletePreciseCyclicMessage.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // btnAddPreciseCyclicMessage
+            // 
+            this.btnAddPreciseCyclicMessage.Location = new System.Drawing.Point(37, 71);
+            this.btnAddPreciseCyclicMessage.Name = "btnAddPreciseCyclicMessage";
+            this.btnAddPreciseCyclicMessage.Size = new System.Drawing.Size(213, 23);
+            this.btnAddPreciseCyclicMessage.TabIndex = 0;
+            this.btnAddPreciseCyclicMessage.Text = "Add Precise Cyclic Message";
+            this.btnAddPreciseCyclicMessage.UseVisualStyleBackColor = true;
+            this.btnAddPreciseCyclicMessage.Click += new System.EventHandler(this.button4_Click_1);
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.chkEtherCompressedMode);
+            this.tabPage8.Controls.Add(this.btnEthernetCompressedMode);
+            this.tabPage8.Controls.Add(this.btnTransmitData);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(1273, 598);
+            this.tabPage8.TabIndex = 7;
+            this.tabPage8.Text = "Ethernet";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // btnTransmitData
+            // 
+            this.btnTransmitData.Location = new System.Drawing.Point(128, 87);
+            this.btnTransmitData.Name = "btnTransmitData";
+            this.btnTransmitData.Size = new System.Drawing.Size(156, 23);
+            this.btnTransmitData.TabIndex = 0;
+            this.btnTransmitData.Text = "TransmitData";
+            this.btnTransmitData.UseVisualStyleBackColor = true;
+            this.btnTransmitData.Click += new System.EventHandler(this.button4_Click_2);
+            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -1691,21 +1936,33 @@
             this.timer2.Enabled = true;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // btnShowHardwareConfig
+            // btnEthernetCompressedMode
             // 
-            this.btnShowHardwareConfig.Location = new System.Drawing.Point(275, 557);
-            this.btnShowHardwareConfig.Name = "btnShowHardwareConfig";
-            this.btnShowHardwareConfig.Size = new System.Drawing.Size(223, 23);
-            this.btnShowHardwareConfig.TabIndex = 72;
-            this.btnShowHardwareConfig.Text = "Show HardwareConfig";
-            this.btnShowHardwareConfig.UseVisualStyleBackColor = true;
-            this.btnShowHardwareConfig.Click += new System.EventHandler(this.btnShowHardwareConfig_Click);
+            this.btnEthernetCompressedMode.Location = new System.Drawing.Point(128, 35);
+            this.btnEthernetCompressedMode.Name = "btnEthernetCompressedMode";
+            this.btnEthernetCompressedMode.Size = new System.Drawing.Size(156, 23);
+            this.btnEthernetCompressedMode.TabIndex = 1;
+            this.btnEthernetCompressedMode.Text = "Set Compressed Mode";
+            this.btnEthernetCompressedMode.UseVisualStyleBackColor = true;
+            this.btnEthernetCompressedMode.Click += new System.EventHandler(this.btnEthernetCompressedMode_Click);
+            // 
+            // chkEtherCompressedMode
+            // 
+            this.chkEtherCompressedMode.AutoSize = true;
+            this.chkEtherCompressedMode.Checked = true;
+            this.chkEtherCompressedMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEtherCompressedMode.Location = new System.Drawing.Point(309, 39);
+            this.chkEtherCompressedMode.Name = "chkEtherCompressedMode";
+            this.chkEtherCompressedMode.Size = new System.Drawing.Size(120, 16);
+            this.chkEtherCompressedMode.TabIndex = 2;
+            this.chkEtherCompressedMode.Text = "IsCompressedMode";
+            this.chkEtherCompressedMode.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1352, 834);
+            this.ClientSize = new System.Drawing.Size(1281, 839);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.MM);
@@ -1718,6 +1975,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.grpDatabaseQury.ResumeLayout(false);
             this.grpDatabaseQury.PerformLayout();
@@ -1728,6 +1987,10 @@
             this.grpDBCDemoCommand.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1856,6 +2119,27 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button btnAddReplayEngine;
         private System.Windows.Forms.Button btnShowHardwareConfig;
+        private System.Windows.Forms.Button btnDeleteFilter;
+        private System.Windows.Forms.Button btnAddFilter;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnConfigBaudrateRegs;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.Button btnDeletePreciseCyclicMessage;
+        private System.Windows.Forms.Button btnAddPreciseCyclicMessage;
+        private System.Windows.Forms.Button btnSetLINNodeType;
+        private System.Windows.Forms.ComboBox cbbLINNodeType;
+        private System.Windows.Forms.Button btnClearScheduleTable;
+        private System.Windows.Forms.Button btnTransmitLIN;
+        private System.Windows.Forms.Button btnReceiveLINMessages;
+        private System.Windows.Forms.Button btnSessionControl;
+        private System.Windows.Forms.Button btnSetTPIntervalTime;
+        private System.Windows.Forms.TextBox tBIntervalTimeMs;
+        private System.Windows.Forms.Button btnCreateEthernetDemo;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Button btnTransmitData;
+        private System.Windows.Forms.Button btnEthernetCompressedMode;
+        private System.Windows.Forms.CheckBox chkEtherCompressedMode;
     }
 }
 
