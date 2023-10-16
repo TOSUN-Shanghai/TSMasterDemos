@@ -1889,14 +1889,15 @@ function tsflexray_stop_net(const AIdxChn: Integer; const ATimeoutMs: integer): 
 function tsflexray_wakeup_pattern(const AIdxChn: Integer; const ATimeoutMs: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // LIN apis
 function tslin_clear_schedule_tables(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-//function tslin_download_frames(const AChnIdx: Integer; const ACnt: Integer; const ALINFrames: PConfig_LINFrameStruct): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-//function tslin_download_schedule_tables(const AChnIdx: Integer; const ACnt: Integer; const ALINSchedule: Plin_schedule_struct): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-//function tslin_download_runtime_schedule_table(const AChnIdx: Integer; const ALINSchedule: Plin_schedule_struct): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslin_enable_runtime_schedule_table(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslin_set_schedule_table(const AChnIdx: Integer; const ASchIndex: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_switch_runtime_schedule_table(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_switch_idle_schedule_table(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_switch_normal_schedule_table(const AChnIdx: Integer; const ASchIndex: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslin_stop_lin_channel(const AChnIdx: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslin_start_lin_channel(const AChnIdx: Integer): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslin_set_node_funtiontype(const AChnIdx: Integer; const AFunctionType: TLINNodeType): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_batch_set_schedule_start(const AChnIdx: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_batch_add_schedule_frame(const AChnIdx: Integer; const ALINData: PLIN; const ADelayMs: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslin_batch_set_schedule_end(const AChnIdx: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //LIN_Diag_Tp_Layer
 function tstp_lin_master_request(const AChnIdx: Integer; const ANAD: Byte; const AData: PByte; const ADataNum: Integer; const ATimeoutMs: Integer): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_lin_master_request_intervalms(const AChnIdx: Integer; const AData: UInt16): Integer;stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2150,6 +2151,16 @@ function signal_tester_enable_item_by_index(const AIndex: int32; const AEnable: 
 function signal_tester_enable_item_by_name(const AItemName: pansichar; const AEnable: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_run_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_stop_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_clear_schedule_tables(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_stop_lin_channel(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_start_lin_channel(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_switch_runtime_schedule_table(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_switch_idle_schedule_table(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_switch_normal_schedule_table(const AChnIdx: int32; const ASchIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_batch_set_schedule_start(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_batch_add_schedule_frame(const AChnIdx: int32; const ALINData: PLIBLIN; const ADelayMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_batch_set_schedule_end(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_set_node_functiontype(const AChnIdx: int32; const AFunctionType: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
