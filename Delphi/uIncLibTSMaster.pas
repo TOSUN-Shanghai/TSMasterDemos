@@ -566,6 +566,7 @@ type
     function GetSlibingNode(AIndex:Integer):PEMMC_RECORD_NODE;
   end;   //8bytes, means max support
 
+  TCProcedure = procedure; cdecl;
   TCANQueueEvent_API = procedure(const AData: PlibCAN) of object; stdcall;
   TGPSQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PLibGPSData); stdcall;
   TCANQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibCAN); stdcall;
