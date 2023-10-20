@@ -1100,7 +1100,7 @@ extern "C" {
 		const TLIBApplicationChannelType AAppChannelType,
 		const s32 AAppChannel,
 		const PLIBTSMapping AMapping);
-	TSAPI(s32) tslin_set_node_funtiontype(const s32 AIndex,const TLINNodeType ATLINNodeType);
+	TSAPI(s32) tslin_set_node_functiontype(const s32 AIndex,const TLINNodeType ATLINNodeType);
 	TSAPI(s32) tsapp_get_timestamp(s64* ATimestamp);
 	TSAPI(s32) tsapp_get_turbo_mode(const bool* AEnable);
 	// tsapp_get_vendor_detect_preferences
@@ -1407,10 +1407,10 @@ extern "C" {
 
 
 	//eth
-	TSAPI(s32) set_ethernet_channel_count(const s32 ACount);
-	TSAPI(s32) get_ethernet_channel_count(const ps32 ACount);
-	TSAPI(s32) transmit_ethernet_async(const PLIBEthernetHeader AEthernetHeader);
-	TSAPI(s32) transmit_ethernet_sync(const PLIBEthernetHeader AEthernetHeader,const s32 ATimeoutMs);
+	TSAPI(s32) tsapp_set_ethernet_channel_count(const s32 ACount);
+	TSAPI(s32) tsapp_get_ethernet_channel_count(const ps32 ACount);
+	TSAPI(s32) tsapp_transmit_ethernet_async(const PLIBEthernetHeader AEthernetHeader);
+	TSAPI(s32) tsapp_transmit_ethernet_sync(const PLIBEthernetHeader AEthernetHeader,const s32 ATimeoutMs);
 	TSAPI(s32) inject_ethernet_frame(const PLIBEthernetHeader AEthernetHeader);
 	TSAPI(s32) tslog_blf_write_ethernet(const s32 AHandle,const PLIBEthernetHeader AEthernetHeader);
 	TSAPI(s32) transmit_ethernet_async_wo_pretx(const PLIBEthernetHeader AEthernetHeader);
@@ -1420,6 +1420,20 @@ extern "C" {
 	TSAPI(s32) eth_udp_calc_checksum(const PLIBEthernetHeader AHeader, const pu8 AUDPPayloadAddr, const pu16 AUDPPayloadLength,const bool AOverwriteChecksum,const pu16 AChecksum);
 	TSAPI(s32) eth_udp_calc_checksum_on_frame(const PLIBEthernetHeader AHeader, const bool AOverwriteChecksum, const pu16 AChecksum);
 	TSAPI(s32) eth_log_ethernet_frame_data(const PLIBEthernetHeader AHeader, const bool AOverwriteChecksum);
+	TSAPI(s32) tsapp_ethernet_channel_compress_mode(const s32 AIdxChn, bool AOpen);
+
+	// LIN schedule FUNCTION
+	TSAPI(s32) tslin_batch_set_schedule_start(const s32 AIdxChn);
+	TSAPI(s32) tslin_batch_set_schedule_stop(const s32 AIdxChn);
+	TSAPI(s32) tslin_batch_add_schedule_frame(const s32 AIdxChn,PLIN AMsg,u8 ADelayMs);
+
+	TSAPI(s32) tslin_clear_schedule_tables(const s32 AIdxChn);
+	TSAPI(s32) tslin_switch_runtime_schedule_table(const s32 AIdxChn);
+	TSAPI(s32) tslin_switch_idle_schedule_table(const s32 AIdxChn);
+	TSAPI(s32) tslin_switch_normal_schedule_table(const s32 AIdxChn,const s32 ASchIndex);
+
+	TSAPI(s32) tslin_start_lin_channel(const s32 AIdxChn);
+	TSAPI(s32) tslin_stop_lin_channel(const s32 AIdxChn);
 
 
 
