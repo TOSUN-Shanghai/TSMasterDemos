@@ -2162,6 +2162,8 @@ function lin_batch_set_schedule_start(const AChnIdx: int32): integer; stdcall; {
 function lin_batch_add_schedule_frame(const AChnIdx: int32; const ALINData: PLIBLIN; const ADelayMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function lin_batch_set_schedule_end(const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function lin_set_node_functiontype(const AChnIdx: int32; const AFunctionType: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_active_frame_in_schedule_table(const AChnIdx: uint32; const AID: byte; const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_deactive_frame_in_schedule_table(const AChnIdx: uint32; const AID: byte; const AIndex: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
