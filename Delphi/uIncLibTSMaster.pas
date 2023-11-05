@@ -978,6 +978,22 @@ type
       , N_ETH_RESERVED0                      = 250
       , N_ETH_RESERVED1                      = 251
   );
+  //TS CAN Diagnostic basic function type
+  Ttsdiag_can_create = function(const  pDiagModuleIndex: PInteger;
+                      const AChnIndex: UInt32;
+                      const ASupportFDCAN:Byte;
+                      const AMaxDLC:Byte;
+                      const ARequestID: UInt32;
+                      const ARequestIDIsStd: Boolean;
+                      const AResponseID: UInt32;
+                      const AResponseIDIsStd: Boolean;
+                      const AFunctionID: UInt32;
+                      const AFunctionIDIsStd: Boolean): Integer; stdcall;
+  Ttsdiag_set_fdmode = function(const ADiagModuleIndex: Integer; const AFDMode: boolean; const ASupportBRS: Boolean; const AMaxDLC: Integer): Integer; stdcall;
+  Ttsdiag_can_delete = function(const ADiagModuleIndex: Integer): Integer; stdcall;
+  Ttsdiag_can_delete_all = procedure; stdcall;
+  Ttstp_can_request_and_get_response = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
+  Ttstp_can_request_and_get_response_functional = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
 
   N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
                                        const AChn:Integer;
@@ -1980,21 +1996,21 @@ function tstp_can_register_rx_completed_recall_internal(const ADiagModuleIndex: 
            const ARxcompleted: N_USData_TranslateCompleted_Recall_Obj): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 {Diagnostic}
-function tsdiag_can_session_control(ADiagModuleIndex:Integer;ASubSession: Byte):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_routine_control(ADiagModuleIndex:Integer;ARoutineControlType: Byte; ARoutintID:UInt16):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_communication_control(ADiagModuleIndex:Integer;AControlType: Byte):integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_security_access_request_seed(ADiagModuleIndex:Integer;ALevel: Integer;
-      ARecSeed: PByte;ARecSeedSize:PInteger): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_security_access_send_key(ADiagModuleIndex:Integer;ALevel: Integer; AKeyValue: Pbyte; AKeySize:Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_request_download(ADiagModuleIndex:Integer;AMemAddr: UInt32; AMemSize: UInt32): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_request_upload(ADiagModuleIndex:Integer;AMemAddr: UInt32; AMemSize: UInt32): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_transfer_data(ADiagModuleIndex:Integer;ASourceDatas: PByte; ADataSize: Integer;
-      AReqCase: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_request_transfer_exit(ADiagModuleIndex:Integer):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_write_data_by_identifier(ADiagModuleIndex:Integer;ADataIdentifier:UInt16;AWriteData:PByte;
-     AWriteDataSize:Integer):integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_can_read_data_by_identifier(ADiagModuleIndex:Integer;ADataIdentifier:UInt16;AReturnArray:PByte;
-     AReturnArraySize:PInteger):integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_session_control(const ADiagModuleIndex: Integer; const ASubSession: Byte):Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_routine_control(const ADiagModuleIndex: Integer; const ARoutineControlType: Byte; const ARoutintID: UInt16): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_communication_control(const ADiagModuleIndex: Integer; const AControlType: Byte): integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_security_access_request_seed(const ADiagModuleIndex: Integer; const ALevel: Integer;
+      const ARecSeed: PByte; const ARecSeedSize: PInteger): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_security_access_send_key(const ADiagModuleIndex: Integer; const ALevel: Integer; const AKeyValue: Pbyte; const AKeySize: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_request_download(const ADiagModuleIndex: Integer; const AMemAddr: UInt32; const AMemSize: UInt32): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_request_upload(const ADiagModuleIndex: Integer; const AMemAddr: UInt32; const AMemSize: UInt32): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_transfer_data(const ADiagModuleIndex: Integer; const ASourceDatas: PByte; const ADataSize: Integer;
+      const AReqCase: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_request_transfer_exit(const ADiagModuleIndex: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_write_data_by_identifier(const ADiagModuleIndex: Integer; const ADataIdentifier: UInt16; const AWriteData: PByte;
+     const AWriteDataSize: Integer): integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_can_read_data_by_identifier(const ADiagModuleIndex: Integer; const ADataIdentifier: UInt16; const AReturnArray: PByte;
+     const AReturnArraySize: PInteger): integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 
 //Logger
