@@ -1440,8 +1440,49 @@ const
   IDX_ETH_DIAG_REQ_RES                       = 249;
   IDX_ETH_RESERVED0                          = 250;
   IDX_ETH_RESERVED1                          = 251;
-  ERR_CODE_COUNT                             = 252;
-
+  IDX_GP_MODULE_NOT_FOUND                    = 252;
+  IDX_GP_ACTION_NOT_FOUND                    = 253;
+  IDX_GP_CANNOT_INSERT_GOTO_BETWEEN_ACTIONS  = 254;
+  IDX_GP_CANNOT_DELETE_ACTION_WITH_BOTH_DIR  = 255;
+  IDX_GP_ENTRY_POINT_CANNOT_BE_DELETED       = 256;
+  IDX_GP_KIND_CANNOT_BE_CHANGED              = 257;
+  IDX_GP_INCORRECT_ACTION_TYPE               = 258;
+  IDX_GP_INCORRECT_EXECUTION_KIND            = 259;
+  IDX_GP_ACTION_GROUP_REQUIRED               = 260;
+  IDX_GP_CANNOT_ADD_DOWNWARD_ACTION          = 261;
+  IDX_GP_CANNOT_ADD_RIGHTWARD_ACTION         = 262;
+  IDX_RBS_NODE_SIMULATION_IS_NOT_ACTIVE      = 263;
+  IDX_RBS_FRAME_INFO_NOT_FOUND               = 264;
+  IDX_RBS_IS_NOT_ENABLED                     = 265;
+  IDX_GPG_EXCEL_FORMAT_INVALID               = 266;
+  IDX_GPG_EXCEL_UNKNOWN_OBJ                  = 267;
+  IDX_GPG_EXCEL_OBJ_NOT_FOUND                = 268;
+  IDX_GPG_EXCEL_OBJ_NOT_DEFINED              = 269;
+  IDX_ERR_MP_CODE_CRASH                      = 270;
+  IDX_ERR_USER_ABORTED_OPERATION             = 271;
+  IDX_ERR_INVALID_MEMORY_ADDRESS             = 272;
+  IDX_ERR_IP_FRAGMENTATION_NEED              = 273;
+  IDX_ERR_IP_IPV4_ID_REQUIRED                = 274;
+  IDX_ERR_SYS_VAR_NOT_EXISTS                 = 275;
+  IDX_ERR_WRITE_DEVICE_INT_CONFIG_FAILED     = 276;
+  IDX_ERR_READ_DEVICE_INT_CONFIG_FAILED      = 277;
+  IDX_ERR_ARGUMENT_COUNT_DIFFER              = 278;
+  IDX_ERR_API_CALLER_CALL_FAILED             = 279;
+  IDX_ERR_ETH_FRAME_IS_NOT_IP                = 280;
+  IDX_ERR_ETH_FRAME_IS_NOT_TCP               = 281;
+  IDX_ERR_ETH_FRAME_IS_NOT_UDP               = 282;
+  IDX_ERR_ETH_FRAME_DOES_NOT_CONTAIN_CRC     = 283;
+  IDX_ERR_ETH_API_REQUIRES_SINGLE_FRAME      = 284;
+  IDX_ERR_ITEM_NOT_ENABLED                   = 285;
+  IDX_ERR_ITEM_CONFIGURATION_NOT_VALID       = 286;
+  IDX_ERR_RESERVED01                         = 287;
+  IDX_ERR_SHOULD_START_BATCH_FIRST           = 288;
+  IDX_ERR_TEST_SYSTEM_MODULE_NOT_LOADED      = 289;
+  IDX_ERR_VISA_COMMAD_FAILED                 = 290;
+  IDX_ERR_VISA_DEVICE_NOT_READY              = 291;
+  IDX_ERR_ADD_INSTRUMENT_FAILED              = 292;
+  IDX_ERR_LANG_KEY_NOT_FOUND                 = 293;
+  ERR_CODE_COUNT                             = 294;
 // Note: Should also update C API!!!
 
 // library initialization and finalization
