@@ -1945,6 +1945,21 @@ function tsflexray_transmit_async(const AIdxChn: Integer; const AData: PLibFlexR
 function tsflexray_start_net(const AIdxChn: Integer; const ATimeoutMs: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsflexray_stop_net(const AIdxChn: Integer; const ATimeoutMs: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsflexray_wakeup_pattern(const AIdxChn: Integer; const ATimeoutMs: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//Ethernet APIs
+function tsapp_config_ethernet_channel(const AIdxChn: Integer;
+                                       const AConfig: PLibEth_CMD_config;
+                                       const ATimeoutMs: integer): integer; stdcall;
+function tsapp_ethernet_channel_compress_mode(const AIdxChn: Integer;
+                                       const AOpen: Boolean): integer; stdcall;
+function tsapp_transmit_ethernet_sync(const AEthernetHeader: PLIBEthernetHeader; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_transmit_ethernet_async(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_register_event_ethernet(const AObj: pointer; const AEvent: TEthernetQueueEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_unregister_event_ethernet(const AObj: pointer; const AEvent: TEthernetQueueEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_unregister_events_ethernet(const AObj: pointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_register_pretx_event_ethernet(const AObj: pointer; const AEvent: TEthernetQueueEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_unregister_pretx_event_ethernet(const AObj: pointer; const AEvent: TethernetQueueEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_unregister_pretx_events_ethernet(const AObj: pointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+
 // LIN apis
 function tslin_clear_schedule_tables(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslin_switch_runtime_schedule_table(const AChnIdx: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2227,6 +2242,10 @@ function flexray_enable_frame(const AChnIdx: int32; const ASlot: byte; const ABa
 function open_help_doc(const AFileNameWoSuffix: pansichar; const ATitle: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_language_string(const AEnglishStr: pansichar; const AIniSection: pansichar; ATranslatedStr: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function convert_blf_to_csv(const ABlfFile: pansichar; const ACSVFile: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_start_net(const AChnIdx: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_stop_net(const AChnIdx: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_wakeup_pattern(const AChnIdx: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function convert_blf_to_csv_with_filter(const ABlfFile: pansichar; const ACSVFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
