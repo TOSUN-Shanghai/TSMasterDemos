@@ -617,6 +617,37 @@ type
     sckAlways = 0, sckAppear, sckStatistics, sckRisingEdge, sckFallingEdge,
     sckMonotonyRising, sckMonotonyFalling, sckFollow, sckJump, sckNoChange
   );
+  TSignalTesterFailReason = (
+    tfrNoError = 0,
+    tfrCheckSignalNotExistsInDB,
+    tfrMinBiggerThanMax,
+    tfrStartTimeBiggerThanEndTime,
+    tfrTriggerMinBiggerThanMax,
+    tfrSignalCountIs0,
+    tfrFollowSignalNotExistsInDB,
+    tfrTriggerSignalNotExistsInDB,
+    tfrSignalFollowViolation,
+    tfrSignalMonotonyRisingViolation,
+    tfrSignalMonotonyFallingViolation,
+    tfrSignalNoChangeViolation,
+    tfrSignalValueOutOfRange,
+    tfrCANSignalNotExists,
+    tfrLINSignalNotExists,
+    tfrFlexRaySignalNotExists,
+    tfrSystemVarNotExists,
+    tfrSignalTesterStartFailedDueToInvalidConf,
+    tfrSignalValueNotExists,
+    tfrStatisticsCheckViolation,
+    tfrTriggerValueNotExists,
+    tfrFollowValueNotExists,
+    tfrTriggerValueNeverInRange,
+    tfrTimeRangeNotTouched,
+    tfrRisingNotDetected,
+    tfrFallingNotDetected,
+    tfrNotAppeared,
+    tfrJumpNotDetected
+  );
+  PSignalTesterFailReason = ^TSignalTesterFailReason;
   TSignalStatisticsKind = (sskMin = 0, sskMax, sskAverage, sskStdDeviation);
   TFlexRayCompuMethod = (fcmIdentical = 0, fcmLinear, fcmScaleLinear, fcmTextTable, fcmTABNoIntp, fcmFormula);
   // CAN bus statistics
@@ -2247,6 +2278,12 @@ function flexray_stop_net(const AChnIdx: int32; const ATimeoutMs: int32): intege
 function flexray_wakeup_pattern(const AChnIdx: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function convert_blf_to_csv_with_filter(const ABlfFile: pansichar; const ACSVFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_flexray_ub_bit_auto_handle(const AIsAutoHandle: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_status_by_index(const AIdx: int32; AIsRunning: PBoolean; AIsCheckDone: PBoolean; AFailReason: PSignalTesterFailReason): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_get_item_status_by_name(const ATesterName: pansichar; AIsRunning: PBoolean; AIsCheckDone: PBoolean; AFailReason: PSignalTesterFailReason): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_set_item_time_range_by_index(const AIdx: int32; const ATimeBegin: double; const ATimeEnd: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_set_item_time_range_by_name(const AName: pansichar; const ATimeBegin: double; const ATimeEnd: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_set_item_value_range_by_index(const AIdx: int32; const ALow: double; const AHigh: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function signal_tester_set_item_value_range_by_name(const AName: pansichar; const ALow: double; const AHigh: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
