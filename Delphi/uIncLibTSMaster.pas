@@ -2284,6 +2284,7 @@ function signal_tester_set_item_time_range_by_index(const AIdx: int32; const ATi
 function signal_tester_set_item_time_range_by_name(const AName: pansichar; const ATimeBegin: double; const ATimeEnd: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_set_item_value_range_by_index(const AIdx: int32; const ALow: double; const AHigh: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_set_item_value_range_by_name(const AName: pansichar; const ALow: double; const AHigh: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function start_log_w_filename(const AObj: Pointer; const AFileName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
