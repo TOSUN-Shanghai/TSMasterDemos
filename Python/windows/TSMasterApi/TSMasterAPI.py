@@ -2,7 +2,7 @@
 Author: seven 865762826@qq.com
 Date: 2023-03-06 16:36:32
 LastEditors: seven 865762826@qq.com
-LastEditTime: 2023-04-23 09:16:58
+LastEditTime: 2023-11-23 16:07:39
 github:https://github.com/sy950915/TSMasterAPI.git
 ''' 
 from ctypes import *
@@ -998,7 +998,7 @@ def tslin_set_node_funtiontype(AIdxChn: CHANNEL_INDEX, TLINNodeType: T_LIN_NODE_
     tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1,T_LIN_NODE_FUNCTION.T_MASTER_NODE) #主节点
     tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1,T_LIN_NODE_FUNCTION.T_SLAVE_NODE)  #从节点
     """
-    r = dll.tslin_set_node_funtiontype(AIdxChn, TLINNodeType)
+    r = dll.tslin_set_node_functiontype(AIdxChn, TLINNodeType)
     return r
 
 
@@ -4118,3 +4118,30 @@ def tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_i
 
 
 
+# LIN schedule FUNCTION
+def tslin_batch_set_schedule_start(AIndex:CHANNEL_INDEX):
+    return dll.tslin_batch_set_schedule_start(AIndex)
+
+def tslin_batch_set_schedule_stop(AIndex:CHANNEL_INDEX):
+    return dll.tslin_batch_set_schedule_stop(AIndex)
+
+def tslin_batch_add_schedule_frame(AIndex:CHANNEL_INDEX,Msg:TLIBLIN,ADelayMs:c_uint8):
+    return dll.tslin_batch_add_schedule_frame(AIndex,Msg,ADelayMs)
+
+def tslin_clear_schedule_tables(AIndex:CHANNEL_INDEX):
+    return dll.tslin_clear_schedule_tables(AIndex)
+
+def tslin_switch_runtime_schedule_table(AIndex:CHANNEL_INDEX):
+    return dll.tslin_switch_runtime_schedule_table(AIndex)
+
+def tslin_switch_idle_schedule_table(AIndex:CHANNEL_INDEX):
+    return dll.tslin_switch_idle_schedule_table(AIndex)
+
+def tslin_switch_normal_schedule_table(AIndex:CHANNEL_INDEX,ASchIndex:c_int32):
+    return dll.tslin_switch_normal_schedule_table(AIndex,ASchIndex)
+
+def tslin_start_lin_channel(AIndex:CHANNEL_INDEX):
+    return dll.tslin_start_lin_channel(AIndex)
+
+def tslin_stop_lin_channel(AIndex:CHANNEL_INDEX):
+    return dll.tslin_stop_lin_channel(AIndex)
