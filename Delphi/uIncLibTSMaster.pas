@@ -697,6 +697,8 @@ type
     FPadding: Int64;                      // to be compatible with x64
 {$ENDIF}
     function ToDataString: string;
+    function ToDouble: double;
+    function TimeS: double;
   end;
   PLibSystemVar = ^TLibSystemVar;
   TReadBLFRealtimeCommentCallback = procedure (const AObj: pointer; const AComment: Prealtime_comment_t; const AToTerminate: pboolean); stdcall;
@@ -3036,6 +3038,12 @@ end;
 
 { TLibSystemVar }
 
+function TLibSystemVar.TimeS: double;
+begin
+  result := ftimeus / 1000000.0;
+
+end;
+
 function TLibSystemVar.ToDataString: string;
 begin
   var i, n: integer;
@@ -3120,6 +3128,52 @@ begin
     if Assigned(Result) = false then
       Break;
     Result := Result.FNext;
+  end;
+
+end;
+
+function TLibSystemVar.ToDouble: double;
+begin
+  result := 0;
+  case FType of
+    TLIBSystemVarType.lsvtInt32: begin
+      result := pinteger(FData)^;
+    end;
+    TLIBSystemVarType.lsvtUInt32: begin
+      result := pcardinal(FData)^;
+    end;
+    TLIBSystemVarType.lsvtInt64: begin
+      result := pint64(FData)^;
+    end;
+    TLIBSystemVarType.lsvtUInt64: begin
+      result := puint64(FData)^;
+    end;
+    TLIBSystemVarType.lsvtUInt8Array: begin
+      var p: pbyte;
+      p := FData;
+      result := p^;
+    end;
+    TLIBSystemVarType.lsvtInt32Array: begin
+      var p: pinteger;
+      p := pinteger(FData);
+      result := p^;
+    end;
+    TLIBSystemVarType.lsvtInt64Array: begin
+      var p: pint64;
+      p := pint64(FData);
+      result := p^;
+    end;
+    TLIBSystemVarType.lsvtDouble: begin
+      result := pdouble(FData)^;
+    end;
+    TLIBSystemVarType.lsvtDoubleArray: begin
+      var p: pdouble;
+      p := pdouble(FData);
+      result := p^;
+    end;
+    TLIBSystemVarType.lsvtString: begin
+      result := 0;
+    end;
   end;
 
 end;
