@@ -2127,6 +2127,12 @@ function tsapp_reset_gps_module(const AChnIdx:Integer; const AInitBaudrate:Integ
 //function Security
 function tsapp_unlock_camera_channel(const AChnIdx: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
+//ethernet router
+function tsapp_ethrouter_apply_new_netif(const AIdxChn: integer; const AMacAddress: UInt64; const AIPAddress: UInt32;
+                       const ANetMask: UInt32; const AGateway: UInt32; const AMTU: Uint16): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_ethrouter_remove_netif(const AIdxChn: integer; const AMacAddress: UInt64; const AIPAddress: UInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_ethrouter_get_netif(const AIdxChn: integer; const AMacAddress: UInt64; const AIPAddress: UInt32; const ANetIfPointer: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_ethrouter_get_netif_list(const AIdxChn: integer; const AMacAddress: UInt64; const ANetIfPointer: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // mini program library
 function tsmp_reload_settings(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsmp_load(const AMPFileName: PAnsiChar; const ARunAfterLoad: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
