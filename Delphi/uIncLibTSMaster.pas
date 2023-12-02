@@ -849,7 +849,8 @@ type
     FSupportedChannelMask: uint64;
     FName: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
     FComment: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
-    FFlags: UInt64;                                        // Bit 0: whether generate mp header
+    FFlags: UInt32;                                        // Bit 0: whether generate mp header
+    FDBId: uint32;                                         // database id for legacy support
   end;
   PMPDBProperties = ^TMPDBProperties;
   // TMPDBECUProperties for database ECU properties, size = 1040
@@ -2494,6 +2495,7 @@ function start_log_w_filename(const AObj: Pointer; const AFileName: pansichar): 
 function convert_blf_to_mat_w_filter(const ABlfFile: pansichar; const AMatFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function convert_asc_to_mat_w_filter(const AASCFile: pansichar; const AMatFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function convert_asc_to_csv_w_filter(const AASCFile: pansichar; const ACSVFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_debug_log_level(const ALevel: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
