@@ -1209,13 +1209,13 @@ def tsapp_get_mapping_verbose(APPName: bytes, ApplicationChannelType: TLIBApplic
 
 
 # 获取时间戳
-def tsapp_get_timestamp(ATimestamp: c_int32):
+def tsapp_get_timestamp(ATimestamp: c_int64):
     """
-    ATimestamp = c_int32(0)
+    ATimestamp = c_int64(0)
     tsapp_get_timestamp(ATimestamp)
     """
     if isinstance(ATimestamp,int) or isinstance(ATimestamp,float):
-        ATimestamp = c_int32(ATimestamp)
+        ATimestamp = c_int64(ATimestamp)
     r = dll.tsapp_get_timestamp(byref(ATimestamp))
     return r
 
