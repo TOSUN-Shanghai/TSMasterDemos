@@ -1314,13 +1314,30 @@ type
 	  addr: UInt32;
   end;
 
+{$DEFINE  LWIP_IPV6_SCOPES}
   pip6_addr_t = ^tip6_addr_t;
   tip6_addr_t = packed record
    addr: array[0..3] of UInt32;
 {$IFDEF LWIP_IPV6_SCOPES}
-   zone: u8;
-{$endif} { LWIP_IPV6_SCOPES }
+   zone: UInt32;
+{$endif}
   end;
+
+  lwip_ip_addr_type =(
+    { IPv4 }
+    IPADDR_TYPE_V4 =   0,
+    { IPv6 }
+    IPADDR_TYPE_V6 =   6,
+    { IPv4+IPv6 ("dual-stack") }
+    IPADDR_TYPE_ANY = 46
+  );
+  Pip_addr_t = ^Tip_addr_t;
+  Tip_addr_t = packed record
+    ip4Or6: tip6_addr_t;
+    FType: UInt32;  //lwip_ip_addr_type
+    function ipv4: pip4_addr_t;
+    function ipv6: pip6_addr_t;
+  end ;
 
   pts_sockaddr = ^tts_sockaddr;
   tts_sockaddr = packed record
@@ -1376,7 +1393,10 @@ type
 	 revents: Short;
   end;
   TLogDebuggingInfo_t = procedure(const AMsg: PAnsiChar; const ALevel: integer); stdcall;
-
+  // TOSUN callback
+  tosun_recv_callback = procedure(sock: integer; p: Pointer; len: UInt16);
+  tosun_tcp_presend_callback = procedure(sock: integer; p: Pointer; src: Pip_addr_t; dest: Pip_addr_t; ttl: UInt8; tos: UInt8);
+  tosun_tcp_ack_callback = procedure(sock: integer; p: Pointer; len: UInt16);
 
 {$IFNDEF LIBTSMASTER_IMPL}
 const
@@ -2320,7 +2340,9 @@ function tssocket_recvmsg(const ANetworkIndex: Integer; s: integer; Amessage: pt
 function tssocket_send(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_sendmsg(const ANetworkIndex: Integer; s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_sendto(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt; flags: integer; ato: pts_sockaddr; tolen: ts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer; recv_cb: tosun_recv_callback;
+                       presend_cb: tosun_tcp_presend_callback;
+                       send_cb: tosun_tcp_ack_callback): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_write(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_writev(const ANetworkIndex: Integer; s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2329,8 +2351,8 @@ function tssocket_ioctl(const ANetworkIndex: Integer; s: integer; cmd: long; arg
 function tssocket_fcntl(const ANetworkIndex: Integer; s: integer; cmd: integer; val: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_inet_ntop(const ANetworkIndex: Integer; af: integer; const src: Pointer; dst: PAnsiChar; size: ts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_inet_pton(const ANetworkIndex: Integer; af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 // mini program library
 function tsmp_reload_settings(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2890,6 +2912,18 @@ begin
     end;
     Result := result + ' $' + IntToHex(FIdentifier, 1) + ' ' + IntToStr(FDLC) + ' ' + sDatas;
   end;
+
+end;
+
+function Tip_addr_t.ipv4: pip4_addr_t;
+begin
+  result := @ip4Or6.addr[0];
+
+end;
+
+function Tip_addr_t.ipv6: pip6_addr_t;
+begin
+  result := @ip4Or6;
 
 end;
 
