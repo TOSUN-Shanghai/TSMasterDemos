@@ -486,6 +486,12 @@ type
      E_W:Byte;
      Satellite:Byte;
      FIdxChn:Byte;
+     function GetLatitudeReal: single;     //纬度
+     function GetLongitudeReal: single;    //经度
+     procedure SetLatitudeReal(const AValue: single);     //纬度
+     procedure SetLongitudeReal(const AValue: single);    //经度
+     property LatitudeReal: Single read GetLatitudeReal write SetLatitudeReal;
+     property LongitudeReal: Single read GetLongitudeReal write SetLongitudeReal;
   end;
 
   //Ethernet
@@ -2639,6 +2645,71 @@ end;
 function TEMMC_RECORD_DATA.FDateTimeString(ATimeZone:Integer):string;
 begin
   result := FormatdateTime('YYYY-MM-DD hh:nn:ss:zzz',FDateTime(ATimeZone));
+
+end;
+
+{TLibGPSData}
+function TLibGPSData.GetLatitudeReal: single;
+var
+  f: single;
+  d: integer;
+begin
+  f := Latitude / 100;
+  d := Round(f);
+  result := d + ((f - d) * 100/60);
+  if N_S = Ord('S') then
+    result := result * -1;
+
+end;
+
+function TLibGPSData.GetLongitudeReal: single;
+var
+  f: single;
+  d: integer;
+begin
+  f := Longitude / 100;
+  d := Round(f);
+  result := d + ((f - d) * 100/60);
+  if N_S = Ord('W') then
+    result := result * -1;
+
+end;
+
+procedure TLibGPSData.SetLatitudeReal(const AValue: single);     //纬度
+var
+  f: single;
+  d: integer;
+begin
+  if AValue < 0 then begin
+    f := AValue * -1;
+    N_S := Ord('N');
+  end else begin
+    f := AValue;
+    N_S := Ord('S');
+  end;
+  d := Round(f);
+  f := f - d;
+  f := d + (f * 60 / 100);
+  Latitude := f * 100;
+
+end;
+
+procedure TLibGPSData.SetLongitudeReal(const AValue: single);    //经度
+var
+  f: single;
+  d: integer;
+begin
+  if AValue < 0 then begin
+    f := AValue * -1;
+    N_S := Ord('W');
+  end else begin
+    f := AValue;
+    N_S := Ord('E');
+  end;
+  d := Round(f);
+  f := f - d;
+  f := d + (f * 60 / 100);
+  Longitude := f * 100;
 
 end;
 
