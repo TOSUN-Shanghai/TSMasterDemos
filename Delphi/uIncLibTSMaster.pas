@@ -448,12 +448,12 @@ type
     //
      REVERS4: UInt8;  //Memory Align
      config_byte: UInt8;  //Memory Align
-     //bit0: 1：启用cha上终端电阻  0：不启用
-     //bit1: 1：启用chb上终端电阻  0：不启用
-     //bit2: 1：启用接收FIFO    0：不启用
+     //bit0: 1: Enable Resistor of Channel A 0: Disable
+     //bit1: 1: Enable Resistor of Channel B 0: Disable
+     //bit2: 1: Enable Receive FIFO    0: disable
 
-     //bit4: 1：cha桥接使能             0：不使能
-     //bit5: 1：chb桥接使能             0：不使能
+     //bit4: 1: enable the bridge between channel A and B           0: disable
+     //bit5: 1: enable the bridge between channel A and B           0: disable
   end;
 
   PLibTrigger_def = ^TLibTrigger_def;
@@ -462,14 +462,14 @@ type
      slot_id: UInt8;
      cycle_code: UInt8;//BASE-CYCLE + CYCLE-REPETITION
      config_byte: UInt8;
-    //bit 0:是否使能通道A
-    //bit 1:是否使能通道B
-    //bit 2:是否网络管理报文
-    //bit 3:传输模式，0表示连续传输，1表示单次触发
-    //bit 4:是否为冷启动报文，只有缓冲区0可以置1
-    //bit 5:是否为同步报文，只有缓冲区0/1可以置1
+    //bit 0: Enable Channel A
+    //bit 1: Enable Channel B
+    //bit 2: Is NM Frame
+    //bit 3: 0: continuous transmit; 1: single trigger mode
+    //bit 4: 1: is code start frame
+    //bit 5: 1: is sync frame
     //bit 6:
-    //bit 7:帧类型：0-静态，1-动态
+    //bit 7: 1: dynamic 0: static
    end;
 
   PLibGPSData = ^TLibGPSData;
@@ -1225,8 +1225,8 @@ const
  MEMP_NUM_NETCONN     = 10;
  LWIP_SOCKET_OFFSET   = 0;
  TS_FD_SETSIZE        = MEMP_NUM_NETCONN;
- SIN_ZERO_LEN = 8;
- TS_SOL_SOCKET  = $fff;    { options for socket level }
+ SIN_ZERO_LEN         = 8;
+ TS_SOL_SOCKET        = $fff;    { options for socket level }
 
  TS_AF_UNSPEC     =  0;
  TS_AF_INET       =  2;
@@ -1268,6 +1268,11 @@ const
   //note that TSMaster has the same function which is recommended, never enable them together
   //use 0 to disable this function
  TS_SO_VLAN_ID		 = $8100;
+
+ //FCNTL
+ TS_F_GETFL = 3;
+ TS_F_SETFL = 4;
+ TS_O_NONBLOCK = 1;
 
  {
  * Address families.
@@ -1339,8 +1344,11 @@ type
     function ipv6: pip6_addr_t;
   end ;
 
-  pts_sockaddr = ^tts_sockaddr;
-  tts_sockaddr = packed record
+  pts_sockaddr = ^tts_sockaddr_private;
+  {IS_SOCK_ADDR_ALIGNED: should 4 bytes align
+  tts_sockaddr_private: The keyword Packet was used, resulting in single byte alignment
+                        instead of four direct alignments}
+  tts_sockaddr_private = packed record
 	  sa_len: UInt8;
 	  sa_family: ts_sa_family_t;
 	  sa_data: array[0..13] of ansichar;
@@ -1350,12 +1358,21 @@ type
     ts_addr: ts_in_addr_t;
   end;
 
-  ts_sockaddr_in  = packed record
+  {IS_SOCK_ADDR_ALIGNED:
+  ts_sockaddr_in: should 4 bytes align
+  tts_sockaddr_in_private: The keyword Packet was used, resulting in single byte alignment
+                        instead of four direct alignments}
+  pts_sockaddr_in = ^tts_sockaddr_in_private;
+  tts_sockaddr_in_private  = packed record  //16bytes
     sin_len: UInt8;
     sin_family: ts_sa_family_t;
     sin_port: ts_in_port_t;
     sin_addr: ts_in_addr;
     sin_zero: array[0..SIN_ZERO_LEN - 1] of AnsiChar;
+  end;
+  {//Four byte alignment, cannot use Packet}
+  ts_sockaddr_in_union = record  //16bytes
+    FData:array[0..3] of Uint32;
   end;
 
   pts_iovec = ^tts_iovec;
