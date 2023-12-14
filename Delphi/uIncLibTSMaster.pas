@@ -486,10 +486,10 @@ type
      E_W:Byte;
      Satellite:Byte;
      FIdxChn:Byte;
-     function GetLatitudeReal: single;     //纬度
-     function GetLongitudeReal: single;    //经度
-     procedure SetLatitudeReal(const AValue: single);     //纬度
-     procedure SetLongitudeReal(const AValue: single);    //经度
+     function GetLatitudeReal: single;
+     function GetLongitudeReal: single;
+     procedure SetLatitudeReal(const AValue: single);
+     procedure SetLongitudeReal(const AValue: single);
      property LatitudeReal: Single read GetLatitudeReal write SetLatitudeReal;
      property LongitudeReal: Single read GetLongitudeReal write SetLongitudeReal;
   end;
@@ -2326,7 +2326,7 @@ function tslog_logger_get_online_triggers(const AChnIdx: Integer;
                                            const ATimeoutMS:Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //GPS Module
 function tsapp_logger_enable_gps_module(const AChnIdx: Integer; const AEnable: integer; const ATimeoutMS:Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsapp_reset_gps_module(const AChnIdx:Integer; const AInitBaudrate:Integer; const ATargetBaudrate:Integer; const ATimeoutMS:Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_reset_gps_module(const AChnIdx:Integer; const AInitBaudrate:Integer; const ATargetBaudrate:Integer; const ASampleRate: integer; const ATimeoutMS:Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //function Security
 function tsapp_unlock_camera_channel(const AChnIdx: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
@@ -2675,7 +2675,7 @@ begin
 
 end;
 
-procedure TLibGPSData.SetLatitudeReal(const AValue: single);     //纬度
+procedure TLibGPSData.SetLatitudeReal(const AValue: single);
 var
   f: single;
   d: integer;
@@ -2694,7 +2694,7 @@ begin
 
 end;
 
-procedure TLibGPSData.SetLongitudeReal(const AValue: single);    //经度
+procedure TLibGPSData.SetLongitudeReal(const AValue: single);
 var
   f: single;
   d: integer;
