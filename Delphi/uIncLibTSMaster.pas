@@ -753,7 +753,9 @@ type
     TL1004_FD_4_LIN_2   = 26,    //Tlog1004OnH750
     TE1051              = 27,
     TP1051              = 28,
-    TP1034              = 29
+    TP1034              = 29,
+    TTS9015             = 30,
+    TP1026              = 31
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
@@ -1280,6 +1282,8 @@ const
  TS_F_SETFL = 4;
  TS_O_NONBLOCK = 1;
 
+(*
+  // 2023-12-15: mpr symbol conflicted with ws2def.h in C++
  {
  * Address families.
  *}
@@ -1309,7 +1313,7 @@ const
  AF_BAN          = 21;              {/* Banyan */}
 
  AF_MAX          = 22;
-
+*)
 
 type
   ssize_t = NativeInt;
