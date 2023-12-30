@@ -69,6 +69,7 @@ const
 type
   pInt32 = ^Int32;
   ppInt32 = ^pInt32;
+  ppByte = ^PByte;
   // CAN frame definition = 24 B
   PLIBCAN = ^TLIBCAN;
   TLIBCAN = packed record
@@ -656,12 +657,15 @@ type
   PSignalTesterFailReason = ^TSignalTesterFailReason;
   TSignalStatisticsKind = (sskMin = 0, sskMax, sskAverage, sskStdDeviation);
   TFlexRayCompuMethod = (fcmIdentical = 0, fcmLinear, fcmScaleLinear, fcmTextTable, fcmTABNoIntp, fcmFormula);
-  // CAN bus statistics
+  // bus statistics
   TLIBCANBusStatistics = (
     cbsBusLoad = 0, cbsPeakLoad, cbsFpsStdData, cbsAllStdData,
     cbsFpsExtData, cbsAllExtData, cbsFpsStdRemote, cbsAllStdRemote,
     cbsFpsExtRemote, cbsAllExtRemote, cbsFpsErrorFrame, cbsAllErrorFrame
   );
+  // UDP fragment process status
+  TUDPFragmentProcessStatus = (ufpsInvalid, ufpsProcessing, ufpsDone);
+  PUDPFragmentProcessStatus = ^TUDPFragmentProcessStatus;
   // System variables
   TLIBSystemVarType = (
     lsvtInt32 = 0, lsvtUInt32, lsvtInt64, lsvtUInt64, lsvtUInt8Array,
@@ -2545,6 +2549,13 @@ function convert_blf_to_mat_w_filter(const ABlfFile: pansichar; const AMatFile: 
 function convert_asc_to_mat_w_filter(const AASCFile: pansichar; const AMatFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function convert_asc_to_csv_w_filter(const AASCFile: pansichar; const ACSVFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_debug_log_level(const ALevel: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_clear_vlans(const AHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_append_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_append_vlans(AHeader: PLIBEthernetHeader; const AVLANIds: pword; const ACount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_remove_vlan(AHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_build_ipv4_udp_packet_on_frame(AInputHeader: PLIBEthernetHeader; APayload: pbyte; APayloadLength: word; AIdentification: pInt32; AFragmentIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_udp_fragment_processor_clear(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_udp_fragment_processor_parse(const AHeader: PLIBEthernetHeader; AStatus: PUDPFragmentProcessStatus; APayload: ppByte; APayloadLength: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
