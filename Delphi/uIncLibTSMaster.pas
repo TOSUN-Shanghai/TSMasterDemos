@@ -665,7 +665,7 @@ type
     cbsFpsExtRemote, cbsAllExtRemote, cbsFpsErrorFrame, cbsAllErrorFrame
   );
   // UDP fragment process status
-  TUDPFragmentProcessStatus = (ufpsInvalid, ufpsProcessing, ufpsDone);
+  TUDPFragmentProcessStatus = (ufpsNotFragment, ufpsInvalid, ufpsProcessing, ufpsDone);
   PUDPFragmentProcessStatus = ^TUDPFragmentProcessStatus;
   // System variables
   TLIBSystemVarType = (
