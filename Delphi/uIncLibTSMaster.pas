@@ -244,15 +244,16 @@ type
 	  FIdxSwitch: byte;                          // Network's switch index
     FIdxPort: byte;                            // Network's switch's port index, 0~127: measurement port, 128~255: virtual port
 	  FConfig: byte;                             // 0-1: 0 = Rx, 1 = Tx, 2 = TxRq
-                                             // 2: crc status, for tx, 0: crc is include in data, 1: crc is not include in data
-                                             //                for rx, 0: crc is ok, 1: crc is not ok
-                                             // 3: tx done type, 0: only report timestamp, 1: report full info(header+frame)
-    FEthernetPayloadLength: UInt16;             // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
-    freserved: UInt16;                          // Reserved
-	  FTimeUs: UInt64;                            // timestamp in us
-    FEthernetDataPointer: pbyte;             // data pointer
+                                               // 2: crc status, for tx, 0: crc is include in data, 1: crc is not include in data
+                                               //                for rx, 0: crc is ok, 1: crc is not ok
+                                               // 3: tx done type, 0: only report timestamp, 1: report full info(header+frame)
+    FEthernetPayloadLength: UInt16;            // Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
+    freserved: UInt16;                         // Reserved
+	  FTimeUs: UInt64;                           // timestamp in us
+    FEthernetDataPointer: pbyte;               // data pointer, purpose: [1] make testing easy, one frame can be linked to different byte arrays
+                                               //                        [2] When the packet is small, a memory-saving data structure can be built.
 {$IFDEF WIN32}
-    FPaddings: UInt32;                          // to be compatible with x64
+    FPaddings: UInt32;                         // to be compatible with x64
 {$ENDIF}
     // actual data bytes...
     procedure InitWithData(const AData: pbyte; const ALength: word);
@@ -275,7 +276,7 @@ type
     FHeader: TLIBEthernetHeader;
     FBytes: array[0..1612-1] of byte;        // starting by destination MAC, source MAC, ethernet type, payload...
   end;
-  PEthernetMAX = ^TLIBEthernetMAX;
+  PLIBEthernetMAX = ^TLIBEthernetMAX;
 
   TLibFlexRayClusterParameters = packed record
     // general parameters
@@ -2550,12 +2551,13 @@ function convert_asc_to_mat_w_filter(const AASCFile: pansichar; const AMatFile: 
 function convert_asc_to_csv_w_filter(const AASCFile: pansichar; const ACSVFile: pansichar; const AFilterConf: pansichar; const AToTerminate: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_debug_log_level(const ALevel: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_frame_clear_vlans(const AHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function eth_frame_append_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function eth_frame_append_vlans(AHeader: PLIBEthernetHeader; const AVLANIds: pword; const ACount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_append_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word; const APriority: byte; const ACFI: Byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_append_vlans(AHeader: PLIBEthernetHeader; const AVLANIds: pword; const APriority: byte; const ACFI: Byte; const ACount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_frame_remove_vlan(AHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_build_ipv4_udp_packet_on_frame(AInputHeader: PLIBEthernetHeader; APayload: pbyte; APayloadLength: word; AIdentification: pInt32; AFragmentIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_udp_fragment_processor_clear(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_udp_fragment_processor_parse(const AHeader: PLIBEthernetHeader; AStatus: PUDPFragmentProcessStatus; APayload: ppByte; APayloadLength: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_frame_insert_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word; const APriority: byte; const ACFI: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
