@@ -268,8 +268,9 @@ type
     function  SourceMACAddr: pbyte;
     function  EthernetTypeAddr: pbyte;
     function  EthernetType: word;
+    function  HasVLANs(out AOffsetBytes: integer): boolean; inline;
     // properties
-    property IsTX: Boolean read GetTX write SetTX;
+    property  IsTX: Boolean read GetTX write SetTX;
   end;
   PLIBEthernetHeader = ^TLIBEthernetHeader;
   TLIBEthernetMAX = packed record
@@ -3543,30 +3544,46 @@ end;
 
 function TLIBEthernetHeader.EthernetPayloadPointer: pbyte;
 begin
+  var o: integer;
+  if not HasVLANs(o) then o := 0;
   result := FEthernetDataPointer;
-  Inc(result, 6{dest MAC} + 6{source MAC} + 2{ethernet type});
+  Inc(result, 6{dest MAC} + 6{source MAC} + o + 2{ethernet type});
 
 end;
 
 function TLIBEthernetHeader.EthernetType: word;
 begin
+  var o: integer;
+  if not HasVLANs(o) then o := 0;
   var p: pbyte;
   p := FEthernetDataPointer;
-  Inc(p, 6{dest MAC} + 6{source MAC});
+  Inc(p, 6{dest MAC} + 6{source MAC} + o);
   result := pword(p)^;
 
 end;
 
 function TLIBEthernetHeader.EthernetTypeAddr: pbyte;
 begin
+  var o: integer;
+  if not HasVLANs(o) then o := 0;
   result := FEthernetDataPointer;
-  Inc(result, 6{dest MAC} + 6{source MAC});
+  Inc(result, 6{dest MAC} + 6{source MAC} + o);
 
 end;
 
 function TLIBEthernetHeader.GetTX: Boolean;
 begin
   result := (fconfig and $1) <> 0;
+
+end;
+
+function TLibEthernetHeader.HasVLANs(out AOffsetBytes: integer): boolean;
+begin
+  AOffsetBytes := 0;
+  while pword(FEthernetDataPointer + 6{dest MAC} + 6{source MAC} + AOffsetBytes)^ = $0081 do begin
+    inc(AOffsetBytes, 4);
+  end;
+  result := AOffsetBytes > 0;
 
 end;
 
@@ -3650,7 +3667,9 @@ end;
 
 function TLIBEthernetHeader.TotalEthernetPacketLength: integer;
 begin
-  result := SizeOf(self) + 6 + 6 + 2 + FEthernetPayloadLength;
+  var o: integer;
+  if not HasVLANs(o) then o := 0;
+  result := SizeOf(self) + 6 + 6 + 2 + o + FEthernetPayloadLength;
 
 end;
 
