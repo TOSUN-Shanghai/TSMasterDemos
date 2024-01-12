@@ -884,8 +884,7 @@ type
     FFrameIndex: int32;
     FIsTx: uint8;
     FReserved1: uint8;
-    FReserved2: uint8;
-    FReserved3: uint8;
+    FCycleTimeMs: uint16;
     FFrameType: TSignalType;
     // CAN
     FCANIsDataFrame: uint8;
