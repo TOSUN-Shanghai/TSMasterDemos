@@ -1074,7 +1074,7 @@ const
     'TOSUN Wireless-OBD',
     'TOSUN Ex'
   );
-  TS_HWTYPE_MAX_CNT = 30;
+  TS_HWTYPE_MAX_CNT = 32;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
     'Unknown',
     'TS.CAN Pro',
@@ -1105,7 +1105,9 @@ const
     'TL1004_FD_4_LIN_2',
     'TE1051',
     'TP1051',
-    'TP1034'
+    'TP1034',
+    'TTS9015',
+    'TP1026'
   );
   XL_HWTYPE_MAX_CNT = 120;
   XL_HWTYPE_NAMES: array [0..XL_HWTYPE_MAX_CNT-1] of string = (
@@ -2558,6 +2560,7 @@ function eth_build_ipv4_udp_packet_on_frame(AInputHeader: PLIBEthernetHeader; AP
 function eth_udp_fragment_processor_clear(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_udp_fragment_processor_parse(const AHeader: PLIBEthernetHeader; AStatus: PUDPFragmentProcessStatus; APayload: ppByte; APayloadLength: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_frame_insert_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word; const APriority: byte; const ACFI: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_language_id(AId: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
