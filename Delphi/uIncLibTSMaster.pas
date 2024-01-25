@@ -77,7 +77,8 @@ type
     FProperties: byte;       // default 0, masked status:            = CAN FD
                              // [7] 0-normal frame, 1-error frame
                              // [6] 0-not logged, 1-already logged
-                             // [5-3] tbd
+                             // [5] default used by precise cyclic message manager
+                             // [4-3] tbd
                              // [2] 0-std frame, 1-extended frame
                              // [1] 0-data frame, 1-remote frame
                              // [0] dir: 0-RX, 1-TX
@@ -118,7 +119,8 @@ type
     FProperties: byte;       // default 0, masked status:            = CAN
                              // [7] 0-normal frame, 1-error frame
                              // [6] 0-not logged, 1-already logged
-                             // [5-3] tbd
+                             // [5] default used by precise cyclic message manager
+                             // [4-3] tbd
                              // [2] 0-std frame, 1-extended frame
                              // [1] 0-data frame, 1-remote frame
                              // [0] dir: 0-RX, 1-TX
