@@ -763,7 +763,10 @@ type
     TP1051              = 28,
     TP1034              = 29,
     TTS9015             = 30,
-    TP1026              = 31
+    TP1026              = 31,
+    TTS1026             = 32,
+    TTS1034             = 33,
+    TTS1018             = 34
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
@@ -1044,6 +1047,9 @@ type
   Ttstp_can_request_and_get_response = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
   Ttstp_can_request_and_get_response_functional = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
 
+  N_USData_RevData_Recall_Obj = procedure(const ATpModuleIndex:Integer;
+                                       const AChn:Integer) of object; stdcall;
+
   N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
                                        const AChn:Integer;
                                        const ABusType: byte;
@@ -1076,7 +1082,7 @@ const
     'TOSUN Wireless-OBD',
     'TOSUN Ex'
   );
-  TS_HWTYPE_MAX_CNT = 32;
+  TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
     'Unknown',
     'TS.CAN Pro',
@@ -1109,7 +1115,10 @@ const
     'TP1051',
     'TP1034',
     'TTS9015',
-    'TP1026'
+    'TP1026',
+    'TTS1026',
+    'TTS1034',
+    'TTS1018'
   );
   XL_HWTYPE_MAX_CNT = 120;
   XL_HWTYPE_NAMES: array [0..XL_HWTYPE_MAX_CNT-1] of string = (
