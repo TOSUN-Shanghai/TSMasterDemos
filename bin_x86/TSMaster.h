@@ -124,361 +124,6 @@ const u8 DLC_DATA_BYTE_CNT[16] = {
 	0, 1, 2, 3, 4, 5, 6, 7,
 	8, 12, 16, 20, 24, 32, 48, 64
 };
-typedef enum {
-    APP_CAN = 0,
-    APP_LIN = 1,
-    APP_FlexRay = 2,
-    APP_Ethernet = 3,
-}TLIBApplicationChannelType;
-typedef enum {
-    stCANSignal = 0,
-    stLINSignal = 1,
-    stSystemVar = 2,
-    stFlexRay = 3,
-    stEthernet = 4,
-}TSignalType;
-typedef enum {
-    trmRelativeMode = 0,
-    trmTriggeredMode = 1,
-    trmAbsoluteMode = 2,
-}TTimeRangeTestMode;
-typedef enum {
-    tstCANSignal = 0,
-    tstLINSignal = 1,
-    tstSystemVar = 2,
-    tstFlexRay = 3,
-    tstExpression = 4,
-} TTriggerSignalType;
-typedef enum {
-    sckAlways = 0,
-    sckAppear = 1,
-    sckStatistics = 2,
-    sckRisingEdge = 3,
-    sckFallingEdge = 4,
-    sckMonotonyRising = 5,
-    sckMonotonyFalling = 6,
-    sckFollow = 7,
-    sckJump = 8,
-    sckNoChange = 9,
-}TSignalCheckKind;
-typedef enum {
-    sskMin = 0,
-    sskMax = 1,
-    sskAverage = 2,
-    sskStdDeviation = 3,
-}TSignalStatisticsKind;
-typedef enum {
-    fcmIdentical = 0,
-    fcmLinear = 1,
-    fcmScaleLinear = 2,
-    fcmTextTable = 3,
-    fcmTABNoIntp = 4,
-    fcmFormula = 5,
-}TFlexRayCompuMethod;
-typedef enum {
-    cbsBusLoad = 0,
-    cbsPeakLoad = 1,
-    cbsFpsStdData = 2,
-    cbsAllStdData = 3,
-    cbsFpsExtData = 4,
-    cbsAllExtData = 5,
-    cbsFpsStdRemote = 6,
-    cbsAllStdRemote = 7,
-    cbsFpsExtRemote = 8,
-    cbsAllExtRemote = 9,
-    cbsFpsErrorFrame = 10,
-    cbsAllErrorFrame = 11,
-}TLIBCANBusStatistics;
-typedef enum {
-    lsvtInt32 = 0,
-    lsvtUInt32 = 1,
-    lsvtInt64 = 2,
-    lsvtUInt64 = 3,
-    lsvtUInt8Array = 4,
-    lsvtInt32Array = 5,
-    lsvtInt64Array = 6,
-    lsvtDouble = 7,
-    lsvtDoubleArray = 8,
-    lsvtString = 9,
-}TLIBSystemVarType;
-typedef enum {
-    smdBiDirection = 0,
-    smdSgnToSysVar = 1,
-    smdSysVarToSgn = 2,
-}TSymbolMappingDirection;
-typedef enum {
-    rppInit = 0,
-    rppReplaying = 1,
-    rppEnded = 2,
-}TReplayPhase;
-typedef enum {
-    ortImmediately = 0,
-    ortAsLog = 1,
-    ortDelayed = 2,
-}TLIBOnlineReplayTimingMode;
-typedef enum {
-    orsNotStarted = 0,
-    orsRunning = 1,
-    orsPaused = 2,
-    orsCompleted = 3,
-    orsTerminated = 4,
-}TLIBOnlineReplayStatus;
-typedef enum {
-    rivUseDB = 0,
-    rivUseLast = 1,
-    rivUse0 = 2,
-}TLIBRBSInitValueOptions;
-typedef enum {
-    sotCAN = 0,
-    sotLIN = 1,
-    sotCANFD = 2,
-    sotRealtimeComment = 3,
-    sotSystemVar = 4,
-    sotFlexRay = 5,
-}TSupportedObjType;
-typedef enum {
-    amrsNotRun = 0,
-    amrsPrepareRun = 1,
-    amrsRunning = 2,
-    amrsPaused = 3,
-    amrsStepping = 4,
-    amrsFinished = 5,
-}TLIBAutomationModuleRunningState;
-typedef enum {
-    lastCANSignal = 0,
-    lastLINSignal = 1,
-    lastSysVar = 2,
-    lastLocalVar = 3,
-    lastConst = 4,
-    lastFlexRaySignal = 5,
-    lastImmediateValue = 6,
-    lastUnknown = 7,
-}TLIBAutomationSignalType ;
-typedef enum {
-    lmfsSystemFunc = 0,
-    lmfsMPLIB = 1,
-    lmfsInternal = 2,
-} TLIBMPFuncSource ;
-typedef enum {
-    lvtInteger = 0,
-    lvtDouble = 1,
-    lvtString = 2,
-    lvtCANMsg = 3,
-    lvtCANFDMsg = 4,
-    lvtLINMsg = 5,
-    lvtUnknown = 6,
-}TLIBSimVarType;
-typedef enum {
-    sssStopped = 0,
-    sssRunning = 1,
-    sssPaused = 2,
-}TSTIMSignalStatus;
-typedef enum {
-    lfdtCAN = 0,
-    lfdtISOCAN = 1,
-    lfdtNonISOCAN = 2,
-}TLIBCANFDControllerType;
-typedef enum {
-    lfdmNormal = 0,
-    lfdmACKOff = 1,
-    lfdmRestricted = 2,
-    lfdmInternalLoopback = 3,
-    lfdmExternalLoopback = 4,
-}TLIBCANFDControllerMode;
-typedef enum {
-    TS_UNKNOWN_DEVICE = 0,
-    TSCAN_PRO = 1,
-    TSCAN_Lite1 = 2,
-    TC1001 = 3,
-    TL1001 = 4,
-    TC1011 = 5,
-    TM5011 = 6,
-    TC1002 = 7,
-    TC1014 = 8,
-    TSCANFD2517 = 9,
-    TC1026 = 10,
-    TC1016 = 11,
-    TC1012 = 12,
-    TC1013 = 13,
-    TLog1002 = 14,
-    TC1034 = 15,
-    TC1018 = 16,
-    GW2116 = 17,
-    TC2115 = 18,
-    MP1013 = 19,
-    TC1113 = 20,
-    TC1114 = 21,
-    TP1013 = 22,
-    TC1017 = 23,
-    TP1018 = 24,
-    TF10XX = 25,
-    TL1004_FD_4_LIN_2 = 26,
-    TE1051 = 27,
-    TP1051 = 28,
-    TP1034 = 29,
-}TLIB_TS_Device_Sub_Type;
-typedef enum {
-    XL_NONE = 0,
-    XL_VIRTUAL = 1,
-    XL_CANCARDX = 2,
-    XL_CANAC2PCI = 6,
-    XL_CANCARDY = 12,
-    XL_CANCARDXL = 15,
-    XL_CANCASEXL = 21,
-    XL_CANCASEXL_LOG_OBSOLETE = 23,
-    XL_CANBOARDXL = 25,
-    XL_CANBOARDXL_PXI = 27,
-    XL_VN2600 = 29,
-    XL_VN3300 = 37,
-    XL_VN3600 = 39,
-    XL_VN7600 = 41,
-    XL_CANCARDXLE = 43,
-    XL_VN8900 = 45,
-    XL_VN8950 = 47,
-    XL_VN2640 = 53,
-    XL_VN1610 = 55,
-    XL_VN1630 = 57,
-    XL_VN1640 = 59,
-    XL_VN8970 = 61,
-    XL_VN1611 = 63,
-    XL_VN5610 = 65,
-    XL_VN5620 = 66,
-    XL_VN7570 = 67,
-    XL_IPCLIENT = 69,
-    XL_IPSERVER = 71,
-    XL_VX1121 = 73,
-    XL_VX1131 = 75,
-    XL_VT6204 = 77,
-    XL_VN1630_LOG = 79,
-    XL_VN7610 = 81,
-    XL_VN7572 = 83,
-    XL_VN8972 = 85,
-    XL_VN0601 = 87,
-    XL_VN5640 = 89,
-    XL_VX0312 = 91,
-    XL_VH6501 = 94,
-    XL_VN8800 = 95,
-    XL_IPCL8800 = 96,
-    XL_IPSRV8800 = 97,
-    XL_CSMCAN = 98,
-    XL_VN5610A = 101,
-    XL_VN7640 = 102,
-    XL_VX1135 = 104,
-    XL_VN4610 = 105,
-    XL_VT6306 = 107,
-    XL_VT6104A = 108,
-    XL_VN5430 = 109,
-    XL_VN1530 = 112,
-    XL_VN1531 = 113,
-}TLIB_XL_Device_Sub_Type;
-typedef enum {
-    BUS_UNKNOWN_TYPE = 0,
-    TS_TCP_DEVICE = 1,
-    XL_USB_DEVICE = 2,
-    TS_USB_DEVICE = 3,
-    PEAK_USB_DEVICE = 4,
-    KVASER_USB_DEVICE = 5,
-    ZLG_USB_DEVICE = 6,
-    ICS_USB_DEVICE = 7,
-    TS_TC1005_DEVICE = 8,
-    CANABLE_USB_DEVICE = 9,
-    TS_WIRELESS_OBD = 10,
-    TS_USB_DEVICE_EX = 11,
-    BUS_DEV_TYPE_COUNT = 12,
-}TLIBBusToolDeviceType;
-typedef enum {
-    T_MasterNode = 0,
-    T_SlaveNode = 1,
-    T_MonitorNode = 2,
-}TLINNodeType;
-typedef enum {
-    LIN_PROTOCL_13 = 0,
-    LIN_PROTOCL_20 = 1,
-    LIN_PROTOCL_21 = 2,
-    LIN_PROTOCL_J2602 = 3,
-}TLINProtocol;
-
-typedef struct _TLIBFlexRayClusterParameters
-{
-    char FShortName[ 32] ;
-    char FLongName[ 32] ;
-    char FDescription[ 32] ;
-    char FSpeed[ 32] ;
-    char  FChannels[ 32] ;
-    char FBitCountingPolicy[ 32] ;
-    char FProtocol[ 32] ;
-    char FProtocolVersion[ 32] ;
-    char FMedium[ 32] ;
-    s32 FIsHighLowBitOrder;//
-    s32 FMaxFrameLengthByte;//
-    s32 FNumberOfCycles;//cycle parameters
-    s32 FCycle_us;//
-    double FBit_us;//
-    double FSampleClockPeriod_us;//
-    double  FMacrotick_us;//
-    s32 FMacroPerCycle;//
-    s32 FNumberOfStaticSlots;//
-    s32 FStaticSlot_MT;//
-    s32 FActionPointOffset_MT;//
-    s32 FTSSTransmitter_gdBit;//
-    s32 FPayloadLengthStatic_WORD;//
-    s32 FNumberOfMiniSlots;//
-    s32 FMiniSlot_MT;//
-    s32 FMiniSlotActionPointOffset_MT;//
-    s32 FDynamicSlotIdlePhase_MiniSlots;//
-    s32  FSymbolWindow_MT;//
-    s32 FNIT_MT;//
-    s32 FSyncNodeMax;//
-    s32 FNetworkManagementVectorLength;//Wakeup and startup parameters
-    s32 FListenNoise;//
-    s32 FColdStartAttempts;//
-    s32 FCASRxLowMax_gdBit;//
-    s32 FWakeupSymbolRxIdle_gdBit;//
-    s32 FWakeupSymbolRxLow_gdBit;//
-    s32  FWakeupSymbolRxWindow_gdBit;//
-    s32 FWakeupSymbolTxIdle_gdBit;//
-    s32 FWakeupSymbolTxLow_gdBit;//
-    double FMaxInitializationError_us;//clock correction parameters
-    s32 FClusterDriftDamping_uT;//
-    s32 FOffsetCorrectionStart_MT;//
-    s32 FMaxWithoutClockCorrectionFatal;//
-    s32 FMaxWithoutClockCorrectionPassive;//
-}TLIBFlexRayClusterParameters,*PLIBFlexRayClusterParameters;
-
-typedef struct _TLIBFlexRayControllerParameters
-{
-    char FShortName[ 32] ;
-    char FConnectedChannels[ 32] ;
-    s32 FMicroPerCycle_uT;//
-    s32 FMicroPerMacroNom_uT;//
-    double FMicroTick_us;//
-    s32 FSamplesPerMicrotick;//wakeup & startup parameters
-    s32  FWakeupChannelA;//
-    s32  FWakeupChannelB;//
-    s32  FMaxDrift_uT;//
-    s32  FWakeupPattern;//
-    s32  FListenTimeout_uT;//
-    s32  FAcceptedStartupRange_uT;//
-    s32  FMacroInitialOffsetA_MT;//
-    s32  FMacroInitialOffsetB_MT;//
-    s32  FMacroInitialOffsetA_uT;//
-    s32  FMacroInitialOffsetB_uT;//clock correction parameters
-    char  FKeySlotUsage[ 32] ;
-    s32  FKeySlotID;//
-    s32  FsingleSlotEnabled;//
-    s32  FClusterDriftDamping_uT;//
-    s32  FDocodingCorrection_uT;//
-    s32  FDelayCompensationA_uT;//
-    s32  FDelayCompensationB_uT;//
-    s32  FOffsetCorrectionOut_uT;//
-    s32  FExternRateCorrection_uT;//
-    s32  FRateCorrectionOut_uT;//
-    s32  FExternOffsetCorrection_uT;//
-    s32  FAllowHaltDueToClock;//
-    s32  FAllowPassivToActive;//latesttx
-    s32  FLatestTx;//
-    s32  FMaxDynamicPayloadLength;//
-}TLIBFlexRayControllerParameters,*PLIBFlexRayControllerParameters;
 typedef struct _TLIBCAN
 {
     u8 FIdxChn;//channel index starting from 0
@@ -1217,7 +862,361 @@ typedef struct _TLIBEthernetHeader
         has_vlans(&o);
         return FEthernetDataAddr + 0x2A + o;
     }
-}TLIBEthernetHeader,*PLIBEthernetHeader;
+}TLIBEthernetHeader,*PLIBEthernetHeader;typedef enum {
+    APP_CAN = 0,
+    APP_LIN = 1,
+    APP_FlexRay = 2,
+    APP_Ethernet = 3,
+}TLIBApplicationChannelType;
+typedef enum {
+    stCANSignal = 0,
+    stLINSignal = 1,
+    stSystemVar = 2,
+    stFlexRay = 3,
+    stEthernet = 4,
+}TSignalType;
+typedef enum {
+    trmRelativeMode = 0,
+    trmTriggeredMode = 1,
+    trmAbsoluteMode = 2,
+}TTimeRangeTestMode;
+typedef enum {
+    tstCANSignal = 0,
+    tstLINSignal = 1,
+    tstSystemVar = 2,
+    tstFlexRay = 3,
+    tstExpression = 4,
+} TTriggerSignalType;
+typedef enum {
+    sckAlways = 0,
+    sckAppear = 1,
+    sckStatistics = 2,
+    sckRisingEdge = 3,
+    sckFallingEdge = 4,
+    sckMonotonyRising = 5,
+    sckMonotonyFalling = 6,
+    sckFollow = 7,
+    sckJump = 8,
+    sckNoChange = 9,
+}TSignalCheckKind;
+typedef enum {
+    sskMin = 0,
+    sskMax = 1,
+    sskAverage = 2,
+    sskStdDeviation = 3,
+}TSignalStatisticsKind;
+typedef enum {
+    fcmIdentical = 0,
+    fcmLinear = 1,
+    fcmScaleLinear = 2,
+    fcmTextTable = 3,
+    fcmTABNoIntp = 4,
+    fcmFormula = 5,
+}TFlexRayCompuMethod;
+typedef enum {
+    cbsBusLoad = 0,
+    cbsPeakLoad = 1,
+    cbsFpsStdData = 2,
+    cbsAllStdData = 3,
+    cbsFpsExtData = 4,
+    cbsAllExtData = 5,
+    cbsFpsStdRemote = 6,
+    cbsAllStdRemote = 7,
+    cbsFpsExtRemote = 8,
+    cbsAllExtRemote = 9,
+    cbsFpsErrorFrame = 10,
+    cbsAllErrorFrame = 11,
+}TLIBCANBusStatistics;
+typedef enum {
+    lsvtInt32 = 0,
+    lsvtUInt32 = 1,
+    lsvtInt64 = 2,
+    lsvtUInt64 = 3,
+    lsvtUInt8Array = 4,
+    lsvtInt32Array = 5,
+    lsvtInt64Array = 6,
+    lsvtDouble = 7,
+    lsvtDoubleArray = 8,
+    lsvtString = 9,
+}TLIBSystemVarType;
+typedef enum {
+    smdBiDirection = 0,
+    smdSgnToSysVar = 1,
+    smdSysVarToSgn = 2,
+}TSymbolMappingDirection;
+typedef enum {
+    rppInit = 0,
+    rppReplaying = 1,
+    rppEnded = 2,
+}TReplayPhase;
+typedef enum {
+    ortImmediately = 0,
+    ortAsLog = 1,
+    ortDelayed = 2,
+}TLIBOnlineReplayTimingMode;
+typedef enum {
+    orsNotStarted = 0,
+    orsRunning = 1,
+    orsPaused = 2,
+    orsCompleted = 3,
+    orsTerminated = 4,
+}TLIBOnlineReplayStatus;
+typedef enum {
+    rivUseDB = 0,
+    rivUseLast = 1,
+    rivUse0 = 2,
+}TLIBRBSInitValueOptions;
+typedef enum {
+    sotCAN = 0,
+    sotLIN = 1,
+    sotCANFD = 2,
+    sotRealtimeComment = 3,
+    sotSystemVar = 4,
+    sotFlexRay = 5,
+}TSupportedObjType;
+typedef enum {
+    amrsNotRun = 0,
+    amrsPrepareRun = 1,
+    amrsRunning = 2,
+    amrsPaused = 3,
+    amrsStepping = 4,
+    amrsFinished = 5,
+}TLIBAutomationModuleRunningState;
+typedef enum {
+    lastCANSignal = 0,
+    lastLINSignal = 1,
+    lastSysVar = 2,
+    lastLocalVar = 3,
+    lastConst = 4,
+    lastFlexRaySignal = 5,
+    lastImmediateValue = 6,
+    lastUnknown = 7,
+}TLIBAutomationSignalType ;
+typedef enum {
+    lmfsSystemFunc = 0,
+    lmfsMPLIB = 1,
+    lmfsInternal = 2,
+} TLIBMPFuncSource ;
+typedef enum {
+    lvtInteger = 0,
+    lvtDouble = 1,
+    lvtString = 2,
+    lvtCANMsg = 3,
+    lvtCANFDMsg = 4,
+    lvtLINMsg = 5,
+    lvtUnknown = 6,
+}TLIBSimVarType;
+typedef enum {
+    sssStopped = 0,
+    sssRunning = 1,
+    sssPaused = 2,
+}TSTIMSignalStatus;
+typedef enum {
+    lfdtCAN = 0,
+    lfdtISOCAN = 1,
+    lfdtNonISOCAN = 2,
+}TLIBCANFDControllerType;
+typedef enum {
+    lfdmNormal = 0,
+    lfdmACKOff = 1,
+    lfdmRestricted = 2,
+    lfdmInternalLoopback = 3,
+    lfdmExternalLoopback = 4,
+}TLIBCANFDControllerMode;
+typedef enum {
+    TS_UNKNOWN_DEVICE = 0,
+    TSCAN_PRO = 1,
+    TSCAN_Lite1 = 2,
+    TC1001 = 3,
+    TL1001 = 4,
+    TC1011 = 5,
+    TM5011 = 6,
+    TC1002 = 7,
+    TC1014 = 8,
+    TSCANFD2517 = 9,
+    TC1026 = 10,
+    TC1016 = 11,
+    TC1012 = 12,
+    TC1013 = 13,
+    TLog1002 = 14,
+    TC1034 = 15,
+    TC1018 = 16,
+    GW2116 = 17,
+    TC2115 = 18,
+    MP1013 = 19,
+    TC1113 = 20,
+    TC1114 = 21,
+    TP1013 = 22,
+    TC1017 = 23,
+    TP1018 = 24,
+    TF10XX = 25,
+    TL1004_FD_4_LIN_2 = 26,
+    TE1051 = 27,
+    TP1051 = 28,
+    TP1034 = 29,
+}TLIB_TS_Device_Sub_Type;
+typedef enum {
+    XL_NONE = 0,
+    XL_VIRTUAL = 1,
+    XL_CANCARDX = 2,
+    XL_CANAC2PCI = 6,
+    XL_CANCARDY = 12,
+    XL_CANCARDXL = 15,
+    XL_CANCASEXL = 21,
+    XL_CANCASEXL_LOG_OBSOLETE = 23,
+    XL_CANBOARDXL = 25,
+    XL_CANBOARDXL_PXI = 27,
+    XL_VN2600 = 29,
+    XL_VN3300 = 37,
+    XL_VN3600 = 39,
+    XL_VN7600 = 41,
+    XL_CANCARDXLE = 43,
+    XL_VN8900 = 45,
+    XL_VN8950 = 47,
+    XL_VN2640 = 53,
+    XL_VN1610 = 55,
+    XL_VN1630 = 57,
+    XL_VN1640 = 59,
+    XL_VN8970 = 61,
+    XL_VN1611 = 63,
+    XL_VN5610 = 65,
+    XL_VN5620 = 66,
+    XL_VN7570 = 67,
+    XL_IPCLIENT = 69,
+    XL_IPSERVER = 71,
+    XL_VX1121 = 73,
+    XL_VX1131 = 75,
+    XL_VT6204 = 77,
+    XL_VN1630_LOG = 79,
+    XL_VN7610 = 81,
+    XL_VN7572 = 83,
+    XL_VN8972 = 85,
+    XL_VN0601 = 87,
+    XL_VN5640 = 89,
+    XL_VX0312 = 91,
+    XL_VH6501 = 94,
+    XL_VN8800 = 95,
+    XL_IPCL8800 = 96,
+    XL_IPSRV8800 = 97,
+    XL_CSMCAN = 98,
+    XL_VN5610A = 101,
+    XL_VN7640 = 102,
+    XL_VX1135 = 104,
+    XL_VN4610 = 105,
+    XL_VT6306 = 107,
+    XL_VT6104A = 108,
+    XL_VN5430 = 109,
+    XL_VN1530 = 112,
+    XL_VN1531 = 113,
+}TLIB_XL_Device_Sub_Type;
+typedef enum {
+    BUS_UNKNOWN_TYPE = 0,
+    TS_TCP_DEVICE = 1,
+    XL_USB_DEVICE = 2,
+    TS_USB_DEVICE = 3,
+    PEAK_USB_DEVICE = 4,
+    KVASER_USB_DEVICE = 5,
+    ZLG_USB_DEVICE = 6,
+    ICS_USB_DEVICE = 7,
+    TS_TC1005_DEVICE = 8,
+    CANABLE_USB_DEVICE = 9,
+    TS_WIRELESS_OBD = 10,
+    TS_USB_DEVICE_EX = 11,
+    BUS_DEV_TYPE_COUNT = 12,
+}TLIBBusToolDeviceType;
+typedef enum {
+    T_MasterNode = 0,
+    T_SlaveNode = 1,
+    T_MonitorNode = 2,
+}TLINNodeType;
+typedef enum {
+    LIN_PROTOCL_13 = 0,
+    LIN_PROTOCL_20 = 1,
+    LIN_PROTOCL_21 = 2,
+    LIN_PROTOCL_J2602 = 3,
+}TLINProtocol;
+
+typedef struct _TLIBFlexRayClusterParameters
+{
+    char FShortName[ 32] ;
+    char FLongName[ 32] ;
+    char FDescription[ 32] ;
+    char FSpeed[ 32] ;
+    char  FChannels[ 32] ;
+    char FBitCountingPolicy[ 32] ;
+    char FProtocol[ 32] ;
+    char FProtocolVersion[ 32] ;
+    char FMedium[ 32] ;
+    s32 FIsHighLowBitOrder;//
+    s32 FMaxFrameLengthByte;//
+    s32 FNumberOfCycles;//cycle parameters
+    s32 FCycle_us;//
+    double FBit_us;//
+    double FSampleClockPeriod_us;//
+    double  FMacrotick_us;//
+    s32 FMacroPerCycle;//
+    s32 FNumberOfStaticSlots;//
+    s32 FStaticSlot_MT;//
+    s32 FActionPointOffset_MT;//
+    s32 FTSSTransmitter_gdBit;//
+    s32 FPayloadLengthStatic_WORD;//
+    s32 FNumberOfMiniSlots;//
+    s32 FMiniSlot_MT;//
+    s32 FMiniSlotActionPointOffset_MT;//
+    s32 FDynamicSlotIdlePhase_MiniSlots;//
+    s32  FSymbolWindow_MT;//
+    s32 FNIT_MT;//
+    s32 FSyncNodeMax;//
+    s32 FNetworkManagementVectorLength;//Wakeup and startup parameters
+    s32 FListenNoise;//
+    s32 FColdStartAttempts;//
+    s32 FCASRxLowMax_gdBit;//
+    s32 FWakeupSymbolRxIdle_gdBit;//
+    s32 FWakeupSymbolRxLow_gdBit;//
+    s32  FWakeupSymbolRxWindow_gdBit;//
+    s32 FWakeupSymbolTxIdle_gdBit;//
+    s32 FWakeupSymbolTxLow_gdBit;//
+    double FMaxInitializationError_us;//clock correction parameters
+    s32 FClusterDriftDamping_uT;//
+    s32 FOffsetCorrectionStart_MT;//
+    s32 FMaxWithoutClockCorrectionFatal;//
+    s32 FMaxWithoutClockCorrectionPassive;//
+}TLIBFlexRayClusterParameters,*PLIBFlexRayClusterParameters;
+
+typedef struct _TLIBFlexRayControllerParameters
+{
+    char FShortName[ 32] ;
+    char FConnectedChannels[ 32] ;
+    s32 FMicroPerCycle_uT;//
+    s32 FMicroPerMacroNom_uT;//
+    double FMicroTick_us;//
+    s32 FSamplesPerMicrotick;//wakeup & startup parameters
+    s32  FWakeupChannelA;//
+    s32  FWakeupChannelB;//
+    s32  FMaxDrift_uT;//
+    s32  FWakeupPattern;//
+    s32  FListenTimeout_uT;//
+    s32  FAcceptedStartupRange_uT;//
+    s32  FMacroInitialOffsetA_MT;//
+    s32  FMacroInitialOffsetB_MT;//
+    s32  FMacroInitialOffsetA_uT;//
+    s32  FMacroInitialOffsetB_uT;//clock correction parameters
+    char  FKeySlotUsage[ 32] ;
+    s32  FKeySlotID;//
+    s32  FsingleSlotEnabled;//
+    s32  FClusterDriftDamping_uT;//
+    s32  FDocodingCorrection_uT;//
+    s32  FDelayCompensationA_uT;//
+    s32  FDelayCompensationB_uT;//
+    s32  FOffsetCorrectionOut_uT;//
+    s32  FExternRateCorrection_uT;//
+    s32  FRateCorrectionOut_uT;//
+    s32  FExternOffsetCorrection_uT;//
+    s32  FAllowHaltDueToClock;//
+    s32  FAllowPassivToActive;//latesttx
+    s32  FLatestTx;//
+    s32  FMaxDynamicPayloadLength;//
+}TLIBFlexRayControllerParameters,*PLIBFlexRayControllerParameters;
 
 typedef struct _TLIBEthernetMAX
 {
@@ -1411,8 +1410,7 @@ typedef struct _TMPDBFrameProperties
     s32 FFrameIndex;//
     u8 FIsTx;//
     u8 FReserved1;//
-    u8 FReserved2;//
-    u8 FReserved3;//
+    u16 FCycleTimeMs;//
     s32 FFrameType;//
     u8 FCANIsDataFrame;//
     u8 FCANIsStdFrame;//
@@ -1542,6 +1540,21 @@ typedef struct _Tts_pollfd
     s16 revents;//
 }Tts_pollfd,*Pts_pollfd;
 
+typedef struct _Tts_sockaddr_in
+{
+    u8 sin_len;//
+    u8 sin_family;//
+    u16 sin_port;//
+    Tip4_addr_t sin_addr;//
+    u8 sin_zero[ 8] ;
+}Tts_sockaddr_in,*Pts_sockaddr_in;
+
+typedef struct _Tip_addr_t
+{
+    Tip6_addr_t ip4Or6;//
+    u32 FType;//
+}Tip_addr_t,*Pip_addr_t;
+
 typedef double(__stdcall*TCANQueueEvent_API)(const PLIBCAN AData);
 typedef double(__stdcall*TGPSQueueEvent_Win32)(const ps32 AObj,const PLIBGPSData AData);
 typedef double(__stdcall*TCANQueueEvent_Win32)(const ps32 AObj,const PLIBCAN AData);
@@ -1563,6 +1576,9 @@ typedef double(__stdcall*TReadProgressCallback)(const ps32 AObj,const double APr
 typedef double(__stdcall*N_USData_TranslateCompleted_Recall)(const s32 ATpModuleIndex,const s32 AChn,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const s32 AError);
 typedef double(__stdcall*N_USData_TranslateCompleted_Recall_Obj)(const s32 ATpModuleIndex,const s32 AChn,const u8 ABusType,const s32 ANAD,const s32 AIdentifier,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const s32 AError);
 typedef double(__stdcall*TLogDebuggingInfo)(const pchar AMsg,const s32 ALevel);
+typedef double(__stdcall*tosun_recv_callback)(const s32 sock,const ps32 p,const u16 len);
+typedef double(__stdcall*tosun_tcp_presend_callback)(const s32 sock,const ps32 p,const Pip_addr_t src,const Pip_addr_t dest,const u8 ttl,const u8 tos);
+typedef double(__stdcall*tosun_tcp_ack_callback)(const s32 sock,const ps32 p,const u16 len);
 #if defined ( __cplusplus )
 extern  "C" 
 {
@@ -2165,6 +2181,13 @@ TSAPI(s32) tsdb_get_flexray_db_properties_by_index_verbose(const s32 ADBIndex,co
 //arg[5] AName : None
 //arg[6] AComment : None
 TSAPI(s32) tsdb_get_flexray_ecu_properties_by_address_verbose(const char*  AAddr,const ps32 ADBIndex,const ps32 AECUIndex,const ps32 ATxFrameCount,const ps32 ARxFrameCount,const ppchar AName,const ppchar AComment);
+//arg[0] ADBIndex : None
+//arg[1] AECUIndex : None
+//arg[2] ATxFrameCount : None
+//arg[3] ARxFrameCount : None
+//arg[4] AName : None
+//arg[5] AComment : None
+TSAPI(s32) tsdb_get_flexray_ecu_properties_by_index_verbose(const s32 ADBIndex,const s32 AECUIndex,const ps32 ATxFrameCount,const ps32 ARxFrameCount,const ppchar AName,const ppchar AComment);
 //arg[0] AAddr : None
 //arg[1] ADBIndex : None
 //arg[2] AECUIndex : None
@@ -3523,9 +3546,9 @@ TSAPI(s32) signal_tester_stop_all();
 TSAPI(s32) tslin_clear_schedule_tables(const s32 AChnIdx);
 TSAPI(void) finalize_lib_tsmaster();
 //arg[0] x : None
-TSAPI(void) tssocket_htons(const s32 x);
+TSAPI(u16) tssocket_htons(const s32 x);
 //arg[0] x : None
-TSAPI(void) tssocket_htonl(const s32 x);
+TSAPI(u16) tssocket_htonl(const s32 x);
 //arg[0] cp : None
 //arg[1] addr : None
 TSAPI(void) tssocket_aton(const char*  cp,const Pip4_addr_t addr);
@@ -3610,12 +3633,12 @@ TSAPI(s32) tssocket_listen(const s32 ANetworkIndex,const s32 s,const s32 backlog
 //arg[2] mem : None
 //arg[3] len : None
 //arg[4] flags : None
-TSAPI(s32) tssocket_recv(const s32 ANetworkIndex,const s32 s,const ps32 mem,const size_t len,const s32 flags);
+TSAPI(s32) tssocket_recv(const s32 ANetworkIndex,const s32 s,const pu8 mem,const size_t len,const s32 flags);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] mem : None
 //arg[3] len : None
-TSAPI(s32) tssocket_read(const s32 ANetworkIndex,const s32 s,const ps32 mem,const size_t len);
+TSAPI(s32) tssocket_read(const s32 ANetworkIndex,const s32 s,const pu8 mem,const size_t len);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] iov : None
@@ -3628,7 +3651,7 @@ TSAPI(s32) tssocket_readv(const s32 ANetworkIndex,const s32 s,const Pts_iovec io
 //arg[4] flags : None
 //arg[5] from : None
 //arg[6] fromlen : None
-TSAPI(s32) tssocket_recvfrom(const s32 ANetworkIndex,const s32 s,const ps32 mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
+TSAPI(s32) tssocket_recvfrom(const s32 ANetworkIndex,const s32 s,const pu8 mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] Amessage : None
@@ -3639,7 +3662,7 @@ TSAPI(s32) tssocket_recvmsg(const s32 ANetworkIndex,const s32 s,const Pts_msghdr
 //arg[2] dataptr : None
 //arg[3] size : None
 //arg[4] flags : None
-TSAPI(s32) tssocket_send(const s32 ANetworkIndex,const s32 s,const ps32 dataptr,const size_t size,const s32 flags);
+TSAPI(s32) tssocket_send(const s32 ANetworkIndex,const s32 s,const pu8 dataptr,const size_t size,const s32 flags);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] dataptr : None
@@ -3647,17 +3670,20 @@ TSAPI(s32) tssocket_send(const s32 ANetworkIndex,const s32 s,const ps32 dataptr,
 //arg[4] flags : None
 //arg[5] ato : None
 //arg[6] tolen : None
-TSAPI(s32) tssocket_sendto(const s32 ANetworkIndex,const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
+TSAPI(s32) tssocket_sendto(const s32 ANetworkIndex,const s32 s,const pu8 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
 //arg[0] ANetworkIndex : None
 //arg[1] domain : None
 //arg[2] atype : None
 //arg[3] protocol : None
-TSAPI(s32) tssocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,const s32 protocol);
+//arg[4] recv_cb : None
+//arg[5] presend_cb : None
+//arg[6] send_cb : None
+TSAPI(s32) tssocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,const s32 protocol,const tosun_recv_callback recv_cb,const tosun_tcp_presend_callback presend_cb,const tosun_tcp_ack_callback send_cb);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] dataptr : None
 //arg[3] size : None
-TSAPI(s32) tssocket_write(const s32 ANetworkIndex,const s32 s,const ps32 dataptr,const size_t size);
+TSAPI(s32) tssocket_write(const s32 ANetworkIndex,const s32 s,const pu8 dataptr,const size_t size);
 //arg[0] ANetworkIndex : None
 //arg[1] s : None
 //arg[2] iov : None

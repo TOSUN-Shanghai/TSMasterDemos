@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_FlexRay", "TSMaste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_LIN", "TSMaster_LIN\TSMaster_LIN.csproj", "{2AAEA586-E46E-497C-B07C-FD65188A2489}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_ETH_UDP", "TSMaster_ETH_UDP\TSMaster_ETH_UDP.csproj", "{E0C836E3-70FC-4532-989E-42CB932F0A35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_ETH_TCP", "TSMaster_ETH_TCP\TSMaster_ETH_TCP.csproj", "{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{2AAEA586-E46E-497C-B07C-FD65188A2489}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AAEA586-E46E-497C-B07C-FD65188A2489}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2AAEA586-E46E-497C-B07C-FD65188A2489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0C836E3-70FC-4532-989E-42CB932F0A35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0C836E3-70FC-4532-989E-42CB932F0A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0C836E3-70FC-4532-989E-42CB932F0A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0C836E3-70FC-4532-989E-42CB932F0A35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

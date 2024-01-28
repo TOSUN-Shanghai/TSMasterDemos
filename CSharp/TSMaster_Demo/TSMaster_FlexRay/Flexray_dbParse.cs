@@ -45,12 +45,17 @@ namespace TSMaster_FlexRay
             int AECUcount = 0;
             //int ret1 = 0;
             long ASupportMask = 0;
+            IntPtr temp1 = IntPtr.Zero;
+            IntPtr temp2 = IntPtr.Zero;
             string AName = "";
             string AComment = "";
+            long AFalgs = 0;
             //IntPtr Name = IntPtr.Zero;
             //IntPtr Comment = IntPtr.Zero;
             
-            uint ret = TsMasterApi.tsdb_get_flexray_db_properties_by_index_verbose(Aindex, ref ASignalCount, ref AFrameCount, ref  AECUcount, ref  ASupportMask, ref AName, ref AComment);
+            int ret = TsMasterApi.tsdb_get_flexray_db_properties_by_index_verbose(Aindex, ref ASignalCount, ref AFrameCount, ref  AECUcount, ref  ASupportMask,ref AFalgs, ref temp1, ref temp2);
+            AName = Marshal.PtrToStringAnsi(temp1);
+            AComment = Marshal.PtrToStringAnsi(temp2);
             flexray_Network.network_name = AName;
                // AECUcount = 5;
             flexray_Network.flexray_nodes = new flexray_node[AECUcount];
@@ -59,7 +64,8 @@ namespace TSMaster_FlexRay
                 int ATXFramecount = 0;
                 int ARXFramecount = 0;
 
-                TsMasterApi.tsdb_get_flexray_ecu_properties_by_index_verbose(Aindex, i, ref ATXFramecount, ref ARXFramecount, ref AName, ref AComment);
+                TsMasterApi.tsdb_get_flexray_ecu_properties_by_index_verbose(Aindex, i, ref ATXFramecount, ref ARXFramecount, ref temp1, ref temp2);
+                AName = Marshal.PtrToStringAnsi(temp1);
                 flexray_Network.flexray_nodes[i].node_name = AName;
                 flexray_Network.flexray_nodes[i].tx_flexray_Messages = new flexray_message[ATXFramecount];
                 flexray_Network.flexray_nodes[i].rx_flexray_Messages = new flexray_message[ARXFramecount];
@@ -74,7 +80,8 @@ namespace TSMaster_FlexRay
                     long CycleMask = 0;
                     int AFRSignalCount = 0;
                     int AFRDLC = 0;
-                    TsMasterApi.tsdb_get_flexray_frame_properties_by_index_verbose(Aindex, i, txcount, true, ref AFRChnnalMask, ref AFRbasecycle, ref ArepCycle, ref is_startup_frame, ref AslotID, ref CycleMask, ref AFRSignalCount, ref AFRDLC, ref AName, ref AComment);
+                    TsMasterApi.tsdb_get_flexray_frame_properties_by_index_verbose(Aindex, i, txcount, true, ref AFRChnnalMask, ref AFRbasecycle, ref ArepCycle, ref is_startup_frame, ref AslotID, ref CycleMask, ref AFRSignalCount, ref AFRDLC, ref temp1, ref temp2);
+                    AName = Marshal.PtrToStringAnsi(temp1);
                     flexray_Network.flexray_nodes[i].tx_flexray_Messages[txcount].message_name = AName;
                     flexray_Network.flexray_nodes[i].tx_flexray_Messages[txcount].signals = new string[AFRSignalCount];
                     //Signal count 
@@ -89,7 +96,8 @@ namespace TSMaster_FlexRay
                         double AFactor = 0;
                         double AOffset = 0;
                         double AInitValue = 0;
-                        TsMasterApi.tsdb_get_flexray_signal_properties_by_index_verbose(Aindex, i, txcount, txsignalcount, true, ref Asignaltype, ref ACompuMethod, ref AIsIntel, ref AStartBit, ref AUpdateBit, ref ALength, ref AFactor, ref AOffset, ref AInitValue, ref AName, ref AComment);
+                        TsMasterApi.tsdb_get_flexray_signal_properties_by_index_verbose(Aindex, i, txcount, txsignalcount, true, ref Asignaltype, ref ACompuMethod, ref AIsIntel, ref AStartBit, ref AUpdateBit, ref ALength, ref AFactor, ref AOffset, ref AInitValue, ref temp1, ref temp2);
+                        AName = Marshal.PtrToStringAnsi(temp1);
                         flexray_Network.flexray_nodes[i].tx_flexray_Messages[txcount].signals[txsignalcount] = AName;
                     }
 
@@ -105,7 +113,8 @@ namespace TSMaster_FlexRay
                     long CycleMask = 0;
                     int AFRSignalCount = 0;
                     int AFRDLC = 0;
-                    TsMasterApi.tsdb_get_flexray_frame_properties_by_index_verbose(Aindex, i, rxcount, false, ref AFRChnnalMask, ref AFRbasecycle, ref ArepCycle, ref is_startup_frame, ref AslotID, ref CycleMask, ref AFRSignalCount, ref AFRDLC, ref AName, ref AComment);
+                    TsMasterApi.tsdb_get_flexray_frame_properties_by_index_verbose(Aindex, i, rxcount, false, ref AFRChnnalMask, ref AFRbasecycle, ref ArepCycle, ref is_startup_frame, ref AslotID, ref CycleMask, ref AFRSignalCount, ref AFRDLC, ref temp1, ref temp2);
+                    AName = Marshal.PtrToStringAnsi(temp1);
                     flexray_Network.flexray_nodes[i].rx_flexray_Messages[rxcount].message_name = AName;
                     flexray_Network.flexray_nodes[i].rx_flexray_Messages[rxcount].signals = new string[AFRSignalCount];
                     //Signal count 
@@ -120,8 +129,10 @@ namespace TSMaster_FlexRay
                         double AFactor = 0;
                         double AOffset = 0;
                         double AInitValue = 0;
-                        TsMasterApi.tsdb_get_flexray_signal_properties_by_index_verbose(Aindex, i, rxcount, rxsignalcount, false, ref Asignaltype, ref ACompuMethod, ref AIsIntel, ref AStartBit, ref AUpdateBit, ref ALength, ref AFactor, ref AOffset, ref AInitValue, ref AName, ref AComment);
+                        TsMasterApi.tsdb_get_flexray_signal_properties_by_index_verbose(Aindex, i, rxcount, rxsignalcount, false, ref Asignaltype, ref ACompuMethod, ref AIsIntel, ref AStartBit, ref AUpdateBit, ref ALength, ref AFactor, ref AOffset, ref AInitValue, ref temp1, ref temp2);
+                        AName = Marshal.PtrToStringAnsi(temp1);
                         flexray_Network.flexray_nodes[i].rx_flexray_Messages[rxcount].signals[rxsignalcount] = AName;
+
                     }
 
                 }

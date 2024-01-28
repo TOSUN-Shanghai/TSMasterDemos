@@ -79,7 +79,7 @@ namespace TSMaster_CAN
         UInt32 msg_count = 0;
         byte channel_p = 0;
         int id_p = 0;
-        void onrxtx_event(IntPtr obj, ref TLIBCANFD ACANFD)
+        void onrxtx_event(ref int obj, ref TLIBCANFD ACANFD)
         {
             if ((ACANFD.FProperties & 0x80) == 0x80)
                 return;
@@ -91,10 +91,10 @@ namespace TSMaster_CAN
             msg_count++;
             Item.Text = msg_count.ToString();
             Item.SubItems.Add(((ACANFD.FIdxChn.ToString())));
-            Item.SubItems.Add(ACANFD.FIsFD ? "CANFD" : "CAN");
+            Item.SubItems.Add((ACANFD.FFDProperties&1)==1 ? "CANFD" : "CAN");
             Item.SubItems.Add(((double)ACANFD.FTimeUS / 1000000).ToString());
             Item.SubItems.Add(ACANFD.FIdentifier.ToString("X8"));
-            Item.SubItems.Add(ACANFD.FIsTx ? "TX" : "RX");
+            Item.SubItems.Add((ACANFD.FProperties & 1) == 1 ? "TX" : "RX");
             Item.SubItems.Add(ACANFD.FDLC.ToString());
             string text = "";
             for (int i = 0; i < array[ACANFD.FDLC]; i++)
@@ -159,13 +159,13 @@ namespace TSMaster_CAN
 
             //通道映射
             //更换其他同星产品 只需修改第6个参数
-            TsMasterApi.tsapp_set_mapping_verbose(appname, TLIBApplicationChannelType.APP_CAN, APP_CHANNEL.CHN1, "TC1016", TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, HARDWARE_CHANNEL.CHN1);
+            TsMasterApi.tsapp_set_mapping_verbose(appname,(int) TLIBApplicationChannelType.APP_CAN, 0, "TC1016", (int)TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 0,true);
 
-            TsMasterApi.tsapp_set_mapping_verbose(appname, TLIBApplicationChannelType.APP_CAN, APP_CHANNEL.CHN2, "TC1016", TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, HARDWARE_CHANNEL.CHN2);
+            TsMasterApi.tsapp_set_mapping_verbose(appname, (int)TLIBApplicationChannelType.APP_CAN, 1, "TC1016", (int)TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 1,true);
 
             //硬件参数配置
-            TsMasterApi.tsapp_configure_baudrate_canfd(0, 500, 2000, TLIBCANFDControllerType.lfdtISOFDCAN, TLIBCANFDControllerMode.lfdmNormal, true);
-            TsMasterApi.tsapp_configure_baudrate_canfd(1, 500, 2000, TLIBCANFDControllerType.lfdtISOFDCAN, TLIBCANFDControllerMode.lfdmNormal, true);
+            TsMasterApi.tsapp_configure_baudrate_canfd(0, 500, 2000, (int)TLIBCANFDControllerType.lfdtISOCAN, (int)TLIBCANFDControllerMode.lfdmNormal, true);
+            TsMasterApi.tsapp_configure_baudrate_canfd(1, 500, 2000, (int)TLIBCANFDControllerType.lfdtISOCAN, (int)TLIBCANFDControllerMode.lfdmNormal, true);
 
 
         }
@@ -179,8 +179,8 @@ namespace TSMaster_CAN
         {
             TsMasterApi.finalize_lib_tsmaster();
         }
-        IntPtr obj = IntPtr.Zero;
-        TCANFDQueueEvent canfd_event;
+        int obj = 0;
+        TCANFDQueueEvent_Win32 canfd_event;
         bool _isconnect = false;
         private void btn_on_off_Click(object sender, EventArgs e)
         {
@@ -191,7 +191,7 @@ namespace TSMaster_CAN
                     //TsMasterApi.tscom_can_rbs_enable(true);
                     TsMasterApi.tscom_can_rbs_start();
                     //timer1.Start();
-                    TsMasterApi.tsapp_register_event_canfd(obj, canfd_event);
+                    TsMasterApi.tsapp_register_event_canfd(ref obj, canfd_event);
                     btn_on_off.Text = "断开";
                     _isconnect = true;
                 }
@@ -202,7 +202,7 @@ namespace TSMaster_CAN
                 {
                     //TsMasterApi.tscom_can_rbs_enable(false);
                     TsMasterApi.tscom_can_rbs_stop();
-                    TsMasterApi.tsapp_unregister_event_canfd(obj, canfd_event);
+                    TsMasterApi.tsapp_unregister_event_canfd(ref obj, canfd_event);
                     btn_on_off.Text = "连接";
                    // timer1.Stop();
                     Item_list.Clear();
@@ -211,8 +211,8 @@ namespace TSMaster_CAN
                 }
             }
         }
-        APP_CHANNEL[] chns = new APP_CHANNEL[] { APP_CHANNEL.CHN1, APP_CHANNEL.CHN2, APP_CHANNEL.CHN3, APP_CHANNEL.CHN4 };
-        uint DBAId = 0;
+        //APP_CHANNEL[] chns = new APP_CHANNEL[] { APP_CHANNEL.CHN1, APP_CHANNEL.CHN2, APP_CHANNEL.CHN3, APP_CHANNEL.CHN4 };
+        int DBAId = 0;
         int dbc_index = 0;
         void load_dbc_form(object AID)
         {
@@ -228,9 +228,9 @@ namespace TSMaster_CAN
             }
             if (cbb_msg_names.Items.Count > 0)
                 cbb_msg_names.SelectedIndex = 0;
-            for (int i = 0; i < chns.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if (tv_rbs.Nodes.Count < chns.Length)
+                if (tv_rbs.Nodes.Count < 4)
                 {
                     tv_rbs.Nodes.Add("通道" + i.ToString());
                 }
@@ -285,16 +285,12 @@ namespace TSMaster_CAN
             dialog.Filter = "(*.dbc)|*.dbc|(*.pdbc)|*.pdbc";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                int ret = TsMasterApi.tsdb_load_can_db(dialog.FileName, chns, ref DBAId);
+                int ret = TsMasterApi.tsdb_load_can_db(dialog.FileName, "0,1,2,3", ref DBAId);
                 if (ret == 0)
                 {
                     log("加载成功" + "\r\n");
                     load_dbc_form(DBAId);
                     //thread.Start(DBAId);
-                }
-                else
-                {
-                    log(TsMasterApi.tsapp_get_error_description(ret) + "\r\n");
                 }
             }
         }
@@ -491,7 +487,7 @@ namespace TSMaster_CAN
                 int ret = TsMasterApi.tslog_blf_read_start(dialog.FileName, ref readblfhandle, ref readcount);
                 if (ret != 0)
                 {
-                    MessageBox.Show(TsMasterApi.tsapp_get_error_description(ret));
+                    MessageBox.Show("load db failed");
                 }
                 else
                 {
@@ -503,7 +499,7 @@ namespace TSMaster_CAN
             }
         }
         //BLF 转 asc
-        static void readProgress(IntPtr obj, double AProgress100)
+        static void readProgress(ref int obj, double AProgress100)
         {
             
         }
@@ -523,9 +519,9 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    IntPtr obj = IntPtr.Zero;
+                    int obj1 = 0;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
-                    TsMasterApi.tslog_blf_to_asc(obj, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.'))+"asc", readProgressCallback);
+                    TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.'))+"asc", readProgressCallback);
                 }
             }
         }
@@ -584,7 +580,7 @@ namespace TSMaster_CAN
                         TsMasterApi.tsdiag_can_security_access_send_key(udsHandle, level + 1, key, keylen);
                     }
                     else
-                        MessageBox.Show(TsMasterApi.tsapp_get_error_description(ret));
+                        MessageBox.Show("get respond failed");
                 }
                 
             }
@@ -655,9 +651,9 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    IntPtr obj = IntPtr.Zero;
+                    int obj1 = 0;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
-                    TsMasterApi.tslog_blf_to_asc(obj, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + "blf", readProgressCallback);
+                    TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + "blf", readProgressCallback);
                 }
             }
         }
