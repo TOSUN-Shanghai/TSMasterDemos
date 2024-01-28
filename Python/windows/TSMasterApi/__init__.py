@@ -1,1 +1,1 @@
-from .TSMasterAPI import *
+from .TSAPI import *

@@ -80,6 +80,14 @@ typedef bool* pbool;
 #pragma pack(push)
 #pragma pack(1)
 
+
+#define TS_AF_INET  2
+#define TS_SOCK_STREAM      1
+#define TS_SOCK_DGRAM       2
+#define TS_SOCK_RAW         3
+#define  TS_MSG_DONTWAIT    0x08 
+
+
 // CAN definitions
 #define MASK_CANProp_DIR_TX 0x01
 #define MASK_CANProp_REMOTE 0x02
@@ -129,7 +137,7 @@ typedef struct _TLIBCAN
     u8 FIdxChn;//channel index starting from 0
     u8 FProperties;//default 0, masked status:  = CAN [7] 0-normal frame, 1-error frame [6] 0-not logged, 1-already logged [5-3] tbd [2] 0-std frame, 1-extended frame [1] 0-data frame, 1-remote frame [0] dir: 0-RX, 1-TX
     u8 FDLC;//dlc from 0 to 15   = CAN
-    u8 FReserved;//
+    u8 FReserved;
     s32 FIdentifier;//CAN identifier   = CAN
     s64 FTimeUs;//timestamp in us = CAN
     u8 FData[8];
@@ -236,7 +244,7 @@ typedef struct _TLIBCAN
         *(u64*)(&FData[0]) = 0;
         FTimeUs = 0;
     }
-}TLIBCAN, * PLIBCAN;
+}TLIBCAN, *PLIBCAN;
 
 typedef struct _TLIBCANFD
 {
@@ -246,7 +254,7 @@ typedef struct _TLIBCANFD
     u8 FFDProperties;//[7-3] tbd <> CAN  [2] ESI, The E RROR S TATE I NDICATOR (ESI) flag is transmitted dominant by error active nodes, recessive by error passive nodes. ESI does not exist in CAN format frames [1] BRS, If the bit is transmitted recessive, the bit rate is switched from the standard bit rate of the A RBITRATION P HASE to the preconfigured alternate bit rate of the D ATA P HASE . If it is transmitted dominant, the bit rate is not switched. BRS does not exist in CAN format frames. [0] EDL: 0-normal CAN frame, 1-FD frame, added 2020-02-12, The E XTENDED D ATA L ENGTH (EDL) bit is recessive. It only exists in CAN FD format frames
     s32 FIdentifier;//CAN identifier   = CAN
     s64 FTimeUs;//timestamp in us = CAN
-    u8 FData[ 64] ;
+    u8 FData[64] ;
     // is_tx -----------------------------------------------------
 	PROPERTY(bool, is_tx);
 	GET(is_tx)
@@ -397,7 +405,7 @@ typedef struct _TLIBCANFD
 	TLIBCAN to_tcan(void) {
 		return *(TLIBCAN*)(&FIdxChn);
 	}
-}TLIBCANFD,*PLIBCANFD;
+}TLIBCANFD, *PLIBCANFD;
 
 
 typedef struct _TLIBLIN
@@ -410,7 +418,7 @@ typedef struct _TLIBLIN
     u8 FChecksum;//LIN checksum
     u8 FStatus;//place holder 1
     s64 FTimeUS;//timestamp in us
-    u8 FData[ 8] ;
+    u8 FData[8] ;
     // is_tx -----------------------------------------------------
 	PROPERTY(bool, is_tx);
 	GET(is_tx)
@@ -444,7 +452,7 @@ typedef struct _TLIBLIN
 		FStatus = 0;
 		FTimeUS = 0;
 	}
-}TLIBLIN,*PLIBLIN;
+}TLIBLIN, *PLIBLIN;
 
 typedef struct _TLIBFlexRay
 {
@@ -465,7 +473,7 @@ typedef struct _TLIBFlexRay
     u64 FReserved1;//8 reserved bytes
     u64 FReserved2;//8 reserved bytes
     u64 FTimeUs;// timestamp in us
-    u8 FData[ 254] ;
+    u8 FData[254] ;
      // is_tx -----------------------------------------------------
     PROPERTY(bool, is_tx);
     GET(is_tx){
@@ -591,7 +599,7 @@ typedef struct _TLIBFlexRay
             FData[i] = *a++;
         }
     }
-}TLIBFlexRay,*PLIBFlexRay;
+}TLIBFlexRay, *PLIBFlexRay;
 
 typedef struct _TLIBEthernetHeader
 {
@@ -862,7 +870,8 @@ typedef struct _TLIBEthernetHeader
         has_vlans(&o);
         return FEthernetDataAddr + 0x2A + o;
     }
-}TLIBEthernetHeader,*PLIBEthernetHeader;typedef enum {
+}TLIBEthernetHeader, *PLIBEthernetHeader;
+typedef enum {
     APP_CAN = 0,
     APP_LIN = 1,
     APP_FlexRay = 2,
@@ -1138,179 +1147,179 @@ typedef enum {
 
 typedef struct _TLIBFlexRayClusterParameters
 {
-    char FShortName[ 32] ;
-    char FLongName[ 32] ;
-    char FDescription[ 32] ;
-    char FSpeed[ 32] ;
-    char  FChannels[ 32] ;
-    char FBitCountingPolicy[ 32] ;
-    char FProtocol[ 32] ;
-    char FProtocolVersion[ 32] ;
-    char FMedium[ 32] ;
-    s32 FIsHighLowBitOrder;//
-    s32 FMaxFrameLengthByte;//
+    char FShortName[32];
+    char FLongName[32];
+    char FDescription[32];
+    char FSpeed[32];
+    char  FChannels[32];
+    char FBitCountingPolicy[32];
+    char FProtocol[32];
+    char FProtocolVersion[32];
+    char FMedium[32];
+    s32 FIsHighLowBitOrder;
+    s32 FMaxFrameLengthByte;
     s32 FNumberOfCycles;//cycle parameters
-    s32 FCycle_us;//
-    double FBit_us;//
-    double FSampleClockPeriod_us;//
-    double  FMacrotick_us;//
-    s32 FMacroPerCycle;//
-    s32 FNumberOfStaticSlots;//
-    s32 FStaticSlot_MT;//
-    s32 FActionPointOffset_MT;//
-    s32 FTSSTransmitter_gdBit;//
-    s32 FPayloadLengthStatic_WORD;//
-    s32 FNumberOfMiniSlots;//
-    s32 FMiniSlot_MT;//
-    s32 FMiniSlotActionPointOffset_MT;//
-    s32 FDynamicSlotIdlePhase_MiniSlots;//
-    s32  FSymbolWindow_MT;//
-    s32 FNIT_MT;//
-    s32 FSyncNodeMax;//
+    s32 FCycle_us;
+    double FBit_us;
+    double FSampleClockPeriod_us;
+    double  FMacrotick_us;
+    s32 FMacroPerCycle;
+    s32 FNumberOfStaticSlots;
+    s32 FStaticSlot_MT;
+    s32 FActionPointOffset_MT;
+    s32 FTSSTransmitter_gdBit;
+    s32 FPayloadLengthStatic_WORD;
+    s32 FNumberOfMiniSlots;
+    s32 FMiniSlot_MT;
+    s32 FMiniSlotActionPointOffset_MT;
+    s32 FDynamicSlotIdlePhase_MiniSlots;
+    s32  FSymbolWindow_MT;
+    s32 FNIT_MT;
+    s32 FSyncNodeMax;
     s32 FNetworkManagementVectorLength;//Wakeup and startup parameters
-    s32 FListenNoise;//
-    s32 FColdStartAttempts;//
-    s32 FCASRxLowMax_gdBit;//
-    s32 FWakeupSymbolRxIdle_gdBit;//
-    s32 FWakeupSymbolRxLow_gdBit;//
-    s32  FWakeupSymbolRxWindow_gdBit;//
-    s32 FWakeupSymbolTxIdle_gdBit;//
-    s32 FWakeupSymbolTxLow_gdBit;//
+    s32 FListenNoise;
+    s32 FColdStartAttempts;
+    s32 FCASRxLowMax_gdBit;
+    s32 FWakeupSymbolRxIdle_gdBit;
+    s32 FWakeupSymbolRxLow_gdBit;
+    s32  FWakeupSymbolRxWindow_gdBit;
+    s32 FWakeupSymbolTxIdle_gdBit;
+    s32 FWakeupSymbolTxLow_gdBit;
     double FMaxInitializationError_us;//clock correction parameters
-    s32 FClusterDriftDamping_uT;//
-    s32 FOffsetCorrectionStart_MT;//
-    s32 FMaxWithoutClockCorrectionFatal;//
-    s32 FMaxWithoutClockCorrectionPassive;//
-}TLIBFlexRayClusterParameters,*PLIBFlexRayClusterParameters;
+    s32 FClusterDriftDamping_uT;
+    s32 FOffsetCorrectionStart_MT;
+    s32 FMaxWithoutClockCorrectionFatal;
+    s32 FMaxWithoutClockCorrectionPassive;
+}TLIBFlexRayClusterParameters, *PLIBFlexRayClusterParameters;
 
 typedef struct _TLIBFlexRayControllerParameters
 {
-    char FShortName[ 32] ;
-    char FConnectedChannels[ 32] ;
-    s32 FMicroPerCycle_uT;//
-    s32 FMicroPerMacroNom_uT;//
-    double FMicroTick_us;//
+    char FShortName[32];
+    char FConnectedChannels[32];
+    s32 FMicroPerCycle_uT;
+    s32 FMicroPerMacroNom_uT;
+    double FMicroTick_us;
     s32 FSamplesPerMicrotick;//wakeup & startup parameters
-    s32  FWakeupChannelA;//
-    s32  FWakeupChannelB;//
-    s32  FMaxDrift_uT;//
-    s32  FWakeupPattern;//
-    s32  FListenTimeout_uT;//
-    s32  FAcceptedStartupRange_uT;//
-    s32  FMacroInitialOffsetA_MT;//
-    s32  FMacroInitialOffsetB_MT;//
-    s32  FMacroInitialOffsetA_uT;//
+    s32  FWakeupChannelA;
+    s32  FWakeupChannelB;
+    s32  FMaxDrift_uT;
+    s32  FWakeupPattern;
+    s32  FListenTimeout_uT;
+    s32  FAcceptedStartupRange_uT;
+    s32  FMacroInitialOffsetA_MT;
+    s32  FMacroInitialOffsetB_MT;
+    s32  FMacroInitialOffsetA_uT;
     s32  FMacroInitialOffsetB_uT;//clock correction parameters
-    char  FKeySlotUsage[ 32] ;
-    s32  FKeySlotID;//
-    s32  FsingleSlotEnabled;//
-    s32  FClusterDriftDamping_uT;//
-    s32  FDocodingCorrection_uT;//
-    s32  FDelayCompensationA_uT;//
-    s32  FDelayCompensationB_uT;//
-    s32  FOffsetCorrectionOut_uT;//
-    s32  FExternRateCorrection_uT;//
-    s32  FRateCorrectionOut_uT;//
-    s32  FExternOffsetCorrection_uT;//
-    s32  FAllowHaltDueToClock;//
+    char  FKeySlotUsage[32];
+    s32  FKeySlotID;
+    s32  FsingleSlotEnabled;
+    s32  FClusterDriftDamping_uT;
+    s32  FDocodingCorrection_uT;
+    s32  FDelayCompensationA_uT;
+    s32  FDelayCompensationB_uT;
+    s32  FOffsetCorrectionOut_uT;
+    s32  FExternRateCorrection_uT;
+    s32  FRateCorrectionOut_uT;
+    s32  FExternOffsetCorrection_uT;
+    s32  FAllowHaltDueToClock;
     s32  FAllowPassivToActive;//latesttx
-    s32  FLatestTx;//
-    s32  FMaxDynamicPayloadLength;//
-}TLIBFlexRayControllerParameters,*PLIBFlexRayControllerParameters;
+    s32  FLatestTx;
+    s32  FMaxDynamicPayloadLength;
+}TLIBFlexRayControllerParameters, *PLIBFlexRayControllerParameters;
 
 typedef struct _TLIBEthernetMAX
 {
-    TLIBEthernetHeader FHeader;//
-    u8 FBytes[ 1612] ;
-}TLIBEthernetMAX,*PLIBEthernetMAX;
+    TLIBEthernetHeader FHeader;
+    u8 FBytes[1612];
+}TLIBEthernetMAX, *PLIBEthernetMAX;
 
 typedef struct _TLIBFlexray_controller_config
 {
-    u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;//
-    u8 PAYLOAD_LENGTH_STATIC;//
-    u16 FReserved;//
+    u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;
+    u8 PAYLOAD_LENGTH_STATIC;
+    u16 FReserved;
     u16 LATEST_TX;//__ prtc1Control
-    u16 T_S_S_TRANSMITTER;//
-    u8 CAS_RX_LOW_MAX;//
+    u16 T_S_S_TRANSMITTER;
+    u8 CAS_RX_LOW_MAX;
     u8 SPEED;//0 for 10m, 1 for 5m, 2 for 2.5m, convert from Database
-    u16 WAKE_UP_SYMBOL_RX_WINDOW;//
+    u16 WAKE_UP_SYMBOL_RX_WINDOW;
     u8 WAKE_UP_PATTERN;//__ prtc2Control
-    u8 WAKE_UP_SYMBOL_RX_IDLE;//
-    u8 WAKE_UP_SYMBOL_RX_LOW;//
-    u8 WAKE_UP_SYMBOL_TX_IDLE;//
+    u8 WAKE_UP_SYMBOL_RX_IDLE;
+    u8 WAKE_UP_SYMBOL_RX_LOW;
+    u8 WAKE_UP_SYMBOL_TX_IDLE;
     u8 WAKE_UP_SYMBOL_TX_LOW;//__ succ1Config
     u8 channelAConnectedNode;//Enable ChannelA: 0: Disable 1: Enable
     u8 channelBConnectedNode;//Enable ChannelB: 0: Disable 1: Enable
     u8 channelASymbolTransmitted;//Enable Symble Transmit function of Channel A: 0: Disable 1: Enable
     u8 channelBSymbolTransmitted;//Enable Symble Transmit function of Channel B: 0: Disable 1: Enable
-    u8 ALLOW_HALT_DUE_TO_CLOCK;//
+    u8 ALLOW_HALT_DUE_TO_CLOCK;
     u8 single_SLOT_ENABLED;//FALSE_0, TRUE_1
     u8 wake_up_idx;//Wake up channe: 0:ChannelA， 1:ChannelB
-    u8 ALLOW_PASSIVE_TO_ACTIVE;//
-    u8 COLD_START_ATTEMPTS;//
+    u8 ALLOW_PASSIVE_TO_ACTIVE;
+    u8 COLD_START_ATTEMPTS;
     u8 synchFrameTransmitted;//Need to transmit sync frame
     u8 startupFrameTransmitted;//Need to transmit startup frame // __ succ2Config
-    u32 LISTEN_TIMEOUT;//
+    u32 LISTEN_TIMEOUT;
     u8 LISTEN_NOISE;//2_16 __ succ3Config
-    u8 MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE;//
-    u8 MAX_WITHOUT_CLOCK_CORRECTION_FATAL;//
+    u8 MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE;
+    u8 MAX_WITHOUT_CLOCK_CORRECTION_FATAL;
     u8 REVERS0;//Memory Align // __ gtuConfig //__ gtu01Config
     u32 MICRO_PER_CYCLE;//__ gtu02Config
-    u16 Macro_Per_Cycle;//
-    u8 SYNC_NODE_MAX;//
+    u16 Macro_Per_Cycle;
+    u8 SYNC_NODE_MAX;
     u8 REVERS1;//Memory Align //__ gtu03Config
-    u8 MICRO_INITIAL_OFFSET_A;//
-    u8 MICRO_INITIAL_OFFSET_B;//
-    u8 MACRO_INITIAL_OFFSET_A;//
+    u8 MICRO_INITIAL_OFFSET_A;
+    u8 MICRO_INITIAL_OFFSET_B;
+    u8 MACRO_INITIAL_OFFSET_A;
     u8 MACRO_INITIAL_OFFSET_B;//__ gtu04Config
-    u16 N_I_T;//
+    u16 N_I_T;
     u16 OFFSET_CORRECTION_START;//__ gtu05Config
-    u8 DELAY_COMPENSATION_A;//
-    u8 DELAY_COMPENSATION_B;//
-    u8 CLUSTER_DRIFT_DAMPING;//
+    u8 DELAY_COMPENSATION_A;
+    u8 DELAY_COMPENSATION_B;
+    u8 CLUSTER_DRIFT_DAMPING;
     u8 DECODING_CORRECTION;//__ gtu06Config
-    u16 ACCEPTED_STARTUP_RANGE;//
+    u16 ACCEPTED_STARTUP_RANGE;
     u16 MAX_DRIFT;//__ gtu07Config
-    u16 STATIC_SLOT;//
+    u16 STATIC_SLOT;
     u16 NUMBER_OF_STATIC_SLOTS;//__ gtu08Config
-    u8 MINISLOT;//
+    u8 MINISLOT;
     u8 REVERS2;//Memory Align
     u16 NUMBER_OF_MINISLOTS;//__ gtu09Config
-    u8 DYNAMIC_SLOT_IDLE_PHASE;//
-    u8 ACTION_POINT_OFFSET;//
-    u8 MINISLOT_ACTION_POINT_OFFSET;//
+    u8 DYNAMIC_SLOT_IDLE_PHASE;
+    u8 ACTION_POINT_OFFSET;
+    u8 MINISLOT_ACTION_POINT_OFFSET;
     u8 REVERS3;//Memory Align __ gtu10Config
-    u16 OFFSET_CORRECTION_OUT;//
+    u16 OFFSET_CORRECTION_OUT;
     u16 RATE_CORRECTION_OUT;//__ gtu11Config
-    u8 EXTERN_OFFSET_CORRECTION;//
-    u8 EXTERN_RATE_CORRECTION;//
+    u8 EXTERN_OFFSET_CORRECTION;
+    u8 EXTERN_RATE_CORRECTION;
     u8 REVERS4;//Memory Align
     u8 config_byte;//Memory Align //bit0: 1：启用cha上终端电阻  0：不启用 //bit1: 1：启用chb上终端电阻  0：不启用 //bit2: 1：启用接收FIFO    0：不启用 //bit4: 1：cha桥接使能             0：不使能 //bit5: 1：chb桥接使能             0：不使能
-}TLIBFlexray_controller_config,*PLIBFlexray_controller_config;
+}TLIBFlexray_controller_config, *PLIBFlexray_controller_config;
 
 typedef struct _TLIBTrigger_def
 {
-    u8 frame_idx;//
-    u8 slot_id;//
+    u8 frame_idx;
+    u8 slot_id;
     u8 cycle_code;//BASE-CYCLE + CYCLE-REPETITION
     u8 config_byte;////bit 0:是否使能通道A//bit 1:是否使能通道B//bit 2:是否网络管理报文//bit 3:传输模式，0表示连续传输，1表示单次触发//bit 4:是否为冷启动报文，只有缓冲区0可以置1//bit 5:是否为同步报文，只有缓冲区0/1可以置1//bit 6://bit 7:帧类型：0-静态，1-动态
-}TLIBTrigger_def,*PLIBTrigger_def;
+}TLIBTrigger_def, *PLIBTrigger_def;
 
 typedef struct _TLIBGPSData
 {
     u64 FTimeUS;//timestamp in us
-    u32 UTCTime;//
-    u32 UTCDate;//
-    single Latitude;//
-    single Longitude;//
-    single Speed;//
-    single Direct;//
-    single Altitude;//
-    u8 N_S;//
-    u8 E_W;//
-    u8 Satellite;//
-    u8 FIdxChn;//
-}TLIBGPSData,*PLIBGPSData;
+    u32 UTCTime;
+    u32 UTCDate;
+    single Latitude;
+    single Longitude;
+    single Speed;
+    single Direct;
+    single Altitude;
+    u8 N_S;
+    u8 E_W;
+    u8 Satellite;
+    u8 FIdxChn;
+}TLIBGPSData, *PLIBGPSData;
 
 typedef struct _TLIBEth_CMD_config
 {
@@ -1319,241 +1328,241 @@ typedef struct _TLIBEth_CMD_config
     u8 eth_config2;////bit0-4 phy_addr : 5;//bit5 accept wrong crc frame:1
     u8 eth_config3;////bit0: disable_promiscuous_mode//bit1: enable_recieve_all//bit2-3: enable_srouce_fileter: 0 disable 1: enable 2 inverse//bit4: inverse_dest_fileter//bit5-6: ControlFrames: 0: block all  1: forward all  2: forward by filter//bit7: enable rx broadcast frame
     u8 filter_config0;////bit0-1: multicast frame filter: 0: no filter  1: perfect 2: hash 3: hash and perfect//bit2-3: unicast frame filter: 0: perfect 1: hash 2: hash and perfect
-    u8 filter_config1;//
+    u8 filter_config1;
     u64 filter_hash_table;////bit0-47: mac addr For example, if 0x112233445566 is received//          (0x11 in lane 0 of the first column) on the MII as the destination address, then the//          MacAddress0 Register [47:0] is compared with 0x665544332211//          perfect0 is always enable
     u64 filter_perfect0;////bit63: AE: Address Enable, When this bit is set, the address filter module uses the second MAC address for perfect//          filtering. When this bit is reset, the address filter module ignores the address for filtering.//bit62: SA: Source Address://          When this bit is set, the MAC Address1[47:0] is used to compare with the SA fields of the//          received packet. When this bit is reset, the MAC Address x[47:0] is used to compare with the//          DA fields of the received packet.//bit56-61: MBC[5:0]: Mask Byte Control//          These bits are mask control bits for comparing each of the MAC Address bytes. When set//          high, the MAC does not compare the corresponding byte of received DA or SA with the//          contents of MAC Address1 registers. Each bit controls the masking of the bytes as follows://          Bit 29: Register 194[15:8]//          Bit 28: Register 194[7:0]//          Bit 27: Register 195[31:24]//          ..//          Bit 24: Register 195[7:0]//          You can filter a group of addresses (known as group address filtering) by masking one or//          more bytes of the address.//bit0-47:  same as filter_perfect0
-    u64 filter_perfect1;//
-    u64 rev[ 6] ;
-}TLIBEth_CMD_config,*PLIBEth_CMD_config;
+    u64 filter_perfect1;
+    u64 rev[6];
+}TLIBEth_CMD_config, *PLIBEth_CMD_config;
 
 typedef struct _Trealtime_comment_t
 {
-    s64 FTimeUs;//
-    s32 FEventType;//
-    s32 FCapacity;//
-    pchar FComment;//
+    s64 FTimeUs;
+    s32 FEventType;
+    s32 FCapacity;
+    pchar FComment;
     u32 FPadding;//to be compatible with x64
-}Trealtime_comment_t,*Prealtime_comment_t;
+}Trealtime_comment_t, *Prealtime_comment_t;
 
 typedef struct _TLIBSystemVar
 {
-    s64 FTimeUs;//
-    s32 FType;//
-    u32 FNameCapacity;//
-    u32 FDataCapacity;//
-    pchar FName;//
-    pu8 FData;//
+    s64 FTimeUs;
+    s32 FType;
+    u32 FNameCapacity;
+    u32 FDataCapacity;
+    pchar FName;
+    pu8 FData;
     s64 FPadding;//to be compatible with x64
-}TLIBSystemVar,*PLIBSystemVar;
+}TLIBSystemVar, *PLIBSystemVar;
 
 typedef struct _TMPCANSignal
 {
     u8 FCANSgnType;//0 - Unsigned, 1 - Signed, 2 - single 32, 3 - Double 64
-    bool FIsIntel;//
-    s32 FStartBit;//
-    s32 FLength;//
-    double FFactor;//
-    double FOffset;//
-}TMPCANSignal,*PMPCANSignal;
+    bool FIsIntel;
+    s32 FStartBit;
+    s32 FLength;
+    double FFactor;
+    double FOffset;
+}TMPCANSignal, *PMPCANSignal;
 
 typedef struct _TMPLINSignal
 {
     u8 FLINSgnType;//0 - Unsigned, 1 - Signed, 2 - single 32, 3 - Double 64
-    bool FIsIntel;//
-    s32 FStartBit;//
-    s32 FLength;//
-    double FFactor;//
-    double FOffset;//
-}TMPLINSignal,*PMPLINSignal;
+    bool FIsIntel;
+    s32 FStartBit;
+    s32 FLength;
+    double FFactor;
+    double FOffset;
+}TMPLINSignal, *PMPLINSignal;
 
 typedef struct _TMPFlexRaySignal
 {
     u8 FFRSgnType;//0 - Unsigned, 1 - Signed, 2 - single 32, 3 - Double 64
     u8 FCompuMethod;//0 - Identical, 1 - Linear, 2 - Scale Linear, 3 - TextTable, 4 - TABNoIntp, 5 - Formula
-    u8 FReserved;//
-    bool FIsIntel;//
-    s32 FStartBit;//
-    s32 FUpdateBit;//
-    s32 FLength;//
-    double FFactor;//
-    double FOffset;//
+    u8 FReserved;
+    bool FIsIntel;
+    s32 FStartBit;
+    s32 FUpdateBit;
+    s32 FLength;
+    double FFactor;
+    double FOffset;
     s32 FActualStartBit;//added 2023-07-18
     s32 FActualUpdateBit;//added 2023-07-18
-}TMPFlexRaySignal,*PMPFlexRaySignal;
+}TMPFlexRaySignal, *PMPFlexRaySignal;
 
 typedef struct _TMPDBProperties
 {
-    s32 FDBIndex;//
-    s32 FSignalCount;//
-    s32 FFrameCount;//
-    s32 FECUCount;//
-    u64 FSupportedChannelMask;//
-    char FName[ 512] ;
-    char FComment[ 512] ;
+    s32 FDBIndex;
+    s32 FSignalCount;
+    s32 FFrameCount;
+    s32 FECUCount;
+    u64 FSupportedChannelMask;
+    char FName[512];
+    char FComment[512];
     u64 FFlags;//Bit 0: whether generate mp header
-}TMPDBProperties,*PMPDBProperties;
+}TMPDBProperties, *PMPDBProperties;
 
 typedef struct _TMPDBECUProperties
 {
-    s32 FDBIndex;//
-    s32 FECUIndex;//
-    s32 FTxFrameCount;//
-    s32 FRxFrameCount;//
-    char FName[ 512] ;
-    char FComment[ 512] ;
-}TMPDBECUProperties,*PMPDBECUProperties;
+    s32 FDBIndex;
+    s32 FECUIndex;
+    s32 FTxFrameCount;
+    s32 FRxFrameCount;
+    char FName[512];
+    char FComment[512];
+}TMPDBECUProperties, *PMPDBECUProperties;
 
 typedef struct _TMPDBFrameProperties
 {
-    s32 FDBIndex;//
-    s32 FECUIndex;//
-    s32 FFrameIndex;//
-    u8 FIsTx;//
-    u8 FReserved1;//
-    u16 FCycleTimeMs;//
-    s32 FFrameType;//
-    u8 FCANIsDataFrame;//
-    u8 FCANIsStdFrame;//
-    u8 FCANIsEdl;//
-    u8 FCANIsBrs;//
-    s32 FCANIdentifier;//
-    s32 FCANDLC;//
-    s32 FCANDataBytes;//
-    s32 FLINIdentifier;//
-    s32 FLINDLC;//
-    u8 FFRChannelMask;//
-    u8 FFRBaseCycle;//
-    u8 FFRCycleRepetition;//
-    u8 FFRIsStartupFrame;//
-    u16 FFRSlotId;//
-    u16 FFRDLC;//
-    u64 FFRCycleMask;//
-    s32 FSignalCount;//
-    char FName[ 512] ;
-    char FComment[ 512] ;
-}TMPDBFrameProperties,*PMPDBFrameProperties;
+    s32 FDBIndex;
+    s32 FECUIndex;
+    s32 FFrameIndex;
+    u8 FIsTx;
+    u8 FReserved1;
+    u16 FCycleTimeMs;
+    s32 FFrameType;
+    u8 FCANIsDataFrame;
+    u8 FCANIsStdFrame;
+    u8 FCANIsEdl;
+    u8 FCANIsBrs;
+    s32 FCANIdentifier;
+    s32 FCANDLC;
+    s32 FCANDataBytes;
+    s32 FLINIdentifier;
+    s32 FLINDLC;
+    u8 FFRChannelMask;
+    u8 FFRBaseCycle;
+    u8 FFRCycleRepetition;
+    u8 FFRIsStartupFrame;
+    u16 FFRSlotId;
+    u16 FFRDLC;
+    u64 FFRCycleMask;
+    s32 FSignalCount;
+    char FName[512];
+    char FComment[512];
+}TMPDBFrameProperties, *PMPDBFrameProperties;
 
 typedef struct _TMPDBSignalProperties
 {
-    s32 FDBIndex;//
-    s32 FECUIndex;//
-    s32 FFrameIndex;//
-    s32 FSignalIndex;//
-    u8 FIsTx;//
-    u8 FReserved1;//
-    u8 FReserved2;//
-    u8 FReserved3;//
-    s32 FSignalType;//
-    TMPCANSignal FCANSignal;//
-    TMPLINSignal FLINSignal;//
-    TMPFlexRaySignal FFlexRaySignal;//
-    s32 FParentFrameId;//
-    double FInitValue;//
-    char FName[ 512] ;
-    char FComment[ 512] ;
-}TMPDBSignalProperties,*PMPDBSignalProperties;
+    s32 FDBIndex;
+    s32 FECUIndex;
+    s32 FFrameIndex;
+    s32 FSignalIndex;
+    u8 FIsTx;
+    u8 FReserved1;
+    u8 FReserved2;
+    u8 FReserved3;
+    s32 FSignalType;
+    TMPCANSignal FCANSignal;
+    TMPLINSignal FLINSignal;
+    TMPFlexRaySignal FFlexRaySignal;
+    s32 FParentFrameId;
+    double FInitValue;
+    char FName[512];
+    char FComment[512];
+}TMPDBSignalProperties, *PMPDBSignalProperties;
 
 typedef struct _TLIBHWInfo
 {
-    s32 FDeviceType;//
-    s32 FDeviceIndex;//
-    char FVendorName[ 32] ;
-    char FDeviceName[ 32] ;
-    char FSerialString[ 64] ;
-}TLIBHWInfo,*PLIBHWInfo;
+    s32 FDeviceType;
+    s32 FDeviceIndex;
+    char FVendorName[32];
+    char FDeviceName[32];
+    char FSerialString[64];
+}TLIBHWInfo, *PLIBHWInfo;
 
 typedef struct _TLIBTSMapping
 {
-    char FAppName[ 32] ;
-    s32 FAppChannelIndex;//
-    s32 FAppChannelType;//
-    s32 FHWDeviceType;//
-    s32 FHWIndex;//
-    s32 FHWChannelIndex;//
-    s32 FHWDeviceSubType;//
-    char FHWDeviceName[ 32] ;
-    bool FMappingDisabled;//
-}TLIBTSMapping,*PLIBTSMapping;
+    char FAppName[32];
+    s32 FAppChannelIndex;
+    s32 FAppChannelType;
+    s32 FHWDeviceType;
+    s32 FHWIndex;
+    s32 FHWChannelIndex;
+    s32 FHWDeviceSubType;
+    char FHWDeviceName[32];
+    bool FMappingDisabled;
+}TLIBTSMapping, *PLIBTSMapping;
 
 typedef struct _TLIBSystemVarDef
 {
-    char FName[ 32] ;
-    char FCategory[ 32] ;
-    char FComment[ 32] ;
-    s32 FDataType;//
-    bool FIsReadOnly;//
-    double FValueMin;//
-    double FValueMax;//
-    char FUnit[ 32] ;
-}TLIBSystemVarDef,*PLIBSystemVarDef;
+    char FName[32];
+    char FCategory[32];
+    char FComment[32];
+    s32 FDataType;
+    bool FIsReadOnly;
+    double FValueMin;
+    double FValueMax;
+    char FUnit[32];
+}TLIBSystemVarDef, *PLIBSystemVarDef;
 
 typedef struct _Tip4_addr_t
 {
-    u32 addr;//
-}Tip4_addr_t,*Pip4_addr_t;
+    u32 addr;
+}Tip4_addr_t, *Pip4_addr_t;
 
 typedef struct _Tip6_addr_t
 {
-    u32 addr[ 4] ;
-    u8 zone;//
-}Tip6_addr_t,*Pip6_addr_t;
+    u32 addr[4];
+    u8 zone;
+}Tip6_addr_t, *Pip6_addr_t;
 
 typedef struct _Tts_sockaddr
 {
-    u8 sa_len;//
-    u8 sa_family;//
-    char sa_data[ 14] ;
-}Tts_sockaddr,*Pts_sockaddr;
+    u8 sa_len;
+    u8 sa_family;
+    char sa_data[14];
+}Tts_sockaddr, *Pts_sockaddr;
 
 typedef struct _Tts_iovec
 {
-    TObject iov_base;//
-    size_t iov_len;//
-}Tts_iovec,*Pts_iovec;
+    TObject iov_base;
+    size_t iov_len;
+}Tts_iovec, *Pts_iovec;
 
 typedef struct _Tts_msghdr
 {
-    TObject msg_name;//
-    u32 msg_namelen;//
-    Pts_iovec msg_iov;//
-    s32 msg_iovlen;//
-    TObject msg_control;//
-    u32 msg_controllen;//
-    s32 msg_flags;//
-}Tts_msghdr,*Pts_msghdr;
+    TObject msg_name;
+    u32 msg_namelen;
+    Pts_iovec msg_iov;
+    s32 msg_iovlen;
+    TObject msg_control;
+    u32 msg_controllen;
+    s32 msg_flags;
+}Tts_msghdr, *Pts_msghdr;
 
 typedef struct _Tts_fd_set
 {
-    u8 fd_bits[ 2] ;
-}Tts_fd_set,*Pts_fd_set;
+    u8 fd_bits[2];
+}Tts_fd_set, *Pts_fd_set;
 
 typedef struct _Tts_timeval
 {
-    u32 tv_sec;//
-    u32 tv_usec;//
-}Tts_timeval,*Pts_timeval;
+    u32 tv_sec;
+    u32 tv_usec;
+}Tts_timeval, *Pts_timeval;
 
 typedef struct _Tts_pollfd
 {
-    s32 fd;//
-    s16 events;//
-    s16 revents;//
-}Tts_pollfd,*Pts_pollfd;
+    s32 fd;
+    s16 events;
+    s16 revents;
+}Tts_pollfd, *Pts_pollfd;
 
 typedef struct _Tts_sockaddr_in
 {
-    u8 sin_len;//
-    u8 sin_family;//
-    u16 sin_port;//
-    Tip4_addr_t sin_addr;//
-    u8 sin_zero[ 8] ;
-}Tts_sockaddr_in,*Pts_sockaddr_in;
+    u8 sin_len;
+    u8 sin_family;
+    u16 sin_port;
+    Tip4_addr_t sin_addr;
+    u8 sin_zero[8];
+}Tts_sockaddr_in, *Pts_sockaddr_in;
 
 typedef struct _Tip_addr_t
 {
-    Tip6_addr_t ip4Or6;//
-    u32 FType;//
-}Tip_addr_t,*Pip_addr_t;
+    Tip6_addr_t ip4Or6;
+    u32 FType;
+}Tip_addr_t, *Pip_addr_t;
 
 typedef double(__stdcall*TCANQueueEvent_API)(const PLIBCAN AData);
 typedef double(__stdcall*TGPSQueueEvent_Win32)(const ps32 AObj,const PLIBGPSData AData);
@@ -3573,7 +3582,7 @@ TSAPI(s32) tssocket_add_device(const s32 ANetworkIndex,const pu8 macaddr,const T
 //arg[0] ANetworkIndex : None
 //arg[1] macaddr : None
 //arg[2] ipaddr : None
-TSAPI(s32) tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const Tip4_addr_t ipaddr);
+TSAPI(s32) tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const Pip4_addr_t ipaddr);
 //arg[0] ANetworkIndex : None
 TSAPI(s32) tssocket_dhcp_start(const s32 ANetworkIndex);
 //arg[0] ANetworkIndex : None

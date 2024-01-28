@@ -58,10 +58,10 @@ def On_LIN_EVENT(OBJ, ACAN):
             print('%#x' % i, end=' ')
 
 
-OnLINevent = OnTx_RxFUNC_LIN(On_LIN_EVENT)
+OnLINevent = TLINQueueEvent_Win32(On_LIN_EVENT)
 
-OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
-OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
+OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
 
 
 class MyWindows(QMainWindow, Ui_MainWindow):
@@ -157,7 +157,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
     def connect_Hardware(self):
         if 0 == tsapp_connect():
             tsfifo_enable_receive_fifo()
-            tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1, T_LIN_NODE_FUNCTION.T_MASTER_NODE)
+            tslin_set_node_functiontype(CHANNEL_INDEX.CHN1, TLINNodeType.T_MasterNode)
             self.textBrowser.append("连接成功\r\n")
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
@@ -238,12 +238,12 @@ class MyWindows(QMainWindow, Ui_MainWindow):
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
     def stop_cyclic_can_msg(self):
-        if 0 == tsapp_del_cyclic_msg_can(msg):
+        if 0 == tsapp_delete_cyclic_msg_can(msg):
             self.textBrowser.append("停止can报文周期发送成功\r\n")
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
     def stop_cyclic_canfd_msg(self):
-        if 0 == tsapp_del_cyclic_msg_canfd(FDmsg):
+        if 0 == tsapp_delete_cyclic_msg_canfd(FDmsg):
             self.textBrowser.append("停止canfd报文周期发送成功\r\n")
             self.textBrowser.moveCursor(self.textBrowser.textCursor().End)
 
@@ -287,7 +287,7 @@ class MyWindows(QMainWindow, Ui_MainWindow):
 
     def transmit_header_and_receive_msg(self):
         TLIN1 = TLIBLIN()
-        tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
+        # tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
 
     def creat_uds_module(self):
         # uds_create_can(self.udsHandle, 0, False, 8, 0X1, False, 0X2, False)

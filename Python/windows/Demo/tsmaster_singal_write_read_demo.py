@@ -57,8 +57,8 @@ def On_CANFD_EVENT(OBJ, ACANFD):
 
 obj = c_int32(0)
 
-Pre_CANFD_EVENT = OnTx_RxFUNC_CANFD(On_pre_CANFD_EVENT)
-CANFD_EVENT = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+Pre_CANFD_EVENT = TCANFDQueueEvent_Win32(On_pre_CANFD_EVENT)
+CANFD_EVENT = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
 
 dbchandle = c_int32(0)
 
@@ -93,7 +93,9 @@ def connect():
         CANFD_160.FDLC = 15
         tsapp_add_cyclic_msg_canfd(CANFD_160, 10)
     else:
-        print(tsapp_get_error_description(ret))
+        error_code = c_char_p()
+        tsapp_get_error_description(ret,error_code)
+        print(error_code.value)
 
 
 if __name__ == "__main__":

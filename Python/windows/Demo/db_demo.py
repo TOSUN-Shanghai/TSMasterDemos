@@ -17,38 +17,38 @@ db_count = TS.c_int32(0)
 ret = TS.tsdb_get_can_db_count(db_count)
 Frame = {}
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_can_db_properties_by_index(db)
     Frame['CAN'] = {}
     for Frame_id in range(db.FFrameCount):
-        frame = TS.TDBFrameProperties()
+        frame = TS.TMPDBFrameProperties()
         ret = TS.tsdb_get_can_db_frame_properties_by_db_index(i,Frame_id,frame)
         Frame['CAN'][frame.FName] ={}
         for singal_index in range(frame.FSignalCount):
-            Signal = TS.TDBSignalProperties()
+            Signal = TS.TMPDBSignalProperties()
             ret = TS.tsdb_get_can_db_signal_properties_by_frame_index(i,Frame_id,singal_index,Signal)
             Frame['CAN'][frame.FName][Signal.FName] = Signal.FCANSignal
 
 
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_can_db_properties_by_index(db)
     for ecu_count_index in range(db.FECUCount):
-        Ecu = TS.TDBECUProperties()
+        Ecu = TS.TMPDBECUProperties()
         Ecu.FDBIndex = i
         Ecu.FECUIndex = ecu_count_index
         TS.tsdb_get_can_db_ecu_properties_by_index(Ecu)
         for tx_frame_index in range(Ecu.FTxFrameCount):
-            TXframe = TS.TDBFrameProperties()
+            TXframe = TS.TMPDBFrameProperties()
             TXframe.FDBIndex = i
             TXframe.FECUIndex = ecu_count_index
             TXframe.FFrameIndex = tx_frame_index
             TXframe.FIsTx = 1
             TS.tsdb_get_can_db_frame_properties_by_index(TXframe)
             for tx_singal_index in range(TXframe.FSignalCount):
-                TXSignal = TS.TDBSignalProperties()
+                TXSignal = TS.TMPDBSignalProperties()
                 TXSignal.FDBIndex = i
                 TXSignal.FECUIndex = ecu_count_index
                 TXSignal.FFrameIndex = tx_frame_index
@@ -57,14 +57,14 @@ for i in range(db_count.value) :
                 TS.tsdb_get_can_db_signal_properties_by_index(TXSignal)
 
         for rx_frame_index in range(Ecu.FRxFrameCount):
-            RXframe = TS.TDBFrameProperties()
+            RXframe = TS.TMPDBFrameProperties()
             RXframe.FDBIndex = i
             RXframe.FECUIndex = ecu_count_index
             RXframe.FFrameIndex = rx_frame_index
             RXframe.FIsTx = 0
             TS.tsdb_get_can_db_frame_properties_by_index(RXframe)
             for rx_singal_index in range(RXframe.FSignalCount):
-                RXSignal = TS.TDBSignalProperties()
+                RXSignal = TS.TMPDBSignalProperties()
                 RXSignal.FDBIndex = i
                 RXSignal.FECUIndex = ecu_count_index
                 RXSignal.FFrameIndex = rx_frame_index
@@ -74,37 +74,37 @@ for i in range(db_count.value) :
 ret = TS.tsdb_get_lin_db_count(db_count)
 
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_lin_db_properties_by_index(db)
     Frame['LIN'] = {}
     for Frame_id in range(db.FFrameCount):
-        frame = TS.TDBFrameProperties()
+        frame = TS.TMPDBFrameProperties()
         ret = TS.tsdb_get_lin_db_frame_properties_by_db_index(i,Frame_id,frame)
         Frame['LIN'][frame.FName] ={}
         for singal_index in range(frame.FSignalCount):
-            Signal = TS.TDBSignalProperties()
+            Signal = TS.TMPDBSignalProperties()
             ret = TS.tsdb_get_lin_db_signal_properties_by_frame_index(i,Frame_id,singal_index,Signal)
             Frame['LIN'][frame.FName][Signal.FName] = Signal.FLINSignal
 
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_lin_db_properties_by_index(db)
     for ecu_count_index in range(db.FECUCount):
-        Ecu = TS.TDBECUProperties()
+        Ecu = TS.TMPDBECUProperties()
         Ecu.FDBIndex = i
         Ecu.FECUIndex = ecu_count_index
         TS.tsdb_get_lin_db_ecu_properties_by_index(Ecu)
         for tx_frame_index in range(Ecu.FTxFrameCount):
-            TXframe = TS.TDBFrameProperties()
+            TXframe = TS.TMPDBFrameProperties()
             TXframe.FDBIndex = i
             TXframe.FECUIndex = ecu_count_index
             TXframe.FFrameIndex = tx_frame_index
             TXframe.FIsTx = 1
             TS.tsdb_get_lin_db_frame_properties_by_index(TXframe)
             for tx_singal_index in range(TXframe.FSignalCount):
-                TXSignal = TS.TDBSignalProperties()
+                TXSignal = TS.TMPDBSignalProperties()
                 TXSignal.FDBIndex = i
                 TXSignal.FECUIndex = ecu_count_index
                 TXSignal.FFrameIndex = tx_frame_index
@@ -113,14 +113,14 @@ for i in range(db_count.value) :
                 TS.tsdb_get_lin_db_signal_properties_by_index(TXSignal)
 
         for rx_frame_index in range(Ecu.FRxFrameCount):
-            RXframe = TS.TDBFrameProperties()
+            RXframe = TS.TMPDBFrameProperties()
             RXframe.FDBIndex = i
             RXframe.FECUIndex = ecu_count_index
             RXframe.FFrameIndex = rx_frame_index
             RXframe.FIsTx = 0
             TS.tsdb_get_lin_db_frame_properties_by_index(RXframe)
             for rx_singal_index in range(RXframe.FSignalCount):
-                RXSignal = TS.TDBSignalProperties()
+                RXSignal = TS.TMPDBSignalProperties()
                 RXSignal.FDBIndex = i
                 RXSignal.FECUIndex = ecu_count_index
                 RXSignal.FFrameIndex = rx_frame_index
@@ -130,37 +130,37 @@ for i in range(db_count.value) :
 ret = TS.tsdb_get_flexray_db_count(db_count)
 
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_flexray_db_properties_by_index(db)
     Frame['Flexray'] = {}
     for Frame_id in range(db.FFrameCount):
-        frame = TS.TDBFrameProperties()
+        frame = TS.TMPDBFrameProperties()
         ret = TS.tsdb_get_flexray_db_frame_properties_by_db_index(i,Frame_id,frame)
         Frame['Flexray'][frame.FName] ={}
         for singal_index in range(frame.FSignalCount):
-            Signal = TS.TDBSignalProperties()
+            Signal = TS.TMPDBSignalProperties()
             ret = TS.tsdb_get_flexray_db_signal_properties_by_frame_index(i,Frame_id,singal_index,Signal)
             Frame['Flexray'][frame.FName][Signal.FName] = Signal.FFlexRaySignal
             
 for i in range(db_count.value) :
-    db = TS.TDBProperties()
+    db = TS.TMPDBProperties()
     db.FDBIndex = i
     TS.tsdb_get_flexray_db_properties_by_index(db)
     for ecu_count_index in range(db.FECUCount):
-        Ecu = TS.TDBECUProperties()
+        Ecu = TS.TMPDBECUProperties()
         Ecu.FDBIndex = i
         Ecu.FECUIndex = ecu_count_index
         TS.tsdb_get_flexray_db_ecu_properties_by_index(Ecu)
         for tx_frame_index in range(Ecu.FTxFrameCount):
-            TXframe = TS.TDBFrameProperties()
+            TXframe = TS.TMPDBFrameProperties()
             TXframe.FDBIndex = i
             TXframe.FECUIndex = ecu_count_index
             TXframe.FFrameIndex = tx_frame_index
             TXframe.FIsTx = 1
             TS.tsdb_get_flexray_db_frame_properties_by_index(TXframe)
             for tx_singal_index in range(TXframe.FSignalCount):
-                TXSignal = TS.TDBSignalProperties()
+                TXSignal = TS.TMPDBSignalProperties()
                 TXSignal.FDBIndex = i
                 TXSignal.FECUIndex = ecu_count_index
                 TXSignal.FFrameIndex = tx_frame_index
@@ -169,14 +169,14 @@ for i in range(db_count.value) :
                 TS.tsdb_get_flexray_db_signal_properties_by_index(TXSignal)
 
         for rx_frame_index in range(Ecu.FRxFrameCount):
-            RXframe = TS.TDBFrameProperties()
+            RXframe = TS.TMPDBFrameProperties()
             RXframe.FDBIndex = i
             RXframe.FECUIndex = ecu_count_index
             RXframe.FFrameIndex = rx_frame_index
             RXframe.FIsTx = 0
             TS.tsdb_get_flexray_db_frame_properties_by_index(RXframe)
             for rx_singal_index in range(RXframe.FSignalCount):
-                RXSignal = TS.TDBSignalProperties()
+                RXSignal = TS.TMPDBSignalProperties()
                 RXSignal.FDBIndex = i
                 RXSignal.FECUIndex = ecu_count_index
                 RXSignal.FFrameIndex = rx_frame_index

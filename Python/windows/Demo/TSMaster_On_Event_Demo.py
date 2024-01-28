@@ -4,6 +4,7 @@ Date: 2023-03-24 11:22:42
 LastEditors: seven 865762826@qq.com
 LastEditTime: 2023-05-06 16:46:41
 '''
+import time
 from TSMasterAPI import *
 import libTOSUN
 
@@ -30,10 +31,10 @@ def On_CANFD_pre_EVENT(OBJ, ACANFD):
         ACANFD.contents.FData[0] = 0xff
 
 # 函数指针
-OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
-OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
-OnCANpreEVENT = OnTx_RxFUNC_CAN(On_CAN_pre_EVENT)
-OnCANFDpreEVENT = OnTx_RxFUNC_CANFD(On_CANFD_pre_EVENT)
+OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
+OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
+OnCANpreEVENT = TCANQueueEvent_Win32(On_CAN_pre_EVENT)
+OnCANFDpreEVENT = TCANFDQueueEvent_Win32(On_CANFD_pre_EVENT)
 
 # 初始化函数，调用TsMaster.dll 必须先调用初始化函数，否则其他函数无法使用
 initialize_lib_tsmaster("TSMaster_demo".encode("utf8"))

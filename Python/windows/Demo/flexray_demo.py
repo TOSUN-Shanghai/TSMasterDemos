@@ -25,7 +25,8 @@ def e2e_crc8(data):
                 initValue = ((initValue << 1) & 0xff)
     initValue = initValue ^ 0x00
     return initValue&0xff
-TSignal_ = TSMasterAPI.tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight')
+TSignal_ = TSMasterAPI.TMPFlexRaySignal()
+TSMasterAPI.tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight',TSignal_)
 # 该函数为回调事件 可以查看报文实时记录
 def Flexray_RX(obj,AFlexray):
     '''
@@ -49,9 +50,9 @@ def Flexray_Pre(obj,AFlexray):
                 
 
 
-On_Flexray = TSMasterAPI.OnTx_RxFUNC_Flexray(Flexray_RX)
+On_Flexray = TSMasterAPI.TFlexRayQueueEvent_Win32(Flexray_RX)
 
-on_pre_flexray = TSMasterAPI.OnTx_RxFUNC_Flexray(Flexray_Pre)
+on_pre_flexray = TSMasterAPI.TFlexRayQueueEvent_Win32(Flexray_Pre)
 
 
 

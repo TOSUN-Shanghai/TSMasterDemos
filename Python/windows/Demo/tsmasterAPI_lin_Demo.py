@@ -31,7 +31,7 @@ def On_LIN_EVENT(OBJ, ACAN):
                 print(end='\n')
 
 
-OnLINevent = OnTx_RxFUNC_LIN(On_LIN_EVENT)
+OnLINevent = TLINQueueEvent_Win32(On_LIN_EVENT)
 obj1 = c_int32(0)
 
 AppName = b'TSMaster_lin'
@@ -55,7 +55,7 @@ def connect():
         print("1通道映射成功")
     else:
         print("1通道映射失败")
-    if 0 == tsapp_configure_baudrate_lin(CHANNEL_INDEX.CHN1, 19.2, LIN_PROTOCOL.LIN_PROTOCOL_21):
+    if 0 == tsapp_configure_baudrate_lin(CHANNEL_INDEX.CHN1, 19.2, TLINProtocol.LIN_PROTOCL_21):
         print("LIN波特率成功")
     else:
         print("LIN波特率失败")
@@ -66,7 +66,7 @@ def connect():
         print("LIN工具连接成功")
         # 硬件开启成功后，开启fifo接收
         tsfifo_enable_receive_fifo()
-        tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1, T_LIN_NODE_FUNCTION.T_MASTER_NODE)
+        tslin_set_node_functiontype(CHANNEL_INDEX.CHN1, TLINNodeType.T_MasterNode)
     else:
         print("LIN工具连接失败")
 
@@ -74,16 +74,16 @@ def connect():
 def send_LIN_message():
     tsapp_transmit_lin_async(LINmsg)
     TLIN1 = TLIBLIN(FProperties=0)
-    r = tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
+    # r = tsapp_transmit_header_and_receive_msg(CHANNEL_INDEX.CHN1, 0X3D, 8, TLIN1, c_int(20))
 
     # listLINmsg = (TLIBLIN*100)
     # size = c_uint32(100)
     # r = tsapp_receive_lin_msgs(listLINmsg, size, CHANNEL_INDEX.CHN1,False)
-    if r == 0:
-        print("LIN发送接收成功")
-    else:
-        print(r)
-    #     # print(size)
+    # if r == 0:
+    #     print("LIN发送接收成功")
+    # else:
+    #     print(r)
+    # #     # print(size)
 
 
 if __name__ == '__main__':
