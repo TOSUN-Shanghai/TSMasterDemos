@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace TSMaster_FlexRay
         //byte cycle_p = 0;
         byte base_cycle;
         byte rep_cycle;
-        void on_flexray(IntPtr AObj, ref TLIBFlexray AFlexRay)
+        void on_flexray(ref int AObj, ref TLIBFlexRay AFlexRay)
         {
             if (channel_p != 0 && channel_p != (AFlexRay.FIdxChn + 1))
                 return;
@@ -139,12 +140,12 @@ namespace TSMaster_FlexRay
             catch { }
         }
 
-        void pre_tx_flexray(IntPtr AObj, ref TLIBFlexray AData)
+        void pre_tx_flexray(ref int AObj, ref TLIBFlexRay AData)
         {
 
         }
-        TFlexrayQueueEvent flexrayQueueEvent;
-        TFlexrayQueueEvent pre_flexrayQueueEvent;
+        TFlexRayQueueEvent_Win32 flexrayQueueEvent;
+        TFlexRayQueueEvent_Win32 pre_flexrayQueueEvent;
         private void TSMaster_FlexRay_Load(object sender, EventArgs e)
         {
             x = this.Width;
@@ -157,8 +158,8 @@ namespace TSMaster_FlexRay
         //判断是否加载工程
         bool is_load_project = false;
         //
-        IntPtr on_obj = IntPtr.Zero;
-        IntPtr pre_obj = IntPtr.Zero;
+        int on_obj = 0;
+        int pre_obj = 0;
         int db_count = 0;
         APP_CHANNEL[] chns = new APP_CHANNEL[] { APP_CHANNEL.CHN1, APP_CHANNEL.CHN2};
 
@@ -215,7 +216,7 @@ namespace TSMaster_FlexRay
                 }
                 else
                 {
-                    MessageBox.Show(TsMasterApi.tsapp_get_error_description(ret));
+                    MessageBox.Show("load failed");
                 }
             }
 
@@ -233,8 +234,8 @@ namespace TSMaster_FlexRay
             {
                 if (0 == TsMasterApi.tsapp_connect())
                 {
-                    TsMasterApi.tsapp_register_event_flexray(on_obj, flexrayQueueEvent);
-                    TsMasterApi.tsapp_register_pretx_event_flexray(pre_obj, pre_flexrayQueueEvent);
+                    TsMasterApi.tsapp_register_event_flexray(ref on_obj, flexrayQueueEvent);
+                    TsMasterApi.tsapp_register_pretx_event_flexray(ref pre_obj, pre_flexrayQueueEvent);
                     TsMasterApi.tscom_flexray_rbs_enable(true);
                     TsMasterApi.tscom_flexray_rbs_start();
 
@@ -249,8 +250,8 @@ namespace TSMaster_FlexRay
 
                     TsMasterApi.tscom_flexray_rbs_enable(false);
                     TsMasterApi.tscom_flexray_rbs_stop();
-                    TsMasterApi.tsapp_unregister_event_flexray(on_obj, flexrayQueueEvent);
-                    TsMasterApi.tsapp_unregister_pretx_event_flexray(pre_obj, pre_flexrayQueueEvent);
+                    TsMasterApi.tsapp_unregister_event_flexray(ref on_obj, flexrayQueueEvent);
+                    TsMasterApi.tsapp_unregister_pretx_event_flexray(ref pre_obj, pre_flexrayQueueEvent);
                     btn_on_off.Text = "连接";
                     Item_list.Clear();
                     msg_count = 0;
@@ -345,8 +346,8 @@ namespace TSMaster_FlexRay
 
                     TsMasterApi.tscom_flexray_rbs_enable(false);
                     TsMasterApi.tscom_flexray_rbs_stop();
-                    TsMasterApi.tsapp_unregister_event_flexray(on_obj, flexrayQueueEvent);
-                    TsMasterApi.tsapp_unregister_pretx_event_flexray(pre_obj, pre_flexrayQueueEvent);
+                    TsMasterApi.tsapp_unregister_event_flexray(ref on_obj, flexrayQueueEvent);
+                    TsMasterApi.tsapp_unregister_pretx_event_flexray(ref pre_obj, pre_flexrayQueueEvent);
                     btn_on_off.Text = "连接";
                     Item_list.Clear();
                     msg_count = 0;
@@ -476,7 +477,7 @@ namespace TSMaster_FlexRay
                     data = HexStringSToByteArray(tb_data.Text.Trim());
                 }
                 byte channel = (byte)(((byte.Parse(tb_chn.Text.Trim()) - 1)<0)?0: (byte.Parse(tb_chn.Text.Trim()) - 1));
-                 TLIBFlexray AFlexray = new TLIBFlexray(channel, byte.Parse(tb_Mask.Text.Trim()),byte.Parse(tb_dlc.Text.Trim()),(byte)(byte.Parse(tb_bc.Text.Trim())),ushort.Parse(tb_slotid.Text.Trim()),data);
+                 TLIBFlexRay AFlexray = new TLIBFlexRay(channel, byte.Parse(tb_Mask.Text.Trim()),byte.Parse(tb_dlc.Text.Trim()),(byte)(byte.Parse(tb_bc.Text.Trim())),ushort.Parse(tb_slotid.Text.Trim()),data);
                int ret  = TsMasterApi.tsapp_transmit_flexray_async(ref AFlexray);
 
             }
@@ -496,12 +497,30 @@ namespace TSMaster_FlexRay
             }
             TsMasterApi.tsapp_show_tsmaster_window("Hardware",false);
         }
+        public static TLIBFlexRay[] ReceiveFRMsgList(ref int ACANBufferSize, byte AChn, bool ATxRx)
+        {
+            TLIBFlexRay[] AFRMsgBuffer = new TLIBFlexRay[ACANBufferSize];
+            IntPtr intPtr = Marshal.AllocHGlobal((IntPtr)(Marshal.SizeOf(typeof(TLIBFlexRay)) * ACANBufferSize));
+            try
+            {
+                TsMasterApi.tsfifo_receive_flexray_msgs(AFRMsgBuffer, ref ACANBufferSize, AChn, ATxRx);
+                for (int i = 0; i < ACANBufferSize; i++)
+                {
+                    AFRMsgBuffer[i] = default(TLIBFlexRay);
+                    AFRMsgBuffer[i] = (TLIBFlexRay)Marshal.PtrToStructure(intPtr + Marshal.SizeOf(typeof(TLIBFlexRay)) * i, typeof(TLIBFlexRay));
+                }
 
+                return AFRMsgBuffer;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(intPtr);
+            }
+        }
         private void btn_receive_Click(object sender, EventArgs e)
         {
             int buffersize = 100;
-            TLIBFlexray[] a = TsMasterApi.ReceiveFRMsgList(ref buffersize, 0, 0);
-
+            TLIBFlexRay[] a = ReceiveFRMsgList(ref buffersize, 0, false);
         }
     }
 }

@@ -35,6 +35,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.TSMasterAPI">
+      <HintPath>..\..\..\..\..\software\TOSUN\TSMaster\bin\Data\SDK\lib\x86\Interop.TSMasterAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,9 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Interop.TSMasterAPI\TSMasterAPI.cs">
-      <Link>TSMasterAPI.cs</Link>
-    </Compile>
     <Compile Include="Flexray_dbParse.cs" />
     <Compile Include="tree_helper.cs" />
     <Compile Include="TSMaster_FlexRay.cs">
@@ -82,9 +82,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
