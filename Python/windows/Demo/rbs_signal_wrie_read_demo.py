@@ -12,7 +12,7 @@ dbchandle = c_int32(0)
 
 # 0/CAN_FD_Powertrain/Engine/GearBoxInfo/Gear
 def connect():
-    ret = tsdb_load_can_db(_curr_path+"/CAN_FD_Powertrain.dbc", "0,1", dbchandle)
+    ret = tsdb_load_can_db((_curr_path+"/CAN_FD_Powertrain.dbc").encode("utf8"), b"0,1", dbchandle)
     print(ret,dbchandle)
     # 设置can通道数
     if (tsapp_set_can_channel_count(2) == 0):
@@ -63,7 +63,9 @@ def connect():
         ret = tscom_can_rbs_activate_message_by_name(0, True, b"CAN_FD_Powertrain", b"Engine",
                                                     b"GearBoxInfo")
     else:
-        print(tsapp_get_error_description(ret),ret)
+        error_code = c_char_p()
+        tsapp_get_error_description(ret,error_code)
+        print(error_code.value)
 
 
 if __name__ == "__main__":

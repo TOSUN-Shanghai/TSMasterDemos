@@ -30,7 +30,7 @@ def On_CAN_EVENT(OBJ, ACAN):
         ACAN.contents.FData[0] +=1
 
 
-OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
+OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
 obj = c_int32(0)
 id1 = c_int32(0)  # 加载dbc句柄
 
@@ -98,8 +98,8 @@ def SendCANFD_CAN_Message():
 
 def stop_cyclic_msg_can():
     global msg, FDmsg
-    tsapp_del_cyclic_msg_can(msg)
-    tsapp_del_cyclic_msg_canfd(FDmsg)
+    tsapp_delete_cyclic_msg_can(msg)
+    tsapp_delete_cyclic_msg_canfd(FDmsg)
 
 
 def receive_can_message():
