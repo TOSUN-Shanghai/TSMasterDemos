@@ -2572,6 +2572,12 @@ function eth_udp_fragment_processor_clear(): integer; stdcall; {$IFNDEF LIBTSMAS
 function eth_udp_fragment_processor_parse(const AHeader: PLIBEthernetHeader; AStatus: PUDPFragmentProcessStatus; APayload: ppByte; APayloadLength: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_frame_insert_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word; const APriority: byte; const ACFI: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_language_id(AId: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_create(const AHost: pansichar; const APort: word; ADataEvent: TOnIoIPData; AHandle: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_delete(const AHandle: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_send_string(const AHandle: int32; const AStr: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_connect(const AHandle: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_disconnect(const AHandle: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_set_connection_callback(const AHandle: int32; const AConnectedCallback: TOnIoIPConnection; const ADisconnectedCallback: TOnIoIPConnection): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
