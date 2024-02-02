@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.TSMasterAPI">
-      <HintPath>..\..\..\..\..\software\TOSUN\TSMaster\bin\Data\SDK\lib\x86\Interop.TSMasterAPI.dll</HintPath>
+      <HintPath>..\..\..\..\..\software\TOSUN\TSMaster\Data\SDK\lib\x86\Interop.TSMasterAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

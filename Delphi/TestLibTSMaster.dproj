@@ -136,7 +136,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="..\..\..\TSMaster\bin\Data\SDK\examples\bin_x86\TestLibTSMaster.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\..\TSMaster\Data\SDK\examples\bin_x86\TestLibTSMaster.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TestLibTSMaster.exe</RemoteName>
                         <Overwrite>true</Overwrite>
