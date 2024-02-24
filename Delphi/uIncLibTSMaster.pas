@@ -77,7 +77,8 @@ type
     FProperties: byte;       // default 0, masked status:            = CAN FD
                              // [7] 0-normal frame, 1-error frame
                              // [6] 0-not logged, 1-already logged
-                             // [5-3] tbd
+                             // [5] default used by precise cyclic message manager
+                             // [4-3] tbd
                              // [2] 0-std frame, 1-extended frame
                              // [1] 0-data frame, 1-remote frame
                              // [0] dir: 0-RX, 1-TX
@@ -118,7 +119,8 @@ type
     FProperties: byte;       // default 0, masked status:            = CAN
                              // [7] 0-normal frame, 1-error frame
                              // [6] 0-not logged, 1-already logged
-                             // [5-3] tbd
+                             // [5] default used by precise cyclic message manager
+                             // [4-3] tbd
                              // [2] 0-std frame, 1-extended frame
                              // [1] 0-data frame, 1-remote frame
                              // [0] dir: 0-RX, 1-TX
@@ -761,7 +763,10 @@ type
     TP1051              = 28,
     TP1034              = 29,
     TTS9015             = 30,
-    TP1026              = 31
+    TP1026              = 31,
+    TTS1026             = 32,
+    TTS1034             = 33,
+    TTS1018             = 34
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
@@ -1042,6 +1047,9 @@ type
   Ttstp_can_request_and_get_response = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
   Ttstp_can_request_and_get_response_functional = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
 
+  N_USData_RevData_Recall_Obj = procedure(const ATpModuleIndex:Integer;
+                                       const AChn:Integer) of object; stdcall;
+
   N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
                                        const AChn:Integer;
                                        const ABusType: byte;
@@ -1074,7 +1082,7 @@ const
     'TOSUN Wireless-OBD',
     'TOSUN Ex'
   );
-  TS_HWTYPE_MAX_CNT = 32;
+  TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
     'Unknown',
     'TS.CAN Pro',
@@ -1107,7 +1115,10 @@ const
     'TP1051',
     'TP1034',
     'TTS9015',
-    'TP1026'
+    'TP1026',
+    'TTS1026',
+    'TTS1034',
+    'TTS1018'
   );
   XL_HWTYPE_MAX_CNT = 120;
   XL_HWTYPE_NAMES: array [0..XL_HWTYPE_MAX_CNT-1] of string = (
@@ -2095,23 +2106,23 @@ function tslog_stop_online_replay(const AIndex: Integer): Integer; stdcall; {$IF
 function tslog_stop_online_replays(): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_get_online_replay_status(const AIndex: Integer; out AStatus: TLIBOnlineReplayStatus; out AProgressPercent100:Single): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // blf
-function tslog_blf_write_start(const AFileName: PAnsiChar; AHandle: pinteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_set_max_count(const AHandle: integer; const ACount: UInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_can(const AHandle: integer; const ACAN: PlibCAN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_can_fd(const AHandle: integer; const ACANFD: PlibCANFD): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_lin(const AHandle: integer; const ALIN: PlibLIN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_realtime_comment(const AHandle: Integer; const ATimeUs: int64; const AComment: PAnsiChar): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_end(const AHandle: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_read_start(const AFileName: PAnsiChar; AHandle: pinteger; AObjCount: pinteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsLog_blf_read_start_verbose(const AFileName: PAnsiChar; AHandle: pinteger; AObjCount: pinteger;
+function tslog_blf_write_start(const AFileName: PAnsiChar; AHandle: pnativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_set_max_count(const AHandle: nativeint; const ACount: UInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_can(const AHandle: nativeint; const ACAN: PlibCAN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_can_fd(const AHandle: nativeint; const ACANFD: PlibCANFD): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_lin(const AHandle: nativeint; const ALIN: PlibLIN): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_realtime_comment(const AHandle: nativeint; const ATimeUs: int64; const AComment: PAnsiChar): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_end(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_read_start(const AFileName: PAnsiChar; AHandle: pnativeint; AObjCount: pinteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsLog_blf_read_start_verbose(const AFileName: PAnsiChar; AHandle: pnativeint; AObjCount: pinteger;
                                          AYear:PWord;AMonth: PWord; ADayOfWeek: PWord;
                                          ADay: PWord; AHour: PWord; AMinute: PWord;
                                          ASecond: PWord;AMilliseconds: PWord): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_read_status(const AHandle: integer; AObjReadCount: pinteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_read_object(const AHandle: integer; AProgressedCnt: pinteger; AType: PSupportedObjType; ACAN: PlibCAN; ALIN: PlibLIN; ACANFD: PlibCANFD): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_read_object_w_comment(const AHandle: Integer; AProgressedCnt: pinteger; AType: PSupportedObjType; ACAN: PlibCAN; ALIN: PlibLIN; ACANFD: PlibCANFD; AComment: Prealtime_comment_t): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_read_end(const AHandle: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_seek_object_time(const AHandle: integer; const AProg100: Double; var ATime: int64; var AProgressedCnt: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_read_status(const AHandle: nativeint; AObjReadCount: pinteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_read_object(const AHandle: nativeint; AProgressedCnt: pinteger; AType: PSupportedObjType; ACAN: PlibCAN; ALIN: PlibLIN; ACANFD: PlibCANFD): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_read_object_w_comment(const AHandle: nativeint; AProgressedCnt: pinteger; AType: PSupportedObjType; ACAN: PlibCAN; ALIN: PlibLIN; ACANFD: PlibCANFD; AComment: Prealtime_comment_t): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_read_end(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_seek_object_time(const AHandle: nativeint; const AProg100: Double; var ATime: int64; var AProgressedCnt: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_blf_to_asc(const AObj: pointer; const ABLFFileName: PAnsiChar; const AASCFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_asc_to_blf(const AObj: pointer; const AASCFileName: PAnsiChar; const ABLFFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
@@ -2269,7 +2280,6 @@ function tsdiag_can_create(const pDiagModuleIndex: PInteger;
                       const AFunctionIDIsStd: Boolean): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_can_delete(const ADiagModuleIndex: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tsdiag_can_delete_all; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-//function tsdiag_get_tp_handle(ADiagModuleIndex: Integer;AHandle:PInteger):Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 {Parameter setting}
 function tsdiag_set_channel(const ADiagModuleIndex: Integer; const AChnIndex: Integer): Integer;  stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_fdmode(const ADiagModuleIndex: Integer; const AFDMode: boolean; const ASupportBRS: boolean; const AMaxLength: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2481,14 +2491,14 @@ function ui_show_select_directory_dialog(ADestinationDirectory: PPAnsiChar): int
 function transmit_ethernet_async(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function transmit_ethernet_sync(const AEthernetHeader: PLIBEthernetHeader; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function inject_ethernet_frame(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tslog_blf_write_ethernet(const AHandle: int32; const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_write_ethernet(const AHandle: nativeint; const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_ethernet_channel_count(const ACount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_ethernet_channel_count(ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function transmit_ethernet_async_wo_pretx(const AEthernetHeader: PLIBEthernetHeader): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_can_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_lin_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_flexray_db_index_by_id(const AId: int32; AIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function ioip_set_tcp_server_connection_callback(const AObj: Pointer; const AHandle: int32; const AConnectedCallback: TOnIoIPConnection; const ADisconnectedCallback: TOnIoIPConnection): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function ioip_set_tcp_server_connection_callback(const AObj: Pointer; const AHandle: nativeint; const AConnectedCallback: TOnIoIPConnection; const ADisconnectedCallback: TOnIoIPConnection): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_build_ipv4_udp_packet(const AHeader: PLIBEthernetHeader; const ASrcIp: pbyte; const ADstIp: pbyte; const ASrcPort: word; const ADstPort: word; const APayload: pbyte; const APayloadLength: word; AIdentification: pInt32; AFragmentIndex: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function register_system_var_change_event(const ACompleteName: pansichar; const AEvent: TlibOnSysVarChange): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function unregister_system_var_change_event(const ACompleteName: pansichar; const AEvent: TlibOnSysVarChange): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2512,7 +2522,7 @@ function signal_tester_get_item_verdict_by_index(const AObj: Pointer; const AInd
 function signal_tester_get_item_result_by_name(const AObj: Pointer; const AName: pansichar; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_get_item_result_by_index(const AObj: Pointer; const AIndex: int32; AIsPass: PBoolean; AEventTimeUs: pint64; ADescription: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_get_item_verdict_by_name(const AObj: Pointer; const AName: pansichar; AIsPass: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function ini_read_string_wo_quotes(const AHandle: int32; const ASection: pansichar; const AKey: pansichar; const AValue: pansichar; AValueCapacity: pInt32; const ADefault: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function ini_read_string_wo_quotes(const AHandle: nativeint; const ASection: pansichar; const AKey: pansichar; const AValue: pansichar; AValueCapacity: pInt32; const ADefault: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_check_statistics_by_index(const AObj: Pointer; const AIndex: int32; const AMin: double; const AMax: double; APass: PBoolean; AResult: pdouble; AResultRepr: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_check_statistics_by_name(const AObj: Pointer; const AItemName: pansichar; const AMin: double; const AMax: double; APass: PBoolean; AResult: pdouble; AResultRepr: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function signal_tester_enable_item_by_index(const AIndex: int32; const AEnable: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2561,6 +2571,17 @@ function eth_udp_fragment_processor_clear(): integer; stdcall; {$IFNDEF LIBTSMAS
 function eth_udp_fragment_processor_parse(const AHeader: PLIBEthernetHeader; AStatus: PUDPFragmentProcessStatus; APayload: ppByte; APayloadLength: pword): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_frame_insert_vlan(AHeader: PLIBEthernetHeader; const AVLANId: word; const APriority: byte; const ACFI: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_language_id(AId: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_create(const AHost: pansichar; const APort: word; ADataEvent: TOnIoIPData; AHandle: pnativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_delete(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_send_string(const AHandle: nativeint; const AStr: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_connect(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_disconnect(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_set_connection_callback(const AHandle: nativeint; const AConnectedCallback: TOnIoIPConnection; const ADisconnectedCallback: TOnIoIPConnection): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function telnet_enable_debug_print(const AHandle: nativeint; const AEnable: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_to_pcap(const AObj: Pointer; const ABlfFileName: pansichar; const APcapFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_pcap_to_blf(const AObj: Pointer; const APcapFileName: pansichar; const ABlfFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_pcapng_to_blf(const AObj: Pointer; const APcapngFileName: pansichar; const ABlfFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_blf_to_pcapng(const AObj: Pointer; const ABlfFileName: pansichar; const APcapngFileName: pansichar; const AProgressCallback: TReadProgressCallback): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
