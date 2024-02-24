@@ -461,6 +461,21 @@ tsfifo_read_flexray_rx_buffer_frame_count = dll.tsfifo_read_flexray_rx_buffer_fr
 #arg[1] ACount : None
 tsfifo_read_flexray_rx_buffer_frame_count.argtypes =[s32,ps32]
 tsfifo_read_flexray_rx_buffer_frame_count.restype = s32
+tsapp_add_precise_cyclic_message = dll.tsapp_add_precise_cyclic_message
+#arg[0] AMsgID : None
+#arg[1] AChn : None
+#arg[2] AIsExt : None
+#arg[3] ACyclicTime : None
+#arg[4] ATimeOut : None
+tsapp_add_precise_cyclic_message.argtypes =[s32,u8,c_bool,single,s32]
+tsapp_add_precise_cyclic_message.restype = s32
+tsapp_delete_precise_cyclic_message = dll.tsapp_delete_precise_cyclic_message
+#arg[0] AMsgID : None
+#arg[1] AChn : None
+#arg[2] AIsExt : None
+#arg[3] ATimeOut : None
+tsapp_delete_precise_cyclic_message.argtypes =[s32,u8,c_bool,s32]
+tsapp_delete_precise_cyclic_message.restype = s32
 tsapp_add_cyclic_msg_can = dll.tsapp_add_cyclic_msg_can
 #arg[0] ACAN : None
 #arg[1] APeriodMS : None
@@ -1329,43 +1344,43 @@ tslog_get_online_replay_status.restype = s32
 tslog_blf_write_start = dll.tslog_blf_write_start
 #arg[0] AFileName : None
 #arg[1] AHandle : None
-tslog_blf_write_start.argtypes =[pchar,ps32]
+tslog_blf_write_start.argtypes =[pchar,psize_t]
 tslog_blf_write_start.restype = s32
 tslog_blf_write_set_max_count = dll.tslog_blf_write_set_max_count
 #arg[0] AHandle : None
 #arg[1] ACount : None
-tslog_blf_write_set_max_count.argtypes =[s32,u32]
+tslog_blf_write_set_max_count.argtypes =[size_t,u32]
 tslog_blf_write_set_max_count.restype = s32
 tslog_blf_write_can = dll.tslog_blf_write_can
 #arg[0] AHandle : None
 #arg[1] ACAN : None
-tslog_blf_write_can.argtypes =[s32,PLIBCAN]
+tslog_blf_write_can.argtypes =[size_t,PLIBCAN]
 tslog_blf_write_can.restype = s32
 tslog_blf_write_can_fd = dll.tslog_blf_write_can_fd
 #arg[0] AHandle : None
 #arg[1] ACANFD : None
-tslog_blf_write_can_fd.argtypes =[s32,PLIBCANFD]
+tslog_blf_write_can_fd.argtypes =[size_t,PLIBCANFD]
 tslog_blf_write_can_fd.restype = s32
 tslog_blf_write_lin = dll.tslog_blf_write_lin
 #arg[0] AHandle : None
 #arg[1] ALIN : None
-tslog_blf_write_lin.argtypes =[s32,PLIBLIN]
+tslog_blf_write_lin.argtypes =[size_t,PLIBLIN]
 tslog_blf_write_lin.restype = s32
 tslog_blf_write_realtime_comment = dll.tslog_blf_write_realtime_comment
 #arg[0] AHandle : None
 #arg[1] ATimeUs : None
 #arg[2] AComment : None
-tslog_blf_write_realtime_comment.argtypes =[s32,s64,pchar]
+tslog_blf_write_realtime_comment.argtypes =[size_t,s64,pchar]
 tslog_blf_write_realtime_comment.restype = s32
 tslog_blf_write_end = dll.tslog_blf_write_end
 #arg[0] AHandle : None
-tslog_blf_write_end.argtypes =[s32]
+tslog_blf_write_end.argtypes =[size_t]
 tslog_blf_write_end.restype = s32
 tslog_blf_read_start = dll.tslog_blf_read_start
 #arg[0] AFileName : None
 #arg[1] AHandle : None
 #arg[2] AObjCount : None
-tslog_blf_read_start.argtypes =[pchar,ps32,ps32]
+tslog_blf_read_start.argtypes =[pchar,psize_t,ps32]
 tslog_blf_read_start.restype = s32
 tsLog_blf_read_start_verbose = dll.tsLog_blf_read_start_verbose
 #arg[0] AFileName : None
@@ -1379,12 +1394,12 @@ tsLog_blf_read_start_verbose = dll.tsLog_blf_read_start_verbose
 #arg[8] AMinute : None
 #arg[9] ASecond : None
 #arg[10] AMilliseconds : None
-tsLog_blf_read_start_verbose.argtypes =[pchar,ps32,ps32,pu16,pu16,pu16,pu16,pu16,pu16,pu16,pu16]
+tsLog_blf_read_start_verbose.argtypes =[pchar,psize_t,ps32,pu16,pu16,pu16,pu16,pu16,pu16,pu16,pu16]
 tsLog_blf_read_start_verbose.restype = s32
 tslog_blf_read_status = dll.tslog_blf_read_status
 #arg[0] AHandle : None
 #arg[1] AObjReadCount : None
-tslog_blf_read_status.argtypes =[s32,ps32]
+tslog_blf_read_status.argtypes =[size_t,ps32]
 tslog_blf_read_status.restype = s32
 tslog_blf_read_object = dll.tslog_blf_read_object
 #arg[0] AHandle : None
@@ -1393,7 +1408,7 @@ tslog_blf_read_object = dll.tslog_blf_read_object
 #arg[3] ACAN : None
 #arg[4] ALIN : None
 #arg[5] ACANFD : None
-tslog_blf_read_object.argtypes =[s32,ps32,ps32,PLIBCAN,PLIBLIN,PLIBCANFD]
+tslog_blf_read_object.argtypes =[size_t,ps32,ps32,PLIBCAN,PLIBLIN,PLIBCANFD]
 tslog_blf_read_object.restype = s32
 tslog_blf_read_object_w_comment = dll.tslog_blf_read_object_w_comment
 #arg[0] AHandle : None
@@ -1403,32 +1418,32 @@ tslog_blf_read_object_w_comment = dll.tslog_blf_read_object_w_comment
 #arg[4] ALIN : None
 #arg[5] ACANFD : None
 #arg[6] AComment : None
-tslog_blf_read_object_w_comment.argtypes =[s32,ps32,ps32,PLIBCAN,PLIBLIN,PLIBCANFD,Prealtime_comment_t]
+tslog_blf_read_object_w_comment.argtypes =[size_t,ps32,ps32,PLIBCAN,PLIBLIN,PLIBCANFD,Prealtime_comment_t]
 tslog_blf_read_object_w_comment.restype = s32
 tslog_blf_read_end = dll.tslog_blf_read_end
 #arg[0] AHandle : None
-tslog_blf_read_end.argtypes =[s32]
+tslog_blf_read_end.argtypes =[size_t]
 tslog_blf_read_end.restype = s32
 tslog_blf_seek_object_time = dll.tslog_blf_seek_object_time
 #arg[0] AHandle : None
 #arg[1] AProg100 : None
 #arg[2] ATime : None
 #arg[3] AProgressedCnt : None
-tslog_blf_seek_object_time.argtypes =[s32,double,ps64,ps32]
+tslog_blf_seek_object_time.argtypes =[size_t,double,ps64,ps32]
 tslog_blf_seek_object_time.restype = s32
 tslog_blf_to_asc = dll.tslog_blf_to_asc
 #arg[0] AObj : None
 #arg[1] ABLFFileName : None
 #arg[2] AASCFileName : None
 #arg[3] AProgressCallback : None
-tslog_blf_to_asc.argtypes =[ps32,pchar,pchar,TReadProgressCallback]
+tslog_blf_to_asc.argtypes =[pvoid,pchar,pchar,TReadProgressCallback]
 tslog_blf_to_asc.restype = s32
 tslog_asc_to_blf = dll.tslog_asc_to_blf
 #arg[0] AObj : None
 #arg[1] AASCFileName : None
 #arg[2] ABLFFileName : None
 #arg[3] AProgressCallback : None
-tslog_asc_to_blf.argtypes =[ps32,pchar,pchar,TReadProgressCallback]
+tslog_asc_to_blf.argtypes =[pvoid,pchar,pchar,TReadProgressCallback]
 tslog_asc_to_blf.restype = s32
 tscom_lin_rbs_reload_settings = dll.tscom_lin_rbs_reload_settings
 tscom_lin_rbs_reload_settings.argtypes =[]
@@ -2783,6 +2798,11 @@ ui_show_select_directory_dialog = dll.ui_show_select_directory_dialog
 #arg[0] ADestinationFileName : None
 ui_show_select_directory_dialog.argtypes =[ppchar]
 ui_show_select_directory_dialog.restype = s32
+tsapp_ethernet_channel_compress_mode = dll.tsapp_ethernet_channel_compress_mode
+#arg[0] AChnidx : None
+#arg[1] AIsOpen : None
+tsapp_ethernet_channel_compress_mode.argtypes =[s32,c_bool]
+tsapp_ethernet_channel_compress_mode.restype = s32
 tsapp_transmit_ethernet_async = dll.tsapp_transmit_ethernet_async
 #arg[0] AEthernetHeader : None
 tsapp_transmit_ethernet_async.argtypes =[PLIBEthernetHeader]
@@ -2799,7 +2819,7 @@ inject_ethernet_frame.restype = s32
 tslog_blf_write_ethernet = dll.tslog_blf_write_ethernet
 #arg[0] AHandle : None
 #arg[1] AEthernetHeader : None
-tslog_blf_write_ethernet.argtypes =[s32,PLIBEthernetHeader]
+tslog_blf_write_ethernet.argtypes =[size_t,PLIBEthernetHeader]
 tslog_blf_write_ethernet.restype = s32
 set_ethernet_channel_count = dll.set_ethernet_channel_count
 #arg[0] ACount : None
@@ -2965,7 +2985,7 @@ ini_read_string_wo_quotes = dll.ini_read_string_wo_quotes
 #arg[3] AValue : None
 #arg[4] AValueCapacity : None
 #arg[5] ADefault : None
-ini_read_string_wo_quotes.argtypes =[s32,pchar,pchar,pchar,ps32,pchar]
+ini_read_string_wo_quotes.argtypes =[size_t,pchar,pchar,pchar,ps32,pchar]
 ini_read_string_wo_quotes.restype = s32
 signal_tester_check_statistics_by_index = dll.signal_tester_check_statistics_by_index
 #arg[0] AObj : None
@@ -3143,14 +3163,14 @@ tssocket_recv = dll.tssocket_recv
 #arg[2] mem : None
 #arg[3] len : None
 #arg[4] flags : None
-tssocket_recv.argtypes =[s32,s32,pu8,size_t,s32]
+tssocket_recv.argtypes =[s32,s32,pu8,u32,s32]
 tssocket_recv.restype = s32
 tssocket_read = dll.tssocket_read
 #arg[0] ANetworkIndex : None
 #arg[1] s : None
 #arg[2] mem : None
 #arg[3] len : None
-tssocket_read.argtypes =[s32,s32,pu8,size_t]
+tssocket_read.argtypes =[s32,s32,pu8,u32]
 tssocket_read.restype = s32
 tssocket_readv = dll.tssocket_readv
 #arg[0] ANetworkIndex : None
@@ -3167,7 +3187,7 @@ tssocket_recvfrom = dll.tssocket_recvfrom
 #arg[4] flags : None
 #arg[5] from : None
 #arg[6] fromlen : None
-tssocket_recvfrom.argtypes =[s32,s32,pu8,size_t,s32,Pts_sockaddr,pu32]
+tssocket_recvfrom.argtypes =[s32,s32,pu8,u32,s32,Pts_sockaddr,pu32]
 tssocket_recvfrom.restype = s32
 tssocket_recvmsg = dll.tssocket_recvmsg
 #arg[0] ANetworkIndex : None
@@ -3182,7 +3202,7 @@ tssocket_send = dll.tssocket_send
 #arg[2] dataptr : None
 #arg[3] size : None
 #arg[4] flags : None
-tssocket_send.argtypes =[s32,s32,pu8,size_t,s32]
+tssocket_send.argtypes =[s32,s32,pu8,u32,s32]
 tssocket_send.restype = s32
 tssocket_sendto = dll.tssocket_sendto
 #arg[0] ANetworkIndex : None
@@ -3192,7 +3212,7 @@ tssocket_sendto = dll.tssocket_sendto
 #arg[4] flags : None
 #arg[5] ato : None
 #arg[6] tolen : None
-tssocket_sendto.argtypes =[s32,s32,pu8,size_t,s32,Pts_sockaddr,u32]
+tssocket_sendto.argtypes =[s32,s32,pu8,u32,s32,Pts_sockaddr,u32]
 tssocket_sendto.restype = s32
 tssocket = dll.tssocket
 #arg[0] ANetworkIndex : None
@@ -3209,7 +3229,7 @@ tssocket_write = dll.tssocket_write
 #arg[1] s : None
 #arg[2] dataptr : None
 #arg[3] size : None
-tssocket_write.argtypes =[s32,s32,pu8,size_t]
+tssocket_write.argtypes =[s32,s32,pu8,u32]
 tssocket_write.restype = s32
 tssocket_writev = dll.tssocket_writev
 #arg[0] ANetworkIndex : None

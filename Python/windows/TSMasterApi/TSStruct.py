@@ -27,6 +27,8 @@ TObject = c_void_p
 pbool = POINTER(c_bool)
 pvoid = c_void_p
 size_t = c_size_t
+psize_t = POINTER(size_t)
+
 
 
 DLC_DATA_BYTE_CNT = (
