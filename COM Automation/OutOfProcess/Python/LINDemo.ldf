@@ -1,0 +1,189 @@
+LIN_description_file;
+LIN_protocol_version = "2.0";
+LIN_language_version = "2.0";
+LIN_speed = 19.2 kbps;
+
+Nodes {
+  Master: MasterNode, 5 ms, 0.1 ms;
+  Slaves: SteeringLamp, HeadLamp, Wiper;
+}
+
+Signals {
+  SteeringLampControl:   8,  0,  MasterNode,  SteeringLamp;
+  HeadLampControl:       8,  0,  MasterNode,  HeadLamp;
+  WiperControl:          8,  0,  MasterNode,  Wiper;
+
+  SteeringLampState:     8,  0,  SteeringLamp,  MasterNode;
+  SteeringLampRespError: 1,  0,  SteeringLamp,  MasterNode;
+
+  HeadLampState:         8,  0,  HeadLamp,  MasterNode;
+  HeadLampRespError:     1,  0,  HeadLamp,  MasterNode;
+
+  WiperState:            8,  0,  Wiper,  MasterNode;
+  WiperRespError:        1,  0,  Wiper,  MasterNode;
+}
+
+Diagnostic_signals {
+  MasterReqB0:  8,  0;
+  MasterReqB1:  8,  0;
+  MasterReqB2:  8,  0;
+  MasterReqB3:  8,  0;
+  MasterReqB4:  8,  0;
+  MasterReqB5:  8,  0;
+  MasterReqB6:  8,  0;
+  MasterReqB7:  8,  0;
+  SlaveRespB0:  8,  0;
+  SlaveRespB1:  8,  0;
+  SlaveRespB2:  8,  0;
+  SlaveRespB3:  8,  0;
+  SlaveRespB4:  8,  0;
+  SlaveRespB5:  8,  0;
+  SlaveRespB6:  8,  0;
+  SlaveRespB7:  8,  0;
+}
+
+Frames {
+  SlavesControls:  21, MasterNode, 4 {
+    SteeringLampControl,   0;
+    HeadLampControl,       8;
+    WiperControl,         16;
+  }
+
+  SteeringLampStates:  31, SteeringLamp, 2 {
+    SteeringLampState,     0;
+    SteeringLampRespError, 8;
+  }
+  HeadLampStates:  32, HeadLamp, 2 {
+    HeadLampState,         0;
+    HeadLampRespError,     8;
+  }
+  WiperStates:  33, Wiper, 2 {
+    WiperState,            0;
+    WiperRespError,        8;
+  }
+}
+
+Diagnostic_frames {
+  MasterReq: 60 {
+    MasterReqB0,   0;
+    MasterReqB1,   8;
+    MasterReqB2,  16;
+    MasterReqB3,  24;
+    MasterReqB4,  32;
+    MasterReqB5,  40;
+    MasterReqB6,  48;
+    MasterReqB7,  56;
+  }
+  SlaveResp: 61 {  
+    SlaveRespB0,   0;  
+    SlaveRespB1,   8;
+    SlaveRespB2,  16;
+    SlaveRespB3,  24;
+    SlaveRespB4,  32;
+    SlaveRespB5,  40;
+    SlaveRespB6,  48;
+    SlaveRespB7,  56;
+  }
+}
+
+Node_attributes {
+  SteeringLamp {
+    LIN_protocol = "2.0"; 
+    configured_NAD = 0x0A;
+    product_id = 0x000B, 0x0001, 0x00;
+    response_error = SteeringLampRespError;   
+    configurable_frames {
+      SlavesControls = 0x0015;
+      SteeringLampStates = 0x001F;
+    }
+  }
+  HeadLamp {
+    LIN_protocol = "2.0"; 
+    configured_NAD = 0x0B;
+    product_id = 0x000B, 0x0002, 0x00;
+    response_error = HeadLampRespError;  
+    configurable_frames {
+      SlavesControls = 0x0015;
+      HeadLampStates = 0x0020;
+    }
+  }
+  Wiper {
+    LIN_protocol = "2.0"; 
+    configured_NAD = 0x0C;
+    product_id = 0x000B, 0x0003, 0x00;
+    response_error = WiperRespError; 
+    configurable_frames {
+      SlavesControls = 0x0015;
+      WiperStates = 0x0021;
+    }
+  }
+}
+
+Schedule_tables {
+  NormalTable {
+    SlavesControls      delay 10 ms;
+    SteeringLampStates  delay 10 ms;
+    HeadLampStates      delay 10 ms;
+    WiperStates         delay 10 ms;
+  }
+  
+  DiagnosticTable {
+    MasterReq           delay 50 ms;
+    SlaveResp           delay 50 ms;
+  }
+
+}
+
+Signal_encoding_types {
+  Control1 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Left";
+    logical_value, 2, "Right";
+    logical_value, 255, "Void";
+  }
+  Control2 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Near";
+    logical_value, 2, "Far";
+    logical_value, 255, "Void";
+  }
+  Control3 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Slow";
+    logical_value, 2, "Fast";
+    logical_value, 255, "Void";
+  }
+  State1 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Left";
+    logical_value, 2, "Right";
+    logical_value, 255, "Void";
+  }
+  State2 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Near";
+    logical_value, 2, "Far";
+    logical_value, 255, "Void";
+  }
+  State3 {
+    logical_value, 0, "OFF";
+    logical_value, 1, "Slow";
+    logical_value, 2, "Fast";
+    logical_value, 255, "Void";
+  }
+  ErrorEncoding {
+    logical_value, 0, "OK";
+    logical_value, 1, "Error";
+  }
+}
+
+Signal_representation {
+  Control1: SteeringLampControl;
+  Control2: HeadLampControl;
+  Control3: WiperControl;
+  State1: SteeringLampState;
+  State2: HeadLampState;
+  State3: WiperState;
+  ErrorEncoding: SteeringLampRespError, HeadLampRespError, WiperRespError;
+}
+

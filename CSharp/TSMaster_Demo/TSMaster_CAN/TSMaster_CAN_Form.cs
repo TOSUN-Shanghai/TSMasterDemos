@@ -475,7 +475,7 @@ namespace TSMaster_CAN
             TsMasterApi.tsapp_delete_cyclic_msg_canfd(ref temp.ACANFD);
         }
 
-        int readblfhandle = 0;
+        IntPtr readblfhandle = IntPtr.Zero;
         int readcount = 0;
         string blf_name = "";
         private void btn_load_blf_Click(object sender, EventArgs e)
@@ -519,7 +519,7 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    int obj1 = 0;
+                    IntPtr obj1 = IntPtr.Zero;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
                     TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.'))+"asc", readProgressCallback);
                 }
@@ -651,7 +651,7 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    int obj1 = 0;
+                    IntPtr obj1 = IntPtr.Zero;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
                     TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + "blf", readProgressCallback);
                 }

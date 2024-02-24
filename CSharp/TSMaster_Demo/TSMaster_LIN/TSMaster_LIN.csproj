@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.TSMasterAPI">
-      <HintPath>..\..\..\..\..\software\TOSUN\TSMaster\bin\Data\SDK\lib\x86\Interop.TSMasterAPI.dll</HintPath>
+    <Reference Include="Interop.TSMasterAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin_x86\Interop.TSMasterAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
