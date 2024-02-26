@@ -823,6 +823,18 @@ type
     XL_VN1530                    =   112,
     XL_VN1531                    =   113
   );
+  // system variable def
+  TLIBSystemVarDef = packed record
+    FName: array [0..31] of AnsiChar;
+    FCategory: array [0..31] of AnsiChar;
+    FComment: array [0..31] of ansichar;
+    FDataType: TLIBSystemVarType;
+    FIsReadOnly: Boolean;
+    FValueMin: Double;
+    FValueMax: double;
+    FUnit: array [0..31] of ansichar;
+  end;
+  PLIBSystemVarDef = ^TLIBSystemVarDef;
 {$Z1}
   // mp can signal
   TMPCANSignal = packed record
@@ -970,18 +982,6 @@ type
     ): Boolean;
   end;
   PLIBTSMapping = ^TLIBTSMapping;
-  // system variable def
-  TLIBSystemVarDef = packed record
-    FName: array [0..31] of AnsiChar;
-    FCategory: array [0..31] of AnsiChar;
-    FComment: array [0..31] of ansichar;
-    FDataType: TLIBSystemVarType;
-    FIsReadOnly: Boolean;
-    FValueMin: Double;
-    FValueMax: double;
-    FUnit: array [0..31] of ansichar;
-  end;
-  PLIBSystemVarDef = ^TLIBSystemVarDef;
 
   //LIN APIs
   TLINNodeType = ({0:}T_MasterNode,{1:}T_SlaveNode,{;2:}T_MonitorNode);
@@ -3696,6 +3696,7 @@ begin
 
 end;
 
+{$ifdef debug}
 initialization
   Assert(sizeof(TLIBCAN) = 24, 'TLIBCAN.size = 24');
   Assert(sizeof(TLIBLIN) = 23, 'TLIBLIN.size = 23');
@@ -3706,5 +3707,7 @@ initialization
   Assert(sizeof(TLibSystemVar) = 36, 'TLibSystemVar.size = 36');
   Assert(SizeOf(TLibFlexRayClusterParameters) = 440, 'TLibFlexRayClusterParameters.size = 440');
   Assert(SizeOf(TLibFlexRayControllerParameters) = 212, 'TLibFlexRayControllerParameters.size = 212');
+  Assert(SizeOf(TLIBSystemVarDef) = 149, 'TLIBSystemVarDef.size = 149, current is ' + IntToStr(SizeOf(TLIBSystemVarDef)));
+{$endif}
 
 end.
