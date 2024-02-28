@@ -2585,6 +2585,26 @@ function tslog_blf_to_pcapng(const AObj: Pointer; const ABlfFileName: pansichar;
 function enter_critical_section(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function leave_critical_section(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function try_enter_critical_section(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_update_new_key_sync(const AChnIdx: int32; const AOldKey: pansichar; const AOldKeyLength: byte; const ANewKey: pansichar; const ANewKeyLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_unlock_write_authority_sync(const AChnIdx: int32; const AKey: pansichar; const AKeyLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_unlock_write_authority_async(const AChnIdx: int32; const AKey: pansichar; const AKeyLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_write_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_write_string_async(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_read_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_unlock_encrypt_channel_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_unlock_encrypt_channel_async(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_encrypt_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function security_decrypt_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_update_new_key_sync(const AChnIdx: int32; const AOldKey: pansichar; const AOldKeyLength: byte; const ANewKey: pansichar; const ANewKeyLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_unlock_write_authority_sync(const AChnIdx: int32; const AKey: pansichar; const AKeyLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_unlock_write_authority_async(const AChnIdx: int32; const AKey: pansichar; const AKeyLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_write_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_write_string_async(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_read_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_unlock_encrypt_channel_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_unlock_encrypt_channel_async(const AChnIdx: int32; const AString: pansichar; const AStringLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_encrypt_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_security_decrypt_string_sync(const AChnIdx: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
