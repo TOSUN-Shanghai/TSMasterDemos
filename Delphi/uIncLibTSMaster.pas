@@ -2605,6 +2605,7 @@ function tsapp_security_unlock_encrypt_channel_sync(const AChnIdx: int32; const 
 function tsapp_security_unlock_encrypt_channel_async(const AChnIdx: int32; const ASlotIndex: int32; const AString: pansichar; const AStringLength: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_security_encrypt_string_sync(const AChnIdx: int32; const ASlotIndex: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_security_decrypt_string_sync(const AChnIdx: int32; const ASlotIndex: int32; const AString: pansichar; const AStringLength: pbyte; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_channel_timestamp_deviation_factor(const ABusType: TLIBApplicationChannelType; const AIdxLogicalChn: int32; const APCTimeUs: int64; const AHwTimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
