@@ -596,6 +596,14 @@ type
   TLIBWriteAPIDocument = procedure (const AObj: Pointer; const AWriteDoc: TLIBWriteAPIDocumentFunc; const AWritePara: TLIBWriteAPIParaFunc); stdcall;
   TLIBCheckResult = function: Boolean; stdcall;
   TLIBOnSysVarChange = procedure(const ACompleteName: pansichar); stdcall;
+  TSSocketNotifyEvent = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer) of object; stdcall;
+  TSSocketReceiveEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketReceiveEventV2 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketTransmitEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketNotifyEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer); stdcall;
+  TSSocketReceiveEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer); stdcall;
+  TSSocketReceiveEventV2_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
+  TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
 
 {$Z4}
   // for c type
@@ -1397,10 +1405,19 @@ type
     sin_port: ts_in_port_t;
     sin_addr: ts_in_addr;
     sin_zero: array[0..SIN_ZERO_LEN - 1] of AnsiChar;
+    function GetIPAddress: ansistring;
+    function GetIPEndPoint: ansistring;
+    procedure SetIPAddress(const AValue: ansistring);
+    function GetPort: UInt16;
+    procedure SetPort(const AValue: UInt16);
+    property IPAddress: ansistring read GetIPAddress write SetIPAddress;
+    property Port: UInt16 read GetPort write SetPort;
+    property IPEndPoint: AnsiString read GetIPEndPoint;
   end;
   {//Four byte alignment, cannot use Packet}
   ts_sockaddr_in_union = record  //16bytes
     FData:array[0..3] of Uint32;
+    function stringValue: string;
   end;
 
   pts_iovec = ^tts_iovec;
@@ -2351,6 +2368,7 @@ function tsapp_reset_gps_module(const AChnIdx:Integer; const AInitBaudrate:Integ
 //function Security
 function tsapp_unlock_camera_channel(const AChnIdx: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
+
 //ethernet
 function tssocket_htons(x: UInt16): UInt16; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_htonl(x: UInt32): UInt32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2358,45 +2376,96 @@ function tssocket_aton(cp: PAnsichar; addr: Pip4_addr_t): Int32; stdcall; {$IFND
 function tssocket_ntoa(addr: Pip4_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_aton6(const cp: PAnsichar; addr: pip6_addr_t): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_ntoa6(const addr: pip6_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_initialize(const ANetworkIndex: integer;
+function tssocket_inet_ntop(af: integer; const src: Pointer; dst: PAnsiChar; size: ts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_inet_pton(af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_initialize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_initialize_verbose(const ANetworkIndex: integer;
             ALog: TLogDebuggingInfo_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_finalize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: Tip4_addr_t;  netmask: Tip4_addr_t; gateway: Tip4_addr_t; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_dhcp_start(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_dhcp_stop(const ANetworkIndex: integer); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //socket API
-function tssocket_accept(const ANetworkIndex: Integer; s: integer; addr: pts_sockaddr; addrlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_bind(const ANetworkIndex: Integer; s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_shutdown(const ANetworkIndex: Integer; s: integer; how: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getpeername(const ANetworkIndex: Integer; s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getsockname(const ANetworkIndex: Integer; s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getsockopt(const ANetworkIndex: Integer; s: integer; level: integer; optname: integer;  optval: Pointer; optlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_setsockopt(const ANetworkIndex: Integer; s: integer; level: integer; optname: integer;  optval: Pointer; optlen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_close(const ANetworkIndex: Integer; s: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_connect(const ANetworkIndex: Integer; s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_listen(const ANetworkIndex: Integer; s: integer; backlog: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recv(const ANetworkIndex: Integer; s: integer; mem: pointer; len: nativeint; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_read(const ANetworkIndex: Integer; s: integer; mem: pointer; len: nativeint): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_readv(const ANetworkIndex: Integer; s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recvfrom(const ANetworkIndex: Integer; s: integer; mem: pointer; len: NativeInt; flags: integer; from: Pts_sockaddr; fromlen: Pts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recvmsg(const ANetworkIndex: Integer; s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_send(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_sendmsg(const ANetworkIndex: Integer; s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_sendto(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt; flags: integer; ato: pts_sockaddr; tolen: ts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer; recv_cb: tosun_recv_callback;
                        presend_cb: tosun_tcp_presend_callback;
                        send_cb: tosun_tcp_ack_callback): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_write(const ANetworkIndex: Integer; s: integer; dataptr: Pointer; size: NativeInt): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_writev(const ANetworkIndex: Integer; s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_ioctl(const ANetworkIndex: Integer; s: integer; cmd: long; argp: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_fcntl(const ANetworkIndex: Integer; s: integer; cmd: integer; val: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_inet_ntop(const ANetworkIndex: Integer; af: integer; const src: Pointer; dst: PAnsiChar; size: ts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_inet_pton(const ANetworkIndex: Integer; af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_accept(const s: integer; addr: pts_sockaddr; addrlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_bind(const s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_shutdown(const s: integer; how: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getpeername(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getsockname(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_setsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_close(const s: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_connect(const s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_listen(const s: integer; backlog: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_recv(const s: integer; mem: pointer; len: nativeint; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_read(const s: integer; mem: pointer; len: nativeint): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_readv(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_recvfrom(const s: integer; mem: pointer; len: NativeInt; flags: integer; from: Pts_sockaddr; fromlen: Pts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_recvmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_send(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_sendmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_sendto(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer; ato: pts_sockaddr; tolen: ts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_write(const s: integer; dataptr: Pointer; size: NativeInt): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_writev(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_ioctl(const s: integer; cmd: long; argp: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_fcntl(const s: integer; cmd: integer; val: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//extended
+function tssocket_tcp(const ANetworkIndex: Integer; const AIPEndPoint: PAnsichar; const ASocketHandle: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_start_listen(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_start_receive(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_connect(const s: Integer; const AIPEndPoint: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_close(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_send(const s: Integer; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_sendto_client(const s: Integer; const AIPEndPoint: PAnsiChar; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//function tssocket_udp
+function tssocket_udp(const ANetworkIndex: Integer; const AIPEndPoint: PAnsichar; const ASocketHandle: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_udp_start_receive(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_udp_close(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_udp_sendto(const s: Integer; const AIPEndPoint: PAnsichar; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_udp_sendto_v2(const s: Integer; const AIPAddress: UInt32; const APort: UInt16; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//For server Callback OnTcpListen is called on incomming connect request.
+function tssocket_register_tcp_listen_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_listen_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_listen_events(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//Callback is called, which the client as successfully connect to server
+function tssocket_register_tcp_connect_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_connect_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_connect_events(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//Call back function: which is called if a TCP Package is received
+function tssocket_register_tcp_receive_event(const s: Integer; const AEvent: TSSocketReceiveEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_receive_event(const s: Integer; const AEvent: TSSocketReceiveEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_receive_events(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//TCPClose is called, when the server close the connection
+function tssocket_register_tcp_close_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_close_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_close_events(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//TCP Send
+function tssocket_register_tcp_send_event(const s: Integer; const AEvent: TSSocketTransmitEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_send_event(const s: Integer; const AEvent: TSSocketTransmitEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_send_events(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//UDP Receive from
+function tssocket_register_udp_receivefrom_event(const s: Integer; const AEvent: TSSocketReceiveEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_event(const s: Integer; const AEvent: TSSocketReceiveEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_events(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//UDP Sendto
+function tssocket_register_udp_sendto_event(const s: Integer; const AEvent: TSSocketTransmitEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_sendto_event(const s: Integer; const AEvent: TSSocketTransmitEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_sendto_events(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//UDP Reveive from V2
+function tssocket_register_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventsv2(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//TCP Receive V2
+function tssocket_register_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_receive_eventsv2(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 // mini program library
 function tsmp_reload_settings(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2620,7 +2689,8 @@ uses
   System.AnsiStrings,
   System.SysUtils,
   System.StrUtils,
-  system.DateUtils;
+  system.DateUtils,
+  Winapi.WinSock;
 
 const
   // CAN message properties
@@ -3719,6 +3789,55 @@ begin
   var o: integer;
   if not HasVLANs(o) then o := 0;
   result := SizeOf(self) + 6 + 6 + 2 + o + FEthernetPayloadLength;
+
+end;
+
+
+function ts_sockaddr_in_union.stringValue: string;
+var
+  i: integer;
+begin
+  result := '';
+  for i := 0 to 3 do begin
+    if result <> '' then begin
+      result := result + '.';
+    end;
+    result := result + Format('%.2x', [FData[i]]);
+  end;
+
+end;
+
+function tts_sockaddr_in_private.GetIPAddress: ansistring;
+begin
+  //ip := ansistring(tssocket_ntoa(pip4_addr_t(@p_local_addr.sin_addr)));
+  Result := ansistring(inet_ntoa(in_addr(sin_addr.ts_addr)));
+
+end;
+
+function tts_sockaddr_in_private.GetIPEndPoint: ansistring;
+begin
+  result := IPAddress + ansistring(':' + Port.ToString);
+
+end;
+
+procedure tts_sockaddr_in_private.SetIPAddress(const AValue: ansistring);
+begin
+  sin_addr.ts_addr := inet_addr(PAnsiChar(AValue));
+
+end;
+
+function tts_sockaddr_in_private.GetPort: UInt16;
+begin
+  // port := tssocket_htons(p_local_addr.sin_port);
+  result := UInt8(UInt16(sin_port));
+  result := (UInt16(sin_port) shr 8) + (result shl 8);
+
+end;
+
+procedure tts_sockaddr_in_private.SetPort(const AValue: UInt16);
+begin
+  sin_port := UInt8(UInt16(AValue));
+  sin_port := (UInt16(AValue) shr 8) + (sin_port shl 8);
 
 end;
 
