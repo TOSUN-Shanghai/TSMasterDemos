@@ -2384,6 +2384,8 @@ function tssocket_initialize_verbose(const ANetworkIndex: integer;
 function tssocket_finalize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: Tip4_addr_t;  netmask: Tip4_addr_t; gateway: Tip4_addr_t; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_add_device_ex(const ANetworkIndex: integer; macaddr: PAnsichar; ipaddr: PAnsichar;  netmask: PAnsichar; gateway: PAnsichar; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_remove_device_ex(const ANetworkIndex: integer; mac: PAnsichar; ipaddr: PAnsichar): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_dhcp_start(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_dhcp_stop(const ANetworkIndex: integer); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
