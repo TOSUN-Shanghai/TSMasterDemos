@@ -94,11 +94,11 @@ def tsapp_set_mapping(mapping: dll.TLIBTSMapping):
     Amapping.FAppName = APPName
     Amapping.FAppChannelType = TLIBApplicationChannelType.APP_CAN
     Amapping.FHWDeviceName  = b"TC1016"
-    Amapping.FAppChannelIndex = CHANNEL_INDEX.CHN1
+    Amapping.FAppChannelIndex = 0
     Amapping.FHWDeviceType = TLIBBusToolDeviceType.TS_USB_DEVICE //TOSUN HW
     Amapping.FHWDeviceSubType = TLIB_TS_Device_Sub_Type.TC1016
     Amapping.FHWIndex = 0
-    Amapping.FHWChannelIndex = CHANNEL_INDEX.CHN1
+    Amapping.FHWChannelIndex = 0
     Amapping.FMappingDisabled = False
     tsapp_set_mapping(Amapping)
     """
@@ -106,31 +106,31 @@ def tsapp_set_mapping(mapping: dll.TLIBTSMapping):
     return r
 
 
-def tsapp_set_mapping_verbose(AppName: bytes, ALIBApplicationChannelType: TLIBApplicationChannelType, CHANNEL_INDEX: CHANNEL_INDEX,HW_name: str,BusToolDeviceType: c_int32, HW_Type: c_int32,HW_IDX:c_int32 ,AHardwareChannel: CHANNEL_INDEX,AEnableMapping: c_bool):
+def tsapp_set_mapping_verbose(AppName: bytes, ALIBApplicationChannelType: TLIBApplicationChannelType, CHNIdx: c_int32,HW_name: str,BusToolDeviceType: c_int32, HW_Type: c_int32,HW_IDX:c_int32 ,AHardwareChannel: c_int32,AEnableMapping: c_bool):
     """
-    tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN1,
+    tsapp_set_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, 0,
                                       "TC1016".encode("UTF8"), TLIBBusToolDeviceType.TS_USB_DEVICE,
                                       TLIB_TS_Device_Sub_Type.TC1016, 0, True):
     """
-    r = dll.tsapp_set_mapping_verbose(AppName, ALIBApplicationChannelType, CHANNEL_INDEX, HW_name, BusToolDeviceType, HW_Type, HW_IDX, AHardwareChannel, AEnableMapping)
+    r = dll.tsapp_set_mapping_verbose(AppName, ALIBApplicationChannelType, CHNIdx, HW_name, BusToolDeviceType, HW_Type, HW_IDX, AHardwareChannel, AEnableMapping)
     return r
 
 
 # 删除硬件通道映射
-def tsapp_del_mapping_verbose(AppName: bytes, ALIBApplicationChannelType: TLIBApplicationChannelType, APP_Channel: CHANNEL_INDEX):
+def tsapp_del_mapping_verbose(AppName: bytes, ALIBApplicationChannelType: TLIBApplicationChannelType, APP_Channel: c_int32):
     """
-    tsapp_del_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, CHANNEL_INDEX.CHN1):
+    tsapp_del_mapping_verbose(AppName, TLIBApplicationChannelType.APP_CAN, 0):
     """
     r = dll.tsapp_del_mapping_verbose(AppName, ALIBApplicationChannelType, APP_Channel)
     return r
 
 
 # 设置can通道参数 bps
-def tsapp_configure_baudrate_can(APP_Channel: CHANNEL_INDEX, ABaudrateKbps: c_float, AListenOnly: c_bool,
+def tsapp_configure_baudrate_can(APP_Channel: c_int32, ABaudrateKbps: c_float, AListenOnly: c_bool,
                                  AInstallTermResistor120Ohm: c_bool):
     """
     ABaudrateKbps = c_float(500)
-    tsapp_configure_baudrate_can(CHANNEL_INDEX.CHN1,ABaudrateKbps,False,True):
+    tsapp_configure_baudrate_can(0,ABaudrateKbps,False,True):
     """
     if isinstance(ABaudrateKbps,int) or isinstance(ABaudrateKbps,float):
         ABaudrateKbps = c_float(ABaudrateKbps)
@@ -139,13 +139,13 @@ def tsapp_configure_baudrate_can(APP_Channel: CHANNEL_INDEX, ABaudrateKbps: c_fl
 
 
 # 设置canfd通道波特率
-def tsapp_configure_baudrate_canfd(AIdxChn: CHANNEL_INDEX, ABaudrateArbKbps: c_float, ABaudrateDataKbps: c_float,AControllerType: c_int16, AControllerMode: c_int16,AInstallTermResistor120Ohm: c_bool):
+def tsapp_configure_baudrate_canfd(AIdxChn: c_int32, ABaudrateArbKbps: c_float, ABaudrateDataKbps: c_float,AControllerType: c_int16, AControllerMode: c_int16,AInstallTermResistor120Ohm: c_bool):
     """
-    tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, 500.0, 2000.0,dll.TLIBCANFDControllerType.lfdtISOCAN,dll.TLIBCANFDControllerMode.lfdmNormal, True)
+    tsapp_configure_baudrate_canfd(0, 500.0, 2000.0,dll.TLIBCANFDControllerType.lfdtISOCAN,dll.TLIBCANFDControllerMode.lfdmNormal, True)
 
     ABaudrateArbKbps = c_float(500)
     ABaudrateDataKbps = c_float(2000)
-    tsapp_configure_baudrate_canfd(CHANNEL_INDEX.CHN1, ABaudrateArbKbps, ABaudrateDataKbps,dll.TLIBCANFDControllerType.lfdtISOCAN,dll.TLIBCANFDControllerMode.lfdmNormal, True)
+    tsapp_configure_baudrate_canfd(0, ABaudrateArbKbps, ABaudrateDataKbps,dll.TLIBCANFDControllerType.lfdtISOCAN,dll.TLIBCANFDControllerMode.lfdmNormal, True)
     """
     if isinstance(ABaudrateArbKbps,int) or isinstance(ABaudrateArbKbps,float):
         ABaudrateArbKbps = c_float(ABaudrateArbKbps)
@@ -156,9 +156,9 @@ def tsapp_configure_baudrate_canfd(AIdxChn: CHANNEL_INDEX, ABaudrateArbKbps: c_f
 
 
 # can brs 采样率设置  AOnlyListen=0表示只听模式  A120大于0表示激活终端电阻，=0表示不激活
-def tsapp_configure_can_regs(AIdxChn: CHANNEL_INDEX, ABaudrateKbps: float, ASEG1: int, ASEG2: int, APrescaler: int,ASJ2: int, AOnlyListen: int, A120: int):
+def tsapp_configure_can_regs(AIdxChn: c_int32, ABaudrateKbps: float, ASEG1: int, ASEG2: int, APrescaler: int,ASJ2: int, AOnlyListen: int, A120: int):
     """
-    tsapp_configure_can_regs(CHANNEL_INDEX.CHN1, 500.0,63,16,1,80,0,1)
+    tsapp_configure_can_regs(0, 500.0,63,16,1,80,0,1)
     """
     if isinstance(ABaudrateKbps,int) or isinstance(ABaudrateKbps,float):
         ABaudrateKbps = c_float(ABaudrateKbps)
@@ -176,7 +176,7 @@ def tsapp_configure_can_regs(AIdxChn: CHANNEL_INDEX, ABaudrateKbps: float, ASEG1
 
 
 # canfd brs 采样率设置
-def tsapp_configure_canfd_regs(AIdxChn: CHANNEL_INDEX, AArbBaudrateKbps: float, AArbSEG1: int, AArbSEG2: int,
+def tsapp_configure_canfd_regs(AIdxChn: c_int32, AArbBaudrateKbps: float, AArbSEG1: int, AArbSEG2: int,
                                AArbPrescaler: int,
                                AArbSJ2: int, ADataBaudrateKbps: float, ADataSEG1: int, ADataSEG2: int,
                                ADataPrescaler: int,
@@ -184,7 +184,7 @@ def tsapp_configure_canfd_regs(AIdxChn: CHANNEL_INDEX, AArbBaudrateKbps: float, 
                                AControllerMode: dll.TLIBCANFDControllerMode,
                                AInstallTermResistor120Ohm: int):
     """
-    tsapp_configure_canfd_regs(CHANNEL_INDEX.CHN1, 500.0,63,16,1,80,2000.0,15,4,1,20)
+    tsapp_configure_canfd_regs(0, 500.0,63,16,1,80,2000.0,15,4,1,20)
     """
     if isinstance(AArbBaudrateKbps,int) or isinstance(AArbBaudrateKbps,float):
         AArbBaudrateKbps = c_float(AArbBaudrateKbps)
@@ -217,9 +217,9 @@ def tsapp_configure_canfd_regs(AIdxChn: CHANNEL_INDEX, AArbBaudrateKbps: float, 
 
 
 # 设置lin通道波特率
-def tsapp_configure_baudrate_lin(AIdxChn: CHANNEL_INDEX, ABaudrateKbps: int, TLINProtocol: TLINProtocol):
+def tsapp_configure_baudrate_lin(AIdxChn: c_int32, ABaudrateKbps: int, TLINProtocol: TLINProtocol):
     """
-    tsapp_configure_baudrate_lin(CHANNEL_INDEX.CHN1,19.2,TLINProtocol.LINProtocol_13)
+    tsapp_configure_baudrate_lin(0,19.2,TLINProtocol.LINProtocol_13)
     """
     if isinstance(ABaudrateKbps,int) or isinstance(ABaudrateKbps,float):
         ABaudrateKbps = c_float(ABaudrateKbps)
@@ -228,10 +228,10 @@ def tsapp_configure_baudrate_lin(AIdxChn: CHANNEL_INDEX, ABaudrateKbps: int, TLI
 
 
 # 设置LIN模式
-def tslin_set_node_funtiontype(AIdxChn: CHANNEL_INDEX, TLINNodeType: TLINNodeType):
+def tslin_set_node_funtiontype(AIdxChn: c_int32, TLINNodeType: TLINNodeType):
     """
-    tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1,TLINNodeType.T_MASTER_NODE) #主节点
-    tslin_set_node_funtiontype(CHANNEL_INDEX.CHN1,TLINNodeType.T_SLAVE_NODE)  #从节点
+    tslin_set_node_funtiontype(0,TLINNodeType.T_MASTER_NODE) #主节点
+    tslin_set_node_funtiontype(0,TLINNodeType.T_SLAVE_NODE)  #从节点
     """
     r = dll.tslin_set_node_functiontype(AIdxChn, TLINNodeType)
     return r
@@ -388,11 +388,11 @@ def tsapp_get_bus_statistics(ABusType:dll.TLIBApplicationChannelType,AIdxChn:dll
     return dll.tsapp_get_bus_statistics(ABusType,AIdxChn,AIdxStat,AStat)
 
 # 获取can每秒帧数，需要先使能总线统计
-def tsapp_get_fps_can(AIdxChn: CHANNEL_INDEX, AIdentifier: c_int32, AFPS: c_int32):
+def tsapp_get_fps_can(AIdxChn: c_int32, AIdentifier: c_int32, AFPS: c_int32):
     """
     tsapp_enable_bus_statistics(True)
     AFPS = c_int32(0)
-    tsapp_get_fps_can(CHANNEL_INDEX.CHN1,0X123,AFPS)
+    tsapp_get_fps_can(0,0X123,AFPS)
     print(AFPS)
     """
     if isinstance(AIdentifier,int) or isinstance(AIdentifier,float):
@@ -404,11 +404,11 @@ def tsapp_get_fps_can(AIdxChn: CHANNEL_INDEX, AIdentifier: c_int32, AFPS: c_int3
 
 
 # 获取canfd每秒帧数，需要先使能总线统计
-def tsapp_get_fps_canfd(AIdxChn: CHANNEL_INDEX, AIdentifier: c_int32, AFPS: c_int32):
+def tsapp_get_fps_canfd(AIdxChn: c_int32, AIdentifier: c_int32, AFPS: c_int32):
     """
     tsapp_enable_bus_statistics(True)
     AFPS = c_int32(0)
-    tsapp_get_fps_canfd(CHANNEL_INDEX.CHN1,0X123,AFPS)
+    tsapp_get_fps_canfd(0,0X123,AFPS)
     print(AFPS)
     """
     if isinstance(AIdentifier,int) or isinstance(AIdentifier,float):
@@ -420,11 +420,11 @@ def tsapp_get_fps_canfd(AIdxChn: CHANNEL_INDEX, AIdentifier: c_int32, AFPS: c_in
 
 
 # 获取canfd每秒帧数，需要先使能总线统计
-def tsapp_get_fps_lin(AIdxChn: CHANNEL_INDEX, AIdentifier: c_int32, AFPS: c_int32):
+def tsapp_get_fps_lin(AIdxChn: c_int32, AIdentifier: c_int32, AFPS: c_int32):
     """
     tsapp_enable_bus_statistics(True)
     AFPS = c_int32(0)
-    tsapp_get_fps_lin(CHANNEL_INDEX.CHN1,0X123,AFPS)
+    tsapp_get_fps_lin(0,0X123,AFPS)
     print(AFPS)
     """
     if isinstance(AIdentifier,int) or isinstance(AIdentifier,float):
@@ -446,15 +446,15 @@ def tsapp_get_mapping(AMapping: dll.TLIBTSMapping):
     return r
 
 
-# 获取详细硬件映射信息
-def tsapp_get_mapping_verbose(APPName: bytes, ApplicationChannelType: TLIBApplicationChannelType, AMapping: dll.TLIBTSMapping):
-    """
-    AMapping = dll.TLIBTSMapping()
-    tsapp_get_mapping_verbose("APPName",TLIBApplicationChannelType.APP_CAN,AMapping)
-    print(AMapping.FHWDeviceSubType)
-    """
-    r = dll.tsapp_get_mapping_verbose(APPName, ApplicationChannelType, byref(AMapping))
-    return r
+# # 获取详细硬件映射信息
+# def tsapp_get_mapping_verbose(APPName: bytes, ApplicationChannelType: TLIBApplicationChannelType, AMapping: dll.TLIBTSMapping):
+#     """
+#     AMapping = dll.TLIBTSMapping()
+#     tsapp_get_mapping_verbose("APPName",TLIBApplicationChannelType.APP_CAN,AMapping)
+#     print(AMapping.FHWDeviceSubType)
+#     """
+#     r = dll.tsapp_get_mapping_verbose(APPName, ApplicationChannelType, byref(AMapping))
+#     return r
 
 
 # 获取时间戳
@@ -498,16 +498,16 @@ def tsfifo_disable_receive_fifo():
     dll.tsfifo_disable_receive_fifo()
 
 
-# 关闭错误帧接受模式
-def tsfifo_disable_receive_error_frames():
-    dll.tsfifo_disable_receive_error_frames()
+# # 关闭错误帧接受模式
+# def tsfifo_disable_receive_error_frames():
+#     dll.tsfifo_disable_receive_error_frames()
 
 
 # 读取通道can缓冲帧数量
-def tsfifo_read_can_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_can_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_can_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_can_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -517,10 +517,10 @@ def tsfifo_read_can_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
 
 
 # 读取通道can Tx数量
-def tsfifo_read_can_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_can_tx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_can_tx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_can_tx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -530,10 +530,10 @@ def tsfifo_read_can_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int3
 
 
 # 读取通道can Rx数量
-def tsfifo_read_can_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_can_rx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_can_rx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_can_rx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -543,10 +543,10 @@ def tsfifo_read_can_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int3
 
 
 # 读取通道canfd Tx数量
-def tsfifo_read_canfd_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_canfd_tx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_canfd_tx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_canfd_tx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -556,10 +556,10 @@ def tsfifo_read_canfd_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_in
 
 
 # 读取通道canfd Rx数量
-def tsfifo_read_canfd_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_canfd_rx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_canfd_rx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_canfd_rx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -569,10 +569,10 @@ def tsfifo_read_canfd_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_in
 
 
 # 读取通道fastlin缓冲帧数量
-def tsfifo_read_fastlin_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_fastlin_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_fastlin_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_fastlin_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -582,10 +582,10 @@ def tsfifo_read_fastlin_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int
 
 
 # 读取通道fastlin Tx数量
-def tsfifo_read_fastlin_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_fastlin_tx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_fastlin_tx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_fastlin_tx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -595,10 +595,10 @@ def tsfifo_read_fastlin_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_
 
 
 # 读取通道fastlin Rx数量
-def tsfifo_read_fastlin_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_fastlin_rx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_fastlin_rx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_fastlin_rx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -608,10 +608,10 @@ def tsfifo_read_fastlin_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_
 
 
 # 读取通道lin缓冲帧数量
-def tsfifo_read_lin_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_lin_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_lin_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_lin_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -621,10 +621,10 @@ def tsfifo_read_lin_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
 
 
 # 读取通道lin Tx数量
-def tsfifo_read_lin_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_lin_tx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_lin_tx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_lin_tx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -634,10 +634,10 @@ def tsfifo_read_lin_tx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int3
 
 
 # 读取通道lin Rx数量
-def tsfifo_read_lin_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int32):
+def tsfifo_read_lin_rx_buffer_frame_count(AIdxChn: c_int32, ACount: c_int32):
     """
     ACount = c_int32(0)
-    tsfifo_read_lin_rx_buffer_frame_count(CHANNEL_INDEX.CHN1,ACount)
+    tsfifo_read_lin_rx_buffer_frame_count(0,ACount)
     print(ACount)
     """
     if isinstance(ACount,int) or isinstance(ACount,float):
@@ -647,36 +647,36 @@ def tsfifo_read_lin_rx_buffer_frame_count(AIdxChn: CHANNEL_INDEX, ACount: c_int3
 
 
 # 清除 通道can_receive_buffers
-def tsfifo_clear_can_receive_buffers(AIdxChn: CHANNEL_INDEX):
+def tsfifo_clear_can_receive_buffers(AIdxChn: c_int32):
     """
-    tsfifo_clear_can_receive_buffers(CHANNEL_INDEX.CHN1)
+    tsfifo_clear_can_receive_buffers(0)
     """
     r = dll.tsfifo_clear_can_receive_buffers(AIdxChn)
     return r
 
 
 # 清除 通道canfd_receive_buffers
-def tsfifo_clear_canfd_receive_buffers(AIdxChn: CHANNEL_INDEX):
+def tsfifo_clear_canfd_receive_buffers(AIdxChn: c_int32):
     """
-    tsfifo_clear_canfd_receive_buffers(CHANNEL_INDEX.CHN1)
+    tsfifo_clear_canfd_receive_buffers(0)
     """
     r = dll.tsfifo_clear_canfd_receive_buffers(AIdxChn)
     return r
 
 
 # 清除 通道fastlin_receive_buffers
-def tsfifo_clear_fastlin_receive_buffers(AIdxChn: CHANNEL_INDEX):
+def tsfifo_clear_fastlin_receive_buffers(AIdxChn: c_int32):
     """
-    tsfifo_clear_fastlin_receive_buffers(CHANNEL_INDEX.CHN1)
+    tsfifo_clear_fastlin_receive_buffers(0)
     """
     r = dll.tsfifo_clear_fastlin_receive_buffers(AIdxChn)
     return r
 
 
 # 清除 通道lin_receive_buffers
-def tsfifo_clear_lin_receive_buffers(AIdxChn: CHANNEL_INDEX):
+def tsfifo_clear_lin_receive_buffers(AIdxChn: c_int32):
     """
-    tsfifo_clear_lin_receive_buffers(CHANNEL_INDEX.CHN1)
+    tsfifo_clear_lin_receive_buffers(0)
     """
     r = dll.tsfifo_clear_lin_receive_buffers(AIdxChn)
     return r
@@ -690,7 +690,7 @@ def tsapp_register_pretx_event_canfd(obj: c_int32, OnFUNC):
     def On_CANFD_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x111 and ACAN.contents.FIdxChn == 0):
             ACAN.contents.FData[0] +=1
-    OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+    OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
     tsapp_register_pretx_event_canfd(obj,OnCANFDevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -707,7 +707,7 @@ def tsapp_register_pretx_event_can(obj: c_int32, OnFUNC):
     def On_CAN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x111 and ACAN.contents.FIdxChn == 0):
             ACAN.contents.FData[0] +=1
-    OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
+    OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
     tsapp_register_pretx_event_can(obj,OnCANevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -724,7 +724,7 @@ def tsapp_register_pretx_event_lin(obj: c_int32, OnFUNC):
     def On_LIN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             ACAN.contents.FData[0] +=1
-    OnLINevent = OnTx_RxFUNC_LIN(On_LIN_EVENT)
+    OnLINevent = TLINQueueEvent_Win32(On_LIN_EVENT)
     tsapp_register_pretx_event_lin(obj,OnLINevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -741,7 +741,7 @@ def tsapp_register_event_canfd(obj: c_int32, OnFUNC):
     def On_CANFD_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+    OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
     tsapp_register_event_canfd(obj,OnCANFDevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -758,7 +758,7 @@ def tsapp_register_event_can(obj: c_int32, OnFUNC):
     def On_CAN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
+    OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
     tsapp_register_event_can(obj,OnCANevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -775,7 +775,7 @@ def tsapp_register_event_lin(obj: c_int32, OnFUNC):
     def On_LIN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnLINevent = OnTx_RxFUNC_CAN(On_LIN_EVENT)
+    OnLINevent = TCANQueueEvent_Win32(On_LIN_EVENT)
     tsapp_register_event_lin(obj,OnLINevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -792,7 +792,7 @@ def tsapp_unregister_pretx_event_canfd(obj: c_int32, OnFUNC):
     def On_CANFD_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+    OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
     tsapp_unregister_pretx_event_canfd(obj,OnCANFDevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -809,7 +809,7 @@ def tsapp_unregister_pretx_event_can(obj: c_int32, OnFUNC):
     def On_CAN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
+    OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
     tsapp_unregister_pretx_event_can(obj,OnCANevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -826,7 +826,7 @@ def tsapp_unregister_pretx_event_lin(obj: c_int32, OnFUNC):
     def On_LIN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnLINevent = OnTx_RxFUNC_CAN(On_LIN_EVENT)
+    OnLINevent = TCANQueueEvent_Win32(On_LIN_EVENT)
     tsapp_unregister_pretx_event_lin(obj,OnLINevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -843,7 +843,7 @@ def tsapp_unregister_event_canfd(obj: c_int32, OnFUNC):
     def On_CANFD_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANFDevent = OnTx_RxFUNC_CANFD(On_CANFD_EVENT)
+    OnCANFDevent = TCANFDQueueEvent_Win32(On_CANFD_EVENT)
     tsapp_unregister_event_canfd(obj,OnCANFDevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -860,7 +860,7 @@ def tsapp_unregister_event_can(obj: c_int32, OnFUNC):
     def On_CAN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnCANevent = OnTx_RxFUNC_CAN(On_CAN_EVENT)
+    OnCANevent = TCANQueueEvent_Win32(On_CAN_EVENT)
     tsapp_unregister_event_can(obj,OnCANevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -877,7 +877,7 @@ def tsapp_unregister_event_lin(obj: c_int32, OnFUNC):
     def On_LIN_EVENT(OBJ, ACAN):
         if (ACAN.contents.FIdentifier == 0x11 and ACAN.contents.FIdxChn == 0):
             print(ACAN.FData[0])
-    OnLINevent = OnTx_RxFUNC_CAN(On_LIN_EVENT)
+    OnLINevent = TCANQueueEvent_Win32(On_LIN_EVENT)
     tsapp_unregister_pretx_event_lin(obj,OnLINevent)
     """
     if isinstance(obj,int) or isinstance(obj,float):
@@ -1021,8 +1021,8 @@ def tsapp_transmit_can_async(Msg: dll.TLIBCAN):
 
 # can fifo接收
 #ACANBuffers：TLIBCAN数组
-def tsfifo_receive_can_msgs(ACANBuffers: dll.TLIBCAN, ACANBufferSize: c_uint, AChn: CHANNEL_INDEX,
-                           ARxTx: READ_TX_RX_DEF):
+def tsfifo_receive_can_msgs(ACANBuffers: dll.TLIBCAN, ACANBufferSize: c_uint, AIdxChn: c_int32,
+                           ARxTx: c_int32):
     """
     listcanmsg = (dll.TLIBCAN * 100)()
 
@@ -1032,16 +1032,16 @@ def tsfifo_receive_can_msgs(ACANBuffers: dll.TLIBCAN, ACANBufferSize: c_uint, AC
 
     canfdsize = c_int32(100)
 
-    tsfifo_receive_can_msgs(listcanmsg, cansize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
+    tsfifo_receive_can_msgs(listcanmsg, cansize, 0, 1) #READ_TX_RX_DEF.TX_RX_MESSAGES
 
-    tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
+    tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0,0) # READ_TX_RX_DEF.TX_RX_MESSAGES
     """
-    return dll.tsfifo_receive_can_msgs(ACANBuffers, byref(ACANBufferSize), AChn, ARxTx)
+    return dll.tsfifo_receive_can_msgs(ACANBuffers, byref(ACANBufferSize), AIdxChn, ARxTx)
 
 
 
 # # 发送头帧接收数据
-# def tsapp_transmit_header_and_receive_msg(AChn: CHANNEL_INDEX, ID: int, FDlc: c_uint8, receivedMsg: dll.TLIBLIN,
+# def tsapp_transmit_header_and_receive_msg(AIdxChn: c_int32, ID: int, FDlc: c_uint8, receivedMsg: dll.TLIBLIN,
 #                                           Timeout: c_int):
 #     r = dll.tsapp_transmit_header_and_receive_msg(AChn, ID, FDlc, byref(receivedMsg), c_int32(Timeout))
 #     return r
@@ -1059,8 +1059,8 @@ def tsapp_transmit_canfd_async(Msg: dll.TLIBCANFD):
 
 # canfd报文接收
 #ACANFDBuffers：dll.TLIBCANFD数组
-def tsfifo_receive_canfd_msgs(ACANFDBuffers, ACANFDBufferSize: c_uint32, AChn: CHANNEL_INDEX,
-                             ARxTx: READ_TX_RX_DEF):
+def tsfifo_receive_canfd_msgs(ACANFDBuffers, ACANFDBufferSize: c_uint32, AIdxChn: c_int32,
+                             ARxTx: c_int32):
     """
     listcanmsg = (dll.TLIBCAN * 100)()
 
@@ -1070,11 +1070,11 @@ def tsfifo_receive_canfd_msgs(ACANFDBuffers, ACANFDBufferSize: c_uint32, AChn: C
 
     canfdsize = c_int32(100)
 
-    tsfifo_receive_can_msgs(listcanmsg, cansize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
+    tsfifo_receive_can_msgs(listcanmsg, cansize, 0, 1) #READ_TX_RX_DEF.TX_RX_MESSAGES
 
-    tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
+    tsfifo_receive_canfd_msgs(listcanfdmsg, canfdsize, 0,0) # READ_TX_RX_DEF.TX_RX_MESSAGES
     """
-    return dll.tsfifo_receive_canfd_msgs(ACANFDBuffers, byref(ACANFDBufferSize), AChn, ARxTx)
+    return dll.tsfifo_receive_canfd_msgs(ACANFDBuffers, byref(ACANFDBufferSize), AIdxChn, ARxTx)
 
 
 
@@ -1090,19 +1090,19 @@ def tsapp_transmit_lin_async(Msg: dll.TLIBLIN):
 
 # lin报文接收
 #ALINBuffers：dll.TLIBLIN数组
-def tsapp_receive_lin_msgs(ALINBuffers, ALINBufferSize: c_int, AChn: CHANNEL_INDEX,
-                           ARxTx: READ_TX_RX_DEF):
+def tsapp_receive_lin_msgs(ALINBuffers, ALINBufferSize: c_int, AIdxChn: c_int32,
+                           ARxTx: c_int32):
     """
     listlinmsg = (dll.TLIBLIN * 100)()
     linsize = c_int32(100)
-    tsapp_receive_lin_msgs(listlinmsg, linsize, 0, READ_TX_RX_DEF.TX_RX_MESSAGES)
+    tsapp_receive_lin_msgs(listlinmsg, linsize, 0, 1) # READ_TX_RX_DEF.TX_RX_MESSAGES
     """
-    r = dll.tsfifo_receive_lin_msgs(ALINBuffers, byref(ALINBufferSize), AChn, ARxTx)
+    r = dll.tsfifo_receive_lin_msgs(ALINBuffers, byref(ALINBufferSize), AIdxChn, ARxTx)
 
     return r
 
 
-# def tsfifo_receive_fastlin_msgs(ALINBuffers: dll.TLIBLIN, ALINBufferSize: c_int, AChn: CHANNEL_INDEX,
+# def tsfifo_receive_fastlin_msgs(ALINBuffers: dll.TLIBLIN, ALINBufferSize: c_int, AIdxChn: c_int32,
 #                                 ARxTx: READ_TX_RX_DEF):
 #     temp = copy.copy(c_uint32(ALINBufferSize))
 #     data = POINTER(dll.TLIBLIN * len(ALINBuffers))((dll.TLIBLIN * len(ALINBuffers))(*ALINBuffers))
@@ -1294,7 +1294,7 @@ def tslog_get_online_replay_count(ACount: c_int32):
 # 获取在线回放配置
 def tslog_get_online_replay_config(AIndex: c_int32, AName: str, AFileName: str, AAutoStart: c_bool,
                                    AIsRepetitiveMode: c_bool, AStartTimingMode: c_int32, AStartDelayTimeMs: c_int32,
-                                   ASendTx: c_bool, ASendRx: c_bool, AMappings: c_char * 32):
+                                   ASendTx: c_bool, ASendRx: c_bool, AMappings: c_char_p):
     r = dll.tslog_get_online_replay_config(AIndex, byref(AName), byref(AFileName), byref(AAutoStart),
                                            byref(AIsRepetitiveMode), byref(AStartTimingMode), byref(AStartDelayTimeMs),
                                            byref(ASendTx), byref(ASendRx), byref(AMappings))
@@ -1499,11 +1499,11 @@ def tslog_blf_write_end(AHeadle: c_int64):
 # 诊断相关API
 
 # 创建诊断服务
-def tsdiag_can_create(udsHandle: c_int8, ChnIndex: CHANNEL_INDEX, ASupportFD: c_byte, AMaxdlc: c_byte, reqID: c_int32,ARequestIDIsStd: c_bool,resID: c_int32, resIsStd: c_bool, AFctID: c_int32, fctIsStd: c_bool):
+def tsdiag_can_create(udsHandle: c_int8, ChnIndex: c_int32, ASupportFD: c_byte, AMaxdlc: c_byte, reqID: c_int32,ARequestIDIsStd: c_bool,resID: c_int32, resIsStd: c_bool, AFctID: c_int32, fctIsStd: c_bool):
     
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1521,7 +1521,7 @@ def tsdiag_can_create(udsHandle: c_int8, ChnIndex: CHANNEL_INDEX, ASupportFD: c_
 def tsdiag_set_p2_extended(pDiagModuleIndex: c_int8,TimeOut:c_int32):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1543,7 +1543,7 @@ def tsdiag_set_p2_extended(pDiagModuleIndex: c_int8,TimeOut:c_int32):
 def tsdiag_set_p2_timeout(pDiagModuleIndex: c_int8,TimeOut):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1565,7 +1565,7 @@ def tsdiag_set_p2_timeout(pDiagModuleIndex: c_int8,TimeOut):
 def tsdiag_set_s3_clienttime(pDiagModuleIndex: c_int8,TimeOut):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1587,7 +1587,7 @@ def tsdiag_set_s3_clienttime(pDiagModuleIndex: c_int8,TimeOut):
 def tsdiag_set_s3_servertime(pDiagModuleIndex: c_int8,TimeOut):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1610,7 +1610,7 @@ def tsdiag_set_s3_servertime(pDiagModuleIndex: c_int8,TimeOut):
 def tsdiag_can_delete(pDiagModuleIndex: c_int8):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1635,7 +1635,7 @@ def tsdiag_can_delete_all():
 def tstp_can_send_functional(pDiagModuleIndex: c_int8, AReqDataArray: bytes, AReqDataSize: c_int32):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1659,7 +1659,7 @@ def tstp_can_send_request(pDiagModuleIndex: c_int8, AReqDataArray: bytes, AReqDa
     # data = POINTER(c_ubyte * len(AReqDataArray))((c_ubyte * len(AReqDataArray))(*AReqDataArray))
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1682,7 +1682,7 @@ def tstp_can_request_and_get_response(udsHandle: c_int8, dataIn: bytearray, ReqS
 
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1707,7 +1707,7 @@ def tstp_can_request_and_get_response(udsHandle: c_int8, dataIn: bytearray, ReqS
 def tsdiag_can_session_control(pDiagModuleIndex: c_int8, ASubSession: c_byte):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1728,7 +1728,7 @@ def tsdiag_can_routine_control(pDiagModuleIndex: c_int8, ARoutineControlType: c_
                             ):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1748,7 +1748,7 @@ def tsdiag_can_routine_control(pDiagModuleIndex: c_int8, ARoutineControlType: c_
 def tsdiag_can_communication_control(pDiagModuleIndex: c_int8, AControlType: c_byte):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1770,7 +1770,7 @@ def tsdiag_can_security_access_request_seed(pDiagModuleIndex: c_int8, ALevel: c_
     # AReqdata = POINTER(c_ubyte * len(ARecSeed))((c_ubyte * len(ARecSeed))(*ARecSeed))
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1795,7 +1795,7 @@ def tsdiag_can_security_access_send_key(pDiagModuleIndex: c_int8, ALevel: c_int3
     # AReqdata = POINTER(c_ubyte * len(AKeyValue))((c_ubyte * len(AKeyValue))(*AKeyValue))
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1817,7 +1817,7 @@ def tsdiag_can_security_access_send_key(pDiagModuleIndex: c_int8, ALevel: c_int3
 def tsdiag_can_request_download(pDiagModuleIndex: c_int8, AMemAddr: c_uint32, AMemSize: c_uint32):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1838,7 +1838,7 @@ def tsdiag_can_request_download(pDiagModuleIndex: c_int8, AMemAddr: c_uint32, AM
 def tsdiag_can_request_upload(pDiagModuleIndex: c_int8, AMemAddr: c_uint32, AMemSize: c_uint32):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1860,7 +1860,7 @@ def tsdiag_can_transfer_data(pDiagModuleIndex: c_int8, ASourceDatas: bytes, ADat
     # AReqdata = POINTER(c_ubyte * len(ASourceDatas))((c_ubyte * len(ASourceDatas))(*ASourceDatas))
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1880,7 +1880,7 @@ def tsdiag_can_transfer_data(pDiagModuleIndex: c_int8, ASourceDatas: bytes, ADat
 def tsdiag_can_request_transfer_exit(pDiagModuleIndex: c_int8):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1901,7 +1901,7 @@ def tsdiag_can_write_data_by_identifier(pDiagModuleIndex: c_int8, ADataIdentifie
     # AReqdata = POINTER(c_ubyte * len(AWriteData))((c_ubyte * len(AWriteData))(*AWriteData))
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1925,7 +1925,7 @@ def tsdiag_can_write_data_by_identifier(pDiagModuleIndex: c_int8, ADataIdentifie
 def tsdiag_can_read_data_by_identifier(pDiagModuleIndex: c_int8, ADataIdentifier: c_uint16, AReturnArray: bytearray,AReturnArraySize: c_int32):
     """
     udsHandle = c_int8(0)
-    ChnIndex = CHANNEL_INDEX.CHN1
+    ChnIndex = 0
     ASupportFD  = c_byte(1)
     AMaxdlc = c_byte(8)
     reqID = c_int32(0x7e0)
@@ -1948,29 +1948,29 @@ def tsdiag_can_read_data_by_identifier(pDiagModuleIndex: c_int8, ADataIdentifier
 
 
 # LIN诊断
-def tstp_lin_master_request(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AData: bytearray, ADataNum: c_int,
+def tstp_lin_master_request(AChnIdx: c_int32, ANAD: c_int8, AData: bytearray, ADataNum: c_int,
                             ATimeoutMs: c_int32):
     AReqdata = POINTER(c_ubyte * len(AData))((c_ubyte * len(AData))(*AData))
     r = dll.tstp_lin_master_request(AChnIdx, ANAD, byref(AReqdata), c_int32(ADataNum), c_int32(ATimeoutMs))
     return r
 
 
-def tstp_lin_master_request_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_uint16):
+def tstp_lin_master_request_intervalms(AChnIdx: c_int32, AData: c_uint16):
     r = dll.tstp_lin_master_request_intervalms(AChnIdx, AData)
     return r
 
 
-def tstp_lin_reset(AChnIdx: CHANNEL_INDEX):
+def tstp_lin_reset(AChnIdx: c_int32):
     r = dll.tstp_lin_reset(AChnIdx)
     return r
 
 
-def tstp_lin_slave_response_intervalms(AChnIdx: CHANNEL_INDEX, AData: c_uint16):
+def tstp_lin_slave_response_intervalms(AChnIdx: c_int32, AData: c_uint16):
     r = dll.tstp_lin_slave_response_intervalms(AChnIdx, AData)
     return r
 
 
-def tsdiag_lin_read_data_by_identifier(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AId: c_ushort, AResNAD: c_byte,
+def tsdiag_lin_read_data_by_identifier(AChnIdx: c_int32, ANAD: c_int8, AId: c_ushort, AResNAD: c_byte,
                                        AResData: bytearray, AResDataNum: c_int32, ATimeoutMS: c_int32):
     Resdata = POINTER(c_ubyte * len(AResData))((c_ubyte * len(AResData))(*AResData))
     r = dll.tsdiag_lin_read_data_by_identifier(AChnIdx, c_int8(ANAD), c_ushort(AId), byref(AResNAD), Resdata,
@@ -1978,7 +1978,7 @@ def tsdiag_lin_read_data_by_identifier(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AId
     return r
 
 
-def tsdiag_lin_write_data_by_identifier(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AId: c_ushort, AReqData: bytearray,
+def tsdiag_lin_write_data_by_identifier(AChnIdx: c_int32, ANAD: c_int8, AId: c_ushort, AReqData: bytearray,
                                         AReqDataNum: c_int32,
                                         AResNAD: c_byte, AResData: bytearray, AResDataNum: c_int32,
                                         ATimeoutMS: c_int32):
@@ -1990,34 +1990,34 @@ def tsdiag_lin_write_data_by_identifier(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, AI
     return r
 
 
-def tsdiag_lin_session_control(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
+def tsdiag_lin_session_control(AChnIdx: c_int32, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
     r = dll.tsdiag_lin_session_control(AChnIdx, c_int8(ANAD), c_byte(ANewSession), c_int32(ATimeoutMS))
     return r
 
 
-def tsdiag_lin_fault_memory_read(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
+def tsdiag_lin_fault_memory_read(AChnIdx: c_int32, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
     r = dll.tsdiag_lin_fault_memory_read(AChnIdx, c_int8(ANAD), c_byte(ANewSession), c_int32(ATimeoutMS))
     return r
 
 
-def tsdiag_lin_fault_memory_clear(AChnIdx: CHANNEL_INDEX, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
+def tsdiag_lin_fault_memory_clear(AChnIdx: c_int32, ANAD: c_int8, ANewSession: c_byte, ATimeoutMS: c_int32):
     r = dll.tsdiag_lin_fault_memory_clear(AChnIdx, c_int8(ANAD), c_byte(ANewSession), c_int32(ATimeoutMS))
     return r
 
 #TLIBFlxeRay API
 # Flexray报文同步发送
-def tsapp_transmit_flexray_sync(AFlexRay:dll.TLIBFlexray,ATimeout:c_int32):
+def tsapp_transmit_flexray_sync(AFlexRay:dll.TLIBFlexRay,ATimeout:c_int32):
     """
-    AFlexray = dll.TLIBFlexray(FIdxChn=0,FSlotId=1,FChannelMask=1,FActualPayloadLength=32,FCycleNumber=1,FData=[1,2,3,4,5,6,7])
+    AFlexray = dll.TLIBFlexRay(FIdxChn=0,FSlotId=1,FChannelMask=1,FActualPayloadLength=32,FCycleNumber=1,FData=[1,2,3,4,5,6,7])
     ATimeout = c_int32(10)
     tsapp_transmit_flexray_sync(AFlexray,ATimeout)
     """
     return dll.tsapp_transmit_flexray_sync(byref(AFlexRay),ATimeout)
 
 # Flexray报文异步发送
-def tsapp_transmit_flexray_async(AFlexRay:dll.TLIBFlexray):
+def tsapp_transmit_flexray_async(AFlexRay:dll.TLIBFlexRay):
     """
-    AFlexray = dll.TLIBFlexray(FIdxChn=0,FSlotId=1,FChannelMask=1,FActualPayloadLength=32,FCycleNumber=1,FData=[1,2,3,4,5,6,7])
+    AFlexray = dll.TLIBFlexRay(FIdxChn=0,FSlotId=1,FChannelMask=1,FActualPayloadLength=32,FCycleNumber=1,FData=[1,2,3,4,5,6,7])
     tsapp_transmit_flexray_async(AFlexray)
     """
     return dll.tsapp_transmit_flexray_async(byref(AFlexRay))
@@ -2025,7 +2025,7 @@ def tsapp_transmit_flexray_async(AFlexRay:dll.TLIBFlexray):
 # 清空flexray fifo buffer
 def tsfifo_clear_flexray_receive_buffers(chn: c_int):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     tsfifo_clear_flexray_receive_buffers(chn)
     """
     return dll.tsfifo_clear_flexray_receive_buffers(chn)
@@ -2033,7 +2033,7 @@ def tsfifo_clear_flexray_receive_buffers(chn: c_int):
 # 读取flexray fifo buffer 总数量
 def tsfifo_read_flexray_buffer_frame_count(AIdxChn: c_int, ACount: c_int32):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     ACount = c_int32(0)
     tsfifo_read_flexray_buffer_frame_count(chn,ACount)
     """
@@ -2042,7 +2042,7 @@ def tsfifo_read_flexray_buffer_frame_count(AIdxChn: c_int, ACount: c_int32):
 # 读取flexray fifo buffer tx数量
 def tsfifo_read_flexray_tx_buffer_frame_count( AIdxChn: c_int, ACount: c_int32):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     ACount = c_int32(0)
     tsfifo_read_flexray_tx_buffer_frame_count(chn,ACount)
     """
@@ -2051,44 +2051,44 @@ def tsfifo_read_flexray_tx_buffer_frame_count( AIdxChn: c_int, ACount: c_int32):
 # 读取flexray fifo buffer rx数量
 def tsfifo_read_flexray_rx_buffer_frame_count(AIdxChn: c_int, ACount: c_int):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     ACount = c_int32(0)
     tsfifo_read_flexray_rx_buffer_frame_count(chn,ACount)
     """
     return dll.tsfifo_read_flexray_rx_buffer_frame_count( AIdxChn, byref(ACount))
 
 # 获取fifo中flexray报文 当ARXTX非0 时包含TX报文 为0时仅包含RX报文
-def tsfifo_receive_flexray_msgs(ADataBuffers: dll.TLIBFlexray, ADataBufferSize: c_int, chn: c_int,
+def tsfifo_receive_flexray_msgs(ADataBuffers: dll.TLIBFlexRay, ADataBufferSize: c_int, chn: c_int,
                                 ARxTx: c_int8):
     """
-    ADataBuffers = (dll.TLIBFlexray*100)()
+    ADataBuffers = (dll.TLIBFlexRay*100)()
     ADataBufferSize = c_int32(100)
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     ARxTx = 0
     tsfifo_receive_flexray_msgs(ADataBuffers,ADataBufferSize,chn,ARxTx)
     """
     return dll.tsfifo_receive_flexray_msgs(ADataBuffers, byref(ADataBufferSize), chn, ARxTx)
 
 #启动flexray 网络
-def tsflexray_start_net(AChnIdx: CHANNEL_INDEX,ATimeout:c_int32):
+def tsflexray_start_net(AChnIdx: c_int32,ATimeout:c_int32):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     tsflexray_start_net(chn,c_int32(1000))
     """
     return dll.tsflexray_start_net(AChnIdx,ATimeout)
 
 #停止flexray 网络
-def tsflexray_stop_net(AChnIdx: CHANNEL_INDEX,ATimeout:c_int32):
+def tsflexray_stop_net(AChnIdx: c_int32,ATimeout:c_int32):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     tsflexray_stop_net(chn,c_int32(1000))
     """
     return dll.tsflexray_stop_net(AChnIdx,ATimeout)
 
 # 唤醒flexray pattern
-def tsflexray_wakeup_pattern(AChnIdx: CHANNEL_INDEX,ATimeout:c_int32):
+def tsflexray_wakeup_pattern(AChnIdx: c_int32,ATimeout:c_int32):
     """
-    chn = CHANNEL_INDEX.CHN1
+    chn = 0
     tsflexray_wakeup_pattern(chn,c_int32(1000))
     """
     return dll.tsflexray_wakeup_pattern(AChnIdx,ATimeout)
@@ -2461,7 +2461,7 @@ def tscom_flexray_rbs_batch_set_signal(AAddr:bytes,AValue:c_double):
 def tscom_flexray_rbs_set_frame_direction(AIdxChn:c_int32,AIsTx:c_bool,AClusterName:bytes,AECUName:bytes,AFrameName:bytes):
     '''
     # 设置Cluster1 ECU1 Frame1 为发送报文
-    tscom_flexray_rbs_set_frame_direction(CHANNEL_INDEX.CH1, True, b"Cluster1", b"ECU1", b"Frame1")
+    tscom_flexray_rbs_set_frame_direction(CHNIdx.CH1, True, b"Cluster1", b"ECU1", b"Frame1")
     '''
     if not isinstance(AClusterName,bytes):
         AClusterName = bytes(AClusterName)
@@ -2512,9 +2512,9 @@ def tscom_flexray_rbs_set_crc_signal(ASymbolAddress:bytes,AAlgorithmName:bytes,A
 
 #Flexray config 
 def tsflexray_set_controller_frametrigger(ANodeIndex: c_uint,
-                                        AControllerConfig: dll.TLibFlexray_controller_config,
+                                        AControllerConfig: dll.TLIBFlexray_controller_config,
                                         AFrameLengthArray: bytearray,
-                                        AFrameNum: c_int, AFrameTrigger: dll.TLibTrigger_def,AFrameTriggerNum: c_int,
+                                        AFrameNum: c_int, AFrameTrigger: dll.TLIBTrigger_def,AFrameTriggerNum: c_int,
                                         ATimeoutMs: c_int):
     
     r = dll.tsflexray_set_controller_frametrigger(ANodeIndex, byref(AControllerConfig),
@@ -2526,7 +2526,7 @@ def tsflexray_set_controller_frametrigger(ANodeIndex: c_uint,
 #Flexray 回调事件
 
 # 注册 flexray 发送接收事件
-def tsapp_register_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
+def tsapp_register_event_flexray(obj:c_int32,FUNC:dll.TFlexRayQueueEvent_Win32):
     """
     obj = c_int32(0)
     def Flexray_RX(obj,AFlexray):
@@ -2538,13 +2538,13 @@ def tsapp_register_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_event_flexray(obj,On_Flexray)
     """
     return dll.tsapp_register_event_flexray(byref(obj),FUNC)
 
 # 注销 flexray 发送接收事件
-def tsapp_unregister_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
+def tsapp_unregister_event_flexray(obj:c_int32,FUNC:dll.TFlexRayQueueEvent_Win32):
     """
     obj = c_int32(0)
     def Flexray_RX(obj,AFlexray):
@@ -2556,7 +2556,7 @@ def tsapp_unregister_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_event_flexray(obj,On_Flexray)
     tsapp_unregister_event_flexray(obj,On_Flexray)
     """
@@ -2575,14 +2575,14 @@ def tsapp_unregister_events_flexray(obj:c_int32):
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_event_flexray(obj,On_Flexray)
     tsapp_unregister_events_flexray(obj)
     """
     return dll.tsapp_unregister_events_flexray(byref(obj))
 
 # 注册flexray预发送事件
-def tsapp_register_pretx_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
+def tsapp_register_pretx_event_flexray(obj:c_int32,FUNC:dll.TFlexRayQueueEvent_Win32):
     """
     obj = c_int32(0)
     def Flexray_RX(obj,AFlexray):
@@ -2594,13 +2594,13 @@ def tsapp_register_pretx_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray)
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_pretx_event_flexray(obj,On_Flexray)
     """
     return dll.tsapp_register_pretx_event_flexray(byref(obj),FUNC)
 
 # 注销flexray预发送事件
-def tsapp_unregister_pretx_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexray):
+def tsapp_unregister_pretx_event_flexray(obj:c_int32,FUNC:dll.TFlexRayQueueEvent_Win32):
     """
     obj = c_int32(0)
     def Flexray_RX(obj,AFlexray):
@@ -2612,7 +2612,7 @@ def tsapp_unregister_pretx_event_flexray(obj:c_int32,FUNC:dll.OnTx_RxFUNC_Flexra
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_pretx_event_flexray(obj,On_Flexray)
     tsapp_unregister_pretx_event_flexray(obj,On_Flexray)
     """
@@ -2631,7 +2631,7 @@ def tsapp_unregister_pretx_events_flexray(obj:c_int32):
         # ret = tsapp_transmit_flexray_async(AFlexray)
         # print(ret)
         pass
-    On_Flexray = dll.OnTx_RxFUNC_Flexray(Flexray_RX)
+    On_Flexray = dll.TFlexRayQueueEvent_Win32(Flexray_RX)
     tsapp_register_pretx_event_flexray(obj,On_Flexray)
     tsapp_unregister_pretx_events_flexray(obj)
     """
@@ -2643,7 +2643,7 @@ def tscom_flexray_get_signal_definition(ASignalAddress:bytes):
     TSignal_ = tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight')
     print(TSignal_)
     """
-    ASignalDef=dll.TFlexRaySignal()
+    ASignalDef=dll.TMPFlexRaySignal()
     ret = dll.tscom_flexray_get_signal_definition(ASignalAddress,byref(ASignalDef))
     if ret == 0:
         return ASignalDef
@@ -2651,7 +2651,7 @@ def tscom_flexray_get_signal_definition(ASignalAddress:bytes):
 
 
 
-def tscom_get_flexray_signal_value(AFlexRaySignal:dll.TFlexRaySignal,AData:bytes):
+def tscom_get_flexray_signal_value(AFlexRaySignal:dll.TMPFlexRaySignal,AData:bytes):
     '''
     # 设置flexray信号值
     TSignal_ = tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight')
@@ -2660,7 +2660,7 @@ def tscom_get_flexray_signal_value(AFlexRaySignal:dll.TFlexRaySignal,AData:bytes
     '''
     return dll.tscom_get_flexray_signal_value(byref(AFlexRaySignal),AData)
 
-def tscom_set_flexray_signal_value(AFlexRaySignal:dll.TFlexRaySignal,AData:bytes,AValue:c_double):
+def tscom_set_flexray_signal_value(AFlexRaySignal:dll.TMPFlexRaySignal,AData:bytes,AValue:c_double):
     '''
     # 设置flexray信号值
     TSignal_ = tscom_flexray_get_signal_definition(b'0/PowerTrain/BSC/BackLightInfo/BrakeLight')
@@ -2736,7 +2736,7 @@ def tsdb_get_flexray_db_id(AIndex:c_int32):
         return Aid
     return tsapp_get_error_description(ret)
 
-def tsdb_get_flexray_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperties):
+def tsdb_get_flexray_db_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -2744,13 +2744,13 @@ def tsdb_get_flexray_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperti
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         tsdb_get_flexray_db_properties_by_address(b'0/network1',db)
 
     """
     return dll.tsdb_get_flexray_db_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_flexray_db_properties_by_index(Avalue:dll.TDBProperties):
+def tsdb_get_flexray_db_properties_by_index(Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -2758,13 +2758,13 @@ def tsdb_get_flexray_db_properties_by_index(Avalue:dll.TDBProperties):
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         db.FDBIndex = 0
         tsdb_get_flexray_db_properties_by_index(db)
     """
     return dll.tsdb_get_flexray_db_properties_by_index(byref(Avalue))
 
-def tsdb_get_flexray_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUProperties):
+def tsdb_get_flexray_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -2772,12 +2772,12 @@ def tsdb_get_flexray_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUP
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         tsdb_get_flexray_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
     """
     return dll.tsdb_get_flexray_db_ecu_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_flexray_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_flexray_db_ecu_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -2785,14 +2785,14 @@ def tsdb_get_flexray_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         db_ecu.FDBIndex = 0
         db_ecu.FECUIndex = 0
         tsdb_get_flexray_db_ecu_properties_by_index(db_ecu)
     """
     return dll.tsdb_get_flexray_db_ecu_properties_by_index(byref(Avalue))
 
-def tsdb_get_flexray_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFrameProperties):
+def tsdb_get_flexray_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
@@ -2800,12 +2800,12 @@ def tsdb_get_flexray_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFr
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_flexray_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
     """
     return dll.tsdb_get_flexray_db_frame_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_flexray_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_flexray_db_frame_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库frame信息
@@ -2813,7 +2813,7 @@ def tsdb_get_flexray_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         db_ecu_frame.FDBIndex = 0
         db_ecu_frame.FECUIndex = 0
         db_ecu_frame.FFrameIndex = 0
@@ -2822,20 +2822,20 @@ def tsdb_get_flexray_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
     """
     return dll.tsdb_get_flexray_db_frame_properties_by_index(byref(Avalue))
 
-def tsdb_get_flexray_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBFrameProperties):
+def tsdb_get_flexray_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_flexray_db_frame_properties_by_db_index(0,0,db_ecu_frame)
     """
     return dll.tsdb_get_flexray_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
 
-def tsdb_get_flexray_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBSignalProperties):
+def tsdb_get_flexray_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -2843,12 +2843,12 @@ def tsdb_get_flexray_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBS
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_flexray_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
     """
     return dll.tsdb_get_flexray_db_signal_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_flexray_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
+def tsdb_get_flexray_db_signal_properties_by_index(Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -2856,7 +2856,7 @@ def tsdb_get_flexray_db_signal_properties_by_index(Avalue:dll.TDBSignalPropertie
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         db_ecu_frame_signal.FDBIndex = 0
         db_ecu_frame_signal.FECUIndex = 0
         db_ecu_frame_signal.FFrameIndex = 0
@@ -2866,26 +2866,26 @@ def tsdb_get_flexray_db_signal_properties_by_index(Avalue:dll.TDBSignalPropertie
     """
     return dll.tsdb_get_flexray_db_signal_properties_by_index(byref(Avalue))
 
-def tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
-    """
-    Args:
-        获取数据库frame信息
-    Returns:
-        error code  0:ok  other:error
-    example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
-        tsdb_get_flexray_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
-    """
-    return dll.tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+# def tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
+#     """
+#     Args:
+#         获取数据库frame信息
+#     Returns:
+#         error code  0:ok  other:error
+#     example:
+#         db_ecu_frame_signal = dll.TMPDBSignalProperties()
+#         tsdb_get_flexray_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+#     """
+#     return dll.tsdb_get_flexray_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
-def tsdb_get_flexray_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
+def tsdb_get_flexray_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_flexray_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
     """
     return dll.tsdb_get_flexray_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
@@ -2958,7 +2958,7 @@ def tsdb_get_can_db_id(AIndex:c_int32):
         return Aid
     return tsapp_get_error_description(ret)
 
-def tsdb_get_can_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperties):
+def tsdb_get_can_db_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -2966,13 +2966,13 @@ def tsdb_get_can_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperties):
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         tsdb_get_can_db_properties_by_address(b'0/network1',db)
 
     """
     return dll.tsdb_get_can_db_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_can_db_properties_by_index(Avalue:dll.TDBProperties):
+def tsdb_get_can_db_properties_by_index(Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -2980,13 +2980,13 @@ def tsdb_get_can_db_properties_by_index(Avalue:dll.TDBProperties):
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         db.FDBIndex = 0
         tsdb_get_can_db_properties_by_index(db)
     """
     return dll.tsdb_get_can_db_properties_by_index(byref(Avalue))
 
-def tsdb_get_can_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUProperties):
+def tsdb_get_can_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -2994,12 +2994,12 @@ def tsdb_get_can_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUPrope
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         tsdb_get_can_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
     """
     return dll.tsdb_get_can_db_ecu_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_can_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_can_db_ecu_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -3007,14 +3007,14 @@ def tsdb_get_can_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         db_ecu.FDBIndex = 0
         db_ecu.FECUIndex = 0
         tsdb_get_can_db_ecu_properties_by_index(db_ecu)
     """
     return dll.tsdb_get_can_db_ecu_properties_by_index(byref(Avalue))
 
-def tsdb_get_can_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFrameProperties):
+def tsdb_get_can_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
@@ -3022,12 +3022,12 @@ def tsdb_get_can_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFrameP
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_can_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
     """
     return dll.tsdb_get_can_db_frame_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_can_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_can_db_frame_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库frame信息
@@ -3035,7 +3035,7 @@ def tsdb_get_can_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         db_ecu_frame.FDBIndex = 0
         db_ecu_frame.FECUIndex = 0
         db_ecu_frame.FFrameIndex = 0
@@ -3044,20 +3044,20 @@ def tsdb_get_can_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
     """
     return dll.tsdb_get_can_db_frame_properties_by_index(byref(Avalue))
 
-def tsdb_get_can_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBFrameProperties):
+def tsdb_get_can_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_can_db_frame_properties_by_db_index(0,0,db_ecu_frame)
     """
     return dll.tsdb_get_can_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
 
-def tsdb_get_can_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBSignalProperties):
+def tsdb_get_can_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -3065,12 +3065,12 @@ def tsdb_get_can_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBSigna
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_can_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
     """
     return dll.tsdb_get_can_db_signal_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_can_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
+def tsdb_get_can_db_signal_properties_by_index(Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -3078,7 +3078,7 @@ def tsdb_get_can_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         db_ecu_frame_signal.FDBIndex = 0
         db_ecu_frame_signal.FECUIndex = 0
         db_ecu_frame_signal.FFrameIndex = 0
@@ -3088,26 +3088,26 @@ def tsdb_get_can_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
     """
     return dll.tsdb_get_can_db_signal_properties_by_index(byref(Avalue))
 
-def tsdb_get_can_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
-    """
-    Args:
-        获取数据库frame信息
-    Returns:
-        error code  0:ok  other:error
-    example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
-        tsdb_get_can_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
-    """
-    return dll.tsdb_get_can_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+# def tsdb_get_can_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
+#     """
+#     Args:
+#         获取数据库frame信息
+#     Returns:
+#         error code  0:ok  other:error
+#     example:
+#         db_ecu_frame_signal = dll.TMPDBSignalProperties()
+#         tsdb_get_can_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+#     """
+#     return dll.tsdb_get_can_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
-def tsdb_get_can_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
+def tsdb_get_can_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_can_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
     """
     return dll.tsdb_get_can_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
@@ -3173,7 +3173,7 @@ def tsdb_get_lin_db_id(AIndex:c_int32):
         return Aid
     return tsapp_get_error_description(ret)
 
-def tsdb_get_lin_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperties):
+def tsdb_get_lin_db_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -3181,13 +3181,13 @@ def tsdb_get_lin_db_properties_by_address(AAddr:bytes,Avalue:dll.TDBProperties):
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         tsdb_get_lin_db_properties_by_address(b'0/network1',db)
 
     """
     return dll.tsdb_get_lin_db_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_lin_db_properties_by_index(Avalue:dll.TDBProperties):
+def tsdb_get_lin_db_properties_by_index(Avalue:dll.TMPDBProperties):
     """
     Args:
         获取数据库信息
@@ -3195,13 +3195,13 @@ def tsdb_get_lin_db_properties_by_index(Avalue:dll.TDBProperties):
         error code  0:ok  other:error
     
     example:
-        db = dll.TDBProperties()
+        db = dll.TMPDBProperties()
         db.FDBIndex = 0
         tsdb_get_lin_db_properties_by_index(db)
     """
     return dll.tsdb_get_lin_db_properties_by_index(byref(Avalue))
 
-def tsdb_get_lin_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUProperties):
+def tsdb_get_lin_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -3209,12 +3209,12 @@ def tsdb_get_lin_db_ecu_properties_by_address(AAddr:bytes,Avalue:dll.TDBECUPrope
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         tsdb_get_lin_db_ecu_properties_by_address(b"0/network1/ecu1",db_ecu)
     """
     return dll.tsdb_get_lin_db_ecu_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_lin_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_lin_db_ecu_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库ecu信息
@@ -3222,14 +3222,14 @@ def tsdb_get_lin_db_ecu_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu = dll.TDBECUProperties()
+        db_ecu = dll.TMPDBECUProperties()
         db_ecu.FDBIndex = 0
         db_ecu.FECUIndex = 0
         tsdb_get_lin_db_ecu_properties_by_index(db_ecu)
     """
     return dll.tsdb_get_lin_db_ecu_properties_by_index(byref(Avalue))
 
-def tsdb_get_lin_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFrameProperties):
+def tsdb_get_lin_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
@@ -3237,12 +3237,12 @@ def tsdb_get_lin_db_frame_properties_by_address(AAddr:bytes,Avalue:dll.TDBFrameP
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_lin_db_frame_properties_by_address(b"0/network1/ecu1/frame1",db_ecu_frame)
     """
     return dll.tsdb_get_lin_db_frame_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_lin_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
+def tsdb_get_lin_db_frame_properties_by_index(Avalue:dll.TMPDBECUProperties):
     """
     Args:
         获取数据库frame信息
@@ -3250,7 +3250,7 @@ def tsdb_get_lin_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         db_ecu_frame.FDBIndex = 0
         db_ecu_frame.FECUIndex = 0
         db_ecu_frame.FFrameIndex = 0
@@ -3259,20 +3259,20 @@ def tsdb_get_lin_db_frame_properties_by_index(Avalue:dll.TDBECUProperties):
     """
     return dll.tsdb_get_lin_db_frame_properties_by_index(byref(Avalue))
 
-def tsdb_get_lin_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBFrameProperties):
+def tsdb_get_lin_db_frame_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBFrameProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame = dll.TDBFrameProperties()
+        db_ecu_frame = dll.TMPDBFrameProperties()
         tsdb_get_lin_db_frame_properties_by_db_index(0,0,db_ecu_frame)
     """
     return dll.tsdb_get_lin_db_frame_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
 
-def tsdb_get_lin_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBSignalProperties):
+def tsdb_get_lin_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -3280,12 +3280,12 @@ def tsdb_get_lin_db_signal_properties_by_address(AAddr:bytes,Avalue:dll.TDBSigna
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_lin_db_signal_properties_by_address(b"0/network1/ecu1/frame1/signal1",db_ecu_frame_signal)
     """
     return dll.tsdb_get_lin_db_signal_properties_by_address(AAddr,byref(Avalue))
 
-def tsdb_get_lin_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
+def tsdb_get_lin_db_signal_properties_by_index(Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库signal信息
@@ -3293,7 +3293,7 @@ def tsdb_get_lin_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
         error code  0:ok  other:error
     
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         db_ecu_frame_signal.FDBIndex = 0
         db_ecu_frame_signal.FECUIndex = 0
         db_ecu_frame_signal.FFrameIndex = 0
@@ -3303,66 +3303,66 @@ def tsdb_get_lin_db_signal_properties_by_index(Avalue:dll.TDBSignalProperties):
     """
     return dll.tsdb_get_lin_db_signal_properties_by_index(byref(Avalue))
 
-def tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
-    """
-    Args:
-        获取数据库frame信息
-    Returns:
-        error code  0:ok  other:error
-    example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
-        tsdb_get_lin_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
-    """
-    return dll.tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
+# def tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
+#     """
+#     Args:
+#         获取数据库frame信息
+#     Returns:
+#         error code  0:ok  other:error
+#     example:
+#         db_ecu_frame_signal = dll.TMPDBSignalProperties()
+#         tsdb_get_lin_db_signal_properties_by_db_index(0,0,db_ecu_frame_signal)
+#     """
+#     return dll.tsdb_get_lin_db_signal_properties_by_db_index(AIdxDB,AIndex,byref(Avalue))
 
-def tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TDBSignalProperties):
+def tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB:c_int32,Frameidx:c_int32,AIndex:c_int32,Avalue:dll.TMPDBSignalProperties):
     """
     Args:
         获取数据库frame信息
     Returns:
         error code  0:ok  other:error
     example:
-        db_ecu_frame_signal = dll.TDBSignalProperties()
+        db_ecu_frame_signal = dll.TMPDBSignalProperties()
         tsdb_get_lin_db_signal_properties_by_frame_index(0,0,0,db_ecu_frame_signal)
     """
     return dll.tsdb_get_lin_db_signal_properties_by_frame_index(AIdxDB,Frameidx,AIndex,byref(Avalue))
 
 # LIN schedule FUNCTION
-def tslin_batch_set_schedule_start(AIndex:CHANNEL_INDEX):
+def tslin_batch_set_schedule_start(AIndex:c_int32):
     return dll.tslin_batch_set_schedule_start(AIndex)
 
-def tslin_batch_set_schedule_stop(AIndex:CHANNEL_INDEX):
-    return dll.tslin_batch_set_schedule_stop(AIndex)
+def tslin_batch_set_schedule_end(AIndex:c_int32):
+    return dll.tslin_batch_set_schedule_end(AIndex)
 
-def tslin_batch_add_schedule_frame(AIndex:CHANNEL_INDEX,Msg:dll.TLIBLIN,ADelayMs:c_uint8):
+def tslin_batch_add_schedule_frame(AIndex:c_int32,Msg:dll.TLIBLIN,ADelayMs:c_uint8):
     return dll.tslin_batch_add_schedule_frame(AIndex,Msg,ADelayMs)
 
-def tslin_clear_schedule_tables(AIndex:CHANNEL_INDEX):
+def tslin_clear_schedule_tables(AIndex:c_int32):
     return dll.tslin_clear_schedule_tables(AIndex)
 
-def tslin_switch_runtime_schedule_table(AIndex:CHANNEL_INDEX):
+def tslin_switch_runtime_schedule_table(AIndex:c_int32):
     return dll.tslin_switch_runtime_schedule_table(AIndex)
 
-def tslin_switch_idle_schedule_table(AIndex:CHANNEL_INDEX):
+def tslin_switch_idle_schedule_table(AIndex:c_int32):
     return dll.tslin_switch_idle_schedule_table(AIndex)
 
-def tslin_switch_normal_schedule_table(AIndex:CHANNEL_INDEX,ASchIndex:dll.s32):
+def tslin_switch_normal_schedule_table(AIndex:c_int32,ASchIndex:dll.s32):
     return dll.tslin_switch_normal_schedule_table(AIndex,ASchIndex)
 
-def tslin_start_lin_channel(AIndex:CHANNEL_INDEX):
+def tslin_start_lin_channel(AIndex:c_int32):
     return dll.tslin_start_lin_channel(AIndex)
 
-def tslin_stop_lin_channel(AIndex:CHANNEL_INDEX):
+def tslin_stop_lin_channel(AIndex:c_int32):
     return dll.tslin_stop_lin_channel(AIndex)
 
 
 # ETH Function
 
 def tsapp_set_ethernet_channel_count(ACount:dll.s32):
-    return dll.tsapp_set_ethernet_channel_count(ACount)
+    return dll.set_ethernet_channel_count(ACount)
 
 def tsapp_get_ethernet_channel_count(ACount:dll.ps32):
-    return dll.tsapp_get_ethernet_channel_count(ACount)
+    return dll.get_ethernet_channel_count(ACount)
 
 def tsapp_ethernet_channel_compress_mode(ACount:dll.ps32,AOpen:c_bool):
     return dll.tsapp_ethernet_channel_compress_mode(ACount,AOpen)

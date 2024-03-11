@@ -2393,6 +2393,9 @@ function tssocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_n
 procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //socket API
+//The socket created by tssocket must be closed using tssocket_close
+//The socket created by tssocket_tcp must be closed using tssocket_tcp_close
+//The socket created by tssocket_udp must be closed using tssocket_udp_close
 function tssocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer; recv_cb: tosun_recv_callback;
                        presend_cb: tosun_tcp_presend_callback;
                        send_cb: tosun_tcp_ack_callback): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
