@@ -596,10 +596,12 @@ type
   TLIBWriteAPIDocument = procedure (const AObj: Pointer; const AWriteDoc: TLIBWriteAPIDocumentFunc; const AWritePara: TLIBWriteAPIParaFunc); stdcall;
   TLIBCheckResult = function: Boolean; stdcall;
   TLIBOnSysVarChange = procedure(const ACompleteName: pansichar); stdcall;
+  TSSocketListenEvent = procedure(const AObj: Pointer; const ASocket: integer; const AClientSocket: integer; const AResult: integer) of object; stdcall;
   TSSocketNotifyEvent = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer) of object; stdcall;
   TSSocketReceiveEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketReceiveEventV2 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketTransmitEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketListenEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AClientSocket: integer; const AResult: integer); stdcall;
   TSSocketNotifyEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer); stdcall;
   TSSocketReceiveEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer); stdcall;
   TSSocketReceiveEventV2_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
@@ -2407,6 +2409,7 @@ function tssocket_getsockname(const s: integer; name: pts_sockaddr; namelen: pts
 function tssocket_getsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_setsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_close(const s: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_close_v2(const s: integer; const AForceExitTimeWait: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_connect(const s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_listen(const s: integer; backlog: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_recv(const s: integer; mem: pointer; len: nativeint; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2427,6 +2430,7 @@ function tssocket_tcp_start_listen(const s: Integer): integer; stdcall; {$IFNDEF
 function tssocket_tcp_start_receive(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_connect(const s: Integer; const AIPEndPoint: PAnsichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_close(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_close_v2(const s: Integer; const AForceExitTimeWait: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_send(const s: Integer; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_sendto_client(const s: Integer; const AIPEndPoint: PAnsiChar; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //function tssocket_udp
@@ -2436,8 +2440,8 @@ function tssocket_udp_close(const s: Integer): integer; stdcall; {$IFNDEF LIBTSM
 function tssocket_udp_sendto(const s: Integer; const AIPEndPoint: PAnsichar; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_udp_sendto_v2(const s: Integer; const AIPAddress: UInt32; const APort: UInt16; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //For server Callback OnTcpListen is called on incomming connect request.
-function tssocket_register_tcp_listen_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_unregister_tcp_listen_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_register_tcp_listen_event(const s: Integer; const AEvent: TSSocketListenEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_tcp_listen_event(const s: Integer; const AEvent: TSSocketListenEvent_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_tcp_listen_events(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //Callback is called, which the client as successfully connect to server
 function tssocket_register_tcp_connect_event(const s: Integer; const AEvent: TSSocketNotifyEvent_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
