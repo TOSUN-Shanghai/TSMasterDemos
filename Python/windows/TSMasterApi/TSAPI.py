@@ -2852,6 +2852,12 @@ tssocket_close.restype = s32
 tssocket_close.argtypes = [s32]
 
 #arg[0] s
+#arg[1] AForceExitTimeWait
+tssocket_close_v2 = dll.tssocket_close_v2
+tssocket_close_v2.restype = s32
+tssocket_close_v2.argtypes = [s32,s32]
+
+#arg[0] s
 #arg[1] name
 #arg[2] namelen
 tssocket_connect = dll.tssocket_connect
@@ -2985,6 +2991,12 @@ tssocket_tcp_close.restype = s32
 tssocket_tcp_close.argtypes = [s32]
 
 #arg[0] s
+#arg[1] AForceExitTimeWait
+tssocket_tcp_close_v2 = dll.tssocket_tcp_close_v2
+tssocket_tcp_close_v2.restype = s32
+tssocket_tcp_close_v2.argtypes = [s32,s32]
+
+#arg[0] s
 #arg[1] AData
 #arg[2] ASize
 tssocket_tcp_send = dll.tssocket_tcp_send
@@ -3037,13 +3049,13 @@ tssocket_udp_sendto_v2.argtypes = [s32,u32,u16,pu8,s32]
 #arg[1] AEvent
 tssocket_register_tcp_listen_event = dll.tssocket_register_tcp_listen_event
 tssocket_register_tcp_listen_event.restype = s32
-tssocket_register_tcp_listen_event.argtypes = [s32,TSSocketNotifyEvent_Win32]
+tssocket_register_tcp_listen_event.argtypes = [s32,TSSocketListenEvent_Win32]
 
 #arg[0] s
 #arg[1] AEvent
 tssocket_unregister_tcp_listen_event = dll.tssocket_unregister_tcp_listen_event
 tssocket_unregister_tcp_listen_event.restype = s32
-tssocket_unregister_tcp_listen_event.argtypes = [s32,TSSocketNotifyEvent_Win32]
+tssocket_unregister_tcp_listen_event.argtypes = [s32,TSSocketListenEvent_Win32]
 
 #arg[0] s
 tssocket_unregister_tcp_listen_events = dll.tssocket_unregister_tcp_listen_events

@@ -38,6 +38,7 @@ TObject = c_void_p
 cbool = c_bool
 pbool = POINTER(c_bool)
 pvoid = c_void_p
+ppvoid = POINTER(c_void_p)
 size_t = c_size_t
 psize_t = POINTER(size_t)
 ppsize_t = POINTER(psize_t)

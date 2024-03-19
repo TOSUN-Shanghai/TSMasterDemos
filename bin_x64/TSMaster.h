@@ -1652,51 +1652,51 @@ typedef struct _Tts_pollfd{
 
 typedef void(__cdecl*TCProcedure)();
 // Arg[0] AData
-typedef void(__cdecl*TCANQueueEvent_API)(const PLIBCAN AData);
+typedef void(__stdcall*TCANQueueEvent_API)(const PLIBCAN AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TGPSQueueEvent_Win32)(const ps32 AObj,const PLIBGPSData AData);
+typedef void(__stdcall*TGPSQueueEvent_Win32)(const ps32 AObj,const PLIBGPSData AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TCANQueueEvent_Win32)(const ps32 AObj,const PLIBCAN AData);
+typedef void(__stdcall*TCANQueueEvent_Win32)(const ps32 AObj,const PLIBCAN AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TCANFDQueueEvent_Win32)(const ps32 AObj,const PLIBCANFD AData);
+typedef void(__stdcall*TCANFDQueueEvent_Win32)(const ps32 AObj,const PLIBCANFD AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TFlexRayQueueEvent_Win32)(const ps32 AObj,const PLIBFlexRay AData);
+typedef void(__stdcall*TFlexRayQueueEvent_Win32)(const ps32 AObj,const PLIBFlexRay AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TEthernetQueueEvent_Win32)(const ps32 AObj,const PLIBEthernetHeader AData);
+typedef void(__stdcall*TEthernetQueueEvent_Win32)(const ps32 AObj,const PLIBEthernetHeader AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__cdecl*TLINQueueEvent_Win32)(const ps32 AObj,const PLIBLIN AData);
+typedef void(__stdcall*TLINQueueEvent_Win32)(const ps32 AObj,const PLIBLIN AData);
 // Arg[0] AStr
 // Arg[1] ALevel
-typedef void(__cdecl*TLIBTSMasterLogger)(const char* AStr,const s32 ALevel);
+typedef void(__stdcall*TLIBTSMasterLogger)(const char* AStr,const s32 ALevel);
 // Arg[0] AOpaque
 // Arg[1] AStatus
 // Arg[2] APercentage100
-typedef void(__cdecl*TFirmwareUpdateCallback)(const void* AOpaque,const u32 AStatus,const float APercentage100);
+typedef void(__stdcall*TFirmwareUpdateCallback)(const void* AOpaque,const u32 AStatus,const float APercentage100);
 // Arg[0] APointer
 // Arg[1] ASize
-typedef void(__cdecl*TOnIoIPData)(const ps32 APointer,const s32 ASize);
+typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);
 // Arg[0] APointer
 // Arg[1] ASize
-typedef void(__cdecl*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
+typedef void(__stdcall*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
 // Arg[0] AIPAddress
 // Arg[1] APort
-typedef void(__cdecl*TOnIoIPConnection)(const char* AIPAddress,const s32 APort);
+typedef void(__stdcall*TOnIoIPConnection)(const char* AIPAddress,const s32 APort);
 // Arg[0] AIPAddress
 // Arg[1] APort
-typedef void(__cdecl*TOnIoIPConnection_API)(const char* AIPAddress,const s32 APort);
+typedef void(__stdcall*TOnIoIPConnection_API)(const char* AIPAddress,const s32 APort);
 // Arg[0] AObj
 // Arg[1] AName
 // Arg[2] AGroup
 // Arg[3] ADesc
 // Arg[4] AExample
 // Arg[5] AParaCount
-typedef void(__cdecl*TLIBWriteAPIDocumentFunc)(const ps32 AObj,const char* AName,const char* AGroup,const char* ADesc,const char* AExample,const s32 AParaCount);
+typedef void(__stdcall*TLIBWriteAPIDocumentFunc)(const ps32 AObj,const char* AName,const char* AGroup,const char* ADesc,const char* AExample,const s32 AParaCount);
 // Arg[0] AObj
 // Arg[1] AIdx
 // Arg[2] AAPIName
@@ -1704,43 +1704,23 @@ typedef void(__cdecl*TLIBWriteAPIDocumentFunc)(const ps32 AObj,const char* AName
 // Arg[4] AIsConst
 // Arg[5] AParaType
 // Arg[6] ADesc
-typedef void(__cdecl*TLIBWriteAPIParaFunc)(const ps32 AObj,const s32 AIdx,const char* AAPIName,const char* AParaName,const bool AIsConst,const char* AParaType,const char* ADesc);
+typedef void(__stdcall*TLIBWriteAPIParaFunc)(const ps32 AObj,const s32 AIdx,const char* AAPIName,const char* AParaName,const bool AIsConst,const char* AParaType,const char* ADesc);
 // Arg[0] AObj
 // Arg[1] AWriteDoc
 // Arg[2] AWritePara
-typedef void(__cdecl*TLIBWriteAPIDocument)(const ps32 AObj,const TLIBWriteAPIDocumentFunc AWriteDoc,const TLIBWriteAPIParaFunc AWritePara);
+typedef void(__stdcall*TLIBWriteAPIDocument)(const ps32 AObj,const TLIBWriteAPIDocumentFunc AWriteDoc,const TLIBWriteAPIParaFunc AWritePara);
 typedef bool (__stdcall*TLIBCheckResult)();
 // Arg[0] ACompleteName
-typedef void(__cdecl*TLIBOnSysVarChange)(const char* ACompleteName);
+typedef void(__stdcall*TLIBOnSysVarChange)(const char* ACompleteName);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AClientSocket
+// Arg[3] AResult
+typedef void(__stdcall*TSSocketListenEvent)(const ps32 AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
-typedef void(__cdecl*TSSocketNotifyEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult);
-// Arg[0] AObj
-// Arg[1] ASocket
-// Arg[2] AResult
-// Arg[3] AAddr
-// Arg[4] APort
-// Arg[5] AData
-// Arg[6] ASize
-typedef void(__cdecl*TSSocketReceiveEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
-// Arg[0] AObj
-// Arg[1] ASocket
-// Arg[2] AResult
-// Arg[3] ARemoteEndPoint
-// Arg[4] AData
-// Arg[5] ASize
-typedef void(__cdecl*TSSocketReceiveEventV2)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
-// Arg[0] AObj
-// Arg[1] ASocket
-// Arg[2] AResult
-// Arg[3] AData
-// Arg[4] ASize
-typedef void(__cdecl*TSSocketTransmitEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
-// Arg[0] AObj
-// Arg[1] ASocket
-// Arg[2] AResult
-typedef void(__cdecl*TSSocketNotifyEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult);
+typedef void(__stdcall*TSSocketNotifyEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -1748,33 +1728,63 @@ typedef void(__cdecl*TSSocketNotifyEvent_Win32)(const ps32 AObj,const s32 ASocke
 // Arg[4] APort
 // Arg[5] AData
 // Arg[6] ASize
-typedef void(__cdecl*TSSocketReceiveEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] ARemoteEndPoint
 // Arg[4] AData
 // Arg[5] ASize
-typedef void(__cdecl*TSSocketReceiveEventV2_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEventV2)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] AData
 // Arg[4] ASize
-typedef void(__cdecl*TSSocketTransmitEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketTransmitEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AClientSocket
+// Arg[3] AResult
+typedef void(__stdcall*TSSocketListenEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
+typedef void(__stdcall*TSSocketNotifyEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
+// Arg[3] AAddr
+// Arg[4] APort
+// Arg[5] AData
+// Arg[6] ASize
+typedef void(__stdcall*TSSocketReceiveEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
+// Arg[3] ARemoteEndPoint
+// Arg[4] AData
+// Arg[5] ASize
+typedef void(__stdcall*TSSocketReceiveEventV2_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
+// Arg[3] AData
+// Arg[4] ASize
+typedef void(__stdcall*TSSocketTransmitEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] AProgress100
-typedef void(__cdecl*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
+typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
 // Arg[0] AObj
 // Arg[1] AComment
 // Arg[2] AToTerminate
-typedef void(__cdecl*TReadBLFRealtimeCommentCallback)(const ps32 AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);
+typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const ps32 AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);
 // Arg[0] AObj
 // Arg[1] ASysVar
 // Arg[2] AToTerminate
-typedef void(__cdecl*TReadBLFSystemVarCallback)(const ps32 AObj,const PLIBSystemVar ASysVar,const pbool AToTerminate);
+typedef void(__stdcall*TReadBLFSystemVarCallback)(const ps32 AObj,const PLIBSystemVar ASysVar,const pbool AToTerminate);
 // Arg[0] AObj
-typedef void(__cdecl*TReadUnsupportedCallback)(const ps32 AObj);
+typedef void(__stdcall*TReadUnsupportedCallback)(const ps32 AObj);
 // Arg[0] pDiagModuleIndex
 // Arg[1] AChnIndex
 // Arg[2] ASupportFDCAN
@@ -1808,7 +1818,7 @@ typedef s32 (__stdcall*Ttstp_can_request_and_get_response)(const s32 ADiagModule
 typedef s32 (__stdcall*Ttstp_can_request_and_get_response_functional)(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize,const pu8 AResponseDataArray,const ps32 AResponseDataSize);
 // Arg[0] ATpModuleIndex
 // Arg[1] AChn
-typedef void(__cdecl*N_USData_RevData_Recall_Obj)(const s32 ATpModuleIndex,const s32 AChn);
+typedef void(__stdcall*N_USData_RevData_Recall_Obj)(const s32 ATpModuleIndex,const s32 AChn);
 // Arg[0] ATpModuleIndex
 // Arg[1] AChn
 // Arg[2] ABusType
@@ -1818,17 +1828,17 @@ typedef void(__cdecl*N_USData_RevData_Recall_Obj)(const s32 ATpModuleIndex,const
 // Arg[6] APayLoad
 // Arg[7] ASize
 // Arg[8] AError
-typedef void(__cdecl*N_USData_TranslateCompleted_Recall_Obj)(const s32 ATpModuleIndex,const s32 AChn,const u8 ABusType,const s32 ANAD,const s32 AIdentifier,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const ISO_TP_RESAULT AError);
+typedef void(__stdcall*N_USData_TranslateCompleted_Recall_Obj)(const s32 ATpModuleIndex,const s32 AChn,const u8 ABusType,const s32 ANAD,const s32 AIdentifier,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const ISO_TP_RESAULT AError);
 // Arg[0] ATpModuleIndex
 // Arg[1] AChn
 // Arg[2] ATimeStamp
 // Arg[3] APayLoad
 // Arg[4] ASize
 // Arg[5] AError
-typedef void(__cdecl*N_USData_TranslateCompleted_Recall)(const s32 ATpModuleIndex,const s32 AChn,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const ISO_TP_RESAULT AError);
+typedef void(__stdcall*N_USData_TranslateCompleted_Recall)(const s32 ATpModuleIndex,const s32 AChn,const u64 ATimeStamp,const pu8 APayLoad,const u32 ASize,const ISO_TP_RESAULT AError);
 // Arg[0] AMsg
 // Arg[1] ALevel
-typedef void(__cdecl*TLogDebuggingInfo_t)(const char* AMsg,const s32 ALevel);
+typedef void(__stdcall*TLogDebuggingInfo_t)(const char* AMsg,const s32 ALevel);
 // Arg[0] sock
 // Arg[1] p
 // Arg[2] len
@@ -2704,6 +2714,8 @@ TSAPI(s32)tssocket_setsockopt(const s32 s,const s32 level,const s32 optname,cons
 
 TSAPI(s32)tssocket_close(const s32 s);
 
+TSAPI(s32)tssocket_close_v2(const s32 s,const s32 AForceExitTimeWait);
+
 TSAPI(s32)tssocket_connect(const s32 s,const Pts_sockaddr name,const u32 namelen);
 
 TSAPI(s32)tssocket_listen(const s32 s,const s32 backlog);
@@ -2742,6 +2754,8 @@ TSAPI(s32)tssocket_tcp_connect(const s32 s,const char* AIPEndPoint);
 
 TSAPI(s32)tssocket_tcp_close(const s32 s);
 
+TSAPI(s32)tssocket_tcp_close_v2(const s32 s,const s32 AForceExitTimeWait);
+
 TSAPI(s32)tssocket_tcp_send(const s32 s,const pu8 AData,const s32 ASize);
 
 TSAPI(s32)tssocket_tcp_sendto_client(const s32 s,const char* AIPEndPoint,const pu8 AData,const s32 ASize);
@@ -2756,9 +2770,9 @@ TSAPI(s32)tssocket_udp_sendto(const s32 s,const char* AIPEndPoint,const pu8 ADat
 
 TSAPI(s32)tssocket_udp_sendto_v2(const s32 s,const u32 AIPAddress,const u16 APort,const pu8 AData,const s32 ASize);
 
-TSAPI(s32)tssocket_register_tcp_listen_event(const s32 s,const TSSocketNotifyEvent_Win32 AEvent);
+TSAPI(s32)tssocket_register_tcp_listen_event(const s32 s,const TSSocketListenEvent_Win32 AEvent);
 
-TSAPI(s32)tssocket_unregister_tcp_listen_event(const s32 s,const TSSocketNotifyEvent_Win32 AEvent);
+TSAPI(s32)tssocket_unregister_tcp_listen_event(const s32 s,const TSSocketListenEvent_Win32 AEvent);
 
 TSAPI(s32)tssocket_unregister_tcp_listen_events(const s32 s);
 
