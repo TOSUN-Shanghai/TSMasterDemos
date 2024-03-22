@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using TSMaster;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.Remoting;
 
 namespace TSMasterAPI_CSharp
 {
@@ -216,21 +217,21 @@ namespace TSMasterAPI_CSharp
                 Log("Set LIN Channel Count Failed!");
             //第三步：按需创建通道映射:
             if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_CAN,
-                  (int)APP_CHANNEL.CHN1, "TC1005", (int)TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN1,true) == 0)
+                  (int)APP_CHANNEL.CHN1, "TC1005", TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN1,true) == 0)
             {
             }
             if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_CAN,
-                  (int)APP_CHANNEL.CHN2, "TC1005", (int)TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN2, true) == 0)
+                  (int)APP_CHANNEL.CHN2, "TC1005", TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN2, true) == 0)
             { }
             //把TC1005板卡的硬件通道1映射到驱动的逻辑通道1上面
             if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_CAN,
-              (int)APP_CHANNEL.CHN3, "TC1005", (int)TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN3, true) == 0)
+              (int)APP_CHANNEL.CHN3, "TC1005", TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN3, true) == 0)
             {
                 Log("Mappings of channel " + (1 + (int)0).ToString() + " has been set");
             }
             //把TC1005板卡的硬件通道2映射到驱动的逻辑通道2上面
             if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_CAN,
-                  (int)APP_CHANNEL.CHN4, "TC1005", (int)TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN4, true) == 0)
+                  (int)APP_CHANNEL.CHN4, "TC1005", TLIBBusToolDeviceType.TS_TC1005_DEVICE, 0, 0, (int)APP_CHANNEL.CHN4, true) == 0)
             {
                 Log("Mappings of channel " + (1 + (int)1).ToString() + " has been set");
             }
@@ -301,8 +302,8 @@ namespace TSMasterAPI_CSharp
             else
                 Log("Set LIN Channel Count Failed!");
             //第三步：按需创建通道映射:
-            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_LIN,
-                  (int)APP_CHANNEL.CHN1, "TC1026", (int)TLIBBusToolDeviceType.TS_USB_DEVICE,  (int)TLIB_TS_Device_Sub_Type.TC1026, 0, (int)APP_CHANNEL.CHN1,true) == 0)
+            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, TLIBApplicationChannelType.APP_LIN,
+                  (int)APP_CHANNEL.CHN1, "TC1026", TLIBBusToolDeviceType.TS_USB_DEVICE,  (int)TLIB_TS_Device_Sub_Type.TC1026, 0, (int)APP_CHANNEL.CHN1,true) == 0)
             {
             }
             //第四步：初始化通道参数
@@ -684,16 +685,16 @@ namespace TSMasterAPI_CSharp
         {
             if ((TLIBBusToolDeviceType)cbbDeviceType1.SelectedIndex == TLIBBusToolDeviceType.PEAK_USB_DEVICE)
             {
-                if (TsMasterApi.tsapp_set_mapping_verbose(tbApplicationName.Text, (int)(TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
-                                    (int)(APP_CHANNEL)cbbAppChannelIndex.SelectedIndex, cbbDeviceType1.Text, (int)(TLIBBusToolDeviceType)cbbDeviceType1.SelectedIndex, -1, 0, (int)(APP_CHANNEL)0x51,true) == 0)
+                if (TsMasterApi.tsapp_set_mapping_verbose(tbApplicationName.Text, (TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
+                                    (int)(APP_CHANNEL)cbbAppChannelIndex.SelectedIndex, cbbDeviceType1.Text, (TLIBBusToolDeviceType)cbbDeviceType1.SelectedIndex, -1, 0, (int)(APP_CHANNEL)0x51,true) == 0)
                 {
                     Log("Mappings of channel " + (1 + (int)0).ToString() + " has been set");
                 }
             }
             else
             {
-                if (TsMasterApi.tsapp_set_mapping_verbose(tbApplicationName.Text, (int)(TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
-                    (int)(APP_CHANNEL)cbbAppChannelIndex.SelectedIndex, cbbDeviceType1.Text, (int)(TLIBBusToolDeviceType)cbbDeviceType1.SelectedIndex, cbbSubDeviceType1.SelectedIndex, 0, (int)(APP_CHANNEL)cbbHardwareChannel1.SelectedIndex,true) == 0)
+                if (TsMasterApi.tsapp_set_mapping_verbose(tbApplicationName.Text, (TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
+                    (int)(APP_CHANNEL)cbbAppChannelIndex.SelectedIndex, cbbDeviceType1.Text, (TLIBBusToolDeviceType)cbbDeviceType1.SelectedIndex, cbbSubDeviceType1.SelectedIndex, 0, (int)(APP_CHANNEL)cbbHardwareChannel1.SelectedIndex,true) == 0)
                 {
                     Log("Mappings of channel " + (1 + (int)0).ToString() + " has been set");
                 }
@@ -814,7 +815,7 @@ namespace TSMasterAPI_CSharp
                 i = cbbAppChannel_CANFD.SelectedIndex;
                 b = Convert.ToSingle(tBCANFDArbBaudrate.Text);
                 c = Convert.ToSingle(tBCANFDDataBaudrate.Text);
-                if (TsMasterApi.tsapp_configure_baudrate_canfd(i, b, c, (int)TLIBCANFDControllerType.lfdtISOCAN,
+                if (TsMasterApi.tsapp_configure_baudrate_canfd(i, b, c, TLIBCANFDControllerType.lfdtISOCAN,
                              (int)TLIBCANFDControllerMode.lfdmNormal, chkCANResistor.Checked) == 0)
                 {
                     Log("CANFD Channel " + (i + 1).ToString() + " baudrate has been configured");
@@ -835,7 +836,8 @@ namespace TSMasterAPI_CSharp
         {
             TLIBCAN[] canBuffer = new TLIBCAN[100];
             int revCnt = 100;
-            int ret  = TsMasterApi.tsfifo_receive_can_msgs(canBuffer, ref revCnt, (int)APP_CHANNEL.CHN1, true);  //如果执行失败，请检查是否通过TsMasterApi.tsapp_enable_receive_fifo();开启了内部Buffer
+
+            int ret = TsMasterApi.tsfifo_receive_can_msgs_list(ref canBuffer, ref revCnt, (int)APP_CHANNEL.CHN1, true);  //如果执行失败，请检查是否通过TsMasterApi.tsapp_enable_receive_fifo();开启了内部Buffer
             if (revCnt != 0)
             {
                 //Log("No Message Received！");
@@ -853,13 +855,15 @@ namespace TSMasterAPI_CSharp
                 msg += canBuffer[i].FIdentifier.ToString("X8");
                 Log(msg);
             }
+
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             TLIBCANFD[] canBuffer = new TLIBCANFD[10];
             int revCnt = 0;
-            int ret = TsMasterApi.tsfifo_receive_canfd_msgs(canBuffer, ref revCnt, (int)APP_CHANNEL.CHN1,true);  //如果执行失败，请检查是否通过TsMasterApi.tsapp_enable_receive_fifo();开启了内部Buffer
+
+            int ret = TsMasterApi.tsfifo_receive_canfd_msgs_list(ref canBuffer, ref revCnt, (int)APP_CHANNEL.CHN1, true);  //如果执行失败，请检查是否通过TsMasterApi.tsapp_enable_receive_fifo();开启了内部Buffer
             if (ret != 0)
             {
                 Log("No Message Received！");
@@ -875,11 +879,12 @@ namespace TSMasterAPI_CSharp
                 msg += canBuffer[i].FIdentifier.ToString("X8");
                 Log(msg);
             }
+            
         }
 
 
 
-        private int FDBCHandle = 0;
+        private uint FDBCHandle = 0;
         private void btnLoadDBCPath_Click(object sender, EventArgs e)
         {
             if (CheckResultOK(TsMasterApi.tsdb_unload_can_dbs()))
@@ -915,7 +920,7 @@ namespace TSMasterAPI_CSharp
         {
             try
             {
-                int ADBCHandle = Convert.ToInt32(tBUnloadDBCHandle.Text);
+                uint ADBCHandle = Convert.ToUInt32(tBUnloadDBCHandle.Text);
                 if (CheckResultOK(TsMasterApi.tsdb_unload_can_db(ADBCHandle)))
                 {
                     Log("Log DBC Success!");
@@ -1023,7 +1028,7 @@ namespace TSMasterAPI_CSharp
 
         private void btnDeleteChannelMapping_Click(object sender, EventArgs e)
         {
-            if (TsMasterApi.tsapp_del_mapping_verbose(FProgramName, (int)(TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
+            if (TsMasterApi.tsapp_del_mapping_verbose(FProgramName, (TLIBApplicationChannelType)cbbChannelType1.SelectedIndex,
                 (int)(APP_CHANNEL)cbbAppChannelIndex.SelectedIndex) == 0)
             {
                 Log("Delete Mapping Success");
@@ -1183,31 +1188,35 @@ namespace TSMasterAPI_CSharp
 
         private void btnConfigBaudrateRegs_Click(object sender, EventArgs e)
         {
-            TsMasterApi.tsapp_configure_canfd_regs((int)APP_CHANNEL.CHN1, 500, 33, 6, 2, 6, 2000, 15, 4, 1, 3, (int)TLIBCANFDControllerType.lfdtISOCAN,
+            TsMasterApi.tsapp_configure_canfd_regs((int)APP_CHANNEL.CHN1, 500, 33, 6, 2, 6, 2000, 15, 4, 1, 3, TLIBCANFDControllerType.lfdtISOCAN,
                 (int)TLIBCANFDControllerMode.lfdmNormal, 1);
         }
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern int tsapp_add_precise_cyclic_message(int AID, int AChnidx, bool ISExt, float ACycle, int ATimeOut);
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern int tsapp_delete_precise_cyclic_message(int AID, int AChnidx, bool ISExt, int ATimeOut);
 
         private void button4_Click_1(object sender, EventArgs e)
         {
-            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x123, 0, false, 10, 2000) == 0)
+            if (tsapp_add_precise_cyclic_message(0x123, 0, false, 10, 2000) == 0)
             {
                 Log("Add precise cyclic message success");
             }
             else
                 Log("Add precise cyclic message fail");
-            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x456, 0, false, 10, 2000) == 0)
+            if (tsapp_add_precise_cyclic_message(0x456, 0, false, 10, 2000) == 0)
             {
                 Log("Add precise cyclic message success");
             }
             else
                 Log("Add precise cyclic message fail");
-            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x789, 0, false, 10, 2000) == 0)
+            if (tsapp_add_precise_cyclic_message(0x789, 0, false, 10, 2000) == 0)
             {
                 Log("Add precise cyclic message success");
             }
             else
                 Log("Add precise cyclic message fail");
-            if (TsMasterApi.tsapp_add_precise_cyclic_message(0x100, 0, false, 10, 2000) == 0)
+            if (tsapp_add_precise_cyclic_message(0x100, 0, false, 10, 2000) == 0)
             {
                 Log("Add precise cyclic message success");
             }
@@ -1217,25 +1226,25 @@ namespace TSMasterAPI_CSharp
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x123, 0, false, 2000) == 0)
+            if (tsapp_delete_precise_cyclic_message(0x123, 0, false, 2000) == 0)
             {
                 Log("Delete precise cyclic message success");
             }
             else
                 Log("Delete precise cyclic message fail");
-            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x456, 0, false, 2000) == 0)
+            if (tsapp_delete_precise_cyclic_message(0x456, 0, false, 2000) == 0)
             {
                 Log("Delete precise cyclic message success");
             }
             else
                 Log("Delete precise cyclic message fail");
-            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x789, 0, false, 2000) == 0)
+            if (tsapp_delete_precise_cyclic_message(0x789, 0, false, 2000) == 0)
             {
                 Log("Delete precise cyclic message success");
             }
             else
                 Log("Delete precise cyclic message fail");
-            if (TsMasterApi.tsapp_delete_precise_cyclic_message(0x100, 0, false, 2000) == 0)
+            if (tsapp_delete_precise_cyclic_message(0x100, 0, false, 2000) == 0)
             {
                 Log("Delete precise cyclic message success");
             }
@@ -1255,7 +1264,7 @@ namespace TSMasterAPI_CSharp
                 MessageBox.Show("请先选择LIN节点类型","警告",MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            TsMasterApi.tslin_set_node_functiontype((int)APP_CHANNEL.CHN1, (int)(TLINNodeType)cbbLINNodeType.SelectedIndex);
+            TsMasterApi.tslin_set_node_functiontype((int)APP_CHANNEL.CHN1, (TLINNodeType)cbbLINNodeType.SelectedIndex);
         }
 
         private void btnClearScheduleTable_Click(object sender, EventArgs e)
@@ -1290,8 +1299,10 @@ namespace TSMasterAPI_CSharp
         {
             TLIBLIN[] revMsgList = new TLIBLIN[100];
             int retNum = 100;
-            int ret = TsMasterApi.tsfifo_receive_lin_msgs( revMsgList, ref retNum, (int)APP_CHANNEL.CHN1, true);
-            Log("Received:" +retNum.ToString());
+
+                    int ret = TsMasterApi.tsfifo_receive_lin_msgs_list( ref revMsgList, ref retNum, (int)APP_CHANNEL.CHN1, true);
+                    Log("Received:" + retNum.ToString());
+            
         }
 
         private void btnSessionControl_Click(object sender, EventArgs e)
@@ -1362,8 +1373,8 @@ namespace TSMasterAPI_CSharp
             else
                 Log("Set Ethernet Channel Count Failed!");
             //第三步：按需创建通道映射:
-            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, (int)TLIBApplicationChannelType.APP_Ethernet,
-                   (int)APP_CHANNEL.CHN1, "TE1051", (int)TLIBBusToolDeviceType.TS_USB_DEVICE_EX, (int)TLIB_TS_Device_Sub_Type.TE1051, 0, (int)APP_CHANNEL.CHN1,true) == 0)
+            if (TsMasterApi.tsapp_set_mapping_verbose(FProgramName, TLIBApplicationChannelType.APP_Ethernet,
+                   (int)APP_CHANNEL.CHN1, "TE1051", TLIBBusToolDeviceType.TS_USB_DEVICE_EX, (int)TLIB_TS_Device_Sub_Type.TE1051, 0, (int)APP_CHANNEL.CHN1,true) == 0)
             {
             }
             //if (TsMasterApi.tsapp_configure_baudrate_can((int)APP_CHANNEL.CHN2, 500, false, true) == 0)

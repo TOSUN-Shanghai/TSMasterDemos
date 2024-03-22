@@ -1617,7 +1617,7 @@
             this.tBQueryResult.Name = "tBQueryResult";
             this.tBQueryResult.Size = new System.Drawing.Size(1267, 206);
             this.tBQueryResult.TabIndex = 9;
-            this.tBQueryResult.Text = resources.GetString("tBQueryResult.Text");
+            //this.tBQueryResult.Text = resources.GetString("tBQueryResult.Text");
             // 
             // label22
             // 

@@ -80,7 +80,7 @@ namespace TSMaster_LIN
 
             //通道映射
             //更换其他同星产品 只需修改第6个参数
-            TsMasterApi.tsapp_set_mapping_verbose(appname, (int)TLIBApplicationChannelType.APP_LIN, (int)APP_CHANNEL.CHN1, "TC1016", (int)TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, (int)APP_CHANNEL.CHN1,true);
+            TsMasterApi.tsapp_set_mapping_verbose(appname, TLIBApplicationChannelType.APP_LIN, (int)APP_CHANNEL.CHN1, "TC1016", TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, (int)APP_CHANNEL.CHN1,true);
             TsMasterApi.tsapp_configure_baudrate_lin(0, (float)19.2,(int)LIN_PROTOCOL.LIN_PROTOCOL_21);
         }
         bool _isconnect = false;
@@ -149,7 +149,7 @@ namespace TSMaster_LIN
 
         private void btn_slave_Click(object sender, EventArgs e)
         {
-            TsMasterApi.tslin_set_node_functiontype(0, (int)TLINNodeType.T_SlaveNode);
+            TsMasterApi.tslin_set_node_functiontype(0, TLINNodeType.T_SlaveNode);
         }
 
         private void button1_Click(object sender, EventArgs e)
