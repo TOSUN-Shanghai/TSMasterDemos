@@ -18,7 +18,7 @@ void thread_udp_server(int network, int sock) {
 		u32 len = sizeof(Tts_sockaddr_in);
 		//参数4 == TS_MSG_DONTWAIT 非阻塞接收
 		//参数4 == 0 阻塞接收
-		count = tssocket_recvfrom(network, sock, buf, 2000, TS_MSG_DONTWAIT, (Pts_sockaddr)&from_addr, &len);
+		count = tssocket_recvfrom(sock, (ps32)buf, 2000, TS_MSG_DONTWAIT, (Pts_sockaddr)&from_addr, &len);
 		if (count > 0) {
 			printf("tssocket_recv: %d  from ipaddr: %s, port: %d\n", count, tssocket_ntoa((Tip4_addr_t*)&from_addr.sin_addr), tssocket_htons(from_addr.sin_port));
 		}
@@ -65,7 +65,7 @@ int main()
 
 	initialize_lib_tsmaster("ETHUDPDemo");
 	tsapp_show_tsmaster_window("Hardware", true);
-	status = tssocket_initialize(0, (TLogDebuggingInfo)tsapp_log);
+	status = tssocket_initialize(0);
 	Tip4_addr_t ipaddr, gw, netmask;
 	//ipaddress 
 	tssocket_aton("192.168.0.50", &ipaddr);
@@ -92,7 +92,7 @@ int main()
 	self1_addr.sin_port = tssocket_htons(51051);
 	tssocket_aton("192.168.0.50", (Tip4_addr_t*)&self1_addr.sin_addr);
 
-	err = tssocket_bind(CH1, sock, (Tts_sockaddr*)&self1_addr, sizeof(Tts_sockaddr));
+	err = tssocket_bind(sock, (Tts_sockaddr*)&self1_addr, sizeof(Tts_sockaddr));
 	thread_running = true;
 	std::thread t1(thread_udp_server, CH1, sock);
 
@@ -110,7 +110,7 @@ int main()
 		cout << data << endl;
 		if (data == 1)
 		{
-			err = tssocket_sendto(CH1, sock, buf, 1400, 0, (Tts_sockaddr*)&dstaddr, sizeof(Tts_sockaddr));
+			err = tssocket_sendto(sock, (ps32)buf, 1400, 0, (Tts_sockaddr*)&dstaddr, sizeof(Tts_sockaddr));
 		}
 		else if (data == 2)
 		{
@@ -119,7 +119,7 @@ int main()
 	}
 	thread_running = false;
 	t1.join();
-	tssocket_close(CH1, sock);
+	tssocket_close(sock);
 	status = tsapp_disconnect();
 	tssocket_remove_device(CH1, macaddr, &ipaddr);
 	tssocket_finalize(CH1);

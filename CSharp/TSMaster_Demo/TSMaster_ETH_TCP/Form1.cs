@@ -99,6 +99,8 @@ namespace TSMaster_ETH_TCP
                     {
                         TsMasterApi.tssocket_unregister_tcp_listen_event(serverSocket, ONTCPListen);
                         TsMasterApi.tssocket_unregister_tcp_close_event(serverSocket, ONTCPDisConnect);
+                        TsMasterApi.tssocket_unregister_tcp_receive_event(serverSocket, ONRECEIVE);
+                        TsMasterApi.tssocket_unregister_tcp_receive_event(clientSocket, ONRECEIVE);
                         ONTCPListen = null;
                         ONTCPDisConnect = null;
                     }  
@@ -149,9 +151,16 @@ namespace TSMaster_ETH_TCP
         
         int serverSocket = 0;
         int clientSocket = 0;
+        TSSocketReceiveEvent_Win32 ONRECEIVE = null;
         TSSocketListenEvent_Win32 ONTCPListen = null;
         TSSocketNotifyEvent_Win32 ONTCPDisConnect = null;
         bool IsAccept = false;
+
+        string get_ip_address(uint AAddr, uint APort)
+        {
+            string ip = (AAddr >> 24).ToString("X2.") + ((AAddr >> 16) & 0XFF).ToString("X2.") + ((AAddr >> 8) & 0XFF).ToString("X2.") + (AAddr & 0XFF).ToString("X2.:") + APort.ToString();
+            return ip;
+        }
         void ontcplisten(ref int AObj, int ASocket, int AClientSocket, int AResult)
         {
             IsAccept = true;
@@ -160,6 +169,11 @@ namespace TSMaster_ETH_TCP
         void ontcpdisconnect(ref int AObj, int ASocket, int AResult)
         {
             IsAccept = false;
+        }
+
+        unsafe void ontcpreceive(ref int AObj, int ASocket, int AResult, uint AAddr, uint APort, byte* AData, int ASize)
+        {
+            log(get_ip_address(AAddr, APort) + "\r\n");
         }
         private void btn_createTCP_Click(object sender, EventArgs e)
         {
@@ -176,13 +190,22 @@ namespace TSMaster_ETH_TCP
                 ONTCPDisConnect = ontcpdisconnect;
                 TsMasterApi.tssocket_register_tcp_listen_event(serverSocket, ONTCPListen);
                 TsMasterApi.tssocket_register_tcp_close_event(serverSocket, ONTCPDisConnect);
-
                 ret = TsMasterApi.tssocket_tcp(0, "192.168.1.2:30001", ref clientSocket);
                 if (0 != ret)
                 {
                     log("TCP Server create failed\r\n");
                     return;
                 }
+                unsafe {
+                    ONRECEIVE = ontcpreceive;
+                    TsMasterApi.tssocket_register_tcp_receive_event(serverSocket, ONRECEIVE);
+                    TsMasterApi.tssocket_register_tcp_receive_event(clientSocket, ONRECEIVE);
+                }
+                
+                
+                
+
+                
                 if (0 != TsMasterApi.tssocket_tcp_start_listen(serverSocket))
                 {
                     log("TCP Server listen failed\r\n");
@@ -220,6 +243,8 @@ namespace TSMaster_ETH_TCP
             {
                 TsMasterApi.tssocket_unregister_tcp_listen_event(serverSocket, ONTCPListen);
                 TsMasterApi.tssocket_unregister_tcp_close_event(serverSocket, ONTCPDisConnect);
+                TsMasterApi.tssocket_unregister_tcp_receive_event(serverSocket, ONRECEIVE);
+                TsMasterApi.tssocket_unregister_tcp_receive_event(clientSocket, ONRECEIVE);
                 ONTCPListen = null;
                 ONTCPDisConnect = null;
             }
