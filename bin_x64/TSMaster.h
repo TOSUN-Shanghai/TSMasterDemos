@@ -1912,7 +1912,7 @@ TSAPI(s32)tsapp_get_flexray_channel_count(s32* ACount);
 
 TSAPI(s32)tsapp_set_mapping(const PLIBTSMapping AMapping);
 
-TSAPI(s32)tsapp_set_mapping_verbose(const char* AAppName,const TLIBApplicationChannelType AAppChannelType,const s32 AAppChannel,const TLIBBusToolDeviceType AHardwareType,const s32 AHardwareSubType,const s32 AHardwareIndex,const s32 AHardwareChannel);
+TSAPI(s32)tsapp_set_mapping_verbose(const char* AAppName,const TLIBApplicationChannelType AAppChannelType,const s32 AAppChannel,const char* AHardwareName,const TLIBBusToolDeviceType AHardwareType,const s32 AHardwareSubType,const s32 AHardwareIndex,const s32 AHardwareChannel,const bool AEnableMapping);
 
 TSAPI(s32)tsapp_get_mapping(const PLIBTSMapping AMapping);
 
@@ -1952,7 +1952,7 @@ TSAPI(s32)tsapp_enumerate_hw_devices(s32* ACount);
 
 TSAPI(s32)tsapp_get_hw_info_by_index(const s32 AIndex,const PLIBHWInfo AHWInfo);
 
-TSAPI(s32)tsapp_get_hw_info_by_index_verbose(const s32 AIndex,const PLIBBusToolDeviceType ADeviceType,const char* AVendorNameBuffer,const s32 AVendorNameBufferSize,const char* ADeviceNameBuffer,const s32 ADeviceNameBufferSize,const char* ASerialStringBuffer);
+TSAPI(s32)tsapp_get_hw_info_by_index_verbose(const s32 AIndex,const PLIBBusToolDeviceType ADeviceType,const char* AVendorNameBuffer,const s32 AVendorNameBufferSize,const char* ADeviceNameBuffer,const s32 ADeviceNameBufferSize,const char* ASerialStringBuffer,const s32 ASerialStringBufferSize);
 
 TSAPI(s32)tsapp_set_vendor_detect_preferences(const bool AScanTOSUN,const bool  AScanVector,const bool  AScanPeak,const bool  AScanKvaser,const bool  AScanZLG,const bool  ADetectIntrepidcs,const bool  ADetectCANable);
 

@@ -144,13 +144,15 @@ tsapp_set_mapping.argtypes = [PLIBTSMapping]
 #arg[0] AAppName
 #arg[1] AAppChannelType
 #arg[2] AAppChannel
-#arg[3] AHardwareType
-#arg[4] AHardwareSubType
-#arg[5] AHardwareIndex
-#arg[6] AHardwareChannel
+#arg[3] AHardwareName
+#arg[4] AHardwareType
+#arg[5] AHardwareSubType
+#arg[6] AHardwareIndex
+#arg[7] AHardwareChannel
+#arg[8] AEnableMapping
 tsapp_set_mapping_verbose = dll.tsapp_set_mapping_verbose
 tsapp_set_mapping_verbose.restype = s32
-tsapp_set_mapping_verbose.argtypes = [pchar,TLIBApplicationChannelType,s32,TLIBBusToolDeviceType,s32,s32,s32]
+tsapp_set_mapping_verbose.argtypes = [pchar,TLIBApplicationChannelType,s32,pchar,TLIBBusToolDeviceType,s32,s32,s32,cbool]
 
 #arg[0] AMapping
 tsapp_get_mapping = dll.tsapp_get_mapping
@@ -271,9 +273,10 @@ tsapp_get_hw_info_by_index.argtypes = [s32,PLIBHWInfo]
 #arg[4] ADeviceNameBuffer
 #arg[5] ADeviceNameBufferSize
 #arg[6] ASerialStringBuffer
+#arg[7] ASerialStringBufferSize
 tsapp_get_hw_info_by_index_verbose = dll.tsapp_get_hw_info_by_index_verbose
 tsapp_get_hw_info_by_index_verbose.restype = s32
-tsapp_get_hw_info_by_index_verbose.argtypes = [s32,PLIBBusToolDeviceType,pchar,s32,pchar,s32,pchar]
+tsapp_get_hw_info_by_index_verbose.argtypes = [s32,PLIBBusToolDeviceType,pchar,s32,pchar,s32,pchar,s32]
 
 #arg[0] AScanTOSUN
 #arg[1] AScanVector
