@@ -87,8 +87,8 @@ namespace TSMaster_FlexRay
                     //Signal count 
                     for (int txsignalcount = 0; txsignalcount < AFRSignalCount; txsignalcount++)
                     {
-                        int Asignaltype = 0;
-                        int ACompuMethod = 0;
+                        TSignalType Asignaltype =(TSignalType)0;
+                        TFlexRayCompuMethod ACompuMethod = (TFlexRayCompuMethod)0;
                         bool AIsIntel = false;
                         int AStartBit = 0;
                         int AUpdateBit = 0;
@@ -120,8 +120,8 @@ namespace TSMaster_FlexRay
                     //Signal count 
                     for (int rxsignalcount = 0; rxsignalcount < AFRSignalCount; rxsignalcount++)
                     {
-                        int Asignaltype = 0;
-                        int ACompuMethod = 0;
+                        TSignalType Asignaltype = (TSignalType)0;
+                        TFlexRayCompuMethod ACompuMethod = (TFlexRayCompuMethod)0;
                         bool AIsIntel = false;
                         int AStartBit = 0;
                         int AUpdateBit = 0;

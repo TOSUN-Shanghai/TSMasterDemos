@@ -159,13 +159,13 @@ namespace TSMaster_CAN
 
             //通道映射
             //更换其他同星产品 只需修改第6个参数
-            TsMasterApi.tsapp_set_mapping_verbose(appname,(int) TLIBApplicationChannelType.APP_CAN, 0, "TC1016", (int)TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 0,true);
+            TsMasterApi.tsapp_set_mapping_verbose(appname,(int) TLIBApplicationChannelType.APP_CAN, 0, "TC1016", TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 0,true);
 
-            TsMasterApi.tsapp_set_mapping_verbose(appname, (int)TLIBApplicationChannelType.APP_CAN, 1, "TC1016", (int)TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 1,true);
+            TsMasterApi.tsapp_set_mapping_verbose(appname, (int)TLIBApplicationChannelType.APP_CAN, 1, "TC1016", TLIBBusToolDeviceType.TS_USB_DEVICE, (int)TLIB_TS_Device_Sub_Type.TC1016, 0, 1,true);
 
             //硬件参数配置
-            TsMasterApi.tsapp_configure_baudrate_canfd(0, 500, 2000, (int)TLIBCANFDControllerType.lfdtISOCAN, (int)TLIBCANFDControllerMode.lfdmNormal, true);
-            TsMasterApi.tsapp_configure_baudrate_canfd(1, 500, 2000, (int)TLIBCANFDControllerType.lfdtISOCAN, (int)TLIBCANFDControllerMode.lfdmNormal, true);
+            TsMasterApi.tsapp_configure_baudrate_canfd(0, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN, TLIBCANFDControllerMode.lfdmNormal, true);
+            TsMasterApi.tsapp_configure_baudrate_canfd(1, 500, 2000, TLIBCANFDControllerType.lfdtISOCAN, TLIBCANFDControllerMode.lfdmNormal, true);
 
 
         }
@@ -212,7 +212,7 @@ namespace TSMaster_CAN
             }
         }
         //APP_CHANNEL[] chns = new APP_CHANNEL[] { APP_CHANNEL.CHN1, APP_CHANNEL.CHN2, APP_CHANNEL.CHN3, APP_CHANNEL.CHN4 };
-        int DBAId = 0;
+        uint DBAId = 0;
         int dbc_index = 0;
         void load_dbc_form(object AID)
         {
@@ -519,7 +519,7 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    IntPtr obj1 = IntPtr.Zero;
+                    int obj1 = 0;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
                     TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.'))+"asc", readProgressCallback);
                 }
@@ -651,7 +651,7 @@ namespace TSMaster_CAN
                 log("加载完成\r\n 开始转换\r\n");
                 for (int i = 0; i < dlg.FileNames.Length; i++)
                 {
-                    IntPtr obj1 = IntPtr.Zero;
+                    int obj1 = 0;
                     string data = dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + ".asc";
                     TsMasterApi.tslog_blf_to_asc(ref obj1, dlg.FileNames[i], dlg.FileNames[i].Substring(0, dlg.FileNames[i].LastIndexOf('.')) + "blf", readProgressCallback);
                 }

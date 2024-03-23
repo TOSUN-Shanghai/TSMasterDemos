@@ -33,11 +33,9 @@ namespace TSMaster_ETH_TCP
         }
 
         bool ISConnect = false;
-        TLogDebuggingInfo logger = null;
         Tip4_addr_t ipaddr = new Tip4_addr_t();
         Tip4_addr_t gw = new Tip4_addr_t();
         Tip4_addr_t netmask = new Tip4_addr_t();
-        Thread t1;
         bool IsCreateTCP = false;
         delegate void Callmsg(string msg);
         void log(string msg)
@@ -52,23 +50,32 @@ namespace TSMaster_ETH_TCP
                 textBox1.Invoke(callmsg, msg);
             }
         }
+        byte[] macaddr = { 1, 2, 3, 4, 5, 50 };
         private void btn_ONOFF_Click(object sender, EventArgs e)
         {
             if (!ISConnect)
             {
-                TsMasterApi.tssocket_initialize(0, logger);
-                TsMasterApi.tssocket_aton("192.168.0.50", ref ipaddr);
-                TsMasterApi.tssocket_aton("192.168.0.1", ref gw);
+                TsMasterApi.tssocket_initialize(0);
+                //ipaddress 
+                TsMasterApi.tssocket_aton("192.168.1.1", ref ipaddr);
+                //gateway
+                TsMasterApi.tssocket_aton("192.168.1.0", ref gw);
+                //mask
                 TsMasterApi.tssocket_aton("255.255.255.0", ref netmask);
-                byte[] buf = { 1, 2, 3, 4, 5, 50 };
+
+                //ipaddress 
+                
+
                 unsafe
                 {
-                    fixed (byte* p = buf)
+                    fixed (byte* maddr = macaddr)
                     {
-                        //配置IPV4 网关 掩码
-                        TsMasterApi.tssocket_add_device(0, p, ipaddr, netmask, gw, 1500);
+                        TsMasterApi.tssocket_add_device(0, maddr, ipaddr, netmask, gw, 1500);
+                        TsMasterApi.tssocket_aton("192.168.1.2", ref ipaddr);
+                        TsMasterApi.tssocket_add_device(0, maddr, ipaddr, netmask, gw, 1500);
                     }
                 }
+
                 if (0 == TsMasterApi.tsapp_connect())
                 {
                     ISConnect = true;
@@ -81,22 +88,32 @@ namespace TSMaster_ETH_TCP
                 if (0 == TsMasterApi.tsapp_disconnect())
                 {
                     ISConnect = false;
-                    isrecv = false;
+                    unsafe
+                    {
+                        fixed (byte* maddr = macaddr)
+                        {
+                            TsMasterApi.tssocket_remove_device(0, maddr, ref ipaddr);
+                        }
+                    }
+                    if (ONTCPListen != null)
+                    {
+                        TsMasterApi.tssocket_unregister_tcp_listen_event(serverSocket, ONTCPListen);
+                        TsMasterApi.tssocket_unregister_tcp_close_event(serverSocket, ONTCPDisConnect);
+                        TsMasterApi.tssocket_unregister_tcp_receive_event(serverSocket, ONRECEIVE);
+                        TsMasterApi.tssocket_unregister_tcp_receive_event(clientSocket, ONRECEIVE);
+                        ONTCPListen = null;
+                        ONTCPDisConnect = null;
+                    }  
                     if (IsCreateTCP)
                     {
+                        TsMasterApi.tssocket_tcp_close(serverSocket);
                         IsCreateTCP = false;
-                        t1.Abort();
                     }
-                    TsMasterApi.tssocket_close(0, sock);
                     btn_ONOFF.Text = "连接";
                 }
             }
         }
-        int sock = 0;
-        //暂时保留的回调函数
-        tosun_recv_callback a = null;
-        tosun_tcp_presend_callback b = null;
-        tosun_tcp_ack_callback c = null;
+        
         public Byte[] StructToBytes(Object structure)
         {
             Int32 size = Marshal.SizeOf(structure);
@@ -128,93 +145,130 @@ namespace TSMaster_ETH_TCP
                 Marshal.FreeHGlobal(buffer);
             }
         }
-        Tts_sockaddr srcaddr = new Tts_sockaddr();
-        bool isrecv = false;
-        int revsock = -1;
-        void recvtcp()
+
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern unsafe int tssocket_recv(int s, byte* mem, uint len, int flags);
+        
+        int serverSocket = 0;
+        int clientSocket = 0;
+        TSSocketReceiveEvent_Win32 ONRECEIVE = null;
+        TSSocketListenEvent_Win32 ONTCPListen = null;
+        TSSocketNotifyEvent_Win32 ONTCPDisConnect = null;
+        bool IsAccept = false;
+
+        string get_ip_address(uint AAddr, uint APort)
         {
-           // int err = TsMasterApi.tssocket_bind(0, sock, ref srcaddr, 16);
-            int err = TsMasterApi.tssocket_listen(0, sock, 2000);
-            
-            Tts_sockaddr revaddr = new Tts_sockaddr() ;
-            uint revlen = 16;
-            revsock = TsMasterApi.tssocket_accept(0, sock,  ref revaddr,ref revlen);
-            isrecv = true;
-            if (revsock != -1)
-            {
-                while (true)
-                {
-                    byte[] buf = new byte[7000];
+            string ip = (AAddr >> 24).ToString("X2.") + ((AAddr >> 16) & 0XFF).ToString("X2.") + ((AAddr >> 8) & 0XFF).ToString("X2.") + (AAddr & 0XFF).ToString("X2.:") + APort.ToString();
+            return ip;
+        }
+        void ontcplisten(ref int AObj, int ASocket, int AClientSocket, int AResult)
+        {
+            IsAccept = true;
+            log("clint handle " + ASocket.ToString());
+        }
+        void ontcpdisconnect(ref int AObj, int ASocket, int AResult)
+        {
+            IsAccept = false;
+        }
 
-                    unsafe
-                    {
-                        fixed (byte* p = buf)
-                        {
-                            int count = TsMasterApi.tssocket_recv(0, revsock, p, 7000, 0);
-                            if (count > 0)
-                                log(buf.ToString() + "\r\n");
-                        }
-                    }
-
-                }
-            }
-            
+        unsafe void ontcpreceive(ref int AObj, int ASocket, int AResult, uint AAddr, uint APort, byte* AData, int ASize)
+        {
+            log(get_ip_address(AAddr, APort) + "\r\n");
         }
         private void btn_createTCP_Click(object sender, EventArgs e)
         {
-            if (ISConnect && !IsCreateTCP)
+
+            if (!IsCreateTCP)
             {
-                sock = TsMasterApi.tssocket(0, 2, 1, 0, a, b, c);
-                if (sock == -1)
+                int ret = TsMasterApi.tssocket_tcp(0, "192.168.1.1:20001", ref serverSocket);
+                if (0 != ret)
                 {
-                    MessageBox.Show("Create error");
+                    log("TCP Server create failed\r\n");
                     return;
                 }
+                ONTCPListen = ontcplisten;
+                ONTCPDisConnect = ontcpdisconnect;
+                TsMasterApi.tssocket_register_tcp_listen_event(serverSocket, ONTCPListen);
+                TsMasterApi.tssocket_register_tcp_close_event(serverSocket, ONTCPDisConnect);
+                ret = TsMasterApi.tssocket_tcp(0, "192.168.1.2:30001", ref clientSocket);
+                if (0 != ret)
+                {
+                    log("TCP Server create failed\r\n");
+                    return;
+                }
+                unsafe {
+                    ONRECEIVE = ontcpreceive;
+                    TsMasterApi.tssocket_register_tcp_receive_event(serverSocket, ONRECEIVE);
+                    TsMasterApi.tssocket_register_tcp_receive_event(clientSocket, ONRECEIVE);
+                }
+                
+                
+                
+
+                
+                if (0 != TsMasterApi.tssocket_tcp_start_listen(serverSocket))
+                {
+                    log("TCP Server listen failed\r\n");
+                    return;
+                }
+                ret =TsMasterApi.tssocket_tcp_connect(clientSocket, "192.168.1.1:20001");
+                if (ret == 0)
+                {
+                    log("TCP clinet connect successful\r\n");
+                }
+                
+                TsMasterApi.tssocket_tcp_start_receive(serverSocket);
                 IsCreateTCP = true;
-                Tts_sockaddr_in self_addr = new Tts_sockaddr_in();
-                self_addr.sin_family = 2;
-                self_addr.sin_port = TsMasterApi.tssocket_htons(51051);
-                TsMasterApi.tssocket_aton("192.168.0.50", ref self_addr.sin_addr);
-
-                //将Tts_sockaddr_in 转为 Tts_sockaddr
-                Byte[] DataAddr = StructToBytes(self_addr);
-                srcaddr = (Tts_sockaddr)BytesToStruct(DataAddr, srcaddr.GetType());
-
-                int err = TsMasterApi.tssocket_bind(0, sock, ref srcaddr, 16);
-
-                t1 = new Thread(new ThreadStart(recvtcp));
-                t1.Start();
+                log("TCP Server create Successful\r\n");
+                return;
             }
-            else
-            {
-                MessageBox.Show("请先连接硬件");
-            }
+            log("Do not create the same TCP more than once\r\n");
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(IsCreateTCP)
+            if (ISConnect)
             {
+                ISConnect = false;
+                unsafe
+                {
+                    fixed (byte* maddr = macaddr)
+                    {
+                        TsMasterApi.tssocket_remove_device(0, maddr, ref ipaddr);
+                    }
+                }
+            }
+            if (ONTCPListen != null)
+            {
+                TsMasterApi.tssocket_unregister_tcp_listen_event(serverSocket, ONTCPListen);
+                TsMasterApi.tssocket_unregister_tcp_close_event(serverSocket, ONTCPDisConnect);
+                TsMasterApi.tssocket_unregister_tcp_receive_event(serverSocket, ONRECEIVE);
+                TsMasterApi.tssocket_unregister_tcp_receive_event(clientSocket, ONRECEIVE);
+                ONTCPListen = null;
+                ONTCPDisConnect = null;
+            }
+            if (IsCreateTCP)
+            {
+                TsMasterApi.tssocket_tcp_close(serverSocket);
                 IsCreateTCP = false;
-                t1.Abort();
-                TsMasterApi.tssocket_close(0, sock);
             }
         }
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern unsafe int tssocket_send(int s, byte* mem, uint len, int flags);
 
         private void btn_sendTCP_Click(object sender, EventArgs e)
         {
-            if (isrecv)
+            if (IsAccept)
             {
-                byte[] buf =  new byte[1400];
-                for(int i = 0; i < buf.Length; i++)
-                    buf[i] = (byte)i;
+                byte[] datas = new byte[1400];
                 unsafe {
-                    fixed (byte* p = buf)
+                    fixed (byte* maddr = datas)
                     {
-                        int ret = TsMasterApi.tssocket_send(0, revsock, p, 1400, 0);
+                        TsMasterApi.tssocket_tcp_sendto_client(serverSocket, "192.168.1.2:30001", maddr, 1400);
                     }
                 }
-               
+                
             }
         }
     }

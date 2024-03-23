@@ -34,6 +34,7 @@ namespace TSMaster_ETH_UDP
                 Marshal.FreeHGlobal(buffer);
             }
         }
+
         public Object BytesToStruct(Byte[] bytes, Type strcutType)
         {
             Int32 size = Marshal.SizeOf(strcutType);
@@ -66,7 +67,6 @@ namespace TSMaster_ETH_UDP
             InitializeComponent();
         }
         bool ISConnect = false;
-        TLogDebuggingInfo logger = null;
         Tip4_addr_t ipaddr = new Tip4_addr_t();
         Tip4_addr_t gw = new Tip4_addr_t();
         Tip4_addr_t netmask = new Tip4_addr_t();
@@ -83,9 +83,9 @@ namespace TSMaster_ETH_UDP
         {
             if (!ISConnect)
             {
-                TsMasterApi.tssocket_initialize(0, logger);
-                TsMasterApi.tssocket_aton("192.168.0.50", ref ipaddr);
-                TsMasterApi.tssocket_aton("192.168.0.1", ref gw);
+                TsMasterApi.tssocket_initialize(0);
+                TsMasterApi.tssocket_aton("192.168.1.1", ref ipaddr);
+                TsMasterApi.tssocket_aton("192.168.1.0", ref gw);
                 TsMasterApi.tssocket_aton("255.255.255.0", ref netmask);
                 byte[] buf = { 1, 2, 3, 4, 5, 50 };
                 unsafe
@@ -93,6 +93,8 @@ namespace TSMaster_ETH_UDP
                     fixed (byte* p = buf)
                     {
                         //配置IPV4 网关 掩码
+                        TsMasterApi.tssocket_add_device(0, p, ipaddr, netmask, gw, 1500);
+                        TsMasterApi.tssocket_aton("192.168.1.2", ref ipaddr);
                         TsMasterApi.tssocket_add_device(0, p, ipaddr, netmask, gw, 1500);
                     }
                 }
@@ -109,8 +111,7 @@ namespace TSMaster_ETH_UDP
                     if(IsCreateUDP)
                     {
                         IsCreateUDP = false;
-                        t1.Abort();
-                        TsMasterApi.tssocket_close(0, sock);
+                        TsMasterApi.tssocket_udp_close(serverSocket);
                     }
                    
                     btn_ONOFF.Text = "连接";
@@ -131,59 +132,29 @@ namespace TSMaster_ETH_UDP
         bool IsCreateUDP = false;
 
         bool isrecv = true;
-        void recvudp()
-        {
-            while (isrecv)
-            {
-                byte[] buf = new byte[2000];
-                Tts_sockaddr from_addr = new Tts_sockaddr();
-                uint len = 16;
-                unsafe
-                {
-                    fixed (byte* p = buf)
-                    {
-                        //阻塞 参数4 为 0
-                        //非阻塞接收 参数4 为8
-                        int count = TsMasterApi.tssocket_recvfrom(0, sock, p, 2000, 0, ref from_addr, ref len);
-                        if (count > 0)
-                            log(buf.ToString() + "\r\n");
-                    }
-                }
-
-            }
-        }
-        Thread t1;
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern unsafe int tssocket_recvfrom(int s, byte* mem, int len, int flags, ref Tts_sockaddr from, ref uint fromlen);
+       
+        int serverSocket = 0;
         private void btn_createUDP_Click(object sender, EventArgs e)
         {
             if (ISConnect && !IsCreateUDP)
             {
-                sock = TsMasterApi.tssocket(0, 2, 2, 0, a, b, c);
-                if (sock == -1)
+
+                if (0 != TsMasterApi.tssocket_udp(0, "192.168.1.1:20001", ref serverSocket))
                 {
-                    MessageBox.Show("Create error");
-                    return;
+                    log("UDP Create failed\r\n");
                 }
                 IsCreateUDP = true;
-                Tts_sockaddr_in self_addr = new Tts_sockaddr_in();
-                self_addr.sin_family = 2;
-                self_addr.sin_port = TsMasterApi.tssocket_htons(51051);
-                TsMasterApi.tssocket_aton("192.168.0.50", ref self_addr.sin_addr);
-
-                //将Tts_sockaddr_in 转为 Tts_sockaddr
-                Byte[] DataAddr = StructToBytes(self_addr);
-                dstaddr = (Tts_sockaddr)BytesToStruct(DataAddr, dstaddr.GetType());
-
-                //int err = TsMasterApi.tssocket_bind(0, sock, ref dstaddr, 16);
-
-                t1 = new Thread(new ThreadStart(recvudp));
-                t1.Start();
+                
             }
             else
             {
                 MessageBox.Show("请先连接硬件");
             }
         }
-
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern unsafe int tssocket_sendto(int s, byte* mem, uint len, int flags, ref Tts_sockaddr ato, uint tolen);
         private void btn_sendUDP_Click(object sender, EventArgs e)
         {
             if (ISConnect && IsCreateUDP)
@@ -197,7 +168,7 @@ namespace TSMaster_ETH_UDP
                 {
                     fixed (byte* p = buf)
                     {
-                        TsMasterApi.tssocket_sendto(0, sock, p, 1400, 0, ref dstaddr, 16);
+                        int ret = TsMasterApi.tssocket_udp_sendto(serverSocket, "192.168.1.2:30001", p, 1400);
                     }
                 }
             }
@@ -213,8 +184,7 @@ namespace TSMaster_ETH_UDP
             if (IsCreateUDP)
             {
                 IsCreateUDP = false;
-                t1.Abort();
-                TsMasterApi.tssocket_close(0, sock);
+                //TsMasterApi.tssocket_udp_close(serverSocket);
             }
         }
     }

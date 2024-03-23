@@ -15,11 +15,11 @@ void thread_tcp_server(int network, int sock) {
 	while (thread_running)
 	{
 
-		count = tssocket_recv(network, sock, buf, 2000, 0);
+		/*count = tssocket_recv(network, sock, buf, 2000, 0);
 		if (count > 0) {
 			printf("tssocket_recv: %d  from ipaddr: %s, port: %d\n", count);
 		}
-		Sleep(10);
+		Sleep(10);*/
 	}
 }
 
@@ -50,6 +50,7 @@ std::wstring GetRegValue(HKEY hKeyType, DWORD dwType, LPCTSTR lpPath, LPCTSTR lp
 	return wstrValue;
 }
 
+int serverHandle = 0;
 int main()
 {
 	s32 status;
@@ -62,12 +63,15 @@ int main()
 
 	initialize_lib_tsmaster("ETHUDPDemo");
 	tsapp_show_tsmaster_window("Hardware", true);
-	status = tssocket_initialize(0, (TLogDebuggingInfo)tsapp_log);
+	status = tssocket_initialize(CH1);
+
+	
+
 	Tip4_addr_t ipaddr, gw, netmask;
 	//ipaddress 
-	tssocket_aton("192.168.0.50", &ipaddr);
+	tssocket_aton("192.168.1.1", &ipaddr);
 	//gateway
-	tssocket_aton("192.168.0.1", &gw);
+	tssocket_aton("192.168.1.1", &gw);
 	//mask
 	tssocket_aton("255.255.255.0", &netmask);
 
@@ -77,54 +81,54 @@ int main()
 	status = tssocket_add_device(0, macaddr, ipaddr, netmask, gw, 1500);
 
 	status = tsapp_connect();
+	int ret = tssocket_tcp(CH1, "192.168.1.1:20001", &serverHandle);
 
+	//if (status != 0) return -1;
+	//int sock = tssocket(0, TS_AF_INET, TS_SOCK_STREAM, 0, NULL, NULL, NULL);
 
-	if (status != 0) return -1;
-	int sock = tssocket(0, TS_AF_INET, TS_SOCK_STREAM, 0, NULL, NULL, NULL);
+	//if (sock == -1) return -1;
+	//int err = -1;
+	//Tts_sockaddr_in self1_addr;
+	//self1_addr.sin_family = TS_AF_INET;
+	//self1_addr.sin_port = tssocket_htons(51051);
+	//tssocket_aton("192.168.0.50", (Tip4_addr_t*)&self1_addr.sin_addr);
 
-	if (sock == -1) return -1;
-	int err = -1;
-	Tts_sockaddr_in self1_addr;
-	self1_addr.sin_family = TS_AF_INET;
-	self1_addr.sin_port = tssocket_htons(51051);
-	tssocket_aton("192.168.0.50", (Tip4_addr_t*)&self1_addr.sin_addr);
+	//err = tssocket_bind(CH1, sock, (Tts_sockaddr*)&self1_addr, sizeof(Tts_sockaddr));
+	//tssocket_listen(0, sock, 1);
+	//Tts_sockaddr connAddress;
+	//u32 addrlen = 0;
+	//int recvsock = tssocket_accept(0, sock, &connAddress, &addrlen);
 
-	err = tssocket_bind(CH1, sock, (Tts_sockaddr*)&self1_addr, sizeof(Tts_sockaddr));
-	tssocket_listen(0, sock, 1);
-	Tts_sockaddr connAddress;
-	u32 addrlen = 0;
-	int recvsock = tssocket_accept(0, sock, &connAddress, &addrlen);
+	//if (recvsock == -1) return -1;
+	//thread_running = true;
+	//std::thread t1(thread_tcp_server, CH1, recvsock);
 
-	if (recvsock == -1) return -1;
-	thread_running = true;
-	std::thread t1(thread_tcp_server, CH1, recvsock);
-
-	Tts_sockaddr_in dstaddr;
-	dstaddr.sin_family = TS_AF_INET;
-	dstaddr.sin_port = tssocket_htons(51051);
-	tssocket_aton("192.168.0.51", (Tip4_addr_t*)&dstaddr.sin_addr);
-	u8 buf[1400] = { 0 };
-	for (s32 i = 0; i < 1400; i++)
-		buf[i] = (u8)i;
-	while (1)
-	{
-		int data;
-		cin >> data;
-		cout << data << endl;
-		if (data == 1)
-		{
-			err = tssocket_send(CH1, recvsock, buf, 1400, 0);
-		}
-		else if (data == 2)
-		{
-			break;
-		}
-	}
-	thread_running = false;
-	t1.join();
-	tssocket_close(CH1, sock);
-	status = tsapp_disconnect();
-	tssocket_remove_device(CH1, macaddr, &ipaddr);
+	//Tts_sockaddr_in dstaddr;
+	//dstaddr.sin_family = TS_AF_INET;
+	//dstaddr.sin_port = tssocket_htons(51051);
+	//tssocket_aton("192.168.0.51", (Tip4_addr_t*)&dstaddr.sin_addr);
+	//u8 buf[1400] = { 0 };
+	//for (s32 i = 0; i < 1400; i++)
+	//	buf[i] = (u8)i;
+	//while (1)
+	//{
+	//	int data;
+	//	cin >> data;
+	//	cout << data << endl;
+	//	if (data == 1)
+	//	{
+	//		err = tssocket_send(CH1, recvsock, buf, 1400, 0);
+	//	}
+	//	else if (data == 2)
+	//	{
+	//		break;
+	//	}
+	//}
+	//thread_running = false;
+	//t1.join();
+	//tssocket_close(CH1, sock);
+	//status = tsapp_disconnect();
+	//tssocket_remove_device(CH1, macaddr, &ipaddr);
 	tssocket_finalize(CH1);
 	finalize_lib_tsmaster();
 	return 0;

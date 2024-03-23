@@ -467,6 +467,8 @@ namespace TSMaster_FlexRay
             }
             return data;
         }
+        [DllImport(".\\TSMaster.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
+        public static extern int tsapp_transmit_flexray_async(ref TLIBFlexRay AMsg);
         private void tb_send_flexray_Click(object sender, EventArgs e)
         {
             try
@@ -478,7 +480,7 @@ namespace TSMaster_FlexRay
                 }
                 byte channel = (byte)(((byte.Parse(tb_chn.Text.Trim()) - 1)<0)?0: (byte.Parse(tb_chn.Text.Trim()) - 1));
                  TLIBFlexRay AFlexray = new TLIBFlexRay(channel, byte.Parse(tb_Mask.Text.Trim()),byte.Parse(tb_dlc.Text.Trim()),(byte)(byte.Parse(tb_bc.Text.Trim())),ushort.Parse(tb_slotid.Text.Trim()),data);
-               int ret  = TsMasterApi.tsapp_transmit_flexray_async(ref AFlexray);
+               int ret  = tsapp_transmit_flexray_async(ref AFlexray);
 
             }
 
@@ -500,22 +502,10 @@ namespace TSMaster_FlexRay
         public static TLIBFlexRay[] ReceiveFRMsgList(ref int ACANBufferSize, byte AChn, bool ATxRx)
         {
             TLIBFlexRay[] AFRMsgBuffer = new TLIBFlexRay[ACANBufferSize];
-            IntPtr intPtr = Marshal.AllocHGlobal((IntPtr)(Marshal.SizeOf(typeof(TLIBFlexRay)) * ACANBufferSize));
-            try
-            {
-                TsMasterApi.tsfifo_receive_flexray_msgs(AFRMsgBuffer, ref ACANBufferSize, AChn, ATxRx);
-                for (int i = 0; i < ACANBufferSize; i++)
-                {
-                    AFRMsgBuffer[i] = default(TLIBFlexRay);
-                    AFRMsgBuffer[i] = (TLIBFlexRay)Marshal.PtrToStructure(intPtr + Marshal.SizeOf(typeof(TLIBFlexRay)) * i, typeof(TLIBFlexRay));
-                }
 
-                return AFRMsgBuffer;
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(intPtr);
-            }
+            TsMasterApi.tsfifo_receive_flexray_msgs_list(ref AFRMsgBuffer, ref ACANBufferSize, AChn, ATxRx);
+
+            return AFRMsgBuffer;
         }
         private void btn_receive_Click(object sender, EventArgs e)
         {
