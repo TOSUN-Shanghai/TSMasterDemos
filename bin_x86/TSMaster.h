@@ -619,7 +619,7 @@ typedef struct _TLIBEthernetHeader
     u8 FIdxPort;// Network's switch's port index, 0~127: measurement port, 128~255: virtual port
     u8 FConfig;//  0-1: 0 = Rx, 1 = Tx, 2 = TxRq // 2: crc status, for tx, 0: crc is include in data, 1: crc is not include in data //                for rx, 0: crc is ok, 1: crc is not ok // 3: tx done type, 0: only report timestamp, 1: report full info(header+frame)
     u16 FEthernetPayloadLength;// Length of Ethernet payload data in bytes. Max. 1582 Byte(without Ethernet header), 1612 Byte(Inclusive ethernet header)
-    u16 freserved;//Reserved
+    u16 FReserved;//Reserved
     u64 FTimeUs;//timestamp in us
     pu8 FEthernetDataAddr;//data ps32
     #ifdef _WIN32
@@ -651,10 +651,10 @@ typedef struct _TLIBEthernetHeader
         FIdxPort = 0;
         FConfig = 0;
         FEthernetPayloadLength = APayloadLength;
-        freserved = 0;
+        FReserved = 0;
         FTimeUs = 0;
         reset_data_pointer();
-#ifdef _WIN32
+#ifndef _WIN64
         FPadding = 0;
 #endif
         s32 i;
@@ -785,7 +785,7 @@ typedef struct _TLIBEthernetHeader
         u16 o;
         if (!is_ip_frame()) return;
         has_vlans(&o);
-        *(pu16)(FEthernetDataAddr + 16 + o) = SWAP_BYTES(ALength) + 20;
+        *(pu16)(FEthernetDataAddr + 16 + o) = SWAP_BYTES(ALength + 20);
     }
     u16 get_ip_packet_payload_length(){
         u16 o;
@@ -810,14 +810,14 @@ typedef struct _TLIBEthernetHeader
         u16 o;
         if (!is_udp_frame()) return;
         has_vlans(&o);
-        *(FEthernetDataAddr + 0x26 + o) = SWAP_BYTES(ALength);
+        *(pu16)(FEthernetDataAddr + 0x26 + o) = SWAP_BYTES(ALength + 8/*header length*/);
     }
     u16 get_udp_payload_length(){
         u16 o;
         if (!is_udp_frame()) return 0;
         has_vlans(&o);
-        o = *(FEthernetDataAddr + 0x26 + o);
-        return SWAP_BYTES(o);
+        o = *(pu16)(FEthernetDataAddr + 0x26 + o);
+        return SWAP_BYTES(o) - 8/*header length*/;
     }
     pu8 get_ip_address_destination_addr(){
         u16 o;
@@ -864,7 +864,7 @@ typedef struct _TLIBEthernetHeader
         r = (0x40 & *(FEthernetDataAddr + 0x14 + o)) == 0;
         if (r) {
             *AOffset = *(pu16)(FEthernetDataAddr + 0x14 + o);
-            *AOffset = (SWAP_BYTES(*AOffset) and 0x1FFF) << 3;
+            *AOffset = (SWAP_BYTES(*AOffset) & 0x1FFF) << 3;
             *AId = *(pu16)(FEthernetDataAddr + 0x12 + o);
             *AId = SWAP_BYTES(*AId);
         }
