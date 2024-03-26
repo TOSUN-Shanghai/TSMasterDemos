@@ -588,6 +588,7 @@ type
   TLIBTSMasterLogger = procedure(const AStr: PAnsiChar; const ALevel: Integer); stdcall;
   TFirmwareUpdateCallback = procedure(const AOpaque: TObject; const AStatus: UInt32; const APercentage100: Single); stdcall;
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
+  TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
   TOnIoIPConnection_API = procedure(const AIPAddress: pansichar; const APort: Integer) of object; stdcall;
@@ -2686,6 +2687,16 @@ function tsapp_security_decrypt_string_sync(const AChnIdx: int32; const ASlotInd
 function set_channel_timestamp_deviation_factor(const ABusType: TLIBApplicationChannelType; const AIdxLogicalChn: int32; const APCTimeUs: int64; const AHwTimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function start_system_message_log(const ADirectory: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function end_system_message_log(ALogFileName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_create_server(const ARpcName: pansichar; const ABufferSizeBytes: NativeInt; const ARxEvent: TOnRpcData; AHandle: PNativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_activate_server(const AHandle: NativeInt; const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_delete_server(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_server_write_sync(const AHandle: NativeInt; const AAddr: pbyte; const ASizeBytes: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_create_client(const ARpcName: pansichar; const ABufferSizeBytes: NativeInt; AHandle: PNativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_activate_client(const AHandle: NativeInt; const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_delete_client(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_client_transmit_sync(const AHandle: NativeInt; const AAddr: pbyte; const ASizeBytes: NativeInt; const ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_client_receive_sync(const AHandle: NativeInt; ASizeBytes: PNativeInt; AAddr: pbyte; const ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function mask_fpu_exceptions(const AMasked: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
