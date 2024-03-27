@@ -4631,3 +4631,68 @@ end_system_message_log = dll.end_system_message_log
 end_system_message_log.restype = s32
 end_system_message_log.argtypes = [ppchar]
 
+#arg[0] ARpcName
+#arg[1] ABufferSizeBytes
+#arg[2] ARxEvent
+#arg[3] AHandle
+rpc_create_server = dll.rpc_create_server
+rpc_create_server.restype = s32
+rpc_create_server.argtypes = [pchar,size_t,TOnRpcData,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_activate_server = dll.rpc_activate_server
+rpc_activate_server.restype = s32
+rpc_activate_server.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_delete_server = dll.rpc_delete_server
+rpc_delete_server.restype = s32
+rpc_delete_server.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+rpc_server_write_sync = dll.rpc_server_write_sync
+rpc_server_write_sync.restype = s32
+rpc_server_write_sync.argtypes = [size_t,pu8,size_t]
+
+#arg[0] ARpcName
+#arg[1] ABufferSizeBytes
+#arg[2] AHandle
+rpc_create_client = dll.rpc_create_client
+rpc_create_client.restype = s32
+rpc_create_client.argtypes = [pchar,size_t,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_activate_client = dll.rpc_activate_client
+rpc_activate_client.restype = s32
+rpc_activate_client.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_delete_client = dll.rpc_delete_client
+rpc_delete_client.restype = s32
+rpc_delete_client.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+#arg[3] ATimeOutMs
+rpc_client_transmit_sync = dll.rpc_client_transmit_sync
+rpc_client_transmit_sync.restype = s32
+rpc_client_transmit_sync.argtypes = [size_t,pu8,size_t,s32]
+
+#arg[0] AHandle
+#arg[1] ASizeBytes
+#arg[2] AAddr
+#arg[3] ATimeOutMs
+rpc_client_receive_sync = dll.rpc_client_receive_sync
+rpc_client_receive_sync.restype = s32
+rpc_client_receive_sync.argtypes = [size_t,psize_t,pu8,s32]
+
+#arg[0] AMasked
+mask_fpu_exceptions = dll.mask_fpu_exceptions
+mask_fpu_exceptions.restype = s32
+mask_fpu_exceptions.argtypes = [cbool]
+

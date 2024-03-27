@@ -1683,6 +1683,9 @@ typedef void(__stdcall*TFirmwareUpdateCallback)(const void* AOpaque,const u32 AS
 typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);
 // Arg[0] APointer
 // Arg[1] ASize
+typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
+// Arg[0] APointer
+// Arg[1] ASize
 typedef void(__stdcall*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
 // Arg[0] AIPAddress
 // Arg[1] APort
@@ -3229,6 +3232,26 @@ TSAPI(s32)set_channel_timestamp_deviation_factor(const TLIBApplicationChannelTyp
 TSAPI(s32)start_system_message_log(const char* ADirectory);
 
 TSAPI(s32)end_system_message_log(const ppchar ALogFileName);
+
+TSAPI(s32)rpc_create_server(const char* ARpcName,const size_t ABufferSizeBytes,const TOnRpcData ARxEvent,const psize_t AHandle);
+
+TSAPI(s32)rpc_activate_server(const size_t AHandle,const bool AActivate);
+
+TSAPI(s32)rpc_delete_server(const size_t AHandle);
+
+TSAPI(s32)rpc_server_write_sync(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes);
+
+TSAPI(s32)rpc_create_client(const char* ARpcName,const size_t ABufferSizeBytes,const psize_t AHandle);
+
+TSAPI(s32)rpc_activate_client(const size_t AHandle,const bool AActivate);
+
+TSAPI(s32)rpc_delete_client(const size_t AHandle);
+
+TSAPI(s32)rpc_client_transmit_sync(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes,const s32 ATimeOutMs);
+
+TSAPI(s32)rpc_client_receive_sync(const size_t AHandle,const psize_t ASizeBytes,const pu8 AAddr,const s32 ATimeOutMs);
+
+TSAPI(s32)mask_fpu_exceptions(const bool AMasked);
 
 #if defined ( __cplusplus )
 }

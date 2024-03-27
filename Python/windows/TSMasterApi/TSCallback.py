@@ -32,6 +32,9 @@ TFirmwareUpdateCallback = WINFUNCTYPE(None,pvoid,u32,single)
 TOnIoIPData = WINFUNCTYPE(None,ps32,s32)
 # Arg[0] APointer
 # Arg[1] ASize
+TOnRpcData = WINFUNCTYPE(None,ps32,size_t)
+# Arg[0] APointer
+# Arg[1] ASize
 TOnIoIPData_API = WINFUNCTYPE(None,ps32,s32)
 # Arg[0] AIPAddress
 # Arg[1] APort
