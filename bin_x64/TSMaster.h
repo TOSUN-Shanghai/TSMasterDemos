@@ -3253,6 +3253,22 @@ TSAPI(s32)rpc_client_receive_sync(const size_t AHandle,const psize_t ASizeBytes,
 
 TSAPI(s32)mask_fpu_exceptions(const bool AMasked);
 
+TSAPI(s32)rpc_tsmaster_activate_server(const bool AActivate);
+
+TSAPI(s32)rpc_tsmaster_create_client(const char* ATSMasterAppName,const psize_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_activate_client(const size_t AHandle,const bool AActivate);
+
+TSAPI(s32)rpc_tsmaster_delete_client(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_start_simulation(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_stop_simulation(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_write_system_var(const size_t AHandle,const char* ACompleteName,const char* AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_transfer_memory(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes);
+
 #if defined ( __cplusplus )
 }
 #endif

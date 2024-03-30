@@ -4696,3 +4696,49 @@ mask_fpu_exceptions = dll.mask_fpu_exceptions
 mask_fpu_exceptions.restype = s32
 mask_fpu_exceptions.argtypes = [cbool]
 
+#arg[0] AActivate
+rpc_tsmaster_activate_server = dll.rpc_tsmaster_activate_server
+rpc_tsmaster_activate_server.restype = s32
+rpc_tsmaster_activate_server.argtypes = [cbool]
+
+#arg[0] ATSMasterAppName
+#arg[1] AHandle
+rpc_tsmaster_create_client = dll.rpc_tsmaster_create_client
+rpc_tsmaster_create_client.restype = s32
+rpc_tsmaster_create_client.argtypes = [pchar,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_tsmaster_activate_client = dll.rpc_tsmaster_activate_client
+rpc_tsmaster_activate_client.restype = s32
+rpc_tsmaster_activate_client.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_tsmaster_delete_client = dll.rpc_tsmaster_delete_client
+rpc_tsmaster_delete_client.restype = s32
+rpc_tsmaster_delete_client.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_start_simulation = dll.rpc_tsmaster_cmd_start_simulation
+rpc_tsmaster_cmd_start_simulation.restype = s32
+rpc_tsmaster_cmd_start_simulation.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_stop_simulation = dll.rpc_tsmaster_cmd_stop_simulation
+rpc_tsmaster_cmd_stop_simulation.restype = s32
+rpc_tsmaster_cmd_stop_simulation.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ACompleteName
+#arg[2] AValue
+rpc_tsmaster_cmd_write_system_var = dll.rpc_tsmaster_cmd_write_system_var
+rpc_tsmaster_cmd_write_system_var.restype = s32
+rpc_tsmaster_cmd_write_system_var.argtypes = [size_t,pchar,pchar]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+rpc_tsmaster_cmd_transfer_memory = dll.rpc_tsmaster_cmd_transfer_memory
+rpc_tsmaster_cmd_transfer_memory.restype = s32
+rpc_tsmaster_cmd_transfer_memory.argtypes = [size_t,pu8,size_t]
+
