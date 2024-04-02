@@ -601,11 +601,13 @@ type
   TSSocketNotifyEvent = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer) of object; stdcall;
   TSSocketReceiveEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketReceiveEventV2 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketReceiveEventV3 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ADstEndPoint: PAnsiChar; const ASrcEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketTransmitEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketListenEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AClientSocket: integer; const AResult: integer); stdcall;
   TSSocketNotifyEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer); stdcall;
   TSSocketReceiveEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer); stdcall;
   TSSocketReceiveEventV2_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
+  TSSocketReceiveEventV3_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ADstEndPoint: PAnsiChar; const ASrcEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
   TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
 
 {$Z4}
@@ -1279,6 +1281,10 @@ const
  TS_IPPROTO_UDPLITE = 136;
  TS_IPPROTO_RAW     = 255;
 
+ TS_IP_TOS          = 1;
+ TS_IP_TTL          = 2;
+ TS_IP_PKTINFO      = 8;
+
 { Flags we can use with send and recv. }
  TS_MSG_PEEK        = $01;    {/* Peeks at an incoming message */}
  TS_MSG_WAITALL     = $02;    {/* Unimplemented: Requests that the function block until the full amount of data requested can be returned */}
@@ -1445,10 +1451,29 @@ type
     msg_name: Pointer;
     msg_namelen: ts_socklen_t;
     msg_iov: Pts_iovec;
-    msg_iovlen: integer;
+    msg_iovlen: integer;    //received package num
     msg_control: Pointer;
     msg_controllen: ts_socklen_t;
-    msg_flags: integer;
+    msg_flags: integer;   //set internal
+    function ToString: string;
+  end;
+
+{ cmsg header/data alignment. NOTE: we align to native word size (double word
+size on 16-bit arch) so structures are not placed at an unaligned address.
+16-bit arch needs double word to ensure 32-bit alignment because socklen_t
+could be 32 bits. If we ever have cmsg data with a 64-bit variable, alignment
+will need to increase long long }
+  pts_cmsghdr = ^tts_cmsghdr;
+  tts_cmsghdr = packed record
+    cmsg_len: ts_socklen_t;   ///* number of bytes, including header */
+    cmsg_level: integer; ///* originating protocol */
+    cmsg_type: integer;  ///* protocol-specific type */
+  end;
+
+  pts_in_pktinfo = ^tts_in_pktinfo;
+  tts_in_pktinfo = packed record
+    ipi_ifindex: uint32;  // Interface index
+    ipi_addr: Ts_in_addr; // Destination (from header) address
   end;
 
   pts_pollfd = ^Tts_pollfd;
@@ -1457,6 +1482,7 @@ type
    events: short;
 	 revents: Short;
   end;
+
   TLogDebuggingInfo_t = procedure(const AMsg: PAnsiChar; const ALevel: integer); stdcall;
   // TOSUN callback
   tosun_recv_callback = procedure(sock: integer; p: Pointer; len: UInt16);
@@ -2389,6 +2415,7 @@ function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; ipadd
 function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_add_device_ex(const ANetworkIndex: integer; macaddr: PAnsichar; ipaddr: PAnsichar;  netmask: PAnsichar; gateway: PAnsichar; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_remove_device_ex(const ANetworkIndex: integer; mac: PAnsichar; ipaddr: PAnsichar): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_get_errno(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_dhcp_start(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_dhcp_stop(const ANetworkIndex: integer); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2472,6 +2499,10 @@ function tssocket_unregister_udp_sendto_events(const s: Integer): Integer; stdca
 function tssocket_register_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_udp_receivefrom_eventsv2(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//UDP Reveive from V3
+function tssocket_register_udp_receivefrom_eventv3(const s: Integer; const AEvent: TSSocketReceiveEventV3_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventv3(const s: Integer; const AEvent: TSSocketReceiveEventV3_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventsv3(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //TCP Receive V2
 function tssocket_register_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -3177,6 +3208,21 @@ end;
 function Tip_addr_t.ipv6: pip6_addr_t;
 begin
   result := @ip4Or6;
+
+end;
+
+function tts_msghdr.ToString: string;
+var
+  pDestAddr: pts_sockaddr_in;
+begin
+  result := '';
+  if Assigned(msg_name) then begin
+    pDestAddr := msg_name;
+    Result := 'Dst:' + string(pDestAddr.IPEndPoint);
+  end;
+  if Assigned(msg_iov) then begin
+    Result := Result + 'Received:' + msg_iov.iov_len.ToString;
+  end;
 
 end;
 
