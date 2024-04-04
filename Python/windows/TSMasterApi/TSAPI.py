@@ -2764,6 +2764,11 @@ tssocket_remove_device_ex.restype = s32
 tssocket_remove_device_ex.argtypes = [s32,pchar,pchar]
 
 #arg[0] ANetworkIndex
+tssocket_get_errno = dll.tssocket_get_errno
+tssocket_get_errno.restype = s32
+tssocket_get_errno.argtypes = [s32]
+
+#arg[0] ANetworkIndex
 tssocket_dhcp_start = dll.tssocket_dhcp_start
 tssocket_dhcp_start.restype = s32
 tssocket_dhcp_start.argtypes = [s32]
@@ -3183,6 +3188,23 @@ tssocket_unregister_udp_receivefrom_eventv2.argtypes = [s32,TSSocketReceiveEvent
 tssocket_unregister_udp_receivefrom_eventsv2 = dll.tssocket_unregister_udp_receivefrom_eventsv2
 tssocket_unregister_udp_receivefrom_eventsv2.restype = s32
 tssocket_unregister_udp_receivefrom_eventsv2.argtypes = [s32]
+
+#arg[0] s
+#arg[1] AEvent
+tssocket_register_udp_receivefrom_eventv3 = dll.tssocket_register_udp_receivefrom_eventv3
+tssocket_register_udp_receivefrom_eventv3.restype = s32
+tssocket_register_udp_receivefrom_eventv3.argtypes = [s32,TSSocketReceiveEventV3_Win32]
+
+#arg[0] s
+#arg[1] AEvent
+tssocket_unregister_udp_receivefrom_eventv3 = dll.tssocket_unregister_udp_receivefrom_eventv3
+tssocket_unregister_udp_receivefrom_eventv3.restype = s32
+tssocket_unregister_udp_receivefrom_eventv3.argtypes = [s32,TSSocketReceiveEventV3_Win32]
+
+#arg[0] s
+tssocket_unregister_udp_receivefrom_eventsv3 = dll.tssocket_unregister_udp_receivefrom_eventsv3
+tssocket_unregister_udp_receivefrom_eventsv3.restype = s32
+tssocket_unregister_udp_receivefrom_eventsv3.argtypes = [s32]
 
 #arg[0] s
 #arg[1] AEvent

@@ -1644,6 +1644,17 @@ typedef struct _Tts_msghdr{
     s32 msg_flags;
 }Tts_msghdr, *Pts_msghdr;
 
+typedef struct _Tts_cmsghdr{
+    u32 cmsg_len;
+    s32 cmsg_level;
+    s32 cmsg_type;
+}Tts_cmsghdr, *Pts_cmsghdr;
+
+typedef struct _Tts_in_pktinfo{
+    u32 ipi_ifindex;
+    Ts_in_addr ipi_addr;
+}Tts_in_pktinfo, *Pts_in_pktinfo;
+
 typedef struct _Tts_pollfd{
     s32 fd;
     s16 events;
@@ -1742,6 +1753,14 @@ typedef void(__stdcall*TSSocketReceiveEventV2)(const ps32 AObj,const s32 ASocket
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
+// Arg[3] ADstEndPoint
+// Arg[4] ASrcEndPoint
+// Arg[5] AData
+// Arg[6] ASize
+typedef void(__stdcall*TSSocketReceiveEventV3)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
 // Arg[3] AData
 // Arg[4] ASize
 typedef void(__stdcall*TSSocketTransmitEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
@@ -1769,6 +1788,14 @@ typedef void(__stdcall*TSSocketReceiveEvent_Win32)(const ps32 AObj,const s32 ASo
 // Arg[4] AData
 // Arg[5] ASize
 typedef void(__stdcall*TSSocketReceiveEventV2_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
+// Arg[0] AObj
+// Arg[1] ASocket
+// Arg[2] AResult
+// Arg[3] ADstEndPoint
+// Arg[4] ASrcEndPoint
+// Arg[5] AData
+// Arg[6] ASize
+typedef void(__stdcall*TSSocketReceiveEventV3_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -2693,6 +2720,8 @@ TSAPI(s32)tssocket_add_device_ex(const s32 ANetworkIndex,const char* macaddr,con
 
 TSAPI(s32)tssocket_remove_device_ex(const s32 ANetworkIndex,const char* mac,const char* ipaddr);
 
+TSAPI(s32)tssocket_get_errno(const s32 ANetworkIndex);
+
 TSAPI(s32)tssocket_dhcp_start(const s32 ANetworkIndex);
 
 TSAPI(s32)tssocket_select(const s32 ANetworkIndex,const s32 maxfdp1,const Pts_fd_set readset,const Pts_fd_set writeset,const Pts_fd_set exceptset,const Pts_timeval timeout);
@@ -2820,6 +2849,12 @@ TSAPI(s32)tssocket_register_udp_receivefrom_eventv2(const s32 s,const TSSocketRe
 TSAPI(s32)tssocket_unregister_udp_receivefrom_eventv2(const s32 s,const TSSocketReceiveEventV2_Win32 AEvent);
 
 TSAPI(s32)tssocket_unregister_udp_receivefrom_eventsv2(const s32 s);
+
+TSAPI(s32)tssocket_register_udp_receivefrom_eventv3(const s32 s,const TSSocketReceiveEventV3_Win32 AEvent);
+
+TSAPI(s32)tssocket_unregister_udp_receivefrom_eventv3(const s32 s,const TSSocketReceiveEventV3_Win32 AEvent);
+
+TSAPI(s32)tssocket_unregister_udp_receivefrom_eventsv3(const s32 s);
 
 TSAPI(s32)tssocket_register_tcp_receive_eventv2(const s32 s,const TSSocketReceiveEventV2_Win32 AEvent);
 
