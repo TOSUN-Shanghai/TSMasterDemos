@@ -3304,6 +3304,8 @@ TSAPI(s32)rpc_tsmaster_cmd_write_system_var(const size_t AHandle,const char* ACo
 
 TSAPI(s32)rpc_tsmaster_cmd_transfer_memory(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes);
 
+TSAPI(s32)rpc_tsmaster_cmd_log(const size_t AHandle,const char* AMsg,const s32 ALevel);
+
 #if defined ( __cplusplus )
 }
 #endif

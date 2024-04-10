@@ -4764,3 +4764,10 @@ rpc_tsmaster_cmd_transfer_memory = dll.rpc_tsmaster_cmd_transfer_memory
 rpc_tsmaster_cmd_transfer_memory.restype = s32
 rpc_tsmaster_cmd_transfer_memory.argtypes = [size_t,pu8,size_t]
 
+#arg[0] AHandle
+#arg[1] AMsg
+#arg[2] ALevel
+rpc_tsmaster_cmd_log = dll.rpc_tsmaster_cmd_log
+rpc_tsmaster_cmd_log.restype = s32
+rpc_tsmaster_cmd_log.argtypes = [size_t,pchar,s32]
+
