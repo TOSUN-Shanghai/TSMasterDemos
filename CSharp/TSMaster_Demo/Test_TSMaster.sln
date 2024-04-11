@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_ETH_UDP", "TSMaste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_ETH_TCP", "TSMaster_ETH_TCP\TSMaster_ETH_TCP.csproj", "{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSMaster_ETH_Demo", "TSMaster_ETH_Demo\TSMaster_ETH_Demo.csproj", "{2A29A3C6-424B-4177-AA1F-88C59E71DD8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A0C3F66-473F-4763-B7EE-0908A62F1ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A29A3C6-424B-4177-AA1F-88C59E71DD8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A29A3C6-424B-4177-AA1F-88C59E71DD8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A29A3C6-424B-4177-AA1F-88C59E71DD8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A29A3C6-424B-4177-AA1F-88C59E71DD8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

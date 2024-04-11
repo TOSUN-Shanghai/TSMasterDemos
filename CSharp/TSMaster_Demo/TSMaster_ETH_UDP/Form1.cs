@@ -105,15 +105,16 @@ namespace TSMaster_ETH_UDP
                 }
             }
             else {
+                
                 if (0 == TsMasterApi.tsapp_disconnect())
                 {
                     ISConnect = false;
-                    if(IsCreateUDP)
+                    if (IsCreateUDP)
                     {
                         IsCreateUDP = false;
                         TsMasterApi.tssocket_udp_close(serverSocket);
                     }
-                   
+
                     btn_ONOFF.Text = "连接";
                 }
             }
@@ -145,8 +146,9 @@ namespace TSMaster_ETH_UDP
                 {
                     log("UDP Create failed\r\n");
                 }
-                IsCreateUDP = true;
-                
+                //TsMasterApi.tssocket_udp_close(serverSocket);
+                //IsCreateUDP = true;
+
             }
             else
             {
