@@ -4771,3 +4771,36 @@ rpc_tsmaster_cmd_log = dll.rpc_tsmaster_cmd_log
 rpc_tsmaster_cmd_log.restype = s32
 rpc_tsmaster_cmd_log.argtypes = [size_t,pchar,s32]
 
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_sim = dll.rpc_tsmaster_cmd_set_mode_sim
+rpc_tsmaster_cmd_set_mode_sim.restype = s32
+rpc_tsmaster_cmd_set_mode_sim.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_realtime = dll.rpc_tsmaster_cmd_set_mode_realtime
+rpc_tsmaster_cmd_set_mode_realtime.restype = s32
+rpc_tsmaster_cmd_set_mode_realtime.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_free = dll.rpc_tsmaster_cmd_set_mode_free
+rpc_tsmaster_cmd_set_mode_free.restype = s32
+rpc_tsmaster_cmd_set_mode_free.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ATimeUs
+rpc_tsmaster_cmd_sim_step = dll.rpc_tsmaster_cmd_sim_step
+rpc_tsmaster_cmd_sim_step.restype = s32
+rpc_tsmaster_cmd_sim_step.argtypes = [size_t,s64]
+
+#arg[0] AAddress
+#arg[1] ASizeBytes
+create_process_shared_memory = dll.create_process_shared_memory
+create_process_shared_memory.restype = s32
+create_process_shared_memory.argtypes = [ppu8,s32]
+
+#arg[0] AAddress
+#arg[1] ASizeBytes
+get_process_shared_memory = dll.get_process_shared_memory
+get_process_shared_memory.restype = s32
+get_process_shared_memory.argtypes = [ppu8,ps32]
+

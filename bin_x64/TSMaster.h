@@ -3306,6 +3306,18 @@ TSAPI(s32)rpc_tsmaster_cmd_transfer_memory(const size_t AHandle,const pu8 AAddr,
 
 TSAPI(s32)rpc_tsmaster_cmd_log(const size_t AHandle,const char* AMsg,const s32 ALevel);
 
+TSAPI(s32)rpc_tsmaster_cmd_set_mode_sim(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_set_mode_realtime(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_set_mode_free(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_sim_step(const size_t AHandle,const s64 ATimeUs);
+
+TSAPI(s32)create_process_shared_memory(const ppu8 AAddress,const s32 ASizeBytes);
+
+TSAPI(s32)get_process_shared_memory(const ppu8 AAddress,const ps32 ASizeBytes);
+
 #if defined ( __cplusplus )
 }
 #endif
