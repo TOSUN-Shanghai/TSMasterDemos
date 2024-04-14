@@ -2743,6 +2743,8 @@ function rpc_tsmaster_cmd_set_mode_free(const AHandle: NativeInt): integer; stdc
 function rpc_tsmaster_cmd_sim_step(const AHandle: NativeInt; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function create_process_shared_memory(AAddress: ppByte; const ASizeBytes: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_process_shared_memory(AAddress: ppByte; ASizeBytes: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_sim_step_batch_start(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_sim_step_batch_end(const AHandle: NativeInt; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
