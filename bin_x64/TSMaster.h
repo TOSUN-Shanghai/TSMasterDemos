@@ -3318,6 +3318,18 @@ TSAPI(s32)create_process_shared_memory(const ppu8 AAddress,const s32 ASizeBytes)
 
 TSAPI(s32)get_process_shared_memory(const ppu8 AAddress,const ps32 ASizeBytes);
 
+TSAPI(s32)rpc_tsmaster_cmd_sim_step_batch_start(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_sim_step_batch_end(const size_t AHandle,const s64 ATimeUs);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_project(const size_t AHandle,const ppchar AProjectFullPath);
+
+TSAPI(s32)rpc_tsmaster_cmd_read_system_var(const size_t AHandle,const char* ASysVarName,const pdouble AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_read_signal(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* AAddr,const pdouble AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_write_signal(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* AAddr,const double AValue);
+
 #if defined ( __cplusplus )
 }
 #endif

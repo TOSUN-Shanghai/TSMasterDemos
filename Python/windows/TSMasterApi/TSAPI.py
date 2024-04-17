@@ -4804,3 +4804,43 @@ get_process_shared_memory = dll.get_process_shared_memory
 get_process_shared_memory.restype = s32
 get_process_shared_memory.argtypes = [ppu8,ps32]
 
+#arg[0] AHandle
+rpc_tsmaster_cmd_sim_step_batch_start = dll.rpc_tsmaster_cmd_sim_step_batch_start
+rpc_tsmaster_cmd_sim_step_batch_start.restype = s32
+rpc_tsmaster_cmd_sim_step_batch_start.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ATimeUs
+rpc_tsmaster_cmd_sim_step_batch_end = dll.rpc_tsmaster_cmd_sim_step_batch_end
+rpc_tsmaster_cmd_sim_step_batch_end.restype = s32
+rpc_tsmaster_cmd_sim_step_batch_end.argtypes = [size_t,s64]
+
+#arg[0] AHandle
+#arg[1] AProjectFullPath
+rpc_tsmaster_cmd_get_project = dll.rpc_tsmaster_cmd_get_project
+rpc_tsmaster_cmd_get_project.restype = s32
+rpc_tsmaster_cmd_get_project.argtypes = [size_t,ppchar]
+
+#arg[0] AHandle
+#arg[1] ASysVarName
+#arg[2] AValue
+rpc_tsmaster_cmd_read_system_var = dll.rpc_tsmaster_cmd_read_system_var
+rpc_tsmaster_cmd_read_system_var.restype = s32
+rpc_tsmaster_cmd_read_system_var.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ABusType
+#arg[2] AAddr
+#arg[3] AValue
+rpc_tsmaster_cmd_read_signal = dll.rpc_tsmaster_cmd_read_signal
+rpc_tsmaster_cmd_read_signal.restype = s32
+rpc_tsmaster_cmd_read_signal.argtypes = [size_t,TLIBApplicationChannelType,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ABusType
+#arg[2] AAddr
+#arg[3] AValue
+rpc_tsmaster_cmd_write_signal = dll.rpc_tsmaster_cmd_write_signal
+rpc_tsmaster_cmd_write_signal.restype = s32
+rpc_tsmaster_cmd_write_signal.argtypes = [size_t,TLIBApplicationChannelType,pchar,double]
+

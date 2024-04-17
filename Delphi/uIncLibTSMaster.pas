@@ -1541,7 +1541,7 @@ const
   IDX_ERR_CALLBACK_NOT_EXISTS        = 46;
   IDX_ERR_FILE_INVALID               = 47; // database file corrupted or not recognized
   IDX_ERR_DB_ID_NOT_FOUND            = 48; // database unique id not found
-  IDX_ERR_SW_API_PAEAMETER_INVALID   = 49; // software api parameter invalid
+  IDX_ERR_SW_API_PARAMETER_INVALID   = 49; // software api parameter invalid
   IDX_ERR_SW_API_GENERIC_TIMEOUT     = 50; // software api generic timed out
   IDX_ERR_SW_API_SET_CONF_FAILED     = 51; // software api set hw conf failed
   IDX_ERR_SW_API_INDEX_OUT_OF_BOUNDS = 52; // index out of bounds
@@ -2745,6 +2745,10 @@ function create_process_shared_memory(AAddress: ppByte; const ASizeBytes: int32)
 function get_process_shared_memory(AAddress: ppByte; ASizeBytes: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_sim_step_batch_start(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_sim_step_batch_end(const AHandle: NativeInt; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_project(const AHandle: NativeInt; AProjectFullPath: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_read_system_var(const AHandle: NativeInt; ASysVarName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_read_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_write_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
