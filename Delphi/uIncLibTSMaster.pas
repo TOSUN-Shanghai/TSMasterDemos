@@ -2749,6 +2749,10 @@ function rpc_tsmaster_cmd_get_project(const AHandle: NativeInt; AProjectFullPath
 function rpc_tsmaster_cmd_read_system_var(const AHandle: NativeInt; ASysVarName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_read_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_write_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function clear_user_constants(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function append_user_constants_from_c_header(const AHeaderFile: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function append_user_constant(const AConstantName: pansichar; const AValue: double; const ADesc: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function delete_user_constant(const AConstantName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
