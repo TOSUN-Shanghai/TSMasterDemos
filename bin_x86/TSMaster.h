@@ -1396,10 +1396,11 @@ typedef struct _TLIBFlexRayControllerParameters{
 }TLIBFlexRayControllerParameters, *PLIBFlexRayControllerParameters;
 
 typedef struct _TLIBTrigger_def{
+    u16 slot_id;
     u8 frame_idx;
-    u8 slot_id;
     u8 cycle_code;
     u8 config_byte;
+    u8 rev;
 }TLIBTrigger_def, *PLIBTrigger_def;
 
 typedef struct _TLIBGPSData{
@@ -1626,26 +1627,32 @@ typedef struct _Tts_iovec{
 }Tts_iovec, *Pts_iovec;
 
 typedef struct _Tts_timeval{
-    long tv_sec;
-    long tv_usec;
+    s32 tv_sec;
+    s32 tv_usec;
 }Tts_timeval, *Pts_timeval;
 
 typedef struct _Tts_fd_set{
     u8 fd_bits[2];
 }Tts_fd_set, *Pts_fd_set;
 
+typedef struct _Tts_pollfd{
+    s32 fd;
+    int16 events;
+    int16 revents;
+}Tts_pollfd, *Pts_pollfd;
+
 typedef struct _Tts_msghdr{
     ps32 msg_name;
-    u32 msg_namelen;
+    tts_socklen_t msg_namelen;
     Pts_iovec msg_iov;
     s32 msg_iovlen;
     ps32 msg_control;
-    u32 msg_controllen;
+    tts_socklen_t msg_controllen;
     s32 msg_flags;
 }Tts_msghdr, *Pts_msghdr;
 
 typedef struct _Tts_cmsghdr{
-    u32 cmsg_len;
+    tts_socklen_t cmsg_len;
     s32 cmsg_level;
     s32 cmsg_type;
 }Tts_cmsghdr, *Pts_cmsghdr;
@@ -1654,12 +1661,6 @@ typedef struct _Tts_in_pktinfo{
     u32 ipi_ifindex;
     Ts_in_addr ipi_addr;
 }Tts_in_pktinfo, *Pts_in_pktinfo;
-
-typedef struct _Tts_pollfd{
-    s32 fd;
-    s16 events;
-    s16 revents;
-}Tts_pollfd, *Pts_pollfd;
 
 typedef void(__cdecl*TCProcedure)();
 // Arg[0] AData
@@ -1900,7 +1901,7 @@ TSAPI(void)tsfifo_disable_receive_error_frames();
 
 TSAPI(void)tsdiag_can_delete_all();
 
-TSAPI(void)tssocket_dhcp_stop(const s32 ANetworkIndex);
+TSAPI(void)rawsocket_dhcp_stop(const s32 ANetworkIndex);
 
 TSAPI(void)tssocket_ping4(const s32 ANetworkIndex,const Pip4_addr_t ping_addr,const s32 repeatcnt,const u32 interval_ms,const u32 timeout_ms);
 
@@ -2690,21 +2691,21 @@ TSAPI(s32)tsapp_reset_gps_module(const s32 AChnIdx,const s32 AInitBaudrate,const
 
 TSAPI(s32)tsapp_unlock_camera_channel(const s32 AChnIdx);
 
-TSAPI(u16)tssocket_htons(const u16 x);
+TSAPI(u16)rawsocket_htons(const u16 x);
 
-TSAPI(u32)tssocket_htonl(const u32 x);
+TSAPI(u32)rawsocket_htonl(const u32 x);
 
-TSAPI(s32)tssocket_aton(const char* cp,const Pip4_addr_t addr);
+TSAPI(s32)rawsocket_aton(const char* cp,const Pip4_addr_t addr);
 
-TSAPI(char*)tssocket_ntoa(const Pip4_addr_t addr);
+TSAPI(char*)rawsocket_ntoa(const Pip4_addr_t addr);
 
-TSAPI(s32)tssocket_aton6(const char* cp,const Pip6_addr_t addr);
+TSAPI(s32)rawsocket_aton6(const char* cp,const Pip6_addr_t addr);
 
-TSAPI(char*)tssocket_ntoa6(const Pip6_addr_t addr);
+TSAPI(char*)rawsocket_ntoa6(const Pip6_addr_t addr);
 
-TSAPI(char*)tssocket_inet_ntop(const s32 af,const ps32 src,const char* dst,const u32 size);
+TSAPI(char*)rawsocket_inet_ntop(const s32 af,const ps32 src,const char* dst,const tts_socklen_t size);
 
-TSAPI(s32)tssocket_inet_pton(const s32 af,const char* src,const ps32 dst);
+TSAPI(s32)rawsocket_inet_pton(const s32 af,const char* src,const ps32 dst);
 
 TSAPI(s32)tssocket_initialize(const s32 ANetworkIndex);
 
@@ -2720,61 +2721,61 @@ TSAPI(s32)tssocket_add_device_ex(const s32 ANetworkIndex,const char* macaddr,con
 
 TSAPI(s32)tssocket_remove_device_ex(const s32 ANetworkIndex,const char* mac,const char* ipaddr);
 
-TSAPI(s32)tssocket_get_errno(const s32 ANetworkIndex);
+TSAPI(s32)rawsocket_get_errno(const s32 ANetworkIndex);
 
-TSAPI(s32)tssocket_dhcp_start(const s32 ANetworkIndex);
+TSAPI(s32)rawsocket_dhcp_start(const s32 ANetworkIndex);
 
-TSAPI(s32)tssocket_select(const s32 ANetworkIndex,const s32 maxfdp1,const Pts_fd_set readset,const Pts_fd_set writeset,const Pts_fd_set exceptset,const Pts_timeval timeout);
+TSAPI(s32)rawsocket_select(const s32 ANetworkIndex,const s32 maxfdp1,const Pts_fd_set readset,const Pts_fd_set writeset,const Pts_fd_set exceptset,const Pts_timeval timeout);
 
-TSAPI(s32)tssocket_poll(const s32 ANetworkIndex,const Pts_pollfd fds,const size_t nfds,const s32 timeout);
+TSAPI(s32)rawsocket_poll(const s32 ANetworkIndex,const Pts_pollfd fds,const size_t nfds,const s32 timeout);
 
-TSAPI(s32)tssocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,const s32 protocol,const tosun_recv_callback recv_cb,const tosun_tcp_presend_callback presend_cb,const tosun_tcp_ack_callback send_cb);
+TSAPI(s32)rawsocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,const s32 protocol,const tosun_recv_callback recv_cb,const tosun_tcp_presend_callback presend_cb,const tosun_tcp_ack_callback send_cb);
 
-TSAPI(s32)tssocket_accept(const s32 s,const Pts_sockaddr addr,const pu32 addrlen);
+TSAPI(s32)rawsocket_accept(const s32 s,const Pts_sockaddr addr,const pu32 addrlen);
 
-TSAPI(s32)tssocket_bind(const s32 s,const Pts_sockaddr name,const u32 namelen);
+TSAPI(s32)rawsocket_bind(const s32 s,const Pts_sockaddr name,const tts_socklen_t namelen);
 
-TSAPI(s32)tssocket_shutdown(const s32 s,const s32 how);
+TSAPI(s32)rawsocket_shutdown(const s32 s,const s32 how);
 
-TSAPI(s32)tssocket_getpeername(const s32 s,const Pts_sockaddr name,const pu32 namelen);
+TSAPI(s32)rawsocket_getpeername(const s32 s,const Pts_sockaddr name,const pu32 namelen);
 
-TSAPI(s32)tssocket_getsockname(const s32 s,const Pts_sockaddr name,const pu32 namelen);
+TSAPI(s32)rawsocket_getsockname(const s32 s,const Pts_sockaddr name,const pu32 namelen);
 
-TSAPI(s32)tssocket_getsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const pu32 optlen);
+TSAPI(s32)rawsocket_getsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const pu32 optlen);
 
-TSAPI(s32)tssocket_setsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const u32 optlen);
+TSAPI(s32)rawsocket_setsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const tts_socklen_t optlen);
 
-TSAPI(s32)tssocket_close(const s32 s);
+TSAPI(s32)rawsocket_close(const s32 s);
 
-TSAPI(s32)tssocket_close_v2(const s32 s,const s32 AForceExitTimeWait);
+TSAPI(s32)rawsocket_close_v2(const s32 s,const s32 AForceExitTimeWait);
 
-TSAPI(s32)tssocket_connect(const s32 s,const Pts_sockaddr name,const u32 namelen);
+TSAPI(s32)rawsocket_connect(const s32 s,const Pts_sockaddr name,const tts_socklen_t namelen);
 
-TSAPI(s32)tssocket_listen(const s32 s,const s32 backlog);
+TSAPI(s32)rawsocket_listen(const s32 s,const s32 backlog);
 
-TSAPI(size_t)tssocket_recv(const s32 s,const ps32 mem,const size_t len,const s32 flags);
+TSAPI(size_t)rawsocket_recv(const s32 s,const ps32 mem,const size_t len,const s32 flags);
 
-TSAPI(size_t)tssocket_read(const s32 s,const ps32 mem,const size_t len);
+TSAPI(size_t)rawsocket_read(const s32 s,const ps32 mem,const size_t len);
 
-TSAPI(size_t)tssocket_readv(const s32 s,const Pts_iovec iov,const s32 iovcnt);
+TSAPI(size_t)rawsocket_readv(const s32 s,const Pts_iovec iov,const s32 iovcnt);
 
-TSAPI(size_t)tssocket_recvfrom(const s32 s,const ps32 mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
+TSAPI(size_t)rawsocket_recvfrom(const s32 s,const ps32 mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
 
-TSAPI(size_t)tssocket_recvmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
+TSAPI(size_t)rawsocket_recvmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
 
-TSAPI(size_t)tssocket_send(const s32 s,const ps32 dataptr,const size_t size,const s32 flags);
+TSAPI(size_t)rawsocket_send(const s32 s,const ps32 dataptr,const size_t size,const s32 flags);
 
-TSAPI(size_t)tssocket_sendmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
+TSAPI(size_t)rawsocket_sendmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
 
-TSAPI(size_t)tssocket_sendto(const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
+TSAPI(size_t)rawsocket_sendto(const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const tts_socklen_t tolen);
 
-TSAPI(size_t)tssocket_write(const s32 s,const ps32 dataptr,const size_t size);
+TSAPI(size_t)rawsocket_write(const s32 s,const ps32 dataptr,const size_t size);
 
-TSAPI(size_t)tssocket_writev(const s32 s,const Pts_iovec iov,const s32 iovcnt);
+TSAPI(size_t)rawsocket_writev(const s32 s,const Pts_iovec iov,const s32 iovcnt);
 
-TSAPI(s32)tssocket_ioctl(const s32 s,const long cmd,const ps32 argp);
+TSAPI(s32)rawsocket_ioctl(const s32 s,const long cmd,const ps32 argp);
 
-TSAPI(s32)tssocket_fcntl(const s32 s,const s32 cmd,const s32 val);
+TSAPI(s32)rawsocket_fcntl(const s32 s,const s32 cmd,const s32 val);
 
 TSAPI(s32)tssocket_tcp(const s32 ANetworkIndex,const char* AIPEndPoint,const ps32 ASocketHandle);
 
@@ -3329,6 +3330,14 @@ TSAPI(s32)rpc_tsmaster_cmd_read_system_var(const size_t AHandle,const char* ASys
 TSAPI(s32)rpc_tsmaster_cmd_read_signal(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* AAddr,const pdouble AValue);
 
 TSAPI(s32)rpc_tsmaster_cmd_write_signal(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* AAddr,const double AValue);
+
+TSAPI(s32)clear_user_constants();
+
+TSAPI(s32)append_user_constants_from_c_header(const char* AHeaderFile);
+
+TSAPI(s32)append_user_constant(const char* AConstantName,const double AValue,const char* ADesc);
+
+TSAPI(s32)delete_user_constant(const char* AConstantName);
 
 #if defined ( __cplusplus )
 }
