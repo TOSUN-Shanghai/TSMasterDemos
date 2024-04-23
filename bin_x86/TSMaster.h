@@ -1637,22 +1637,22 @@ typedef struct _Tts_fd_set{
 
 typedef struct _Tts_pollfd{
     s32 fd;
-    int16 events;
-    int16 revents;
+    s16 events;
+    s16 revents;
 }Tts_pollfd, *Pts_pollfd;
 
 typedef struct _Tts_msghdr{
     ps32 msg_name;
-    tts_socklen_t msg_namelen;
+    u32 msg_namelen;
     Pts_iovec msg_iov;
     s32 msg_iovlen;
     ps32 msg_control;
-    tts_socklen_t msg_controllen;
+    u32 msg_controllen;
     s32 msg_flags;
 }Tts_msghdr, *Pts_msghdr;
 
 typedef struct _Tts_cmsghdr{
-    tts_socklen_t cmsg_len;
+    u32 cmsg_len;
     s32 cmsg_level;
     s32 cmsg_type;
 }Tts_cmsghdr, *Pts_cmsghdr;
@@ -2703,7 +2703,7 @@ TSAPI(s32)rawsocket_aton6(const char* cp,const Pip6_addr_t addr);
 
 TSAPI(char*)rawsocket_ntoa6(const Pip6_addr_t addr);
 
-TSAPI(char*)rawsocket_inet_ntop(const s32 af,const ps32 src,const char* dst,const tts_socklen_t size);
+TSAPI(char*)rawsocket_inet_ntop(const s32 af,const ps32 src,const char* dst,const u32 size);
 
 TSAPI(s32)rawsocket_inet_pton(const s32 af,const char* src,const ps32 dst);
 
@@ -2733,7 +2733,7 @@ TSAPI(s32)rawsocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,con
 
 TSAPI(s32)rawsocket_accept(const s32 s,const Pts_sockaddr addr,const pu32 addrlen);
 
-TSAPI(s32)rawsocket_bind(const s32 s,const Pts_sockaddr name,const tts_socklen_t namelen);
+TSAPI(s32)rawsocket_bind(const s32 s,const Pts_sockaddr name,const u32 namelen);
 
 TSAPI(s32)rawsocket_shutdown(const s32 s,const s32 how);
 
@@ -2743,13 +2743,13 @@ TSAPI(s32)rawsocket_getsockname(const s32 s,const Pts_sockaddr name,const pu32 n
 
 TSAPI(s32)rawsocket_getsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const pu32 optlen);
 
-TSAPI(s32)rawsocket_setsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const tts_socklen_t optlen);
+TSAPI(s32)rawsocket_setsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const u32 optlen);
 
 TSAPI(s32)rawsocket_close(const s32 s);
 
 TSAPI(s32)rawsocket_close_v2(const s32 s,const s32 AForceExitTimeWait);
 
-TSAPI(s32)rawsocket_connect(const s32 s,const Pts_sockaddr name,const tts_socklen_t namelen);
+TSAPI(s32)rawsocket_connect(const s32 s,const Pts_sockaddr name,const u32 namelen);
 
 TSAPI(s32)rawsocket_listen(const s32 s,const s32 backlog);
 
@@ -2767,7 +2767,7 @@ TSAPI(size_t)rawsocket_send(const s32 s,const ps32 dataptr,const size_t size,con
 
 TSAPI(size_t)rawsocket_sendmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
 
-TSAPI(size_t)rawsocket_sendto(const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const tts_socklen_t tolen);
+TSAPI(size_t)rawsocket_sendto(const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
 
 TSAPI(size_t)rawsocket_write(const s32 s,const ps32 dataptr,const size_t size);
 

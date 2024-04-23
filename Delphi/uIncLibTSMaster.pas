@@ -66,6 +66,7 @@ const
   MAX_SUPPORT_LOGGER_FILE_NUM  = 128;
   READ_LOGGER_FILE_NUM_ONCE_TIME = 30;
 
+
 type
   pInt32 = ^Int32;
   ppInt32 = ^pInt32;
@@ -1351,6 +1352,7 @@ const
  AF_MAX          = 22;
 *)
 
+//----start define type------
 type
   ssize_t = NativeInt;
   tts_socklen_t = UInt32;
@@ -1359,11 +1361,13 @@ type
   ts_sa_family_t = UInt8;
   ts_in_port_t = UInt16;
   ts_in_addr_t = UInt32;
+//----end define type------
 
   pip4_addr_t = ^tip4_addr_t;
   tip4_addr_t = packed record
 	  addr: UInt32;
   end;
+
 
 {$DEFINE  LWIP_IPV6_SCOPES}
   pip6_addr_t = ^tip6_addr_t;

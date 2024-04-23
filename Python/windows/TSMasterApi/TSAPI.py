@@ -2704,7 +2704,7 @@ rawsocket_ntoa6.argtypes = [Pip6_addr_t]
 #arg[3] size
 rawsocket_inet_ntop = dll.rawsocket_inet_ntop
 rawsocket_inet_ntop.restype = pchar
-rawsocket_inet_ntop.argtypes = [s32,ps32,pchar,tts_socklen_t]
+rawsocket_inet_ntop.argtypes = [s32,ps32,pchar,u32]
 
 #arg[0] af
 #arg[1] src
@@ -2814,7 +2814,7 @@ rawsocket_accept.argtypes = [s32,Pts_sockaddr,pu32]
 #arg[2] namelen
 rawsocket_bind = dll.rawsocket_bind
 rawsocket_bind.restype = s32
-rawsocket_bind.argtypes = [s32,Pts_sockaddr,tts_socklen_t]
+rawsocket_bind.argtypes = [s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] how
@@ -2852,7 +2852,7 @@ rawsocket_getsockopt.argtypes = [s32,s32,s32,ps32,pu32]
 #arg[4] optlen
 rawsocket_setsockopt = dll.rawsocket_setsockopt
 rawsocket_setsockopt.restype = s32
-rawsocket_setsockopt.argtypes = [s32,s32,s32,ps32,tts_socklen_t]
+rawsocket_setsockopt.argtypes = [s32,s32,s32,ps32,u32]
 
 #arg[0] s
 rawsocket_close = dll.rawsocket_close
@@ -2870,7 +2870,7 @@ rawsocket_close_v2.argtypes = [s32,s32]
 #arg[2] namelen
 rawsocket_connect = dll.rawsocket_connect
 rawsocket_connect.restype = s32
-rawsocket_connect.argtypes = [s32,Pts_sockaddr,tts_socklen_t]
+rawsocket_connect.argtypes = [s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] backlog
@@ -2940,7 +2940,7 @@ rawsocket_sendmsg.argtypes = [s32,Pts_msghdr,s32]
 #arg[5] tolen
 rawsocket_sendto = dll.rawsocket_sendto
 rawsocket_sendto.restype = size_t
-rawsocket_sendto.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,tts_socklen_t]
+rawsocket_sendto.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] dataptr

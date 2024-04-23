@@ -878,26 +878,26 @@ Pts_fd_set = POINTER(Tts_fd_set)
 class Tts_pollfd(Structure):
     _pack_ = 1
     _fields_ =[('fd',s32),
-('events',int16),
-('revents',int16),
+('events',s16),
+('revents',s16),
 ]
 Pts_pollfd = POINTER(Tts_pollfd)
 
 class Tts_msghdr(Structure):
     _pack_ = 1
     _fields_ =[('msg_name',ps32),
-('msg_namelen',tts_socklen_t),
+('msg_namelen',u32),
 ('msg_iov',Pts_iovec),
 ('msg_iovlen',s32),
 ('msg_control',ps32),
-('msg_controllen',tts_socklen_t),
+('msg_controllen',u32),
 ('msg_flags',s32),
 ]
 Pts_msghdr = POINTER(Tts_msghdr)
 
 class Tts_cmsghdr(Structure):
     _pack_ = 1
-    _fields_ =[('cmsg_len',tts_socklen_t),
+    _fields_ =[('cmsg_len',u32),
 ('cmsg_level',s32),
 ('cmsg_type',s32),
 ]
