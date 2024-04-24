@@ -1792,7 +1792,29 @@ const
   IDX_ERR_VISA_DEVICE_NOT_READY              = 291;
   IDX_ERR_ADD_INSTRUMENT_FAILED              = 292;
   IDX_ERR_LANG_KEY_NOT_FOUND                 = 293;
-  ERR_CODE_COUNT                             = 294;
+  IDX_ERR_MAC_ADDRESS_NOT_EXITS              = 294;
+  IDX_ERR_IP_PORT_NOT_EXISTS                 = 295;
+  IDX_ERR_CRITICAL_SECTION_ENTER_FAILED      = 296;
+  IDX_ERR_REQUIRE_APP_DISCONNECTED           = 297;
+  IDX_ERR_SOCKET_ALREADY_EXISTS              = 298;
+  IDX_ERR_SOCKET_NOT_EXISTS                  = 299;
+  IDX_ERR_INVALID_IPV4_ENDPOINT              = 300;
+  IDX_ERR_TCP_CLIENT_NOT_SUPPORT_THIS_FEATURE = 301;
+  IDX_ERR_TCP_SERVER_NOT_SUPPORT_THIS_FEATURE = 302;
+  IDX_ERR_TCP_CLIENT_CONNECT_FAILED           = 303;
+  IDX_ERR_TCP_START_LISTEN_FAILED             = 304;
+  IDX_ERR_TCP_DUPLICATE_START_LISTEN          = 305;
+  IDX_ERR_CREATE_SOCKET_FAILED                = 306;
+  IDX_ERR_RPC_SERVER_NOT_ACTIVATED            = 307;
+  IDX_ERR_RPC_CLIENT_NOT_ACTIVATED            = 308;
+  IDX_ERR_RPC_CALL_FAILED                     = 309;
+  IDX_ERR_TSMASTER_NOT_IN_COSIMULATION        = 310;
+  IDX_ERR_OBJECT_NOT_CREATED                  = 311;
+  IDX_ERR_OPERATION_NOT_SUPP_IN_BATCH_MODE    = 312;
+  IDX_ERR_NOT_IMPLEMENTED                     = 313;
+  IDX_ERR_OPERATION_PENDING                   = 314;
+  IDX_ERR_COMPILE_FAILED                      = 315;
+  ERR_CODE_COUNT                              = 316;
 // Note: Should also update C API!!!
 
 // library initialization and finalization
