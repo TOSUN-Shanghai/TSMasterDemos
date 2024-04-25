@@ -2731,37 +2731,41 @@ tssocket_finalize.argtypes = [s32]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
-#arg[3] netmask
-#arg[4] gateway
-#arg[5] mtu
+#arg[2] vLan
+#arg[3] ipaddr
+#arg[4] netmask
+#arg[5] gateway
+#arg[6] mtu
 tssocket_add_device = dll.tssocket_add_device
 tssocket_add_device.restype = s32
-tssocket_add_device.argtypes = [s32,pu8,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
+tssocket_add_device.argtypes = [s32,pu8,System.PWORD,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
+#arg[2] vLan
+#arg[3] ipaddr
 tssocket_remove_device = dll.tssocket_remove_device
 tssocket_remove_device.restype = s32
-tssocket_remove_device.argtypes = [s32,pu8,Pip4_addr_t]
+tssocket_remove_device.argtypes = [s32,pu8,System.PWORD,Pip4_addr_t]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
-#arg[3] netmask
-#arg[4] gateway
-#arg[5] mtu
+#arg[2] vlan
+#arg[3] ipaddr
+#arg[4] netmask
+#arg[5] gateway
+#arg[6] mtu
 tssocket_add_device_ex = dll.tssocket_add_device_ex
 tssocket_add_device_ex.restype = s32
-tssocket_add_device_ex.argtypes = [s32,pchar,pchar,pchar,pchar,u16]
+tssocket_add_device_ex.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,u16]
 
 #arg[0] ANetworkIndex
 #arg[1] mac
-#arg[2] ipaddr
+#arg[2] vlan
+#arg[3] ipaddr
 tssocket_remove_device_ex = dll.tssocket_remove_device_ex
 tssocket_remove_device_ex.restype = s32
-tssocket_remove_device_ex.argtypes = [s32,pchar,pchar]
+tssocket_remove_device_ex.argtypes = [s32,pchar,pchar,pchar]
 
 #arg[0] ANetworkIndex
 rawsocket_get_errno = dll.rawsocket_get_errno
@@ -4864,4 +4868,22 @@ append_user_constant.argtypes = [pchar,double,pchar]
 delete_user_constant = dll.delete_user_constant
 delete_user_constant.restype = s32
 delete_user_constant.argtypes = [pchar]
+
+#arg[0] ACount
+get_mini_program_count = dll.get_mini_program_count
+get_mini_program_count.restype = s32
+get_mini_program_count.argtypes = [ps32]
+
+#arg[0] AIndex
+#arg[1] AKind
+#arg[2] AProgramName
+#arg[3] ADisplayName
+get_mini_program_info_by_index = dll.get_mini_program_info_by_index
+get_mini_program_info_by_index.restype = s32
+get_mini_program_info_by_index.argtypes = [s32,ps32,ppchar,ppchar]
+
+#arg[0] AProgramNames
+compile_mini_programs = dll.compile_mini_programs
+compile_mini_programs.restype = s32
+compile_mini_programs.argtypes = [pchar]
 

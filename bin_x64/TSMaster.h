@@ -2713,13 +2713,13 @@ TSAPI(s32)tssocket_initialize_verbose(const s32 ANetworkIndex,const TLogDebuggin
 
 TSAPI(s32)tssocket_finalize(const s32 ANetworkIndex);
 
-TSAPI(s32)tssocket_add_device(const s32 ANetworkIndex,const pu8 macaddr,const Tip4_addr_t ipaddr,const Tip4_addr_t netmask,const Tip4_addr_t gateway,const u16 mtu);
+TSAPI(s32)tssocket_add_device(const s32 ANetworkIndex,const pu8 macaddr,const System.PWORD vLan,const Tip4_addr_t ipaddr,const Tip4_addr_t netmask,const Tip4_addr_t gateway,const u16 mtu);
 
-TSAPI(s32)tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const Pip4_addr_t ipaddr);
+TSAPI(s32)tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const System.PWORD vLan,const Pip4_addr_t ipaddr);
 
-TSAPI(s32)tssocket_add_device_ex(const s32 ANetworkIndex,const char* macaddr,const char* ipaddr,const char* netmask,const char* gateway,const u16 mtu);
+TSAPI(s32)tssocket_add_device_ex(const s32 ANetworkIndex,const char* macaddr,const char* vlan,const char* ipaddr,const char* netmask,const char* gateway,const u16 mtu);
 
-TSAPI(s32)tssocket_remove_device_ex(const s32 ANetworkIndex,const char* mac,const char* ipaddr);
+TSAPI(s32)tssocket_remove_device_ex(const s32 ANetworkIndex,const char* mac,const char* vlan,const char* ipaddr);
 
 TSAPI(s32)rawsocket_get_errno(const s32 ANetworkIndex);
 
@@ -3338,6 +3338,12 @@ TSAPI(s32)append_user_constants_from_c_header(const char* AHeaderFile);
 TSAPI(s32)append_user_constant(const char* AConstantName,const double AValue,const char* ADesc);
 
 TSAPI(s32)delete_user_constant(const char* AConstantName);
+
+TSAPI(s32)get_mini_program_count(const ps32 ACount);
+
+TSAPI(s32)get_mini_program_info_by_index(const s32 AIndex,const ps32 AKind,const ppchar AProgramName,const ppchar ADisplayName);
+
+TSAPI(s32)compile_mini_programs(const char* AProgramNames);
 
 #if defined ( __cplusplus )
 }
