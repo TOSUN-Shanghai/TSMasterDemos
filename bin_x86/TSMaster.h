@@ -2713,9 +2713,9 @@ TSAPI(s32)tssocket_initialize_verbose(const s32 ANetworkIndex,const TLogDebuggin
 
 TSAPI(s32)tssocket_finalize(const s32 ANetworkIndex);
 
-TSAPI(s32)tssocket_add_device(const s32 ANetworkIndex,const pu8 macaddr,const System.PWORD vLan,const Tip4_addr_t ipaddr,const Tip4_addr_t netmask,const Tip4_addr_t gateway,const u16 mtu);
+TSAPI(s32)tssocket_add_device(const s32 ANetworkIndex,const pu8 macaddr,const pu16 vLan,const Tip4_addr_t ipaddr,const Tip4_addr_t netmask,const Tip4_addr_t gateway,const u16 mtu);
 
-TSAPI(s32)tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const System.PWORD vLan,const Pip4_addr_t ipaddr);
+TSAPI(s32)tssocket_remove_device(const s32 ANetworkIndex,const pu8 macaddr,const pu16 vLan,const Pip4_addr_t ipaddr);
 
 TSAPI(s32)tssocket_add_device_ex(const s32 ANetworkIndex,const char* macaddr,const char* vlan,const char* ipaddr,const char* netmask,const char* gateway,const u16 mtu);
 

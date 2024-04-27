@@ -2738,7 +2738,7 @@ tssocket_finalize.argtypes = [s32]
 #arg[6] mtu
 tssocket_add_device = dll.tssocket_add_device
 tssocket_add_device.restype = s32
-tssocket_add_device.argtypes = [s32,pu8,System.PWORD,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
+tssocket_add_device.argtypes = [s32,pu8,pu16,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
@@ -2746,7 +2746,7 @@ tssocket_add_device.argtypes = [s32,pu8,System.PWORD,Tip4_addr_t,Tip4_addr_t,Tip
 #arg[3] ipaddr
 tssocket_remove_device = dll.tssocket_remove_device
 tssocket_remove_device.restype = s32
-tssocket_remove_device.argtypes = [s32,pu8,System.PWORD,Pip4_addr_t]
+tssocket_remove_device.argtypes = [s32,pu8,pu16,Pip4_addr_t]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
