@@ -3331,6 +3331,14 @@ TSAPI(s32)rpc_tsmaster_cmd_read_signal(const size_t AHandle,const TLIBApplicatio
 
 TSAPI(s32)rpc_tsmaster_cmd_write_signal(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* AAddr,const double AValue);
 
+TSAPI(s32)can_rbs_set_normal_signal(const char* ASymbolAddress);
+
+TSAPI(s32)can_rbs_set_rc_signal(const char* ASymbolAddress);
+
+TSAPI(s32)can_rbs_set_rc_signal_with_limit(const char* ASymbolAddress,const s32 ALowerLimit,const s32 AUpperLimit);
+
+TSAPI(s32)can_rbs_set_crc_signal(const char* ASymbolAddress,const char* AAlgorithmName,const s32 AIdxByteStart,const s32 AByteCount);
+
 TSAPI(s32)clear_user_constants();
 
 TSAPI(s32)append_user_constants_from_c_header(const char* AHeaderFile);
@@ -3344,6 +3352,14 @@ TSAPI(s32)get_mini_program_count(const ps32 ACount);
 TSAPI(s32)get_mini_program_info_by_index(const s32 AIndex,const ps32 AKind,const ppchar AProgramName,const ppchar ADisplayName);
 
 TSAPI(s32)compile_mini_programs(const char* AProgramNames);
+
+TSAPI(s32)set_system_var_init_value(const char* ACompleteName,const char* AValue);
+
+TSAPI(s32)get_system_var_init_value(const char* ACompleteName,const ppchar AValue);
+
+TSAPI(s32)reset_system_var_to_init(const char* ACompleteName);
+
+TSAPI(s32)reset_all_system_var_to_init(const char* AOwner);
 
 #if defined ( __cplusplus )
 }

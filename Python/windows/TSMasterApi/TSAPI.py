@@ -4848,6 +4848,31 @@ rpc_tsmaster_cmd_write_signal = dll.rpc_tsmaster_cmd_write_signal
 rpc_tsmaster_cmd_write_signal.restype = s32
 rpc_tsmaster_cmd_write_signal.argtypes = [size_t,TLIBApplicationChannelType,pchar,double]
 
+#arg[0] ASymbolAddress
+can_rbs_set_normal_signal = dll.can_rbs_set_normal_signal
+can_rbs_set_normal_signal.restype = s32
+can_rbs_set_normal_signal.argtypes = [pchar]
+
+#arg[0] ASymbolAddress
+can_rbs_set_rc_signal = dll.can_rbs_set_rc_signal
+can_rbs_set_rc_signal.restype = s32
+can_rbs_set_rc_signal.argtypes = [pchar]
+
+#arg[0] ASymbolAddress
+#arg[1] ALowerLimit
+#arg[2] AUpperLimit
+can_rbs_set_rc_signal_with_limit = dll.can_rbs_set_rc_signal_with_limit
+can_rbs_set_rc_signal_with_limit.restype = s32
+can_rbs_set_rc_signal_with_limit.argtypes = [pchar,s32,s32]
+
+#arg[0] ASymbolAddress
+#arg[1] AAlgorithmName
+#arg[2] AIdxByteStart
+#arg[3] AByteCount
+can_rbs_set_crc_signal = dll.can_rbs_set_crc_signal
+can_rbs_set_crc_signal.restype = s32
+can_rbs_set_crc_signal.argtypes = [pchar,pchar,s32,s32]
+
 clear_user_constants = dll.clear_user_constants
 clear_user_constants.restype = s32
 clear_user_constants.argtypes = []
@@ -4886,4 +4911,26 @@ get_mini_program_info_by_index.argtypes = [s32,ps32,ppchar,ppchar]
 compile_mini_programs = dll.compile_mini_programs
 compile_mini_programs.restype = s32
 compile_mini_programs.argtypes = [pchar]
+
+#arg[0] ACompleteName
+#arg[1] AValue
+set_system_var_init_value = dll.set_system_var_init_value
+set_system_var_init_value.restype = s32
+set_system_var_init_value.argtypes = [pchar,pchar]
+
+#arg[0] ACompleteName
+#arg[1] AValue
+get_system_var_init_value = dll.get_system_var_init_value
+get_system_var_init_value.restype = s32
+get_system_var_init_value.argtypes = [pchar,ppchar]
+
+#arg[0] ACompleteName
+reset_system_var_to_init = dll.reset_system_var_to_init
+reset_system_var_to_init.restype = s32
+reset_system_var_to_init.argtypes = [pchar]
+
+#arg[0] AOwner
+reset_all_system_var_to_init = dll.reset_all_system_var_to_init
+reset_all_system_var_to_init.restype = s32
+reset_all_system_var_to_init.argtypes = [pchar]
 
