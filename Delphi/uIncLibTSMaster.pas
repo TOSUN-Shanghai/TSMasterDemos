@@ -2788,6 +2788,10 @@ function delete_user_constant(const AConstantName: pansichar): integer; stdcall;
 function get_mini_program_count(ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_mini_program_info_by_index(const AIndex: int32; AKind: pInt32; AProgramName: PPAnsiChar; ADisplayName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function compile_mini_programs(const AProgramNames: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_init_value(const ACompleteName: pansichar; const AValue: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_init_value(const ACompleteName: pansichar; AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function reset_system_var_to_init(const ACompleteName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function reset_all_system_var_to_init(const AOwner: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
