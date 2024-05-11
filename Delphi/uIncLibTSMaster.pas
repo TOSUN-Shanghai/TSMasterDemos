@@ -2793,13 +2793,13 @@ function get_system_var_init_value(const ACompleteName: pansichar; AValue: PPAns
 function reset_system_var_to_init(const ACompleteName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function reset_all_system_var_to_init(const AOwner: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_system_var_generic_upg1(const ACompleteName: pansichar; AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_set_can_signal(const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_get_can_signal(const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_get_lin_signal(const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_set_lin_signal(const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_set_flexray_signal(const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_get_flexray_signal(const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_cmd_get_constant(const AConstName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_can_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_can_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_lin_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_lin_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_constant(const AHandle: NativeInt; const AConstName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
