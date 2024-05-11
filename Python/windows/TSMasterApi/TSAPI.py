@@ -4934,3 +4934,58 @@ reset_all_system_var_to_init = dll.reset_all_system_var_to_init
 reset_all_system_var_to_init.restype = s32
 reset_all_system_var_to_init.argtypes = [pchar]
 
+#arg[0] ACompleteName
+#arg[1] AValue
+get_system_var_generic_upg1 = dll.get_system_var_generic_upg1
+get_system_var_generic_upg1.restype = s32
+get_system_var_generic_upg1.argtypes = [pchar,ppchar]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_can_signal = dll.rpc_tsmaster_cmd_set_can_signal
+rpc_tsmaster_cmd_set_can_signal.restype = s32
+rpc_tsmaster_cmd_set_can_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_can_signal = dll.rpc_tsmaster_cmd_get_can_signal
+rpc_tsmaster_cmd_get_can_signal.restype = s32
+rpc_tsmaster_cmd_get_can_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_lin_signal = dll.rpc_tsmaster_cmd_get_lin_signal
+rpc_tsmaster_cmd_get_lin_signal.restype = s32
+rpc_tsmaster_cmd_get_lin_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_lin_signal = dll.rpc_tsmaster_cmd_set_lin_signal
+rpc_tsmaster_cmd_set_lin_signal.restype = s32
+rpc_tsmaster_cmd_set_lin_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_flexray_signal = dll.rpc_tsmaster_cmd_set_flexray_signal
+rpc_tsmaster_cmd_set_flexray_signal.restype = s32
+rpc_tsmaster_cmd_set_flexray_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_flexray_signal = dll.rpc_tsmaster_cmd_get_flexray_signal
+rpc_tsmaster_cmd_get_flexray_signal.restype = s32
+rpc_tsmaster_cmd_get_flexray_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] AConstName
+#arg[2] AValue
+rpc_tsmaster_cmd_get_constant = dll.rpc_tsmaster_cmd_get_constant
+rpc_tsmaster_cmd_get_constant.restype = s32
+rpc_tsmaster_cmd_get_constant.argtypes = [size_t,pchar,pdouble]
+

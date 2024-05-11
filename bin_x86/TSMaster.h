@@ -3361,6 +3361,22 @@ TSAPI(s32)reset_system_var_to_init(const char* ACompleteName);
 
 TSAPI(s32)reset_all_system_var_to_init(const char* AOwner);
 
+TSAPI(s32)get_system_var_generic_upg1(const char* ACompleteName,const ppchar AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_set_can_signal(const size_t AHandle,const char* ASgnAddress,const double AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_can_signal(const size_t AHandle,const char* ASgnAddress,const pdouble AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_lin_signal(const size_t AHandle,const char* ASgnAddress,const pdouble AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_set_lin_signal(const size_t AHandle,const char* ASgnAddress,const double AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_set_flexray_signal(const size_t AHandle,const char* ASgnAddress,const double AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_flexray_signal(const size_t AHandle,const char* ASgnAddress,const pdouble AValue);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_constant(const size_t AHandle,const char* AConstName,const pdouble AValue);
+
 #if defined ( __cplusplus )
 }
 #endif
