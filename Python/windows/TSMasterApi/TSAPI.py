@@ -4989,3 +4989,27 @@ rpc_tsmaster_cmd_get_constant = dll.rpc_tsmaster_cmd_get_constant
 rpc_tsmaster_cmd_get_constant.restype = s32
 rpc_tsmaster_cmd_get_constant.argtypes = [size_t,pchar,pdouble]
 
+#arg[0] AHandle
+#arg[1] AIsRunning
+rpc_tsmaster_is_simulation_running = dll.rpc_tsmaster_is_simulation_running
+rpc_tsmaster_is_simulation_running.restype = s32
+rpc_tsmaster_is_simulation_running.argtypes = [size_t,pbool]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] AArgCount
+#arg[3] AArgCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_system_api = dll.rpc_tsmaster_call_system_api
+rpc_tsmaster_call_system_api.restype = s32
+rpc_tsmaster_call_system_api.argtypes = [size_t,pchar,s32,s32,ppchar]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] AArgCount
+#arg[3] AArgCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_library_api = dll.rpc_tsmaster_call_library_api
+rpc_tsmaster_call_library_api.restype = s32
+rpc_tsmaster_call_library_api.argtypes = [size_t,pchar,s32,s32,ppchar]
+

@@ -3377,6 +3377,12 @@ TSAPI(s32)rpc_tsmaster_cmd_get_flexray_signal(const size_t AHandle,const char* A
 
 TSAPI(s32)rpc_tsmaster_cmd_get_constant(const size_t AHandle,const char* AConstName,const pdouble AValue);
 
+TSAPI(s32)rpc_tsmaster_is_simulation_running(const size_t AHandle,const pbool AIsRunning);
+
+TSAPI(s32)rpc_tsmaster_call_system_api(const size_t AHandle,const char* AAPIName,const s32 AArgCount,const s32 AArgCapacity,const ppchar AArgs);
+
+TSAPI(s32)rpc_tsmaster_call_library_api(const size_t AHandle,const char* AAPIName,const s32 AArgCount,const s32 AArgCapacity,const ppchar AArgs);
+
 #if defined ( __cplusplus )
 }
 #endif

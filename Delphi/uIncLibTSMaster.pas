@@ -2800,7 +2800,7 @@ function rpc_tsmaster_cmd_set_lin_signal(const AHandle: NativeInt; const ASgnAdd
 function rpc_tsmaster_cmd_set_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_get_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_cmd_get_constant(const AHandle: NativeInt; const AConstName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function rpc_tsmaster_is_simulation_running(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_is_simulation_running(const AHandle: NativeInt; AIsRunning: pboolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_call_system_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_call_library_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
