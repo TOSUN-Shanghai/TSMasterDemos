@@ -636,7 +636,7 @@ type
     APP_FlexRay = 2,
     APP_Ethernet = 3
   );
-  TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay);
+  TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay, stEthernet);
   TTimeRangeTestMode = (trmRelativeMode, trmTriggeredMode, trmAbsoluteMode);
   TTriggerSignalType = (tstCANSignal = 0, tstLINSignal, tstSystemVar, tstFlexRay, tstExpression);
   TSignalCheckKind = (
