@@ -41,6 +41,7 @@ class _TSignalType(CEnum):
     stLINSignal = 1
     stSystemVar = 2
     stFlexRay = 3
+    stEthernet = 4
 TSignalType = c_int32
 PSignalType = ps32
 
