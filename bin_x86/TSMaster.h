@@ -3384,6 +3384,8 @@ TSAPI(s32)rpc_tsmaster_call_system_api(const size_t AHandle,const char* AAPIName
 
 TSAPI(s32)rpc_tsmaster_call_library_api(const size_t AHandle,const char* AAPIName,const s32 AArgCount,const s32 AArgCapacity,const ppchar AArgs);
 
+TSAPI(s32)get_tsmaster_binary_location(const ppchar ADirectory);
+
 #if defined ( __cplusplus )
 }
 #endif

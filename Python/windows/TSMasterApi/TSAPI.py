@@ -5013,3 +5013,8 @@ rpc_tsmaster_call_library_api = dll.rpc_tsmaster_call_library_api
 rpc_tsmaster_call_library_api.restype = s32
 rpc_tsmaster_call_library_api.argtypes = [size_t,pchar,s32,s32,ppchar]
 
+#arg[0] ADirectory
+get_tsmaster_binary_location = dll.get_tsmaster_binary_location
+get_tsmaster_binary_location.restype = s32
+get_tsmaster_binary_location.argtypes = [ppchar]
+
