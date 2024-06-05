@@ -5018,3 +5018,8 @@ get_tsmaster_binary_location = dll.get_tsmaster_binary_location
 get_tsmaster_binary_location.restype = s32
 get_tsmaster_binary_location.argtypes = [ppchar]
 
+#arg[0] ATSMasterAppNames
+get_active_application_list = dll.get_active_application_list
+get_active_application_list.restype = s32
+get_active_application_list.argtypes = [ppchar]
+

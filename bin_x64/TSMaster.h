@@ -960,7 +960,8 @@ typedef enum {
     CANABLE_USB_DEVICE = 9,
     TS_WIRELESS_OBD = 10,
     TS_USB_DEVICE_EX = 11,
-    BUS_DEV_TYPE_COUNT = 12,
+    IXXAT_USB_DEVICE = 12,
+    BUS_DEV_TYPE_COUNT = 13,
 }TLIBBusToolDeviceType, *PLIBBusToolDeviceType;
 typedef enum {
     APP_CAN = 0,
@@ -3385,6 +3386,8 @@ TSAPI(s32)rpc_tsmaster_call_system_api(const size_t AHandle,const char* AAPIName
 TSAPI(s32)rpc_tsmaster_call_library_api(const size_t AHandle,const char* AAPIName,const s32 AArgCount,const s32 AArgCapacity,const ppchar AArgs);
 
 TSAPI(s32)get_tsmaster_binary_location(const ppchar ADirectory);
+
+TSAPI(s32)get_active_application_list(const ppchar ATSMasterAppNames);
 
 #if defined ( __cplusplus )
 }

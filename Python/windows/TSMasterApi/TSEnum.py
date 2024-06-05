@@ -24,7 +24,8 @@ class _TLIBBusToolDeviceType(CEnum):
     CANABLE_USB_DEVICE = 9
     TS_WIRELESS_OBD = 10
     TS_USB_DEVICE_EX = 11
-    BUS_DEV_TYPE_COUNT = 12
+    IXXAT_USB_DEVICE = 12
+    BUS_DEV_TYPE_COUNT = 13
 TLIBBusToolDeviceType = c_int32
 PLIBBusToolDeviceType = ps32
 
