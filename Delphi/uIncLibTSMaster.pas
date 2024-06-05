@@ -628,7 +628,8 @@ type
     CANABLE_USB_DEVICE         = 9,
     TS_WIRELESS_OBD            = 10,
     TS_USB_DEVICE_EX           = 11,
-    BUS_DEV_TYPE_COUNT         = 12
+    IXXAT_USB_DEVICE           = 12,
+    BUS_DEV_TYPE_COUNT         = 13
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -1082,7 +1083,7 @@ type
                                        const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
 
 const
-  BUS_TOOL_DEVICE_TYPE_COUNT = 12;
+  BUS_TOOL_DEVICE_TYPE_COUNT = 13;
   BUS_TOOL_DEVICE_NAMES: array [0..BUS_TOOL_DEVICE_TYPE_COUNT-1] of string = (
     'Unknown bus tool',
     'TS Virtual Device',
@@ -1095,7 +1096,8 @@ const
     'TOSUN TC1005',
     'CANAble',
     'TOSUN Wireless-OBD',
-    'TOSUN Ex'
+    'TOSUN Ex',
+    'IXXAT'
   );
   TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
@@ -2804,6 +2806,7 @@ function rpc_tsmaster_is_simulation_running(const AHandle: NativeInt; AIsRunning
 function rpc_tsmaster_call_system_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_call_library_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_tsmaster_binary_location(ADirectory: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_active_application_list(ATSMasterAppNames: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
