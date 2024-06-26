@@ -66,6 +66,7 @@ const
   MAX_SUPPORT_LOGGER_FILE_NUM  = 128;
   READ_LOGGER_FILE_NUM_ONCE_TIME = 30;
 
+
 type
   pInt32 = ^Int32;
   ppInt32 = ^pInt32;
@@ -463,18 +464,19 @@ type
 
   PLibTrigger_def = ^TLibTrigger_def;
   TLibTrigger_def = packed record
-     frame_idx: UInt8;
-     slot_id: UInt8;
-     cycle_code: UInt8;//BASE-CYCLE + CYCLE-REPETITION
-     config_byte: UInt8;
-    //bit 0: Enable Channel A
-    //bit 1: Enable Channel B
-    //bit 2: Is NM Frame
-    //bit 3: 0: continuous transmit; 1: single trigger mode
-    //bit 4: 1: is code start frame
-    //bit 5: 1: is sync frame
-    //bit 6:
-    //bit 7: 1: dynamic 0: static
+     slot_id: UInt16;
+     frame_idx: Byte;
+     cycle_code: Byte;    //BASE-CYCLE + CYCLE-REPETITION
+     config_byte: Byte;
+      //bit 0:是否使能通道A
+      //bit 1:是否使能通道B
+      //bit 2:是否网络管理报文， dir 为rx时不管
+      //bit 3:传输模式，0表示连续传输，1表示单次触发， dir 为 rx时不管
+      //bit 4:是否为冷启动报文，只有缓冲区0可以置1， dir 为rx时不管
+      //bit 5:是否为同步报文，只有缓冲区0/1可以置1， dir 为rx时不管
+      //bit 6:dir: 0-tx  1-rx
+      //bit 7
+      rev: Byte;
    end;
 
   PLibGPSData = ^TLibGPSData;
@@ -588,6 +590,7 @@ type
   TLIBTSMasterLogger = procedure(const AStr: PAnsiChar; const ALevel: Integer); stdcall;
   TFirmwareUpdateCallback = procedure(const AOpaque: TObject; const AStatus: UInt32; const APercentage100: Single); stdcall;
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
+  TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
   TOnIoIPConnection_API = procedure(const AIPAddress: pansichar; const APort: Integer) of object; stdcall;
@@ -600,11 +603,13 @@ type
   TSSocketNotifyEvent = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer) of object; stdcall;
   TSSocketReceiveEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketReceiveEventV2 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
+  TSSocketReceiveEventV3 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ADstEndPoint: PAnsiChar; const ASrcEndPoint: PAnsiChar; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketTransmitEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer) of object; stdcall;
   TSSocketListenEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AClientSocket: integer; const AResult: integer); stdcall;
   TSSocketNotifyEvent_Win32 = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer); stdcall;
   TSSocketReceiveEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer); stdcall;
   TSSocketReceiveEventV2_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
+  TSSocketReceiveEventV3_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ADstEndPoint: PAnsiChar; const ASrcEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
   TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
 
 {$Z4}
@@ -623,7 +628,8 @@ type
     CANABLE_USB_DEVICE         = 9,
     TS_WIRELESS_OBD            = 10,
     TS_USB_DEVICE_EX           = 11,
-    BUS_DEV_TYPE_COUNT         = 12
+    IXXAT_USB_DEVICE           = 12,
+    BUS_DEV_TYPE_COUNT         = 13
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -631,7 +637,7 @@ type
     APP_FlexRay = 2,
     APP_Ethernet = 3
   );
-  TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay);
+  TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay, stEthernet);
   TTimeRangeTestMode = (trmRelativeMode, trmTriggeredMode, trmAbsoluteMode);
   TTriggerSignalType = (tstCANSignal = 0, tstLINSignal, tstSystemVar, tstFlexRay, tstExpression);
   TSignalCheckKind = (
@@ -1077,7 +1083,7 @@ type
                                        const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
 
 const
-  BUS_TOOL_DEVICE_TYPE_COUNT = 12;
+  BUS_TOOL_DEVICE_TYPE_COUNT = 13;
   BUS_TOOL_DEVICE_NAMES: array [0..BUS_TOOL_DEVICE_TYPE_COUNT-1] of string = (
     'Unknown bus tool',
     'TS Virtual Device',
@@ -1090,7 +1096,8 @@ const
     'TOSUN TC1005',
     'CANAble',
     'TOSUN Wireless-OBD',
-    'TOSUN Ex'
+    'TOSUN Ex',
+    'IXXAT'
   );
   TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
@@ -1278,6 +1285,10 @@ const
  TS_IPPROTO_UDPLITE = 136;
  TS_IPPROTO_RAW     = 255;
 
+ TS_IP_TOS          = 1;
+ TS_IP_TTL          = 2;
+ TS_IP_PKTINFO      = 8;
+
 { Flags we can use with send and recv. }
  TS_MSG_PEEK        = $01;    {/* Peeks at an incoming message */}
  TS_MSG_WAITALL     = $02;    {/* Unimplemented: Requests that the function block until the full amount of data requested can be returned */}
@@ -1343,19 +1354,22 @@ const
  AF_MAX          = 22;
 *)
 
+//----start define type------
 type
   ssize_t = NativeInt;
-  ts_socklen_t = UInt32;
+  tts_socklen_t = UInt32;
   pts_socklen_t = PUint32;
   ts_nfds_t = NativeUInt;
   ts_sa_family_t = UInt8;
   ts_in_port_t = UInt16;
   ts_in_addr_t = UInt32;
+//----end define type------
 
   pip4_addr_t = ^tip4_addr_t;
   tip4_addr_t = packed record
 	  addr: UInt32;
   end;
+
 
 {$DEFINE  LWIP_IPV6_SCOPES}
   pip6_addr_t = ^tip6_addr_t;
@@ -1374,8 +1388,9 @@ type
     { IPv4+IPv6 ("dual-stack") }
     IPADDR_TYPE_ANY = 46
   );
-  Pip_addr_t = ^Tip_addr_t;
-  Tip_addr_t = packed record
+
+  pip_addr_t = ^tip_addr_t;
+  tip_addr_t = packed record
     ip4Or6: tip6_addr_t;
     FType: UInt32;  //lwip_ip_addr_type
     function ipv4: pip4_addr_t;
@@ -1430,32 +1445,52 @@ type
 
   pts_timeval = ^tts_timeval;
   tts_timeval = packed record
-	  tv_sec: long;         { seconds }
-	  tv_usec: long;        { and microseconds }
+	  tv_sec: int32;         { seconds }
+	  tv_usec: int32;        { and microseconds }
   end;
 
-  pts_fd_set = ^Tts_fd_set;
-  Tts_fd_set = packed record
+  pts_fd_set = ^tts_fd_set;
+  tts_fd_set = packed record
 	  fd_bits: array[0..((TS_FD_SETSIZE + 7) div 8) - 1] of UInt8;
+  end;
+
+  pts_pollfd = ^tts_pollfd;
+  tts_pollfd = packed record
+	 fd: integer;
+   events: int16; //short;
+	 revents: int16; //Short;
   end;
 
   pts_msghdr = ^tts_msghdr;
   tts_msghdr = packed record
     msg_name: Pointer;
-    msg_namelen: ts_socklen_t;
+    msg_namelen: tts_socklen_t;
     msg_iov: Pts_iovec;
-    msg_iovlen: integer;
+    msg_iovlen: integer;    //received package num
     msg_control: Pointer;
-    msg_controllen: ts_socklen_t;
-    msg_flags: integer;
+    msg_controllen: tts_socklen_t;
+    msg_flags: integer;   //set internal
+    function ToString: string;
   end;
 
-  pts_pollfd = ^Tts_pollfd;
-  Tts_pollfd = packed record
-	 fd: integer;
-   events: short;
-	 revents: Short;
+{ cmsg header/data alignment. NOTE: we align to native word size (double word
+size on 16-bit arch) so structures are not placed at an unaligned address.
+16-bit arch needs double word to ensure 32-bit alignment because socklen_t
+could be 32 bits. If we ever have cmsg data with a 64-bit variable, alignment
+will need to increase long long }
+  pts_cmsghdr = ^tts_cmsghdr;
+  tts_cmsghdr = packed record
+    cmsg_len: tts_socklen_t;   ///* number of bytes, including header */
+    cmsg_level: integer; ///* originating protocol */
+    cmsg_type: integer;  ///* protocol-specific type */
   end;
+
+  pts_in_pktinfo = ^tts_in_pktinfo;
+  tts_in_pktinfo = packed record
+    ipi_ifindex: uint32;  // Interface index
+    ipi_addr: ts_in_addr; // Destination (from header) address
+  end;
+
   TLogDebuggingInfo_t = procedure(const AMsg: PAnsiChar; const ALevel: integer); stdcall;
   // TOSUN callback
   tosun_recv_callback = procedure(sock: integer; p: Pointer; len: UInt16);
@@ -1514,7 +1549,7 @@ const
   IDX_ERR_CALLBACK_NOT_EXISTS        = 46;
   IDX_ERR_FILE_INVALID               = 47; // database file corrupted or not recognized
   IDX_ERR_DB_ID_NOT_FOUND            = 48; // database unique id not found
-  IDX_ERR_SW_API_PAEAMETER_INVALID   = 49; // software api parameter invalid
+  IDX_ERR_SW_API_PARAMETER_INVALID   = 49; // software api parameter invalid
   IDX_ERR_SW_API_GENERIC_TIMEOUT     = 50; // software api generic timed out
   IDX_ERR_SW_API_SET_CONF_FAILED     = 51; // software api set hw conf failed
   IDX_ERR_SW_API_INDEX_OUT_OF_BOUNDS = 52; // index out of bounds
@@ -1759,7 +1794,29 @@ const
   IDX_ERR_VISA_DEVICE_NOT_READY              = 291;
   IDX_ERR_ADD_INSTRUMENT_FAILED              = 292;
   IDX_ERR_LANG_KEY_NOT_FOUND                 = 293;
-  ERR_CODE_COUNT                             = 294;
+  IDX_ERR_MAC_ADDRESS_NOT_EXITS              = 294;
+  IDX_ERR_IP_PORT_NOT_EXISTS                 = 295;
+  IDX_ERR_CRITICAL_SECTION_ENTER_FAILED      = 296;
+  IDX_ERR_REQUIRE_APP_DISCONNECTED           = 297;
+  IDX_ERR_SOCKET_ALREADY_EXISTS              = 298;
+  IDX_ERR_SOCKET_NOT_EXISTS                  = 299;
+  IDX_ERR_INVALID_IPV4_ENDPOINT              = 300;
+  IDX_ERR_TCP_CLIENT_NOT_SUPPORT_THIS_FEATURE = 301;
+  IDX_ERR_TCP_SERVER_NOT_SUPPORT_THIS_FEATURE = 302;
+  IDX_ERR_TCP_CLIENT_CONNECT_FAILED           = 303;
+  IDX_ERR_TCP_START_LISTEN_FAILED             = 304;
+  IDX_ERR_TCP_DUPLICATE_START_LISTEN          = 305;
+  IDX_ERR_CREATE_SOCKET_FAILED                = 306;
+  IDX_ERR_RPC_SERVER_NOT_ACTIVATED            = 307;
+  IDX_ERR_RPC_CLIENT_NOT_ACTIVATED            = 308;
+  IDX_ERR_RPC_CALL_FAILED                     = 309;
+  IDX_ERR_TSMASTER_NOT_IN_COSIMULATION        = 310;
+  IDX_ERR_OBJECT_NOT_CREATED                  = 311;
+  IDX_ERR_OPERATION_NOT_SUPP_IN_BATCH_MODE    = 312;
+  IDX_ERR_NOT_IMPLEMENTED                     = 313;
+  IDX_ERR_OPERATION_PENDING                   = 314;
+  IDX_ERR_COMPILE_FAILED                      = 315;
+  ERR_CODE_COUNT                              = 316;
 // Note: Should also update C API!!!
 
 // library initialization and finalization
@@ -2372,58 +2429,59 @@ function tsapp_unlock_camera_channel(const AChnIdx: integer): integer; stdcall; 
 
 
 //ethernet
-function tssocket_htons(x: UInt16): UInt16; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_htonl(x: UInt32): UInt32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_aton(cp: PAnsichar; addr: Pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_ntoa(addr: Pip4_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_aton6(const cp: PAnsichar; addr: pip6_addr_t): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_ntoa6(const addr: pip6_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_inet_ntop(af: integer; const src: Pointer; dst: PAnsiChar; size: ts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_inet_pton(af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_htons(x: UInt16): UInt16; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_htonl(x: UInt32): UInt32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_aton(cp: PAnsichar; addr: Pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_ntoa(addr: Pip4_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_aton6(const cp: PAnsichar; addr: pip6_addr_t): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_ntoa6(const addr: pip6_addr_t): PAnsiChar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_inet_ntop(af: integer; const src: Pointer; dst: PAnsiChar; size: tts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_inet_pton(af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_initialize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_initialize_verbose(const ANetworkIndex: integer;
             ALog: TLogDebuggingInfo_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_finalize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: Tip4_addr_t;  netmask: Tip4_addr_t; gateway: Tip4_addr_t; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_add_device_ex(const ANetworkIndex: integer; macaddr: PAnsichar; ipaddr: PAnsichar;  netmask: PAnsichar; gateway: PAnsichar; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_remove_device_ex(const ANetworkIndex: integer; mac: PAnsichar; ipaddr: PAnsichar): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_dhcp_start(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-procedure tssocket_dhcp_stop(const ANetworkIndex: integer); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; vLan: System.PWORD; ipaddr: Tip4_addr_t;  netmask: Tip4_addr_t; gateway: Tip4_addr_t; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; vLan: System.PWORD; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_add_device_ex(const ANetworkIndex: integer; macaddr: PAnsichar; vlan: PAnsiChar; ipaddr: PAnsichar;  netmask: PAnsichar; gateway: PAnsichar; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_remove_device_ex(const ANetworkIndex: integer; mac: PAnsichar; vlan: PAnsiChar; ipaddr: PAnsichar): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_get_errno(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_dhcp_start(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure rawsocket_dhcp_stop(const ANetworkIndex: integer); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readset: Pts_fd_set; writeset: pts_fd_set; exceptset: pts_fd_set; timeout: pts_timeval): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //socket API
 //The socket created by tssocket must be closed using tssocket_close
 //The socket created by tssocket_tcp must be closed using tssocket_tcp_close
 //The socket created by tssocket_udp must be closed using tssocket_udp_close
-function tssocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer; recv_cb: tosun_recv_callback;
+function rawsocket(const ANetworkIndex: Integer; domain: integer; atype: integer; protocol: integer; recv_cb: tosun_recv_callback;
                        presend_cb: tosun_tcp_presend_callback;
                        send_cb: tosun_tcp_ack_callback): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_accept(const s: integer; addr: pts_sockaddr; addrlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_bind(const s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_shutdown(const s: integer; how: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getpeername(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getsockname(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_setsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_close(const s: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_close_v2(const s: integer; const AForceExitTimeWait: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_connect(const s: integer; name: pts_sockaddr; namelen: ts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_listen(const s: integer; backlog: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recv(const s: integer; mem: pointer; len: nativeint; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_read(const s: integer; mem: pointer; len: nativeint): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_readv(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recvfrom(const s: integer; mem: pointer; len: NativeInt; flags: integer; from: Pts_sockaddr; fromlen: Pts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_recvmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_send(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_sendmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_sendto(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer; ato: pts_sockaddr; tolen: ts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_write(const s: integer; dataptr: Pointer; size: NativeInt): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_writev(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_ioctl(const s: integer; cmd: long; argp: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_fcntl(const s: integer; cmd: integer; val: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_accept(const s: integer; addr: pts_sockaddr; addrlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_bind(const s: integer; name: pts_sockaddr; namelen: tts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_shutdown(const s: integer; how: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_getpeername(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_getsockname(const s: integer; name: pts_sockaddr; namelen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_getsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: pts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_setsockopt(const s: integer; level: integer; optname: integer;  optval: Pointer; optlen: tts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_close(const s: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_close_v2(const s: integer; const AForceExitTimeWait: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_connect(const s: integer; name: pts_sockaddr; namelen: tts_socklen_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_listen(const s: integer; backlog: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_recv(const s: integer; mem: pointer; len: nativeint; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_read(const s: integer; mem: pointer; len: nativeint): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_readv(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_recvfrom(const s: integer; mem: pointer; len: NativeInt; flags: integer; from: Pts_sockaddr; fromlen: Pts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_recvmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_send(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_sendmsg(const s: integer; Amessage: pts_msghdr; flags: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_sendto(const s: integer; dataptr: Pointer; size: NativeInt; flags: integer; ato: pts_sockaddr; tolen: tts_socklen_t): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_write(const s: integer; dataptr: Pointer; size: NativeInt): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_writev(const s: integer; iov: pts_iovec; iovcnt: integer): ssize_t; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_ioctl(const s: integer; cmd: long; argp: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rawsocket_fcntl(const s: integer; cmd: integer; val: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //extended
 function tssocket_tcp(const ANetworkIndex: Integer; const AIPEndPoint: PAnsichar; const ASocketHandle: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_start_listen(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2471,6 +2529,10 @@ function tssocket_unregister_udp_sendto_events(const s: Integer): Integer; stdca
 function tssocket_register_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_udp_receivefrom_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_udp_receivefrom_eventsv2(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+//UDP Reveive from V3
+function tssocket_register_udp_receivefrom_eventv3(const s: Integer; const AEvent: TSSocketReceiveEventV3_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventv3(const s: Integer; const AEvent: TSSocketReceiveEventV3_Win32): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_unregister_udp_receivefrom_eventsv3(const s: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //TCP Receive V2
 function tssocket_register_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_unregister_tcp_receive_eventv2(const s: Integer; const AEvent: TSSocketReceiveEventV2_Win32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2686,6 +2748,65 @@ function tsapp_security_decrypt_string_sync(const AChnIdx: int32; const ASlotInd
 function set_channel_timestamp_deviation_factor(const ABusType: TLIBApplicationChannelType; const AIdxLogicalChn: int32; const APCTimeUs: int64; const AHwTimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function start_system_message_log(const ADirectory: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function end_system_message_log(ALogFileName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_create_server(const ARpcName: pansichar; const ABufferSizeBytes: NativeInt; const ARxEvent: TOnRpcData; AHandle: PNativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_activate_server(const AHandle: NativeInt; const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_delete_server(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_server_write_sync(const AHandle: NativeInt; const AAddr: pbyte; const ASizeBytes: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_create_client(const ARpcName: pansichar; const ABufferSizeBytes: NativeInt; AHandle: PNativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_activate_client(const AHandle: NativeInt; const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_delete_client(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_client_transmit_sync(const AHandle: NativeInt; const AAddr: pbyte; const ASizeBytes: NativeInt; const ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_client_receive_sync(const AHandle: NativeInt; ASizeBytes: PNativeInt; AAddr: pbyte; const ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function mask_fpu_exceptions(const AMasked: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_activate_server(const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_create_client(const ATSMasterAppName: pansichar; AHandle: PNativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_activate_client(const AHandle: NativeInt; const AActivate: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_delete_client(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_start_simulation(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_stop_simulation(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_write_system_var(const AHandle: NativeInt; const ACompleteName: pansichar; const AValue: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_transfer_memory(const AHandle: NativeInt; const AAddr: pbyte; const ASizeBytes: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_log(const AHandle: NativeInt; const AMsg: pansichar; const ALevel: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_mode_sim(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_mode_realtime(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_mode_free(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_sim_step(const AHandle: NativeInt; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function create_process_shared_memory(AAddress: ppByte; const ASizeBytes: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_process_shared_memory(AAddress: ppByte; ASizeBytes: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_sim_step_batch_start(const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_sim_step_batch_end(const AHandle: NativeInt; const ATimeUs: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_project(const AHandle: NativeInt; AProjectFullPath: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_read_system_var(const AHandle: NativeInt; ASysVarName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_read_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_write_signal(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; AAddr: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_normal_signal(const ASymbolAddress: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_rc_signal(const ASymbolAddress: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_rc_signal_with_limit(const ASymbolAddress: pansichar; const ALowerLimit: integer; const AUpperLimit: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_crc_signal(const ASymbolAddress: pansichar; const AAlgorithmName: pansichar; const AIdxByteStart: integer; const AByteCount: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function clear_user_constants(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function append_user_constants_from_c_header(const AHeaderFile: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function append_user_constant(const AConstantName: pansichar; const AValue: double; const ADesc: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function delete_user_constant(const AConstantName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_mini_program_count(ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_mini_program_info_by_index(const AIndex: int32; AKind: pInt32; AProgramName: PPAnsiChar; ADisplayName: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function compile_mini_programs(const AProgramNames: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_init_value(const ACompleteName: pansichar; const AValue: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_init_value(const ACompleteName: pansichar; AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function reset_system_var_to_init(const ACompleteName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function reset_all_system_var_to_init(const AOwner: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_generic_upg1(const ACompleteName: pansichar; AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_can_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_can_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_lin_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_lin_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_set_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_flexray_signal(const AHandle: NativeInt; const ASgnAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_constant(const AHandle: NativeInt; const AConstName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_is_simulation_running(const AHandle: NativeInt; AIsRunning: pboolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_call_system_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_call_library_api(const AHandle: NativeInt; const AAPIName: pansichar; const AArgCount: int32; const AArgCapacity: int32; AArgs: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_tsmaster_binary_location(ADirectory: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_active_application_list(ATSMasterAppNames: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
@@ -3158,6 +3279,21 @@ end;
 function Tip_addr_t.ipv6: pip6_addr_t;
 begin
   result := @ip4Or6;
+
+end;
+
+function tts_msghdr.ToString: string;
+var
+  pDestAddr: pts_sockaddr_in;
+begin
+  result := '';
+  if Assigned(msg_name) then begin
+    pDestAddr := msg_name;
+    Result := 'Dst:' + string(pDestAddr.IPEndPoint);
+  end;
+  if Assigned(msg_iov) then begin
+    Result := Result + 'Received:' + msg_iov.iov_len.ToString;
+  end;
 
 end;
 

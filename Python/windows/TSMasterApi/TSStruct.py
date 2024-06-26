@@ -587,10 +587,11 @@ PLIBFlexRayControllerParameters = POINTER(TLIBFlexRayControllerParameters)
 
 class TLIBTrigger_def(Structure):
     _pack_ = 1
-    _fields_ =[('frame_idx',u8),
-('slot_id',u8),
+    _fields_ =[('slot_id',u16),
+('frame_idx',u8),
 ('cycle_code',u8),
 ('config_byte',u8),
+('rev',u8),
 ]
 PLIBTrigger_def = POINTER(TLIBTrigger_def)
 
@@ -874,6 +875,14 @@ class Tts_fd_set(Structure):
 ]
 Pts_fd_set = POINTER(Tts_fd_set)
 
+class Tts_pollfd(Structure):
+    _pack_ = 1
+    _fields_ =[('fd',s32),
+('events',s16),
+('revents',s16),
+]
+Pts_pollfd = POINTER(Tts_pollfd)
+
 class Tts_msghdr(Structure):
     _pack_ = 1
     _fields_ =[('msg_name',ps32),
@@ -886,11 +895,18 @@ class Tts_msghdr(Structure):
 ]
 Pts_msghdr = POINTER(Tts_msghdr)
 
-class Tts_pollfd(Structure):
+class Tts_cmsghdr(Structure):
     _pack_ = 1
-    _fields_ =[('fd',s32),
-('events',s16),
-('revents',s16),
+    _fields_ =[('cmsg_len',u32),
+('cmsg_level',s32),
+('cmsg_type',s32),
 ]
-Pts_pollfd = POINTER(Tts_pollfd)
+Pts_cmsghdr = POINTER(Tts_cmsghdr)
+
+class Tts_in_pktinfo(Structure):
+    _pack_ = 1
+    _fields_ =[('ipi_ifindex',u32),
+('ipi_addr',Ts_in_addr),
+]
+Pts_in_pktinfo = POINTER(Tts_in_pktinfo)
 

@@ -27,9 +27,9 @@ tsdiag_can_delete_all.restype = None
 tsdiag_can_delete_all.argtypes = []
 
 #arg[0] ANetworkIndex
-tssocket_dhcp_stop = dll.tssocket_dhcp_stop
-tssocket_dhcp_stop.restype = None
-tssocket_dhcp_stop.argtypes = [s32]
+rawsocket_dhcp_stop = dll.rawsocket_dhcp_stop
+rawsocket_dhcp_stop.restype = None
+rawsocket_dhcp_stop.argtypes = [s32]
 
 #arg[0] ANetworkIndex
 #arg[1] ping_addr
@@ -144,13 +144,15 @@ tsapp_set_mapping.argtypes = [PLIBTSMapping]
 #arg[0] AAppName
 #arg[1] AAppChannelType
 #arg[2] AAppChannel
-#arg[3] AHardwareType
-#arg[4] AHardwareSubType
-#arg[5] AHardwareIndex
-#arg[6] AHardwareChannel
+#arg[3] AHardwareName
+#arg[4] AHardwareType
+#arg[5] AHardwareSubType
+#arg[6] AHardwareIndex
+#arg[7] AHardwareChannel
+#arg[8] AEnableMapping
 tsapp_set_mapping_verbose = dll.tsapp_set_mapping_verbose
 tsapp_set_mapping_verbose.restype = s32
-tsapp_set_mapping_verbose.argtypes = [pchar,TLIBApplicationChannelType,s32,TLIBBusToolDeviceType,s32,s32,s32]
+tsapp_set_mapping_verbose.argtypes = [pchar,TLIBApplicationChannelType,s32,pchar,TLIBBusToolDeviceType,s32,s32,s32,cbool]
 
 #arg[0] AMapping
 tsapp_get_mapping = dll.tsapp_get_mapping
@@ -271,9 +273,10 @@ tsapp_get_hw_info_by_index.argtypes = [s32,PLIBHWInfo]
 #arg[4] ADeviceNameBuffer
 #arg[5] ADeviceNameBufferSize
 #arg[6] ASerialStringBuffer
+#arg[7] ASerialStringBufferSize
 tsapp_get_hw_info_by_index_verbose = dll.tsapp_get_hw_info_by_index_verbose
 tsapp_get_hw_info_by_index_verbose.restype = s32
-tsapp_get_hw_info_by_index_verbose.argtypes = [s32,PLIBBusToolDeviceType,pchar,s32,pchar,s32,pchar]
+tsapp_get_hw_info_by_index_verbose.argtypes = [s32,PLIBBusToolDeviceType,pchar,s32,pchar,s32,pchar,s32]
 
 #arg[0] AScanTOSUN
 #arg[1] AScanVector
@@ -2664,51 +2667,51 @@ tsapp_unlock_camera_channel.restype = s32
 tsapp_unlock_camera_channel.argtypes = [s32]
 
 #arg[0] x
-tssocket_htons = dll.tssocket_htons
-tssocket_htons.restype = u16
-tssocket_htons.argtypes = [u16]
+rawsocket_htons = dll.rawsocket_htons
+rawsocket_htons.restype = u16
+rawsocket_htons.argtypes = [u16]
 
 #arg[0] x
-tssocket_htonl = dll.tssocket_htonl
-tssocket_htonl.restype = u32
-tssocket_htonl.argtypes = [u32]
+rawsocket_htonl = dll.rawsocket_htonl
+rawsocket_htonl.restype = u32
+rawsocket_htonl.argtypes = [u32]
 
 #arg[0] cp
 #arg[1] addr
-tssocket_aton = dll.tssocket_aton
-tssocket_aton.restype = s32
-tssocket_aton.argtypes = [pchar,Pip4_addr_t]
+rawsocket_aton = dll.rawsocket_aton
+rawsocket_aton.restype = s32
+rawsocket_aton.argtypes = [pchar,Pip4_addr_t]
 
 #arg[0] addr
-tssocket_ntoa = dll.tssocket_ntoa
-tssocket_ntoa.restype = pchar
-tssocket_ntoa.argtypes = [Pip4_addr_t]
+rawsocket_ntoa = dll.rawsocket_ntoa
+rawsocket_ntoa.restype = pchar
+rawsocket_ntoa.argtypes = [Pip4_addr_t]
 
 #arg[0] cp
 #arg[1] addr
-tssocket_aton6 = dll.tssocket_aton6
-tssocket_aton6.restype = s32
-tssocket_aton6.argtypes = [pchar,Pip6_addr_t]
+rawsocket_aton6 = dll.rawsocket_aton6
+rawsocket_aton6.restype = s32
+rawsocket_aton6.argtypes = [pchar,Pip6_addr_t]
 
 #arg[0] addr
-tssocket_ntoa6 = dll.tssocket_ntoa6
-tssocket_ntoa6.restype = pchar
-tssocket_ntoa6.argtypes = [Pip6_addr_t]
+rawsocket_ntoa6 = dll.rawsocket_ntoa6
+rawsocket_ntoa6.restype = pchar
+rawsocket_ntoa6.argtypes = [Pip6_addr_t]
 
 #arg[0] af
 #arg[1] src
 #arg[2] dst
 #arg[3] size
-tssocket_inet_ntop = dll.tssocket_inet_ntop
-tssocket_inet_ntop.restype = pchar
-tssocket_inet_ntop.argtypes = [s32,ps32,pchar,u32]
+rawsocket_inet_ntop = dll.rawsocket_inet_ntop
+rawsocket_inet_ntop.restype = pchar
+rawsocket_inet_ntop.argtypes = [s32,ps32,pchar,u32]
 
 #arg[0] af
 #arg[1] src
 #arg[2] dst
-tssocket_inet_pton = dll.tssocket_inet_pton
-tssocket_inet_pton.restype = s32
-tssocket_inet_pton.argtypes = [s32,pchar,ps32]
+rawsocket_inet_pton = dll.rawsocket_inet_pton
+rawsocket_inet_pton.restype = s32
+rawsocket_inet_pton.argtypes = [s32,pchar,ps32]
 
 #arg[0] ANetworkIndex
 tssocket_initialize = dll.tssocket_initialize
@@ -2728,42 +2731,51 @@ tssocket_finalize.argtypes = [s32]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
-#arg[3] netmask
-#arg[4] gateway
-#arg[5] mtu
+#arg[2] vLan
+#arg[3] ipaddr
+#arg[4] netmask
+#arg[5] gateway
+#arg[6] mtu
 tssocket_add_device = dll.tssocket_add_device
 tssocket_add_device.restype = s32
-tssocket_add_device.argtypes = [s32,pu8,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
+tssocket_add_device.argtypes = [s32,pu8,pu16,Tip4_addr_t,Tip4_addr_t,Tip4_addr_t,u16]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
+#arg[2] vLan
+#arg[3] ipaddr
 tssocket_remove_device = dll.tssocket_remove_device
 tssocket_remove_device.restype = s32
-tssocket_remove_device.argtypes = [s32,pu8,Pip4_addr_t]
+tssocket_remove_device.argtypes = [s32,pu8,pu16,Pip4_addr_t]
 
 #arg[0] ANetworkIndex
 #arg[1] macaddr
-#arg[2] ipaddr
-#arg[3] netmask
-#arg[4] gateway
-#arg[5] mtu
+#arg[2] vlan
+#arg[3] ipaddr
+#arg[4] netmask
+#arg[5] gateway
+#arg[6] mtu
 tssocket_add_device_ex = dll.tssocket_add_device_ex
 tssocket_add_device_ex.restype = s32
-tssocket_add_device_ex.argtypes = [s32,pchar,pchar,pchar,pchar,u16]
+tssocket_add_device_ex.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,u16]
 
 #arg[0] ANetworkIndex
 #arg[1] mac
-#arg[2] ipaddr
+#arg[2] vlan
+#arg[3] ipaddr
 tssocket_remove_device_ex = dll.tssocket_remove_device_ex
 tssocket_remove_device_ex.restype = s32
-tssocket_remove_device_ex.argtypes = [s32,pchar,pchar]
+tssocket_remove_device_ex.argtypes = [s32,pchar,pchar,pchar]
 
 #arg[0] ANetworkIndex
-tssocket_dhcp_start = dll.tssocket_dhcp_start
-tssocket_dhcp_start.restype = s32
-tssocket_dhcp_start.argtypes = [s32]
+rawsocket_get_errno = dll.rawsocket_get_errno
+rawsocket_get_errno.restype = s32
+rawsocket_get_errno.argtypes = [s32]
+
+#arg[0] ANetworkIndex
+rawsocket_dhcp_start = dll.rawsocket_dhcp_start
+rawsocket_dhcp_start.restype = s32
+rawsocket_dhcp_start.argtypes = [s32]
 
 #arg[0] ANetworkIndex
 #arg[1] maxfdp1
@@ -2771,17 +2783,17 @@ tssocket_dhcp_start.argtypes = [s32]
 #arg[3] writeset
 #arg[4] exceptset
 #arg[5] timeout
-tssocket_select = dll.tssocket_select
-tssocket_select.restype = s32
-tssocket_select.argtypes = [s32,s32,Pts_fd_set,Pts_fd_set,Pts_fd_set,Pts_timeval]
+rawsocket_select = dll.rawsocket_select
+rawsocket_select.restype = s32
+rawsocket_select.argtypes = [s32,s32,Pts_fd_set,Pts_fd_set,Pts_fd_set,Pts_timeval]
 
 #arg[0] ANetworkIndex
 #arg[1] fds
 #arg[2] nfds
 #arg[3] timeout
-tssocket_poll = dll.tssocket_poll
-tssocket_poll.restype = s32
-tssocket_poll.argtypes = [s32,Pts_pollfd,size_t,s32]
+rawsocket_poll = dll.rawsocket_poll
+rawsocket_poll.restype = s32
+rawsocket_poll.argtypes = [s32,Pts_pollfd,size_t,s32]
 
 #arg[0] ANetworkIndex
 #arg[1] domain
@@ -2790,107 +2802,107 @@ tssocket_poll.argtypes = [s32,Pts_pollfd,size_t,s32]
 #arg[4] recv_cb
 #arg[5] presend_cb
 #arg[6] send_cb
-tssocket = dll.tssocket
-tssocket.restype = s32
-tssocket.argtypes = [s32,s32,s32,s32,tosun_recv_callback,tosun_tcp_presend_callback,tosun_tcp_ack_callback]
+rawsocket = dll.rawsocket
+rawsocket.restype = s32
+rawsocket.argtypes = [s32,s32,s32,s32,tosun_recv_callback,tosun_tcp_presend_callback,tosun_tcp_ack_callback]
 
 #arg[0] s
 #arg[1] addr
 #arg[2] addrlen
-tssocket_accept = dll.tssocket_accept
-tssocket_accept.restype = s32
-tssocket_accept.argtypes = [s32,Pts_sockaddr,pu32]
+rawsocket_accept = dll.rawsocket_accept
+rawsocket_accept.restype = s32
+rawsocket_accept.argtypes = [s32,Pts_sockaddr,pu32]
 
 #arg[0] s
 #arg[1] name
 #arg[2] namelen
-tssocket_bind = dll.tssocket_bind
-tssocket_bind.restype = s32
-tssocket_bind.argtypes = [s32,Pts_sockaddr,u32]
+rawsocket_bind = dll.rawsocket_bind
+rawsocket_bind.restype = s32
+rawsocket_bind.argtypes = [s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] how
-tssocket_shutdown = dll.tssocket_shutdown
-tssocket_shutdown.restype = s32
-tssocket_shutdown.argtypes = [s32,s32]
+rawsocket_shutdown = dll.rawsocket_shutdown
+rawsocket_shutdown.restype = s32
+rawsocket_shutdown.argtypes = [s32,s32]
 
 #arg[0] s
 #arg[1] name
 #arg[2] namelen
-tssocket_getpeername = dll.tssocket_getpeername
-tssocket_getpeername.restype = s32
-tssocket_getpeername.argtypes = [s32,Pts_sockaddr,pu32]
+rawsocket_getpeername = dll.rawsocket_getpeername
+rawsocket_getpeername.restype = s32
+rawsocket_getpeername.argtypes = [s32,Pts_sockaddr,pu32]
 
 #arg[0] s
 #arg[1] name
 #arg[2] namelen
-tssocket_getsockname = dll.tssocket_getsockname
-tssocket_getsockname.restype = s32
-tssocket_getsockname.argtypes = [s32,Pts_sockaddr,pu32]
+rawsocket_getsockname = dll.rawsocket_getsockname
+rawsocket_getsockname.restype = s32
+rawsocket_getsockname.argtypes = [s32,Pts_sockaddr,pu32]
 
 #arg[0] s
 #arg[1] level
 #arg[2] optname
 #arg[3] optval
 #arg[4] optlen
-tssocket_getsockopt = dll.tssocket_getsockopt
-tssocket_getsockopt.restype = s32
-tssocket_getsockopt.argtypes = [s32,s32,s32,ps32,pu32]
+rawsocket_getsockopt = dll.rawsocket_getsockopt
+rawsocket_getsockopt.restype = s32
+rawsocket_getsockopt.argtypes = [s32,s32,s32,ps32,pu32]
 
 #arg[0] s
 #arg[1] level
 #arg[2] optname
 #arg[3] optval
 #arg[4] optlen
-tssocket_setsockopt = dll.tssocket_setsockopt
-tssocket_setsockopt.restype = s32
-tssocket_setsockopt.argtypes = [s32,s32,s32,ps32,u32]
+rawsocket_setsockopt = dll.rawsocket_setsockopt
+rawsocket_setsockopt.restype = s32
+rawsocket_setsockopt.argtypes = [s32,s32,s32,ps32,u32]
 
 #arg[0] s
-tssocket_close = dll.tssocket_close
-tssocket_close.restype = s32
-tssocket_close.argtypes = [s32]
+rawsocket_close = dll.rawsocket_close
+rawsocket_close.restype = s32
+rawsocket_close.argtypes = [s32]
 
 #arg[0] s
 #arg[1] AForceExitTimeWait
-tssocket_close_v2 = dll.tssocket_close_v2
-tssocket_close_v2.restype = s32
-tssocket_close_v2.argtypes = [s32,s32]
+rawsocket_close_v2 = dll.rawsocket_close_v2
+rawsocket_close_v2.restype = s32
+rawsocket_close_v2.argtypes = [s32,s32]
 
 #arg[0] s
 #arg[1] name
 #arg[2] namelen
-tssocket_connect = dll.tssocket_connect
-tssocket_connect.restype = s32
-tssocket_connect.argtypes = [s32,Pts_sockaddr,u32]
+rawsocket_connect = dll.rawsocket_connect
+rawsocket_connect.restype = s32
+rawsocket_connect.argtypes = [s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] backlog
-tssocket_listen = dll.tssocket_listen
-tssocket_listen.restype = s32
-tssocket_listen.argtypes = [s32,s32]
+rawsocket_listen = dll.rawsocket_listen
+rawsocket_listen.restype = s32
+rawsocket_listen.argtypes = [s32,s32]
 
 #arg[0] s
 #arg[1] mem
 #arg[2] len
 #arg[3] flags
-tssocket_recv = dll.tssocket_recv
-tssocket_recv.restype = size_t
-tssocket_recv.argtypes = [s32,ps32,size_t,s32]
+rawsocket_recv = dll.rawsocket_recv
+rawsocket_recv.restype = size_t
+rawsocket_recv.argtypes = [s32,ps32,size_t,s32]
 
 #arg[0] s
 #arg[1] mem
 #arg[2] len
-tssocket_read = dll.tssocket_read
-tssocket_read.restype = size_t
-tssocket_read.argtypes = [s32,ps32,size_t]
+rawsocket_read = dll.rawsocket_read
+rawsocket_read.restype = size_t
+rawsocket_read.argtypes = [s32,ps32,size_t]
 
 #arg[0] s
 #arg[1] iov
 #arg[2] iovcnt
-tssocket_readv = dll.tssocket_readv
-tssocket_readv.restype = size_t
-tssocket_readv.argtypes = [s32,Pts_iovec,s32]
+rawsocket_readv = dll.rawsocket_readv
+rawsocket_readv.restype = size_t
+rawsocket_readv.argtypes = [s32,Pts_iovec,s32]
 
 #arg[0] s
 #arg[1] mem
@@ -2898,31 +2910,31 @@ tssocket_readv.argtypes = [s32,Pts_iovec,s32]
 #arg[3] flags
 #arg[4] from
 #arg[5] fromlen
-tssocket_recvfrom = dll.tssocket_recvfrom
-tssocket_recvfrom.restype = size_t
-tssocket_recvfrom.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,pu32]
+rawsocket_recvfrom = dll.rawsocket_recvfrom
+rawsocket_recvfrom.restype = size_t
+rawsocket_recvfrom.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,pu32]
 
 #arg[0] s
 #arg[1] Amessage
 #arg[2] flags
-tssocket_recvmsg = dll.tssocket_recvmsg
-tssocket_recvmsg.restype = size_t
-tssocket_recvmsg.argtypes = [s32,Pts_msghdr,s32]
+rawsocket_recvmsg = dll.rawsocket_recvmsg
+rawsocket_recvmsg.restype = size_t
+rawsocket_recvmsg.argtypes = [s32,Pts_msghdr,s32]
 
 #arg[0] s
 #arg[1] dataptr
 #arg[2] size
 #arg[3] flags
-tssocket_send = dll.tssocket_send
-tssocket_send.restype = size_t
-tssocket_send.argtypes = [s32,ps32,size_t,s32]
+rawsocket_send = dll.rawsocket_send
+rawsocket_send.restype = size_t
+rawsocket_send.argtypes = [s32,ps32,size_t,s32]
 
 #arg[0] s
 #arg[1] Amessage
 #arg[2] flags
-tssocket_sendmsg = dll.tssocket_sendmsg
-tssocket_sendmsg.restype = size_t
-tssocket_sendmsg.argtypes = [s32,Pts_msghdr,s32]
+rawsocket_sendmsg = dll.rawsocket_sendmsg
+rawsocket_sendmsg.restype = size_t
+rawsocket_sendmsg.argtypes = [s32,Pts_msghdr,s32]
 
 #arg[0] s
 #arg[1] dataptr
@@ -2930,37 +2942,37 @@ tssocket_sendmsg.argtypes = [s32,Pts_msghdr,s32]
 #arg[3] flags
 #arg[4] ato
 #arg[5] tolen
-tssocket_sendto = dll.tssocket_sendto
-tssocket_sendto.restype = size_t
-tssocket_sendto.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,u32]
+rawsocket_sendto = dll.rawsocket_sendto
+rawsocket_sendto.restype = size_t
+rawsocket_sendto.argtypes = [s32,ps32,size_t,s32,Pts_sockaddr,u32]
 
 #arg[0] s
 #arg[1] dataptr
 #arg[2] size
-tssocket_write = dll.tssocket_write
-tssocket_write.restype = size_t
-tssocket_write.argtypes = [s32,ps32,size_t]
+rawsocket_write = dll.rawsocket_write
+rawsocket_write.restype = size_t
+rawsocket_write.argtypes = [s32,ps32,size_t]
 
 #arg[0] s
 #arg[1] iov
 #arg[2] iovcnt
-tssocket_writev = dll.tssocket_writev
-tssocket_writev.restype = size_t
-tssocket_writev.argtypes = [s32,Pts_iovec,s32]
+rawsocket_writev = dll.rawsocket_writev
+rawsocket_writev.restype = size_t
+rawsocket_writev.argtypes = [s32,Pts_iovec,s32]
 
 #arg[0] s
 #arg[1] cmd
 #arg[2] argp
-tssocket_ioctl = dll.tssocket_ioctl
-tssocket_ioctl.restype = s32
-tssocket_ioctl.argtypes = [s32,s32,ps32]
+rawsocket_ioctl = dll.rawsocket_ioctl
+rawsocket_ioctl.restype = s32
+rawsocket_ioctl.argtypes = [s32,s32,ps32]
 
 #arg[0] s
 #arg[1] cmd
 #arg[2] val
-tssocket_fcntl = dll.tssocket_fcntl
-tssocket_fcntl.restype = s32
-tssocket_fcntl.argtypes = [s32,s32,s32]
+rawsocket_fcntl = dll.rawsocket_fcntl
+rawsocket_fcntl.restype = s32
+rawsocket_fcntl.argtypes = [s32,s32,s32]
 
 #arg[0] ANetworkIndex
 #arg[1] AIPEndPoint
@@ -3180,6 +3192,23 @@ tssocket_unregister_udp_receivefrom_eventv2.argtypes = [s32,TSSocketReceiveEvent
 tssocket_unregister_udp_receivefrom_eventsv2 = dll.tssocket_unregister_udp_receivefrom_eventsv2
 tssocket_unregister_udp_receivefrom_eventsv2.restype = s32
 tssocket_unregister_udp_receivefrom_eventsv2.argtypes = [s32]
+
+#arg[0] s
+#arg[1] AEvent
+tssocket_register_udp_receivefrom_eventv3 = dll.tssocket_register_udp_receivefrom_eventv3
+tssocket_register_udp_receivefrom_eventv3.restype = s32
+tssocket_register_udp_receivefrom_eventv3.argtypes = [s32,TSSocketReceiveEventV3_Win32]
+
+#arg[0] s
+#arg[1] AEvent
+tssocket_unregister_udp_receivefrom_eventv3 = dll.tssocket_unregister_udp_receivefrom_eventv3
+tssocket_unregister_udp_receivefrom_eventv3.restype = s32
+tssocket_unregister_udp_receivefrom_eventv3.argtypes = [s32,TSSocketReceiveEventV3_Win32]
+
+#arg[0] s
+tssocket_unregister_udp_receivefrom_eventsv3 = dll.tssocket_unregister_udp_receivefrom_eventsv3
+tssocket_unregister_udp_receivefrom_eventsv3.restype = s32
+tssocket_unregister_udp_receivefrom_eventsv3.argtypes = [s32]
 
 #arg[0] s
 #arg[1] AEvent
@@ -4627,4 +4656,370 @@ start_system_message_log.argtypes = [pchar]
 end_system_message_log = dll.end_system_message_log
 end_system_message_log.restype = s32
 end_system_message_log.argtypes = [ppchar]
+
+#arg[0] ARpcName
+#arg[1] ABufferSizeBytes
+#arg[2] ARxEvent
+#arg[3] AHandle
+rpc_create_server = dll.rpc_create_server
+rpc_create_server.restype = s32
+rpc_create_server.argtypes = [pchar,size_t,TOnRpcData,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_activate_server = dll.rpc_activate_server
+rpc_activate_server.restype = s32
+rpc_activate_server.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_delete_server = dll.rpc_delete_server
+rpc_delete_server.restype = s32
+rpc_delete_server.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+rpc_server_write_sync = dll.rpc_server_write_sync
+rpc_server_write_sync.restype = s32
+rpc_server_write_sync.argtypes = [size_t,pu8,size_t]
+
+#arg[0] ARpcName
+#arg[1] ABufferSizeBytes
+#arg[2] AHandle
+rpc_create_client = dll.rpc_create_client
+rpc_create_client.restype = s32
+rpc_create_client.argtypes = [pchar,size_t,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_activate_client = dll.rpc_activate_client
+rpc_activate_client.restype = s32
+rpc_activate_client.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_delete_client = dll.rpc_delete_client
+rpc_delete_client.restype = s32
+rpc_delete_client.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+#arg[3] ATimeOutMs
+rpc_client_transmit_sync = dll.rpc_client_transmit_sync
+rpc_client_transmit_sync.restype = s32
+rpc_client_transmit_sync.argtypes = [size_t,pu8,size_t,s32]
+
+#arg[0] AHandle
+#arg[1] ASizeBytes
+#arg[2] AAddr
+#arg[3] ATimeOutMs
+rpc_client_receive_sync = dll.rpc_client_receive_sync
+rpc_client_receive_sync.restype = s32
+rpc_client_receive_sync.argtypes = [size_t,psize_t,pu8,s32]
+
+#arg[0] AMasked
+mask_fpu_exceptions = dll.mask_fpu_exceptions
+mask_fpu_exceptions.restype = s32
+mask_fpu_exceptions.argtypes = [cbool]
+
+#arg[0] AActivate
+rpc_tsmaster_activate_server = dll.rpc_tsmaster_activate_server
+rpc_tsmaster_activate_server.restype = s32
+rpc_tsmaster_activate_server.argtypes = [cbool]
+
+#arg[0] ATSMasterAppName
+#arg[1] AHandle
+rpc_tsmaster_create_client = dll.rpc_tsmaster_create_client
+rpc_tsmaster_create_client.restype = s32
+rpc_tsmaster_create_client.argtypes = [pchar,psize_t]
+
+#arg[0] AHandle
+#arg[1] AActivate
+rpc_tsmaster_activate_client = dll.rpc_tsmaster_activate_client
+rpc_tsmaster_activate_client.restype = s32
+rpc_tsmaster_activate_client.argtypes = [size_t,cbool]
+
+#arg[0] AHandle
+rpc_tsmaster_delete_client = dll.rpc_tsmaster_delete_client
+rpc_tsmaster_delete_client.restype = s32
+rpc_tsmaster_delete_client.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_start_simulation = dll.rpc_tsmaster_cmd_start_simulation
+rpc_tsmaster_cmd_start_simulation.restype = s32
+rpc_tsmaster_cmd_start_simulation.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_stop_simulation = dll.rpc_tsmaster_cmd_stop_simulation
+rpc_tsmaster_cmd_stop_simulation.restype = s32
+rpc_tsmaster_cmd_stop_simulation.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ACompleteName
+#arg[2] AValue
+rpc_tsmaster_cmd_write_system_var = dll.rpc_tsmaster_cmd_write_system_var
+rpc_tsmaster_cmd_write_system_var.restype = s32
+rpc_tsmaster_cmd_write_system_var.argtypes = [size_t,pchar,pchar]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+rpc_tsmaster_cmd_transfer_memory = dll.rpc_tsmaster_cmd_transfer_memory
+rpc_tsmaster_cmd_transfer_memory.restype = s32
+rpc_tsmaster_cmd_transfer_memory.argtypes = [size_t,pu8,size_t]
+
+#arg[0] AHandle
+#arg[1] AMsg
+#arg[2] ALevel
+rpc_tsmaster_cmd_log = dll.rpc_tsmaster_cmd_log
+rpc_tsmaster_cmd_log.restype = s32
+rpc_tsmaster_cmd_log.argtypes = [size_t,pchar,s32]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_sim = dll.rpc_tsmaster_cmd_set_mode_sim
+rpc_tsmaster_cmd_set_mode_sim.restype = s32
+rpc_tsmaster_cmd_set_mode_sim.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_realtime = dll.rpc_tsmaster_cmd_set_mode_realtime
+rpc_tsmaster_cmd_set_mode_realtime.restype = s32
+rpc_tsmaster_cmd_set_mode_realtime.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_set_mode_free = dll.rpc_tsmaster_cmd_set_mode_free
+rpc_tsmaster_cmd_set_mode_free.restype = s32
+rpc_tsmaster_cmd_set_mode_free.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ATimeUs
+rpc_tsmaster_cmd_sim_step = dll.rpc_tsmaster_cmd_sim_step
+rpc_tsmaster_cmd_sim_step.restype = s32
+rpc_tsmaster_cmd_sim_step.argtypes = [size_t,s64]
+
+#arg[0] AAddress
+#arg[1] ASizeBytes
+create_process_shared_memory = dll.create_process_shared_memory
+create_process_shared_memory.restype = s32
+create_process_shared_memory.argtypes = [ppu8,s32]
+
+#arg[0] AAddress
+#arg[1] ASizeBytes
+get_process_shared_memory = dll.get_process_shared_memory
+get_process_shared_memory.restype = s32
+get_process_shared_memory.argtypes = [ppu8,ps32]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_sim_step_batch_start = dll.rpc_tsmaster_cmd_sim_step_batch_start
+rpc_tsmaster_cmd_sim_step_batch_start.restype = s32
+rpc_tsmaster_cmd_sim_step_batch_start.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] ATimeUs
+rpc_tsmaster_cmd_sim_step_batch_end = dll.rpc_tsmaster_cmd_sim_step_batch_end
+rpc_tsmaster_cmd_sim_step_batch_end.restype = s32
+rpc_tsmaster_cmd_sim_step_batch_end.argtypes = [size_t,s64]
+
+#arg[0] AHandle
+#arg[1] AProjectFullPath
+rpc_tsmaster_cmd_get_project = dll.rpc_tsmaster_cmd_get_project
+rpc_tsmaster_cmd_get_project.restype = s32
+rpc_tsmaster_cmd_get_project.argtypes = [size_t,ppchar]
+
+#arg[0] AHandle
+#arg[1] ASysVarName
+#arg[2] AValue
+rpc_tsmaster_cmd_read_system_var = dll.rpc_tsmaster_cmd_read_system_var
+rpc_tsmaster_cmd_read_system_var.restype = s32
+rpc_tsmaster_cmd_read_system_var.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ABusType
+#arg[2] AAddr
+#arg[3] AValue
+rpc_tsmaster_cmd_read_signal = dll.rpc_tsmaster_cmd_read_signal
+rpc_tsmaster_cmd_read_signal.restype = s32
+rpc_tsmaster_cmd_read_signal.argtypes = [size_t,TLIBApplicationChannelType,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ABusType
+#arg[2] AAddr
+#arg[3] AValue
+rpc_tsmaster_cmd_write_signal = dll.rpc_tsmaster_cmd_write_signal
+rpc_tsmaster_cmd_write_signal.restype = s32
+rpc_tsmaster_cmd_write_signal.argtypes = [size_t,TLIBApplicationChannelType,pchar,double]
+
+#arg[0] ASymbolAddress
+can_rbs_set_normal_signal = dll.can_rbs_set_normal_signal
+can_rbs_set_normal_signal.restype = s32
+can_rbs_set_normal_signal.argtypes = [pchar]
+
+#arg[0] ASymbolAddress
+can_rbs_set_rc_signal = dll.can_rbs_set_rc_signal
+can_rbs_set_rc_signal.restype = s32
+can_rbs_set_rc_signal.argtypes = [pchar]
+
+#arg[0] ASymbolAddress
+#arg[1] ALowerLimit
+#arg[2] AUpperLimit
+can_rbs_set_rc_signal_with_limit = dll.can_rbs_set_rc_signal_with_limit
+can_rbs_set_rc_signal_with_limit.restype = s32
+can_rbs_set_rc_signal_with_limit.argtypes = [pchar,s32,s32]
+
+#arg[0] ASymbolAddress
+#arg[1] AAlgorithmName
+#arg[2] AIdxByteStart
+#arg[3] AByteCount
+can_rbs_set_crc_signal = dll.can_rbs_set_crc_signal
+can_rbs_set_crc_signal.restype = s32
+can_rbs_set_crc_signal.argtypes = [pchar,pchar,s32,s32]
+
+clear_user_constants = dll.clear_user_constants
+clear_user_constants.restype = s32
+clear_user_constants.argtypes = []
+
+#arg[0] AHeaderFile
+append_user_constants_from_c_header = dll.append_user_constants_from_c_header
+append_user_constants_from_c_header.restype = s32
+append_user_constants_from_c_header.argtypes = [pchar]
+
+#arg[0] AConstantName
+#arg[1] AValue
+#arg[2] ADesc
+append_user_constant = dll.append_user_constant
+append_user_constant.restype = s32
+append_user_constant.argtypes = [pchar,double,pchar]
+
+#arg[0] AConstantName
+delete_user_constant = dll.delete_user_constant
+delete_user_constant.restype = s32
+delete_user_constant.argtypes = [pchar]
+
+#arg[0] ACount
+get_mini_program_count = dll.get_mini_program_count
+get_mini_program_count.restype = s32
+get_mini_program_count.argtypes = [ps32]
+
+#arg[0] AIndex
+#arg[1] AKind
+#arg[2] AProgramName
+#arg[3] ADisplayName
+get_mini_program_info_by_index = dll.get_mini_program_info_by_index
+get_mini_program_info_by_index.restype = s32
+get_mini_program_info_by_index.argtypes = [s32,ps32,ppchar,ppchar]
+
+#arg[0] AProgramNames
+compile_mini_programs = dll.compile_mini_programs
+compile_mini_programs.restype = s32
+compile_mini_programs.argtypes = [pchar]
+
+#arg[0] ACompleteName
+#arg[1] AValue
+set_system_var_init_value = dll.set_system_var_init_value
+set_system_var_init_value.restype = s32
+set_system_var_init_value.argtypes = [pchar,pchar]
+
+#arg[0] ACompleteName
+#arg[1] AValue
+get_system_var_init_value = dll.get_system_var_init_value
+get_system_var_init_value.restype = s32
+get_system_var_init_value.argtypes = [pchar,ppchar]
+
+#arg[0] ACompleteName
+reset_system_var_to_init = dll.reset_system_var_to_init
+reset_system_var_to_init.restype = s32
+reset_system_var_to_init.argtypes = [pchar]
+
+#arg[0] AOwner
+reset_all_system_var_to_init = dll.reset_all_system_var_to_init
+reset_all_system_var_to_init.restype = s32
+reset_all_system_var_to_init.argtypes = [pchar]
+
+#arg[0] ACompleteName
+#arg[1] AValue
+get_system_var_generic_upg1 = dll.get_system_var_generic_upg1
+get_system_var_generic_upg1.restype = s32
+get_system_var_generic_upg1.argtypes = [pchar,ppchar]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_can_signal = dll.rpc_tsmaster_cmd_set_can_signal
+rpc_tsmaster_cmd_set_can_signal.restype = s32
+rpc_tsmaster_cmd_set_can_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_can_signal = dll.rpc_tsmaster_cmd_get_can_signal
+rpc_tsmaster_cmd_get_can_signal.restype = s32
+rpc_tsmaster_cmd_get_can_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_lin_signal = dll.rpc_tsmaster_cmd_get_lin_signal
+rpc_tsmaster_cmd_get_lin_signal.restype = s32
+rpc_tsmaster_cmd_get_lin_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_lin_signal = dll.rpc_tsmaster_cmd_set_lin_signal
+rpc_tsmaster_cmd_set_lin_signal.restype = s32
+rpc_tsmaster_cmd_set_lin_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_set_flexray_signal = dll.rpc_tsmaster_cmd_set_flexray_signal
+rpc_tsmaster_cmd_set_flexray_signal.restype = s32
+rpc_tsmaster_cmd_set_flexray_signal.argtypes = [size_t,pchar,double]
+
+#arg[0] AHandle
+#arg[1] ASgnAddress
+#arg[2] AValue
+rpc_tsmaster_cmd_get_flexray_signal = dll.rpc_tsmaster_cmd_get_flexray_signal
+rpc_tsmaster_cmd_get_flexray_signal.restype = s32
+rpc_tsmaster_cmd_get_flexray_signal.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] AConstName
+#arg[2] AValue
+rpc_tsmaster_cmd_get_constant = dll.rpc_tsmaster_cmd_get_constant
+rpc_tsmaster_cmd_get_constant.restype = s32
+rpc_tsmaster_cmd_get_constant.argtypes = [size_t,pchar,pdouble]
+
+#arg[0] AHandle
+#arg[1] AIsRunning
+rpc_tsmaster_is_simulation_running = dll.rpc_tsmaster_is_simulation_running
+rpc_tsmaster_is_simulation_running.restype = s32
+rpc_tsmaster_is_simulation_running.argtypes = [size_t,pbool]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] AArgCount
+#arg[3] AArgCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_system_api = dll.rpc_tsmaster_call_system_api
+rpc_tsmaster_call_system_api.restype = s32
+rpc_tsmaster_call_system_api.argtypes = [size_t,pchar,s32,s32,ppchar]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] AArgCount
+#arg[3] AArgCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_library_api = dll.rpc_tsmaster_call_library_api
+rpc_tsmaster_call_library_api.restype = s32
+rpc_tsmaster_call_library_api.argtypes = [size_t,pchar,s32,s32,ppchar]
+
+#arg[0] ADirectory
+get_tsmaster_binary_location = dll.get_tsmaster_binary_location
+get_tsmaster_binary_location.restype = s32
+get_tsmaster_binary_location.argtypes = [ppchar]
+
+#arg[0] ATSMasterAppNames
+get_active_application_list = dll.get_active_application_list
+get_active_application_list.restype = s32
+get_active_application_list.argtypes = [ppchar]
 
