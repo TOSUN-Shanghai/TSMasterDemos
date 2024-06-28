@@ -1370,6 +1370,11 @@ type
 	  addr: UInt32;
   end;
 
+  peth_addr_t = ^teth_addr_t;
+  teth_addr_t = packed record
+	  addr: array[0..5] of UInt8;
+  end;
+
 
 {$DEFINE  LWIP_IPV6_SCOPES}
   pip6_addr_t = ^tip6_addr_t;
