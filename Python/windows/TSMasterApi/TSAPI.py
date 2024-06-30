@@ -5023,3 +5023,15 @@ get_active_application_list = dll.get_active_application_list
 get_active_application_list.restype = s32
 get_active_application_list.argtypes = [ppchar]
 
+#arg[0] ASrc
+#arg[1] ADest
+encode_string = dll.encode_string
+encode_string.restype = s32
+encode_string.argtypes = [pchar,ppchar]
+
+#arg[0] ASrc
+#arg[1] ADest
+decode_string = dll.decode_string
+decode_string.restype = s32
+decode_string.argtypes = [pchar,ppchar]
+

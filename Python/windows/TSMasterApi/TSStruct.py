@@ -817,6 +817,12 @@ class Tip4_addr_t(Structure):
 ]
 Pip4_addr_t = POINTER(Tip4_addr_t)
 
+class Teth_addr_t(Structure):
+    _pack_ = 1
+    _fields_ =[('addr',u8*6),
+]
+Peth_addr_t = POINTER(Teth_addr_t)
+
 class Tip6_addr_t(Structure):
     _pack_ = 1
     _fields_ =[('addr',u32*4),

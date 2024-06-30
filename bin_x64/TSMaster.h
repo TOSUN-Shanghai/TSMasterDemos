@@ -1595,6 +1595,10 @@ typedef struct _Tip4_addr_t{
     u32 addr;
 }Tip4_addr_t, *Pip4_addr_t;
 
+typedef struct _Teth_addr_t{
+    u8 addr[6];
+}Teth_addr_t, *Peth_addr_t;
+
 typedef struct _Tip6_addr_t{
     u32 addr[4];
     u32 zone;
@@ -3388,6 +3392,10 @@ TSAPI(s32)rpc_tsmaster_call_library_api(const size_t AHandle,const char* AAPINam
 TSAPI(s32)get_tsmaster_binary_location(const ppchar ADirectory);
 
 TSAPI(s32)get_active_application_list(const ppchar ATSMasterAppNames);
+
+TSAPI(s32)encode_string(const char* ASrc,const ppchar ADest);
+
+TSAPI(s32)decode_string(const char* ASrc,const ppchar ADest);
 
 #if defined ( __cplusplus )
 }
