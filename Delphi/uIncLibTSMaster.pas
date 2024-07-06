@@ -2814,6 +2814,9 @@ function get_tsmaster_binary_location(ADirectory: PPAnsiChar): integer; stdcall;
 function get_active_application_list(ATSMasterAppNames: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function encode_string(const ASrc: pansichar; ADest: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function decode_string(const ASrc: pansichar; ADest: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_register_signal_cache(const AHandle: NativeInt; const ABusType: TLIBApplicationChannelType; const ASgnAddress: pansichar; AId: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_unregister_signal_cache(const AHandle: NativeInt; const AId: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_get_signal_cache_value(const AHandle: NativeInt; const AId: int64; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
