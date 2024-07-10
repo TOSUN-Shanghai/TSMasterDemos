@@ -3397,6 +3397,12 @@ TSAPI(s32)encode_string(const char* ASrc,const ppchar ADest);
 
 TSAPI(s32)decode_string(const char* ASrc,const ppchar ADest);
 
+TSAPI(s32)rpc_tsmaster_cmd_register_signal_cache(const size_t AHandle,const TLIBApplicationChannelType ABusType,const char* ASgnAddress,const ps64 AId);
+
+TSAPI(s32)rpc_tsmaster_cmd_unregister_signal_cache(const size_t AHandle,const s64 AId);
+
+TSAPI(s32)rpc_tsmaster_cmd_get_signal_cache_value(const size_t AHandle,const s64 AId,const pdouble AValue);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -5035,3 +5035,24 @@ decode_string = dll.decode_string
 decode_string.restype = s32
 decode_string.argtypes = [pchar,ppchar]
 
+#arg[0] AHandle
+#arg[1] ABusType
+#arg[2] ASgnAddress
+#arg[3] AId
+rpc_tsmaster_cmd_register_signal_cache = dll.rpc_tsmaster_cmd_register_signal_cache
+rpc_tsmaster_cmd_register_signal_cache.restype = s32
+rpc_tsmaster_cmd_register_signal_cache.argtypes = [size_t,TLIBApplicationChannelType,pchar,ps64]
+
+#arg[0] AHandle
+#arg[1] AId
+rpc_tsmaster_cmd_unregister_signal_cache = dll.rpc_tsmaster_cmd_unregister_signal_cache
+rpc_tsmaster_cmd_unregister_signal_cache.restype = s32
+rpc_tsmaster_cmd_unregister_signal_cache.argtypes = [size_t,s64]
+
+#arg[0] AHandle
+#arg[1] AId
+#arg[2] AValue
+rpc_tsmaster_cmd_get_signal_cache_value = dll.rpc_tsmaster_cmd_get_signal_cache_value
+rpc_tsmaster_cmd_get_signal_cache_value.restype = s32
+rpc_tsmaster_cmd_get_signal_cache_value.argtypes = [size_t,s64,pdouble]
+
