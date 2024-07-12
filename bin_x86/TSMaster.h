@@ -2451,6 +2451,12 @@ TSAPI(s32)tscom_lin_rbs_set_signal_value_by_element(const s32 AIdxChn,const char
 
 TSAPI(s32)tscom_lin_rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
 
+TSAPI(s32)tscom_lin_rbs_batch_set_start();
+
+TSAPI(s32)tscom_lin_rbs_batch_set_end();
+
+TSAPI(s32)tscom_lin_rbs_batch_set_signal(const char* AAddr,const double AValue);
+
 TSAPI(s32)tscom_can_rbs_reload_settings();
 
 TSAPI(s32)tscom_can_rbs_start();
@@ -2478,6 +2484,12 @@ TSAPI(s32)tscom_can_rbs_get_signal_value_by_address(const char* ASymbolAddress,d
 TSAPI(s32)tscom_can_rbs_set_signal_value_by_element(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMsgName,const char* ASignalName,const double AValue);
 
 TSAPI(s32)tscom_can_rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
+
+TSAPI(s32)tscom_can_rbs_batch_set_start();
+
+TSAPI(s32)tscom_can_rbs_batch_set_end();
+
+TSAPI(s32)tscom_can_rbs_batch_set_signal(const char* AAddr,const double AValue);
 
 TSAPI(s32)tscom_flexray_rbs_start();
 

@@ -1816,6 +1816,20 @@ tscom_lin_rbs_set_signal_value_by_address = dll.tscom_lin_rbs_set_signal_value_b
 tscom_lin_rbs_set_signal_value_by_address.restype = s32
 tscom_lin_rbs_set_signal_value_by_address.argtypes = [pchar,double]
 
+tscom_lin_rbs_batch_set_start = dll.tscom_lin_rbs_batch_set_start
+tscom_lin_rbs_batch_set_start.restype = s32
+tscom_lin_rbs_batch_set_start.argtypes = []
+
+tscom_lin_rbs_batch_set_end = dll.tscom_lin_rbs_batch_set_end
+tscom_lin_rbs_batch_set_end.restype = s32
+tscom_lin_rbs_batch_set_end.argtypes = []
+
+#arg[0] AAddr
+#arg[1] AValue
+tscom_lin_rbs_batch_set_signal = dll.tscom_lin_rbs_batch_set_signal
+tscom_lin_rbs_batch_set_signal.restype = s32
+tscom_lin_rbs_batch_set_signal.argtypes = [pchar,double]
+
 tscom_can_rbs_reload_settings = dll.tscom_can_rbs_reload_settings
 tscom_can_rbs_reload_settings.restype = s32
 tscom_can_rbs_reload_settings.argtypes = []
@@ -1913,6 +1927,20 @@ tscom_can_rbs_set_signal_value_by_element.argtypes = [s32,pchar,pchar,pchar,pcha
 tscom_can_rbs_set_signal_value_by_address = dll.tscom_can_rbs_set_signal_value_by_address
 tscom_can_rbs_set_signal_value_by_address.restype = s32
 tscom_can_rbs_set_signal_value_by_address.argtypes = [pchar,double]
+
+tscom_can_rbs_batch_set_start = dll.tscom_can_rbs_batch_set_start
+tscom_can_rbs_batch_set_start.restype = s32
+tscom_can_rbs_batch_set_start.argtypes = []
+
+tscom_can_rbs_batch_set_end = dll.tscom_can_rbs_batch_set_end
+tscom_can_rbs_batch_set_end.restype = s32
+tscom_can_rbs_batch_set_end.argtypes = []
+
+#arg[0] AAddr
+#arg[1] AValue
+tscom_can_rbs_batch_set_signal = dll.tscom_can_rbs_batch_set_signal
+tscom_can_rbs_batch_set_signal.restype = s32
+tscom_can_rbs_batch_set_signal.argtypes = [pchar,double]
 
 tscom_flexray_rbs_start = dll.tscom_flexray_rbs_start
 tscom_flexray_rbs_start.restype = s32
