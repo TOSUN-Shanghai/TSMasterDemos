@@ -3415,6 +3415,8 @@ TSAPI(s32)rpc_tsmaster_cmd_unregister_signal_cache(const size_t AHandle,const s6
 
 TSAPI(s32)rpc_tsmaster_cmd_get_signal_cache_value(const size_t AHandle,const s64 AId,const pdouble AValue);
 
+TSAPI(s32)can_rbs_set_crc_signal_w_head_tail(const char* ASymbolAddress,const char* AAlgorithmName,const s32 AIdxByteStart,const s32 AByteCount,const pu8 AHeadAddr,const s32 AHeadSizeBytes,const pu8 ATailAddr,const s32 ATailSizeBytes);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -5084,3 +5084,15 @@ rpc_tsmaster_cmd_get_signal_cache_value = dll.rpc_tsmaster_cmd_get_signal_cache_
 rpc_tsmaster_cmd_get_signal_cache_value.restype = s32
 rpc_tsmaster_cmd_get_signal_cache_value.argtypes = [size_t,s64,pdouble]
 
+#arg[0] ASymbolAddress
+#arg[1] AAlgorithmName
+#arg[2] AIdxByteStart
+#arg[3] AByteCount
+#arg[4] AHeadAddr
+#arg[5] AHeadSizeBytes
+#arg[6] ATailAddr
+#arg[7] ATailSizeBytes
+can_rbs_set_crc_signal_w_head_tail = dll.can_rbs_set_crc_signal_w_head_tail
+can_rbs_set_crc_signal_w_head_tail.restype = s32
+can_rbs_set_crc_signal_w_head_tail.argtypes = [pchar,pchar,s32,s32,pu8,s32,pu8,s32]
+
