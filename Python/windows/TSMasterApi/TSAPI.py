@@ -5096,3 +5096,13 @@ can_rbs_set_crc_signal_w_head_tail = dll.can_rbs_set_crc_signal_w_head_tail
 can_rbs_set_crc_signal_w_head_tail.restype = s32
 can_rbs_set_crc_signal_w_head_tail.argtypes = [pchar,pchar,s32,s32,pu8,s32,pu8,s32]
 
+#arg[0] AValue
+is_realtime_mode = dll.is_realtime_mode
+is_realtime_mode.restype = s32
+is_realtime_mode.argtypes = [pbool]
+
+#arg[0] AValue
+is_simulation_mode = dll.is_simulation_mode
+is_simulation_mode.restype = s32
+is_simulation_mode.argtypes = [pbool]
+
