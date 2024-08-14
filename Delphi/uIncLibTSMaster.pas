@@ -629,7 +629,8 @@ type
     TS_WIRELESS_OBD            = 10,
     TS_USB_DEVICE_EX           = 11,
     IXXAT_USB_DEVICE           = 12,
-    BUS_DEV_TYPE_COUNT         = 13
+    TS_ETH_IF_DEVICE           = 13,
+    BUS_DEV_TYPE_COUNT         = 14
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -744,6 +745,36 @@ type
   // STIM
   TSTIMSignalStatus = (sssStopped, sssRunning, sssPaused);
   PSTIMSignalStatus = ^TSTIMSignalStatus;
+  // UI Panel
+  TLIBPanelSignalType = (pstNone, pstCANSignal, pstLINSignal, pstSystemVar, pstFlexRaySignal, pstAPICall);
+  PLIBPanelSignalType = ^TLIBPanelSignalType;
+  TLIBPanelControlType = (
+    pctText,
+    pctImage,
+    pctGroupBox,
+    pctPanel,
+    pctPathButton,
+    pctCheckBox,
+    pctTrackBar,
+    pctScrollBar,
+    pctInputOutputBox,
+    pctImageButton,
+    pctSelector,
+    pctButton,
+    pctProgressBar,
+    pctRadioButton,
+    pctStartStopButton,
+    pctSwitch,
+    pctLED,
+    pctPageControl,
+    pctGauge,
+    pctGraphics,
+    pctPie,
+    pctRelationChart,
+    pctMemo,
+    pctScrollBox
+  );
+  PLIBPanelControlType = ^TLIBPanelControlType;
   // TS device type
   TLIBCANFDControllerType = (lfdtCAN = 0, lfdtISOCAN = 1, lfdtNonISOCAN = 2);
   TLIBCANFDControllerMode = (lfdmNormal = 0, lfdmACKOff = 1, lfdmRestricted = 2, lfdmInternalLoopback = 3, lfdmExternalLoopback = 4);
