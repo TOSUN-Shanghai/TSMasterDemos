@@ -25,7 +25,8 @@ class _TLIBBusToolDeviceType(CEnum):
     TS_WIRELESS_OBD = 10
     TS_USB_DEVICE_EX = 11
     IXXAT_USB_DEVICE = 12
-    BUS_DEV_TYPE_COUNT = 13
+    TS_ETH_IF_DEVICE = 13
+    BUS_DEV_TYPE_COUNT = 14
 TLIBBusToolDeviceType = c_int32
 PLIBBusToolDeviceType = ps32
 
@@ -260,6 +261,44 @@ class _TSTIMSignalStatus(CEnum):
 TSTIMSignalStatus = c_int32
 PSTIMSignalStatus = ps32
 
+class _TLIBPanelSignalType(CEnum):
+    pstNone = 0
+    pstCANSignal = 1
+    pstLINSignal = 2
+    pstSystemVar = 3
+    pstFlexRaySignal = 4
+    pstAPICall = 5
+TLIBPanelSignalType = c_int32
+PLIBPanelSignalType = ps32
+
+class _TLIBPanelControlType(CEnum):
+    pctText = 0
+    pctImage = 1
+    pctGroupBox = 2
+    pctPanel = 3
+    pctPathButton = 4
+    pctCheckBox = 5
+    pctTrackBar = 6
+    pctScrollBar = 7
+    pctInputOutputBox = 8
+    pctImageButton = 9
+    pctSelector = 10
+    pctButton = 11
+    pctProgressBar = 12
+    pctRadioButton = 13
+    pctStartStopButton = 14
+    pctSwitch = 15
+    pctLED = 16
+    pctPageControl = 17
+    pctGauge = 18
+    pctGraphics = 19
+    pctPie = 20
+    pctRelationChart = 21
+    pctMemo = 22
+    pctScrollBox = 23
+TLIBPanelControlType = c_int32
+PLIBPanelControlType = ps32
+
 class _TLIBCANFDControllerType(CEnum):
     lfdtCAN = 0
     lfdtISOCAN = 1
@@ -312,6 +351,14 @@ class _TLIB_TS_Device_Sub_Type(CEnum):
     TTS1026 = 32
     TTS1034 = 33
     TTS1018 = 34
+    TL1011 = 35
+    TTS1015_LiAuto = 36
+    TTS1013_LiAuto = 37
+    TTS1016Pro = 38
+    TC1054Pro = 39
+    TC1054 = 40
+    TLog1038 = 41
+    TS_DEV_END = 42
 TLIB_TS_Device_Sub_Type = c_int32
 PLIB_TS_Device_Sub_Type = ps32
 

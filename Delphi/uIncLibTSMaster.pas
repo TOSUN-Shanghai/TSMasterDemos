@@ -813,7 +813,15 @@ type
     TP1026              = 31,
     TTS1026             = 32,
     TTS1034             = 33,
-    TTS1018             = 34
+    TTS1018             = 34,
+    TL1011              = 35,
+    TTS1015_LiAuto      = 36,
+    TTS1013_LiAuto      = 37,
+    TTS1016Pro          = 38,
+    TC1054Pro           = 39,
+    TC1054              = 40,
+    TLog1038            = 41,
+    TS_DEV_END          = 42
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
@@ -1114,7 +1122,7 @@ type
                                        const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
 
 const
-  BUS_TOOL_DEVICE_TYPE_COUNT = 13;
+  BUS_TOOL_DEVICE_TYPE_COUNT = 14;
   BUS_TOOL_DEVICE_NAMES: array [0..BUS_TOOL_DEVICE_TYPE_COUNT-1] of string = (
     'Unknown bus tool',
     'TS Virtual Device',
@@ -1128,7 +1136,8 @@ const
     'CANAble',
     'TOSUN Wireless-OBD',
     'TOSUN Ex',
-    'IXXAT'
+    'IXXAT',
+    'TOSUN Eth IF'
   );
   TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (
