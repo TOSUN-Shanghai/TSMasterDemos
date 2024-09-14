@@ -1306,7 +1306,7 @@ const
   {
  * Level number for (get/set)sockopt() to apply to socket itself.
  *}
- MEMP_NUM_NETCONN     = 10;
+ MEMP_NUM_NETCONN     = 256;
  LWIP_SOCKET_OFFSET   = 0;
  TS_FD_SETSIZE        = MEMP_NUM_NETCONN;
  SIN_ZERO_LEN         = 8;
