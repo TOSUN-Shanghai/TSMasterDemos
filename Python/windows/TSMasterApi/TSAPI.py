@@ -2748,9 +2748,10 @@ tssocket_initialize.argtypes = [s32]
 
 #arg[0] ANetworkIndex
 #arg[1] ALog
+#arg[2] AActiveDelayACK
 tssocket_initialize_verbose = dll.tssocket_initialize_verbose
 tssocket_initialize_verbose.restype = s32
-tssocket_initialize_verbose.argtypes = [s32,TLogDebuggingInfo_t]
+tssocket_initialize_verbose.argtypes = [s32,TLogDebuggingInfo_t,cbool]
 
 #arg[0] ANetworkIndex
 tssocket_finalize = dll.tssocket_finalize

@@ -2771,7 +2771,7 @@ TSAPI(s32)rawsocket_inet_pton(const s32 af,const char* src,const ps32 dst);
 
 TSAPI(s32)tssocket_initialize(const s32 ANetworkIndex);
 
-TSAPI(s32)tssocket_initialize_verbose(const s32 ANetworkIndex,const TLogDebuggingInfo_t ALog);
+TSAPI(s32)tssocket_initialize_verbose(const s32 ANetworkIndex,const TLogDebuggingInfo_t ALog,const bool AActiveDelayACK);
 
 TSAPI(s32)tssocket_finalize(const s32 ANetworkIndex);
 
