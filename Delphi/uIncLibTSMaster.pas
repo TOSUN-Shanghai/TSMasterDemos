@@ -2490,8 +2490,7 @@ function rawsocket_ntoa6(const addr: pip6_addr_t): PAnsiChar; stdcall; {$IFNDEF 
 function rawsocket_inet_ntop(af: integer; const src: Pointer; dst: PAnsiChar; size: tts_socklen_t): Pansichar; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rawsocket_inet_pton(af: integer; const src: pansichar; dst: Pointer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_initialize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_initialize_verbose(const ANetworkIndex: integer;
-            ALog: TLogDebuggingInfo_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_initialize_verbose(const ANetworkIndex: integer; const ALog: TLogDebuggingInfo_t; const AActiveDelayACK: Boolean): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_finalize(const ANetworkIndex: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_add_device(const ANetworkIndex: integer; macaddr: PByte; vLan: System.PWORD; ipaddr: Tip4_addr_t;  netmask: Tip4_addr_t; gateway: Tip4_addr_t; mtu: UInt16): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_remove_device(const ANetworkIndex: integer; macaddr: PByte; vLan: System.PWORD; ipaddr: pip4_addr_t): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
