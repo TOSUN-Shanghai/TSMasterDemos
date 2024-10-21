@@ -520,6 +520,7 @@ type
     eth_config2: Byte;
     //bit0-4 phy_addr : 5;
     //bit5 accept wrong crc frame:1
+    //bit6-7: not used now
     eth_config3: Byte;
     //bit0: disable_promiscuous_mode
     //bit1: enable_recieve_all
@@ -822,7 +823,10 @@ type
     TC1054              = 40,
     TLog1038            = 41,
     TO1013              = 42,
-    TS_DEV_END          = 43
+    TC1034Pro           = 43,
+    TC1018Pro           = 44,
+    TC1038Pro           = 45,
+    TS_DEV_END          = 46
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (

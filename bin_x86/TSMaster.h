@@ -1241,7 +1241,10 @@ typedef enum {
     TC1054 = 40,
     TLog1038 = 41,
     TO1013 = 42,
-    TS_DEV_END = 43,
+    TC1034Pro = 43,
+    TC1018Pro = 44,
+    TC1038Pro = 45,
+    TS_DEV_END = 46,
 }TLIB_TS_Device_Sub_Type, *PLIB_TS_Device_Sub_Type;
 typedef enum {
     XL_NONE = 0,
