@@ -773,7 +773,8 @@ type
     pctPie,
     pctRelationChart,
     pctMemo,
-    pctScrollBox
+    pctScrollBox,
+    pctFileSelector
   );
   PLIBPanelControlType = ^TLIBPanelControlType;
   // TS device type
