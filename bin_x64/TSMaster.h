@@ -1184,6 +1184,7 @@ typedef enum {
     pctRelationChart = 21,
     pctMemo = 22,
     pctScrollBox = 23,
+    pctFileSelector = 24,
 }TLIBPanelControlType, *PLIBPanelControlType;
 typedef enum {
     lfdtCAN = 0,

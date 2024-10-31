@@ -296,6 +296,7 @@ class _TLIBPanelControlType(CEnum):
     pctRelationChart = 21
     pctMemo = 22
     pctScrollBox = 23
+    pctFileSelector = 24
 TLIBPanelControlType = c_int32
 PLIBPanelControlType = ps32
 
