@@ -2388,6 +2388,82 @@ tsdiag_can_delete = dll.tsdiag_can_delete
 tsdiag_can_delete.restype = s32
 tsdiag_can_delete.argtypes = [s32]
 
+#arg[0] pDiagModuleIndex
+#arg[1] AToolType
+#arg[2] AChnIndex
+#arg[3] ATesterIP
+#arg[4] ATesterPort
+#arg[5] ADUTIP
+#arg[6] ADUTPort
+#arg[7] ARequestID
+#arg[8] AResponseID
+#arg[9] AFunctionID
+tsdiag_doip_create = dll.tsdiag_doip_create
+tsdiag_doip_create.restype = s32
+tsdiag_doip_create.argtypes = [ps32,s32,u32,pchar,u16,pchar,u16,u32,u32,u32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_doip_connect = dll.tsdiag_doip_connect
+tsdiag_doip_connect.restype = s32
+tsdiag_doip_connect.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AActivateType
+#arg[2] ASendOEMSpecificData
+#arg[3] AOEMSpecificData
+tsdiag_doip_routing_activation = dll.tsdiag_doip_routing_activation
+tsdiag_doip_routing_activation.restype = s32
+tsdiag_doip_routing_activation.argtypes = [s32,u8,cbool,u32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_doip_disconnect = dll.tsdiag_doip_disconnect
+tsdiag_doip_disconnect.restype = s32
+tsdiag_doip_disconnect.argtypes = [s32]
+
+#arg[0] pDiagModuleIndex
+#arg[1] AChnIndex
+#arg[2] ANad
+tsdiag_lin_create = dll.tsdiag_lin_create
+tsdiag_lin_create.restype = s32
+tsdiag_lin_create.argtypes = [ps32,u32,u8]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ADiagRunWithNormalScheduleTable
+tstp_lin_set_run_with_normal_schedule_table = dll.tstp_lin_set_run_with_normal_schedule_table
+tstp_lin_set_run_with_normal_schedule_table.restype = s32
+tstp_lin_set_run_with_normal_schedule_table.argtypes = [s32,cbool]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ANAD
+tsdiag_lin_set_nad = dll.tsdiag_lin_set_nad
+tsdiag_lin_set_nad.restype = s32
+tsdiag_lin_set_nad.argtypes = [s32,u8]
+
+#arg[0] ADiagModuleIndex
+tsdiag_testerpresent_start = dll.tsdiag_testerpresent_start
+tsdiag_testerpresent_start.restype = s32
+tsdiag_testerpresent_start.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_testerpresent_stop = dll.tsdiag_testerpresent_stop
+tsdiag_testerpresent_stop.restype = s32
+tsdiag_testerpresent_stop.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AStartState
+tsdiag_testerpreset_checkState = dll.tsdiag_testerpreset_checkState
+tsdiag_testerpreset_checkState.restype = s32
+tsdiag_testerpreset_checkState.argtypes = [s32,pbool]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AIsFunctional
+#arg[2] AReqData
+#arg[3] AReqDataSize
+#arg[4] AIntervalTimeMs
+tsdiag_testerpresent_update_para = dll.tsdiag_testerpresent_update_para
+tsdiag_testerpresent_update_para.restype = s32
+tsdiag_testerpresent_update_para.argtypes = [s32,s32,pu8,s32,s32]
+
 #arg[0] ADiagModuleIndex
 #arg[1] AChnIndex
 tsdiag_set_channel = dll.tsdiag_set_channel
@@ -2476,6 +2552,116 @@ tsdiag_set_s3_servertime.argtypes = [s32,s32]
 tsdiag_set_s3_clienttime = dll.tsdiag_set_s3_clienttime
 tsdiag_set_s3_clienttime.restype = s32
 tsdiag_set_s3_clienttime.argtypes = [s32,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AReqDataArray
+#arg[2] AReqDataSize
+tstp_send_functional = dll.tstp_send_functional
+tstp_send_functional.restype = s32
+tstp_send_functional.argtypes = [s32,pu8,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AReqDataArray
+#arg[2] AReqDataSize
+tstp_send_request = dll.tstp_send_request
+tstp_send_request.restype = s32
+tstp_send_request.argtypes = [s32,pu8,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AReqDataArray
+#arg[2] AReqDataSize
+#arg[3] AResponseDataArray
+#arg[4] AResponseDataSize
+tstp_request_and_get_response = dll.tstp_request_and_get_response
+tstp_request_and_get_response.restype = s32
+tstp_request_and_get_response.argtypes = [s32,pu8,s32,pu8,ps32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AReqDataArray
+#arg[2] AReqDataSize
+#arg[3] AResponseDataArray
+#arg[4] AResponseDataSize
+tstp_request_and_get_response_functional = dll.tstp_request_and_get_response_functional
+tstp_request_and_get_response_functional.restype = s32
+tstp_request_and_get_response_functional.argtypes = [s32,pu8,s32,pu8,ps32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ASubSession
+tsdiag_session_control = dll.tsdiag_session_control
+tsdiag_session_control.restype = s32
+tsdiag_session_control.argtypes = [s32,u8]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ARoutineControlType
+#arg[2] ARoutintID
+tsdiag_routine_control = dll.tsdiag_routine_control
+tsdiag_routine_control.restype = s32
+tsdiag_routine_control.argtypes = [s32,u8,u16]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AControlType
+tsdiag_communication_control = dll.tsdiag_communication_control
+tsdiag_communication_control.restype = s32
+tsdiag_communication_control.argtypes = [s32,u8]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ALevel
+#arg[2] ARecSeed
+#arg[3] ARecSeedSize
+tsdiag_security_access_request_seed = dll.tsdiag_security_access_request_seed
+tsdiag_security_access_request_seed.restype = s32
+tsdiag_security_access_request_seed.argtypes = [s32,s32,pu8,ps32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ALevel
+#arg[2] AKeyValue
+#arg[3] AKeySize
+tsdiag_security_access_send_key = dll.tsdiag_security_access_send_key
+tsdiag_security_access_send_key.restype = s32
+tsdiag_security_access_send_key.argtypes = [s32,s32,pu8,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AMemAddr
+#arg[2] AMemSize
+tsdiag_request_download = dll.tsdiag_request_download
+tsdiag_request_download.restype = s32
+tsdiag_request_download.argtypes = [s32,u32,u32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AMemAddr
+#arg[2] AMemSize
+tsdiag_request_upload = dll.tsdiag_request_upload
+tsdiag_request_upload.restype = s32
+tsdiag_request_upload.argtypes = [s32,u32,u32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ASourceDatas
+#arg[2] ADataSize
+#arg[3] AReqCase
+tsdiag_transfer_data = dll.tsdiag_transfer_data
+tsdiag_transfer_data.restype = s32
+tsdiag_transfer_data.argtypes = [s32,pu8,s32,s32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_request_transfer_exit = dll.tsdiag_request_transfer_exit
+tsdiag_request_transfer_exit.restype = s32
+tsdiag_request_transfer_exit.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ADataIdentifier
+#arg[2] AWriteData
+#arg[3] AWriteDataSize
+tsdiag_write_data_by_identifier = dll.tsdiag_write_data_by_identifier
+tsdiag_write_data_by_identifier.restype = s32
+tsdiag_write_data_by_identifier.argtypes = [s32,u16,pu8,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ADataIdentifier
+#arg[2] AReturnArray
+#arg[3] AReturnArraySize
+tsdiag_read_data_by_identifier = dll.tsdiag_read_data_by_identifier
+tsdiag_read_data_by_identifier.restype = s32
+tsdiag_read_data_by_identifier.argtypes = [s32,u16,pu8,ps32]
 
 #arg[0] ADiagModuleIndex
 #arg[1] AReqDataArray
@@ -5106,4 +5292,79 @@ is_realtime_mode.argtypes = [pbool]
 is_simulation_mode = dll.is_simulation_mode
 is_simulation_mode.restype = s32
 is_simulation_mode.argtypes = [pbool]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_double = dll.tslog_blf_write_sysvar_double
+tslog_blf_write_sysvar_double.restype = s32
+tslog_blf_write_sysvar_double.argtypes = [size_t,pchar,s64,double]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_s32 = dll.tslog_blf_write_sysvar_s32
+tslog_blf_write_sysvar_s32.restype = s32
+tslog_blf_write_sysvar_s32.argtypes = [size_t,pchar,s64,s32]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_u32 = dll.tslog_blf_write_sysvar_u32
+tslog_blf_write_sysvar_u32.restype = s32
+tslog_blf_write_sysvar_u32.argtypes = [size_t,pchar,s64,u32]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_s64 = dll.tslog_blf_write_sysvar_s64
+tslog_blf_write_sysvar_s64.restype = s32
+tslog_blf_write_sysvar_s64.argtypes = [size_t,pchar,s64,s64]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_u64 = dll.tslog_blf_write_sysvar_u64
+tslog_blf_write_sysvar_u64.restype = s32
+tslog_blf_write_sysvar_u64.argtypes = [size_t,pchar,s64,u64]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+tslog_blf_write_sysvar_string = dll.tslog_blf_write_sysvar_string
+tslog_blf_write_sysvar_string.restype = s32
+tslog_blf_write_sysvar_string.argtypes = [size_t,pchar,s64,pchar]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+#arg[4] AValueCount
+tslog_blf_write_sysvar_double_array = dll.tslog_blf_write_sysvar_double_array
+tslog_blf_write_sysvar_double_array.restype = s32
+tslog_blf_write_sysvar_double_array.argtypes = [size_t,pchar,s64,pdouble,s32]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+#arg[4] AValueCount
+tslog_blf_write_sysvar_s32_array = dll.tslog_blf_write_sysvar_s32_array
+tslog_blf_write_sysvar_s32_array.restype = s32
+tslog_blf_write_sysvar_s32_array.argtypes = [size_t,pchar,s64,ps32,s32]
+
+#arg[0] AHandle
+#arg[1] AName
+#arg[2] ATimeUs
+#arg[3] AValue
+#arg[4] AValueCount
+tslog_blf_write_sysvar_u8_array = dll.tslog_blf_write_sysvar_u8_array
+tslog_blf_write_sysvar_u8_array.restype = s32
+tslog_blf_write_sysvar_u8_array.argtypes = [size_t,pchar,s64,pu8,s32]
 

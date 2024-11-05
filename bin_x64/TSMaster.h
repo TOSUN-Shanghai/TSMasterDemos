@@ -2671,6 +2671,28 @@ TSAPI(s32)tsdiag_can_create(const ps32 pDiagModuleIndex,const s32 AChnIndex,cons
 
 TSAPI(s32)tsdiag_can_delete(const s32 ADiagModuleIndex);
 
+TSAPI(s32)tsdiag_doip_create(const ps32 pDiagModuleIndex,const s32 AToolType,const u32 AChnIndex,const char* ATesterIP,const u16 ATesterPort,const char* ADUTIP,const u16 ADUTPort,const u32 ARequestID,const u32 AResponseID,const u32 AFunctionID);
+
+TSAPI(s32)tsdiag_doip_connect(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_doip_routing_activation(const s32 ADiagModuleIndex,const u8 AActivateType,const bool ASendOEMSpecificData,const u32 AOEMSpecificData);
+
+TSAPI(s32)tsdiag_doip_disconnect(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_lin_create(const ps32 pDiagModuleIndex,const u32 AChnIndex,const u8 ANad);
+
+TSAPI(s32)tstp_lin_set_run_with_normal_schedule_table(const s32 ADiagModuleIndex,const bool ADiagRunWithNormalScheduleTable);
+
+TSAPI(s32)tsdiag_lin_set_nad(const s32 ADiagModuleIndex,const u8 ANAD);
+
+TSAPI(s32)tsdiag_testerpresent_start(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_testerpresent_stop(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_testerpreset_checkState(const s32 ADiagModuleIndex,const pbool AStartState);
+
+TSAPI(s32)tsdiag_testerpresent_update_para(const s32 ADiagModuleIndex,const s32 AIsFunctional,const pu8 AReqData,const s32 AReqDataSize,const s32 AIntervalTimeMs);
+
 TSAPI(s32)tsdiag_set_channel(const s32 ADiagModuleIndex,const s32 AChnIndex);
 
 TSAPI(s32)tsdiag_set_fdmode(const s32 ADiagModuleIndex,const bool AFDMode,const bool ASupportBRS,const s32 AMaxLength);
@@ -2698,6 +2720,36 @@ TSAPI(s32)tsdiag_set_p2_extended(const s32 ADiagModuleIndex,const s32 ATimeMs);
 TSAPI(s32)tsdiag_set_s3_servertime(const s32 ADiagModuleIndex,const s32 ATimeMs);
 
 TSAPI(s32)tsdiag_set_s3_clienttime(const s32 ADiagModuleIndex,const s32 ATimeMs);
+
+TSAPI(s32)tstp_send_functional(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize);
+
+TSAPI(s32)tstp_send_request(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize);
+
+TSAPI(s32)tstp_request_and_get_response(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize,const pu8 AResponseDataArray,const ps32 AResponseDataSize);
+
+TSAPI(s32)tstp_request_and_get_response_functional(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize,const pu8 AResponseDataArray,const ps32 AResponseDataSize);
+
+TSAPI(s32)tsdiag_session_control(const s32 ADiagModuleIndex,const u8 ASubSession);
+
+TSAPI(s32)tsdiag_routine_control(const s32 ADiagModuleIndex,const u8 ARoutineControlType,const u16 ARoutintID);
+
+TSAPI(s32)tsdiag_communication_control(const s32 ADiagModuleIndex,const u8 AControlType);
+
+TSAPI(s32)tsdiag_security_access_request_seed(const s32 ADiagModuleIndex,const s32 ALevel,const pu8 ARecSeed,const ps32 ARecSeedSize);
+
+TSAPI(s32)tsdiag_security_access_send_key(const s32 ADiagModuleIndex,const s32 ALevel,const pu8 AKeyValue,const s32 AKeySize);
+
+TSAPI(s32)tsdiag_request_download(const s32 ADiagModuleIndex,const u32 AMemAddr,const u32 AMemSize);
+
+TSAPI(s32)tsdiag_request_upload(const s32 ADiagModuleIndex,const u32 AMemAddr,const u32 AMemSize);
+
+TSAPI(s32)tsdiag_transfer_data(const s32 ADiagModuleIndex,const pu8 ASourceDatas,const s32 ADataSize,const s32 AReqCase);
+
+TSAPI(s32)tsdiag_request_transfer_exit(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_write_data_by_identifier(const s32 ADiagModuleIndex,const u16 ADataIdentifier,const pu8 AWriteData,const s32 AWriteDataSize);
+
+TSAPI(s32)tsdiag_read_data_by_identifier(const s32 ADiagModuleIndex,const u16 ADataIdentifier,const pu8 AReturnArray,const ps32 AReturnArraySize);
 
 TSAPI(s32)tstp_can_send_functional(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize);
 
@@ -3468,6 +3520,24 @@ TSAPI(s32)can_rbs_set_crc_signal_w_head_tail(const char* ASymbolAddress,const ch
 TSAPI(s32)is_realtime_mode(const pbool AValue);
 
 TSAPI(s32)is_simulation_mode(const pbool AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_double(const size_t AHandle,const char* AName,const s64 ATimeUs,const double AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_s32(const size_t AHandle,const char* AName,const s64 ATimeUs,const s32 AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_u32(const size_t AHandle,const char* AName,const s64 ATimeUs,const u32 AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_s64(const size_t AHandle,const char* AName,const s64 ATimeUs,const s64 AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_u64(const size_t AHandle,const char* AName,const s64 ATimeUs,const u64 AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_string(const size_t AHandle,const char* AName,const s64 ATimeUs,const char* AValue);
+
+TSAPI(s32)tslog_blf_write_sysvar_double_array(const size_t AHandle,const char* AName,const s64 ATimeUs,const pdouble AValue,const s32 AValueCount);
+
+TSAPI(s32)tslog_blf_write_sysvar_s32_array(const size_t AHandle,const char* AName,const s64 ATimeUs,const ps32 AValue,const s32 AValueCount);
+
+TSAPI(s32)tslog_blf_write_sysvar_u8_array(const size_t AHandle,const char* AName,const s64 ATimeUs,const pu8 AValue,const s32 AValueCount);
 
 #if defined ( __cplusplus )
 }
