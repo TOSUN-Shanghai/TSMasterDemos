@@ -2921,6 +2921,12 @@ function tslog_blf_write_sysvar_string(const AHandle: NativeInt; const AName: pa
 function tslog_blf_write_sysvar_double_array(const AHandle: NativeInt; const AName: pansichar; const ATimeUs: int64; const AValue: pdouble; const AValueCount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_blf_write_sysvar_s32_array(const AHandle: NativeInt; const AName: pansichar; const ATimeUs: int64; const AValue: pInt32; const AValueCount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_blf_write_sysvar_u8_array(const AHandle: NativeInt; const AName: pansichar; const ATimeUs: int64; const AValue: pbyte; const AValueCount: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_start_can_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_stop_can_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_start_lin_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_stop_lin_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_start_flexray_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_cmd_stop_flexray_rbs(const AObj: Pointer; const AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
