@@ -3539,6 +3539,24 @@ TSAPI(s32)tslog_blf_write_sysvar_s32_array(const size_t AHandle,const char* ANam
 
 TSAPI(s32)tslog_blf_write_sysvar_u8_array(const size_t AHandle,const char* AName,const s64 ATimeUs,const pu8 AValue,const s32 AValueCount);
 
+TSAPI(s32)rpc_tsmaster_cmd_start_can_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_stop_can_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_start_lin_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_stop_lin_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_start_flexray_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_stop_flexray_rbs(const size_t AHandle);
+
+TSAPI(s32)rpc_tsmaster_cmd_is_can_rbs_running(const size_t AHandle,const pbool AIsRunning);
+
+TSAPI(s32)rpc_tsmaster_cmd_is_lin_rbs_running(const size_t AHandle,const pbool AIsRunning);
+
+TSAPI(s32)rpc_tsmaster_cmd_is_flexray_rbs_running(const size_t AHandle,const pbool AIsRunning);
+
 #if defined ( __cplusplus )
 }
 #endif

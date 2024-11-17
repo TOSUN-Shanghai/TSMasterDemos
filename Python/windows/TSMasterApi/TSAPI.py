@@ -5368,3 +5368,51 @@ tslog_blf_write_sysvar_u8_array = dll.tslog_blf_write_sysvar_u8_array
 tslog_blf_write_sysvar_u8_array.restype = s32
 tslog_blf_write_sysvar_u8_array.argtypes = [size_t,pchar,s64,pu8,s32]
 
+#arg[0] AHandle
+rpc_tsmaster_cmd_start_can_rbs = dll.rpc_tsmaster_cmd_start_can_rbs
+rpc_tsmaster_cmd_start_can_rbs.restype = s32
+rpc_tsmaster_cmd_start_can_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_stop_can_rbs = dll.rpc_tsmaster_cmd_stop_can_rbs
+rpc_tsmaster_cmd_stop_can_rbs.restype = s32
+rpc_tsmaster_cmd_stop_can_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_start_lin_rbs = dll.rpc_tsmaster_cmd_start_lin_rbs
+rpc_tsmaster_cmd_start_lin_rbs.restype = s32
+rpc_tsmaster_cmd_start_lin_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_stop_lin_rbs = dll.rpc_tsmaster_cmd_stop_lin_rbs
+rpc_tsmaster_cmd_stop_lin_rbs.restype = s32
+rpc_tsmaster_cmd_stop_lin_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_start_flexray_rbs = dll.rpc_tsmaster_cmd_start_flexray_rbs
+rpc_tsmaster_cmd_start_flexray_rbs.restype = s32
+rpc_tsmaster_cmd_start_flexray_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+rpc_tsmaster_cmd_stop_flexray_rbs = dll.rpc_tsmaster_cmd_stop_flexray_rbs
+rpc_tsmaster_cmd_stop_flexray_rbs.restype = s32
+rpc_tsmaster_cmd_stop_flexray_rbs.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AIsRunning
+rpc_tsmaster_cmd_is_can_rbs_running = dll.rpc_tsmaster_cmd_is_can_rbs_running
+rpc_tsmaster_cmd_is_can_rbs_running.restype = s32
+rpc_tsmaster_cmd_is_can_rbs_running.argtypes = [size_t,pbool]
+
+#arg[0] AHandle
+#arg[1] AIsRunning
+rpc_tsmaster_cmd_is_lin_rbs_running = dll.rpc_tsmaster_cmd_is_lin_rbs_running
+rpc_tsmaster_cmd_is_lin_rbs_running.restype = s32
+rpc_tsmaster_cmd_is_lin_rbs_running.argtypes = [size_t,pbool]
+
+#arg[0] AHandle
+#arg[1] AIsRunning
+rpc_tsmaster_cmd_is_flexray_rbs_running = dll.rpc_tsmaster_cmd_is_flexray_rbs_running
+rpc_tsmaster_cmd_is_flexray_rbs_running.restype = s32
+rpc_tsmaster_cmd_is_flexray_rbs_running.argtypes = [size_t,pbool]
+
