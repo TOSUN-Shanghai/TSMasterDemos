@@ -631,7 +631,8 @@ type
     TS_USB_DEVICE_EX           = 11,
     IXXAT_USB_DEVICE           = 12,
     TS_ETH_IF_DEVICE           = 13,
-    BUS_DEV_TYPE_COUNT         = 14
+    TS_USB_IF_DEVICE           = 14,
+    BUS_DEV_TYPE_COUNT         = 15
   );
   TLIBApplicationChannelType = (
     APP_CAN = 0,
@@ -1128,7 +1129,7 @@ type
                                        const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
 
 const
-  BUS_TOOL_DEVICE_TYPE_COUNT = 14;
+  BUS_TOOL_DEVICE_TYPE_COUNT = 15;
   BUS_TOOL_DEVICE_NAMES: array [0..BUS_TOOL_DEVICE_TYPE_COUNT-1] of string = (
     'Unknown bus tool',
     'TS Virtual Device',
@@ -1143,7 +1144,8 @@ const
     'TOSUN Wireless-OBD',
     'TOSUN Ex',
     'IXXAT',
-    'TOSUN Eth IF'
+    'TOSUN Eth IF',
+    'TOSUN USB IF'
   );
   TS_HWTYPE_MAX_CNT = 35;
   TS_HWTYPE_NAMES: array [0..TS_HWTYPE_MAX_CNT-1] of string = (

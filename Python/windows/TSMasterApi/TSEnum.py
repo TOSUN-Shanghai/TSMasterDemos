@@ -26,7 +26,8 @@ class _TLIBBusToolDeviceType(CEnum):
     TS_USB_DEVICE_EX = 11
     IXXAT_USB_DEVICE = 12
     TS_ETH_IF_DEVICE = 13
-    BUS_DEV_TYPE_COUNT = 14
+    TS_USB_IF_DEVICE = 14
+    BUS_DEV_TYPE_COUNT = 15
 TLIBBusToolDeviceType = c_int32
 PLIBBusToolDeviceType = ps32
 
