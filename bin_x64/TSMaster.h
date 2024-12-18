@@ -3,7 +3,9 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <cstring>
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
 
 #define CH1 0
 #define CH2 1
@@ -152,6 +154,7 @@ typedef struct _TLIBCAN
     s32 FIdentifier;//CAN identifier   = CAN
     s64 FTimeUs;//timestamp in us = CAN
     u8 FData[8];
+#ifdef __cplusplus
     // is_tx -----------------------------------------------------
     PROPERTY(bool, is_tx);
     GET(is_tx)
@@ -255,6 +258,7 @@ typedef struct _TLIBCAN
         *(u64*)(&FData[0]) = 0;
         FTimeUs = 0;
     }
+#endif
 }TLIBCAN, *PLIBCAN;
 
 typedef struct _TLIBCANFD
@@ -266,6 +270,7 @@ typedef struct _TLIBCANFD
     s32 FIdentifier;//CAN identifier   = CAN
     s64 FTimeUs;//timestamp in us = CAN
     u8 FData[64] ;
+#ifdef __cplusplus
     // is_tx -----------------------------------------------------
 	PROPERTY(bool, is_tx);
 	GET(is_tx)
@@ -416,6 +421,7 @@ typedef struct _TLIBCANFD
 	TLIBCAN to_tcan(void) {
 		return *(TLIBCAN*)(&FIdxChn);
 	}
+#endif
 }TLIBCANFD, *PLIBCANFD;
 
 
@@ -430,6 +436,7 @@ typedef struct _TLIBLIN
     u8 FStatus;//place holder 1
     s64 FTimeUS;//timestamp in us
     u8 FData[8] ;
+#ifdef __cplusplus
     // is_tx -----------------------------------------------------
 	PROPERTY(bool, is_tx);
 	GET(is_tx)
@@ -463,6 +470,7 @@ typedef struct _TLIBLIN
 		FStatus = 0;
 		FTimeUS = 0;
 	}
+#endif
 }TLIBLIN, *PLIBLIN;
 
 typedef struct _TLIBFlexRay
@@ -485,6 +493,7 @@ typedef struct _TLIBFlexRay
     u64 FReserved2;//8 reserved bytes
     u64 FTimeUs;// timestamp in us
     u8 FData[254] ;
+#ifdef __cplusplus
      // is_tx -----------------------------------------------------
     PROPERTY(bool, is_tx);
     GET(is_tx){
@@ -610,6 +619,7 @@ typedef struct _TLIBFlexRay
             FData[i] = *a++;
         }
     }
+#endif
 }TLIBFlexRay, *PLIBFlexRay;
 
 typedef struct _TLIBEthernetHeader
@@ -625,6 +635,7 @@ typedef struct _TLIBEthernetHeader
     #ifdef _WIN32
     u32 FPadding;                // to be compatible with x64
     #endif
+#ifdef __cplusplus
     ARRAY_PROPERTY(u8, Payloads, 1500);
     ARRAY_GET(Payloads) {
         return *(ethernet_payload_addr() + index);
@@ -881,6 +892,7 @@ typedef struct _TLIBEthernetHeader
         has_vlans(&o);
         return FEthernetDataAddr + 0x2A + o;
     }
+#endif
 }TLIBEthernetHeader, *PLIBEthernetHeader;
 
 typedef struct _TLIBFlexray_controller_config
