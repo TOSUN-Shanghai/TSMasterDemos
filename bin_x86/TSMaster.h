@@ -5,6 +5,8 @@
 #include <stdio.h>
 #ifndef __cplusplus
 #include <stdbool.h>
+#else
+#include <cstring>
 #endif
 
 #define CH1 0
