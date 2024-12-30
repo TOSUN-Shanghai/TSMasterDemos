@@ -2440,31 +2440,6 @@ tsdiag_lin_set_nad.restype = s32
 tsdiag_lin_set_nad.argtypes = [s32,u8]
 
 #arg[0] ADiagModuleIndex
-tsdiag_testerpresent_start = dll.tsdiag_testerpresent_start
-tsdiag_testerpresent_start.restype = s32
-tsdiag_testerpresent_start.argtypes = [s32]
-
-#arg[0] ADiagModuleIndex
-tsdiag_testerpresent_stop = dll.tsdiag_testerpresent_stop
-tsdiag_testerpresent_stop.restype = s32
-tsdiag_testerpresent_stop.argtypes = [s32]
-
-#arg[0] ADiagModuleIndex
-#arg[1] AStartState
-tsdiag_testerpreset_checkState = dll.tsdiag_testerpreset_checkState
-tsdiag_testerpreset_checkState.restype = s32
-tsdiag_testerpreset_checkState.argtypes = [s32,pbool]
-
-#arg[0] ADiagModuleIndex
-#arg[1] AIsFunctional
-#arg[2] AReqData
-#arg[3] AReqDataSize
-#arg[4] AIntervalTimeMs
-tsdiag_testerpresent_update_para = dll.tsdiag_testerpresent_update_para
-tsdiag_testerpresent_update_para.restype = s32
-tsdiag_testerpresent_update_para.argtypes = [s32,s32,pu8,s32,s32]
-
-#arg[0] ADiagModuleIndex
 #arg[1] AChnIndex
 tsdiag_set_channel = dll.tsdiag_set_channel
 tsdiag_set_channel.restype = s32
@@ -2504,6 +2479,13 @@ tsdiag_set_function_id.argtypes = [s32,s32,cbool]
 tsdiag_set_stmin = dll.tsdiag_set_stmin
 tsdiag_set_stmin.restype = s32
 tsdiag_set_stmin.argtypes = [s32,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ATxSTMinUserDefined
+#arg[2] ATxSTMin
+tsdiag_set_tx_stmin = dll.tsdiag_set_tx_stmin
+tsdiag_set_tx_stmin.restype = s32
+tsdiag_set_tx_stmin.argtypes = [s32,cbool,s32]
 
 #arg[0] ADiagModuleIndex
 #arg[1] ABlockSize
@@ -2552,6 +2534,31 @@ tsdiag_set_s3_servertime.argtypes = [s32,s32]
 tsdiag_set_s3_clienttime = dll.tsdiag_set_s3_clienttime
 tsdiag_set_s3_clienttime.restype = s32
 tsdiag_set_s3_clienttime.argtypes = [s32,s32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_testerpresent_start = dll.tsdiag_testerpresent_start
+tsdiag_testerpresent_start.restype = s32
+tsdiag_testerpresent_start.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_testerpresent_stop = dll.tsdiag_testerpresent_stop
+tsdiag_testerpresent_stop.restype = s32
+tsdiag_testerpresent_stop.argtypes = [s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AStartState
+tsdiag_testerpreset_checkState = dll.tsdiag_testerpreset_checkState
+tsdiag_testerpreset_checkState.restype = s32
+tsdiag_testerpreset_checkState.argtypes = [s32,pbool]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AIsFunctional
+#arg[2] AReqData
+#arg[3] AReqDataSize
+#arg[4] AIntervalTimeMs
+tsdiag_testerpresent_update_para = dll.tsdiag_testerpresent_update_para
+tsdiag_testerpresent_update_para.restype = s32
+tsdiag_testerpresent_update_para.argtypes = [s32,s32,pu8,s32,s32]
 
 #arg[0] ADiagModuleIndex
 #arg[1] AReqDataArray
@@ -2708,18 +2715,6 @@ tstp_can_register_rx_completed_recall.restype = s32
 tstp_can_register_rx_completed_recall.argtypes = [s32,N_USData_TranslateCompleted_Recall]
 
 #arg[0] ADiagModuleIndex
-#arg[1] ATxcompleted
-tstp_can_register_tx_completed_recall_internal = dll.tstp_can_register_tx_completed_recall_internal
-tstp_can_register_tx_completed_recall_internal.restype = s32
-tstp_can_register_tx_completed_recall_internal.argtypes = [s32,N_USData_TranslateCompleted_Recall_Obj]
-
-#arg[0] ADiagModuleIndex
-#arg[1] ARxcompleted
-tstp_can_register_rx_completed_recall_internal = dll.tstp_can_register_rx_completed_recall_internal
-tstp_can_register_rx_completed_recall_internal.restype = s32
-tstp_can_register_rx_completed_recall_internal.argtypes = [s32,N_USData_TranslateCompleted_Recall_Obj]
-
-#arg[0] ADiagModuleIndex
 #arg[1] ASubSession
 tsdiag_can_session_control = dll.tsdiag_can_session_control
 tsdiag_can_session_control.restype = s32
@@ -2796,6 +2791,18 @@ tsdiag_can_write_data_by_identifier.argtypes = [s32,u16,pu8,s32]
 tsdiag_can_read_data_by_identifier = dll.tsdiag_can_read_data_by_identifier
 tsdiag_can_read_data_by_identifier.restype = s32
 tsdiag_can_read_data_by_identifier.argtypes = [s32,u16,pu8,ps32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ATxcompleted
+tstp_can_register_tx_completed_recall_internal = dll.tstp_can_register_tx_completed_recall_internal
+tstp_can_register_tx_completed_recall_internal.restype = s32
+tstp_can_register_tx_completed_recall_internal.argtypes = [s32,N_USData_TranslateCompleted_Recall_Obj]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ARxcompleted
+tstp_can_register_rx_completed_recall_internal = dll.tstp_can_register_rx_completed_recall_internal
+tstp_can_register_rx_completed_recall_internal.restype = s32
+tstp_can_register_rx_completed_recall_internal.argtypes = [s32,N_USData_TranslateCompleted_Recall_Obj]
 
 #arg[0] AChnIdx
 #arg[1] AFileIndex

@@ -2700,14 +2700,6 @@ TSAPI(s32)tstp_lin_set_run_with_normal_schedule_table(const s32 ADiagModuleIndex
 
 TSAPI(s32)tsdiag_lin_set_nad(const s32 ADiagModuleIndex,const u8 ANAD);
 
-TSAPI(s32)tsdiag_testerpresent_start(const s32 ADiagModuleIndex);
-
-TSAPI(s32)tsdiag_testerpresent_stop(const s32 ADiagModuleIndex);
-
-TSAPI(s32)tsdiag_testerpreset_checkState(const s32 ADiagModuleIndex,const pbool AStartState);
-
-TSAPI(s32)tsdiag_testerpresent_update_para(const s32 ADiagModuleIndex,const s32 AIsFunctional,const pu8 AReqData,const s32 AReqDataSize,const s32 AIntervalTimeMs);
-
 TSAPI(s32)tsdiag_set_channel(const s32 ADiagModuleIndex,const s32 AChnIndex);
 
 TSAPI(s32)tsdiag_set_fdmode(const s32 ADiagModuleIndex,const bool AFDMode,const bool ASupportBRS,const s32 AMaxLength);
@@ -2719,6 +2711,8 @@ TSAPI(s32)tsdiag_set_response_id(const s32 ADiagModuleIndex,const s32 ARequestID
 TSAPI(s32)tsdiag_set_function_id(const s32 ADiagModuleIndex,const s32 ARequestID,const bool AIsStandard);
 
 TSAPI(s32)tsdiag_set_stmin(const s32 ADiagModuleIndex,const s32 ASTMin);
+
+TSAPI(s32)tsdiag_set_tx_stmin(const s32 ADiagModuleIndex,const bool ATxSTMinUserDefined,const s32 ATxSTMin);
 
 TSAPI(s32)tsdiag_set_blocksize(const s32 ADiagModuleIndex,const s32 ABlockSize);
 
@@ -2735,6 +2729,14 @@ TSAPI(s32)tsdiag_set_p2_extended(const s32 ADiagModuleIndex,const s32 ATimeMs);
 TSAPI(s32)tsdiag_set_s3_servertime(const s32 ADiagModuleIndex,const s32 ATimeMs);
 
 TSAPI(s32)tsdiag_set_s3_clienttime(const s32 ADiagModuleIndex,const s32 ATimeMs);
+
+TSAPI(s32)tsdiag_testerpresent_start(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_testerpresent_stop(const s32 ADiagModuleIndex);
+
+TSAPI(s32)tsdiag_testerpreset_checkState(const s32 ADiagModuleIndex,const pbool AStartState);
+
+TSAPI(s32)tsdiag_testerpresent_update_para(const s32 ADiagModuleIndex,const s32 AIsFunctional,const pu8 AReqData,const s32 AReqDataSize,const s32 AIntervalTimeMs);
 
 TSAPI(s32)tstp_send_functional(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize);
 
@@ -2778,10 +2780,6 @@ TSAPI(s32)tstp_can_register_tx_completed_recall(const s32 ADiagModuleIndex,const
 
 TSAPI(s32)tstp_can_register_rx_completed_recall(const s32 ADiagModuleIndex,const N_USData_TranslateCompleted_Recall ARxcompleted);
 
-TSAPI(s32)tstp_can_register_tx_completed_recall_internal(const s32 ADiagModuleIndex,const N_USData_TranslateCompleted_Recall_Obj ATxcompleted);
-
-TSAPI(s32)tstp_can_register_rx_completed_recall_internal(const s32 ADiagModuleIndex,const N_USData_TranslateCompleted_Recall_Obj ARxcompleted);
-
 TSAPI(s32)tsdiag_can_session_control(const s32 ADiagModuleIndex,const u8 ASubSession);
 
 TSAPI(s32)tsdiag_can_routine_control(const s32 ADiagModuleIndex,const u8 ARoutineControlType,const u16 ARoutintID);
@@ -2803,6 +2801,10 @@ TSAPI(s32)tsdiag_can_request_transfer_exit(const s32 ADiagModuleIndex);
 TSAPI(s32)tsdiag_can_write_data_by_identifier(const s32 ADiagModuleIndex,const u16 ADataIdentifier,const pu8 AWriteData,const s32 AWriteDataSize);
 
 TSAPI(s32)tsdiag_can_read_data_by_identifier(const s32 ADiagModuleIndex,const u16 ADataIdentifier,const pu8 AReturnArray,const ps32 AReturnArraySize);
+
+TSAPI(s32)tstp_can_register_tx_completed_recall_internal(const s32 ADiagModuleIndex,const N_USData_TranslateCompleted_Recall_Obj ATxcompleted);
+
+TSAPI(s32)tstp_can_register_rx_completed_recall_internal(const s32 ADiagModuleIndex,const N_USData_TranslateCompleted_Recall_Obj ARxcompleted);
 
 TSAPI(s32)tslog_logger_delete_file(const s32 AChnIdx,const s32 AFileIndex,const s32 ATimeoutMS);
 
