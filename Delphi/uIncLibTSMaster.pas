@@ -2939,6 +2939,8 @@ function flexray_rbs_reset_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER
 function can_rbs_reset_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_rbs_fault_inject_handle_on_autosar_crc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_rbs_fault_inject_handle_on_autosar_rc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_fault_inject_unhandle_on_autosar_rc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_fault_inject_unhandle_on_autosar_crc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
