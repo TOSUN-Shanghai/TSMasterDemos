@@ -33,6 +33,10 @@ TOnIoIPData = WINFUNCTYPE(None,ps32,s32)
 # Arg[0] APointer
 # Arg[1] ASize
 TOnRpcData = WINFUNCTYPE(None,ps32,size_t)
+# Arg[0] ACAN
+# Arg[1] ADataId
+# Arg[2] AValue
+TOnAutoSARE2ECanEvt = WINFUNCTYPE(None,PLIBCANFD,u32,pu64)
 # Arg[0] APointer
 # Arg[1] ASize
 TOnIoIPData_API = WINFUNCTYPE(None,ps32,s32)

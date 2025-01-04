@@ -1765,6 +1765,10 @@ typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);
 // Arg[0] APointer
 // Arg[1] ASize
 typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
+// Arg[0] ACAN
+// Arg[1] ADataId
+// Arg[2] AValue
+typedef void(__stdcall*TOnAutoSARE2ECanEvt)(const PLIBCANFD ACAN,const u32 ADataId,const pu64 AValue);
 // Arg[0] APointer
 // Arg[1] ASize
 typedef void(__stdcall*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
@@ -3573,6 +3577,18 @@ TSAPI(s32)rpc_tsmaster_cmd_is_can_rbs_running(const size_t AHandle,const pbool A
 TSAPI(s32)rpc_tsmaster_cmd_is_lin_rbs_running(const size_t AHandle,const pbool AIsRunning);
 
 TSAPI(s32)rpc_tsmaster_cmd_is_flexray_rbs_running(const size_t AHandle,const pbool AIsRunning);
+
+TSAPI(s32)flexray_rbs_reset_update_bits();
+
+TSAPI(s32)can_rbs_reset_update_bits();
+
+TSAPI(s32)can_rbs_fault_inject_handle_on_autosar_crc_event(const TOnAutoSARE2ECanEvt AEvent);
+
+TSAPI(s32)can_rbs_fault_inject_handle_on_autosar_rc_event(const TOnAutoSARE2ECanEvt AEvent);
+
+TSAPI(s32)can_rbs_fault_inject_unhandle_on_autosar_rc_event(const TOnAutoSARE2ECanEvt AEvent);
+
+TSAPI(s32)can_rbs_fault_inject_unhandle_on_autosar_crc_event(const TOnAutoSARE2ECanEvt AEvent);
 
 #if defined ( __cplusplus )
 }

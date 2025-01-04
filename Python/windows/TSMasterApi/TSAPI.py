@@ -5423,3 +5423,31 @@ rpc_tsmaster_cmd_is_flexray_rbs_running = dll.rpc_tsmaster_cmd_is_flexray_rbs_ru
 rpc_tsmaster_cmd_is_flexray_rbs_running.restype = s32
 rpc_tsmaster_cmd_is_flexray_rbs_running.argtypes = [size_t,pbool]
 
+flexray_rbs_reset_update_bits = dll.flexray_rbs_reset_update_bits
+flexray_rbs_reset_update_bits.restype = s32
+flexray_rbs_reset_update_bits.argtypes = []
+
+can_rbs_reset_update_bits = dll.can_rbs_reset_update_bits
+can_rbs_reset_update_bits.restype = s32
+can_rbs_reset_update_bits.argtypes = []
+
+#arg[0] AEvent
+can_rbs_fault_inject_handle_on_autosar_crc_event = dll.can_rbs_fault_inject_handle_on_autosar_crc_event
+can_rbs_fault_inject_handle_on_autosar_crc_event.restype = s32
+can_rbs_fault_inject_handle_on_autosar_crc_event.argtypes = [TOnAutoSARE2ECanEvt]
+
+#arg[0] AEvent
+can_rbs_fault_inject_handle_on_autosar_rc_event = dll.can_rbs_fault_inject_handle_on_autosar_rc_event
+can_rbs_fault_inject_handle_on_autosar_rc_event.restype = s32
+can_rbs_fault_inject_handle_on_autosar_rc_event.argtypes = [TOnAutoSARE2ECanEvt]
+
+#arg[0] AEvent
+can_rbs_fault_inject_unhandle_on_autosar_rc_event = dll.can_rbs_fault_inject_unhandle_on_autosar_rc_event
+can_rbs_fault_inject_unhandle_on_autosar_rc_event.restype = s32
+can_rbs_fault_inject_unhandle_on_autosar_rc_event.argtypes = [TOnAutoSARE2ECanEvt]
+
+#arg[0] AEvent
+can_rbs_fault_inject_unhandle_on_autosar_crc_event = dll.can_rbs_fault_inject_unhandle_on_autosar_crc_event
+can_rbs_fault_inject_unhandle_on_autosar_crc_event.restype = s32
+can_rbs_fault_inject_unhandle_on_autosar_crc_event.argtypes = [TOnAutoSARE2ECanEvt]
+
