@@ -5451,3 +5451,31 @@ can_rbs_fault_inject_unhandle_on_autosar_crc_event = dll.can_rbs_fault_inject_un
 can_rbs_fault_inject_unhandle_on_autosar_crc_event.restype = s32
 can_rbs_fault_inject_unhandle_on_autosar_crc_event.argtypes = [TOnAutoSARE2ECanEvt]
 
+#arg[0] AEvent
+register_usb_insertion_event = dll.register_usb_insertion_event
+register_usb_insertion_event.restype = s32
+register_usb_insertion_event.argtypes = [TOnUSBPlugEvent]
+
+#arg[0] AEvent
+unregister_usb_insertion_event = dll.unregister_usb_insertion_event
+unregister_usb_insertion_event.restype = s32
+unregister_usb_insertion_event.argtypes = [TOnUSBPlugEvent]
+
+#arg[0] AEvent
+register_usb_removal_event = dll.register_usb_removal_event
+register_usb_removal_event.restype = s32
+register_usb_removal_event.argtypes = [TOnUSBPlugEvent]
+
+#arg[0] AEvent
+unregister_usb_removal_event = dll.unregister_usb_removal_event
+unregister_usb_removal_event.restype = s32
+unregister_usb_removal_event.argtypes = [TOnUSBPlugEvent]
+
+can_rbs_set_update_bits = dll.can_rbs_set_update_bits
+can_rbs_set_update_bits.restype = s32
+can_rbs_set_update_bits.argtypes = []
+
+flexray_rbs_set_update_bits = dll.flexray_rbs_set_update_bits
+flexray_rbs_set_update_bits.restype = s32
+flexray_rbs_set_update_bits.argtypes = []
+

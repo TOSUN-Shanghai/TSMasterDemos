@@ -1769,6 +1769,9 @@ typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
 // Arg[1] ADataId
 // Arg[2] AValue
 typedef void(__stdcall*TOnAutoSARE2ECanEvt)(const PLIBCANFD ACAN,const u32 ADataId,const pu64 AValue);
+// Arg[0] AVidPid
+// Arg[1] ASerial
+typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);
 // Arg[0] APointer
 // Arg[1] ASize
 typedef void(__stdcall*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
@@ -3589,6 +3592,18 @@ TSAPI(s32)can_rbs_fault_inject_handle_on_autosar_rc_event(const TOnAutoSARE2ECan
 TSAPI(s32)can_rbs_fault_inject_unhandle_on_autosar_rc_event(const TOnAutoSARE2ECanEvt AEvent);
 
 TSAPI(s32)can_rbs_fault_inject_unhandle_on_autosar_crc_event(const TOnAutoSARE2ECanEvt AEvent);
+
+TSAPI(s32)register_usb_insertion_event(const TOnUSBPlugEvent AEvent);
+
+TSAPI(s32)unregister_usb_insertion_event(const TOnUSBPlugEvent AEvent);
+
+TSAPI(s32)register_usb_removal_event(const TOnUSBPlugEvent AEvent);
+
+TSAPI(s32)unregister_usb_removal_event(const TOnUSBPlugEvent AEvent);
+
+TSAPI(s32)can_rbs_set_update_bits();
+
+TSAPI(s32)flexray_rbs_set_update_bits();
 
 #if defined ( __cplusplus )
 }
