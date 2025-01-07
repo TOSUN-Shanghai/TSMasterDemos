@@ -2946,6 +2946,8 @@ function register_usb_insertion_event(const AEvent: TOnUSBPlugEvent): integer; s
 function unregister_usb_insertion_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function register_usb_removal_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function unregister_usb_removal_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
