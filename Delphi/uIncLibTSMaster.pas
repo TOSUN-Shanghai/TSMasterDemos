@@ -593,6 +593,7 @@ type
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
   TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
+  TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
   TOnIoIPConnection_API = procedure(const AIPAddress: pansichar; const APort: Integer) of object; stdcall;
@@ -2941,6 +2942,10 @@ function can_rbs_fault_inject_handle_on_autosar_crc_event(const AEvent: TOnAutoS
 function can_rbs_fault_inject_handle_on_autosar_rc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_rbs_fault_inject_unhandle_on_autosar_rc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_rbs_fault_inject_unhandle_on_autosar_crc_event(const AEvent: TOnAutoSARE2ECanEvt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function register_usb_insertion_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function unregister_usb_insertion_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function register_usb_removal_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function unregister_usb_removal_event(const AEvent: TOnUSBPlugEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
