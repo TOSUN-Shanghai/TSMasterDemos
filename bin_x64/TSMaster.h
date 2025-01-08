@@ -3605,6 +3605,8 @@ TSAPI(s32)can_rbs_set_update_bits();
 
 TSAPI(s32)flexray_rbs_set_update_bits();
 
+TSAPI(s32)rpc_ip_trigger_data_group(const s32 AGroupId);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -5479,3 +5479,8 @@ flexray_rbs_set_update_bits = dll.flexray_rbs_set_update_bits
 flexray_rbs_set_update_bits.restype = s32
 flexray_rbs_set_update_bits.argtypes = []
 
+#arg[0] AGroupId
+rpc_ip_trigger_data_group = dll.rpc_ip_trigger_data_group
+rpc_ip_trigger_data_group.restype = s32
+rpc_ip_trigger_data_group.argtypes = [s32]
+
