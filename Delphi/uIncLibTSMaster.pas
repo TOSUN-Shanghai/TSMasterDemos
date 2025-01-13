@@ -2949,6 +2949,7 @@ function unregister_usb_removal_event(const AEvent: TOnUSBPlugEvent): integer; s
 function can_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function flexray_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_ip_trigger_data_group(const AGroupId: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_get_signal_raw_by_address(const ASymbolAddress: pansichar; ARaw: puint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
