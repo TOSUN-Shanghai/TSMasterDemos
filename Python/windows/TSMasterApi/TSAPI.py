@@ -5484,3 +5484,94 @@ rpc_ip_trigger_data_group = dll.rpc_ip_trigger_data_group
 rpc_ip_trigger_data_group.restype = s32
 rpc_ip_trigger_data_group.argtypes = [s32]
 
+#arg[0] ASymbolAddress
+#arg[1] ARaw
+can_rbs_get_signal_raw_by_address = dll.can_rbs_get_signal_raw_by_address
+can_rbs_get_signal_raw_by_address.restype = s32
+can_rbs_get_signal_raw_by_address.argtypes = [pchar,pu64]
+
+eth_rbs_start = dll.eth_rbs_start
+eth_rbs_start.restype = s32
+eth_rbs_start.argtypes = []
+
+eth_rbs_stop = dll.eth_rbs_stop
+eth_rbs_stop.restype = s32
+eth_rbs_stop.argtypes = []
+
+#arg[0] AIsRunning
+eth_rbs_is_running = dll.eth_rbs_is_running
+eth_rbs_is_running.restype = s32
+eth_rbs_is_running.argtypes = [pbool]
+
+#arg[0] AAutoStart
+#arg[1] AAutoSendOnModification
+#arg[2] AActivateNodeSimulation
+#arg[3] AInitValueOptions
+eth_rbs_configure = dll.eth_rbs_configure
+eth_rbs_configure.restype = s32
+eth_rbs_configure.argtypes = [cbool,cbool,cbool,s32]
+
+#arg[0] AEnable
+#arg[1] AIncludingChildren
+eth_rbs_activate_all_networks = dll.eth_rbs_activate_all_networks
+eth_rbs_activate_all_networks.restype = s32
+eth_rbs_activate_all_networks.argtypes = [cbool,cbool]
+
+#arg[0] AIdxChn
+#arg[1] AEnable
+#arg[2] ANetworkName
+#arg[3] AIncludingChildren
+eth_rbs_activate_network_by_name = dll.eth_rbs_activate_network_by_name
+eth_rbs_activate_network_by_name.restype = s32
+eth_rbs_activate_network_by_name.argtypes = [s32,cbool,pchar,cbool]
+
+#arg[0] AIdxChn
+#arg[1] AEnable
+#arg[2] ANetworkName
+#arg[3] ANodeName
+#arg[4] AIncludingChildren
+eth_rbs_activate_node_by_name = dll.eth_rbs_activate_node_by_name
+eth_rbs_activate_node_by_name.restype = s32
+eth_rbs_activate_node_by_name.argtypes = [s32,cbool,pchar,pchar,cbool]
+
+#arg[0] AIdxChn
+#arg[1] AEnable
+#arg[2] ANetworkName
+#arg[3] ANodeName
+#arg[4] APDUName
+eth_rbs_activate_pdu_by_name = dll.eth_rbs_activate_pdu_by_name
+eth_rbs_activate_pdu_by_name.restype = s32
+eth_rbs_activate_pdu_by_name.argtypes = [s32,cbool,pchar,pchar,pchar]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] APDUName
+#arg[4] ASignalName
+#arg[5] AValue
+eth_rbs_get_signal_value_by_element = dll.eth_rbs_get_signal_value_by_element
+eth_rbs_get_signal_value_by_element.restype = s32
+eth_rbs_get_signal_value_by_element.argtypes = [s32,pchar,pchar,pchar,pchar,pdouble]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] APDUName
+#arg[4] ASignalName
+#arg[5] AValue
+eth_rbs_set_signal_value_by_element = dll.eth_rbs_set_signal_value_by_element
+eth_rbs_set_signal_value_by_element.restype = s32
+eth_rbs_set_signal_value_by_element.argtypes = [s32,pchar,pchar,pchar,pchar,double]
+
+#arg[0] ASymbolAddress
+#arg[1] AValue
+eth_rbs_get_signal_value_by_address = dll.eth_rbs_get_signal_value_by_address
+eth_rbs_get_signal_value_by_address.restype = s32
+eth_rbs_get_signal_value_by_address.argtypes = [pchar,pdouble]
+
+#arg[0] ASymbolAddress
+#arg[1] AValue
+eth_rbs_set_signal_value_by_address = dll.eth_rbs_set_signal_value_by_address
+eth_rbs_set_signal_value_by_address.restype = s32
+eth_rbs_set_signal_value_by_address.argtypes = [pchar,double]
+

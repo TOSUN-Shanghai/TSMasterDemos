@@ -2950,6 +2950,18 @@ function can_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL}
 function flexray_rbs_set_update_bits(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_ip_trigger_data_group(const AGroupId: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_rbs_get_signal_raw_by_address(const ASymbolAddress: pansichar; ARaw: puint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_start(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_stop(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_is_running(const AIsRunning: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_configure(const AAutoStart: boolean; const AAutoSendOnModification: boolean; const AActivateNodeSimulation: boolean; const AInitValueOptions: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_activate_all_networks(const AEnable: boolean; const AIncludingChildren: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_activate_network_by_name(const AIdxChn: int32; const AEnable: boolean; const ANetworkName: pansichar; const AIncludingChildren: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_activate_node_by_name(const AIdxChn: int32; const AEnable: boolean; const ANetworkName: pansichar; ANodeName: pansichar; const AIncludingChildren: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_activate_pdu_by_name(const AIdxChn: int32; const AEnable: boolean; const ANetworkName: pansichar; ANodeName: pansichar; const APDUName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_get_signal_value_by_element(const AIdxChn: int32; const ANetworkName: pansichar; ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_set_signal_value_by_element(const AIdxChn: int32; const ANetworkName: pansichar; ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

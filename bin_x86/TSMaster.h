@@ -3607,6 +3607,32 @@ TSAPI(s32)flexray_rbs_set_update_bits();
 
 TSAPI(s32)rpc_ip_trigger_data_group(const s32 AGroupId);
 
+TSAPI(s32)can_rbs_get_signal_raw_by_address(const char* ASymbolAddress,const pu64 ARaw);
+
+TSAPI(s32)eth_rbs_start();
+
+TSAPI(s32)eth_rbs_stop();
+
+TSAPI(s32)eth_rbs_is_running(const pbool AIsRunning);
+
+TSAPI(s32)eth_rbs_configure(const bool AAutoStart,const bool AAutoSendOnModification,const bool AActivateNodeSimulation,const s32 AInitValueOptions);
+
+TSAPI(s32)eth_rbs_activate_all_networks(const bool AEnable,const bool AIncludingChildren);
+
+TSAPI(s32)eth_rbs_activate_network_by_name(const s32 AIdxChn,const bool AEnable,const char* ANetworkName,const bool AIncludingChildren);
+
+TSAPI(s32)eth_rbs_activate_node_by_name(const s32 AIdxChn,const bool AEnable,const char* ANetworkName,const char* ANodeName,const bool AIncludingChildren);
+
+TSAPI(s32)eth_rbs_activate_pdu_by_name(const s32 AIdxChn,const bool AEnable,const char* ANetworkName,const char* ANodeName,const char* APDUName);
+
+TSAPI(s32)eth_rbs_get_signal_value_by_element(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const pdouble AValue);
+
+TSAPI(s32)eth_rbs_set_signal_value_by_element(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const double AValue);
+
+TSAPI(s32)eth_rbs_get_signal_value_by_address(const char* ASymbolAddress,const pdouble AValue);
+
+TSAPI(s32)eth_rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
+
 #if defined ( __cplusplus )
 }
 #endif
