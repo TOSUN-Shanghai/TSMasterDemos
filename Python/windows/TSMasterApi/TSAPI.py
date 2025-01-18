@@ -5544,6 +5544,16 @@ eth_rbs_activate_pdu_by_name.restype = s32
 eth_rbs_activate_pdu_by_name.argtypes = [s32,cbool,pchar,pchar,pchar]
 
 #arg[0] AIdxChn
+#arg[1] APhaseMs
+#arg[2] ACycleMs
+#arg[3] ANetworkName
+#arg[4] ANodeName
+#arg[5] APDUName
+eth_rbs_set_pdu_phase_and_cycle_by_name = dll.eth_rbs_set_pdu_phase_and_cycle_by_name
+eth_rbs_set_pdu_phase_and_cycle_by_name.restype = s32
+eth_rbs_set_pdu_phase_and_cycle_by_name.argtypes = [s32,s32,s32,pchar,pchar,pchar]
+
+#arg[0] AIdxChn
 #arg[1] ANetworkName
 #arg[2] ANodeName
 #arg[3] APDUName

@@ -3625,6 +3625,8 @@ TSAPI(s32)eth_rbs_activate_node_by_name(const s32 AIdxChn,const bool AEnable,con
 
 TSAPI(s32)eth_rbs_activate_pdu_by_name(const s32 AIdxChn,const bool AEnable,const char* ANetworkName,const char* ANodeName,const char* APDUName);
 
+TSAPI(s32)eth_rbs_set_pdu_phase_and_cycle_by_name(const s32 AIdxChn,const s32 APhaseMs,const s32 ACycleMs,const char* ANetworkName,const char* ANodeName,const char* APDUName);
+
 TSAPI(s32)eth_rbs_get_signal_value_by_element(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const pdouble AValue);
 
 TSAPI(s32)eth_rbs_set_signal_value_by_element(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const double AValue);
