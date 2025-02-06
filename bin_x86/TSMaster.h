@@ -1375,6 +1375,32 @@ typedef enum {
     IPADDR_TYPE_V6 = 6,
     IPADDR_TYPE_ANY = 46,
 }lwip_ip_addr_type, *Pwip_ip_addr_type;
+typedef struct _TFlexrayFrameTrigger{
+    u16 slot_id;
+    u8 frame_idx;
+    u8 cycle_code;
+    u8 config_byte;
+    u8 rev;
+}TFlexrayFrameTrigger, *PFlexrayFrameTrigger;
+
+typedef struct _TFlexrayConfigurationPara{
+    u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;
+    u8 PAYLOAD_LENGTH_STATIC;
+    u16 Reserved;
+    u16 LATEST_TX;
+    u16 T_S_S_TRANSMITTER;
+    u8 CAS_RX_LOW_MAX;
+    u8 SPEED;
+    u16 WAKE_UP_SYMBOL_RX_WINDOW;
+    u8 WAKE_UP_PATTERN;
+    u8 WAKE_UP_SYMBOL_RX_IDLE;
+    u8 WAKE_UP_SYMBOL_RX_LOW;
+    u8 WAKE_UP_SYMBOL_TX_IDLE;
+    u8 WAKE_UP_SYMBOL_TX_LOW;
+    u8 channelAConnectedNode;
+    u8 channelBConnectedNode;
+}TFlexrayConfigurationPara, *PFlexrayConfigurationPara;
+
 typedef struct _TLIBEthernetMAX{
     TLIBEthernetHeader FHeader;
     u8 FBytes[1612];

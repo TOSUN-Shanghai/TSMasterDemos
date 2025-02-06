@@ -202,6 +202,98 @@ type
     property IsErrorFrame: boolean read GetIsErrorFrame;
   end;
 
+  PFlexrayFrameTrigger = ^TFlexrayFrameTrigger;
+  TFlexrayFrameTrigger = packed record
+    slot_id: UInt16;
+    frame_idx: UInt8;
+    cycle_code: UInt8;    //BASE-CYCLE + CYCLE-REPETITION
+    config_byte: UInt8;
+    rev: UInt8;
+  end;
+  {flexray}
+  PFlexrayConfigurationPara = ^TFlexrayConfigurationPara;
+  TFlexrayConfigurationPara = packed record
+	 NETWORK_MANAGEMENT_VECTOR_LENGTH: UInt8;
+	 PAYLOAD_LENGTH_STATIC: UInt8;
+   //
+   Reserved: UInt16;
+	 LATEST_TX: UInt16;
+	// __ prtc1Control
+	 T_S_S_TRANSMITTER: UInt16;
+	 CAS_RX_LOW_MAX: UInt8;
+	 SPEED: UInt8;      //0 for 10m, 1 for 5m, 2 for 2.5m, convert from Database
+	 WAKE_UP_SYMBOL_RX_WINDOW: UInt16;
+   WAKE_UP_PATTERN: UInt8;
+	// __ prtc2Control
+	 WAKE_UP_SYMBOL_RX_IDLE: UInt8;
+	 WAKE_UP_SYMBOL_RX_LOW: UInt8;
+	 WAKE_UP_SYMBOL_TX_IDLE: UInt8;
+	 WAKE_UP_SYMBOL_TX_LOW: UInt8;
+	// __ succ1Config
+	 channelAConnectedNode: UInt8;      // Enable ChannelA: 0: Disable 1: Enable
+	 channelBConnectedNode: UInt8;      // Enable ChannelB: 0: Disable 1: Enable
+	 channelASymbolTransmitted: UInt8 ; // Enable Symble Transmit function of Channel A: 0: Disable 1: Enable
+	 channelBSymbolTransmitted: UInt8 ; // Enable Symble Transmit function of Channel B: 0: Disable 1: Enable
+	 ALLOW_HALT_DUE_TO_CLOCK: UInt8;
+	 SINGLE_SLOT_ENABLED: UInt8;        // FALSE_0, TRUE_1
+   WAKE_UP_CHANNEL_AOrB: UInt8;       // Wake up channe: 0:ChannelA�� 1:ChannelB
+	 ALLOW_PASSIVE_TO_ACTIVE: UInt8;
+	 COLD_START_ATTEMPTS: UInt8;
+	 synchFrameTransmitted: UInt8;      // Need to transmit sync frame
+	 startupFrameTransmitted: UInt8;    // Need to transmit startup frame
+	// __ succ2Config
+	 LISTEN_TIMEOUT: UInt32;
+	 LISTEN_NOISE: UInt8;               //2_16
+	// __ succ3Config
+	 MAX_WITHOUT_CLOCK_CORRECTION_PASSIVE: UInt8;
+	 MAX_WITHOUT_CLOCK_CORRECTION_FATAL: UInt8;
+	 REVERS0: UInt8;                    //Memory Align
+	// __ gtuConfig
+	// __ gtu01Config
+	 MICRO_PER_CYCLE: UInt32;
+	// __ gtu02Config
+	 Macro_Per_Cycle: UInt16;
+	 SYNC_NODE_MAX: UInt8;
+	 REVERS1: UInt8;  //Memory Align
+	// __ gtu03Config
+	 MICRO_INITIAL_OFFSET_A: UInt8;
+	 MICRO_INITIAL_OFFSET_B: UInt8;
+	 MACRO_INITIAL_OFFSET_A: UInt8;
+	 MACRO_INITIAL_OFFSET_B: UInt8;
+	// __ gtu04Config
+	 N_I_T: UInt16;
+	 OFFSET_CORRECTION_START: UInt16;
+	// __ gtu05Config
+	 DELAY_COMPENSATION_A: UInt8;
+	 DELAY_COMPENSATION_B: UInt8;
+	 CLUSTER_DRIFT_DAMPING: UInt8;
+	 DECODING_CORRECTION: UInt8;
+	// __ gtu06Config
+	 ACCEPTED_STARTUP_RANGE: UInt16;
+	 MAX_DRIFT: UInt16;
+	// __ gtu07Config
+	 STATIC_SLOT: UInt16;
+	 NUMBER_OF_STATIC_SLOTS: UInt16;
+	// __ gtu08Config
+	 MINISLOT: UInt8;
+	 REVERS2: UInt8;  //Memory Align
+	 NUMBER_OF_MINISLOTS: UInt16;
+	// __ gtu09Config
+	 DYNAMIC_SLOT_IDLE_PHASE: UInt8;
+	 ACTION_POINT_OFFSET: UInt8;
+	 MINISLOT_ACTION_POINT_OFFSET: UInt8;
+	 REVERS3: UInt8;  //Memory Align
+	// __ gtu10Config
+	 OFFSET_CORRECTION_OUT: UInt16;
+	 RATE_CORRECTION_OUT: UInt16;
+	// __ gtu11Config
+	 EXTERN_OFFSET_CORRECTION: UInt8;
+	 EXTERN_RATE_CORRECTION: UInt8;
+  //
+	 config_byte1: UInt8;
+	 config_byte: UInt8;
+  end;
+
   // FlexRay Frame 300 B
   TLIBFlexRay = packed record
 	  FIdxChn: byte;                // channel index starting from 0
