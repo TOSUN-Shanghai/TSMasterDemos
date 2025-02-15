@@ -672,6 +672,28 @@ type
     function GetSlibingNode(AIndex:Integer):PEMMC_RECORD_NODE;
   end;   //8bytes, means max support
 
+  PDiagConfigParameter = ^TDiagConfigParameter;
+  TDiagConfigParameter = record
+    FReqID: UInt32;
+    FResID: UInt32;
+    FFunctionalID: UInt32;
+    FIsReqIDStandard: UInt8;
+    FIsResIDStandard: UInt8;
+    FIsFunctionalIDStandard: UInt8;
+    FIdxChn: UInt8;
+    FFilledByte: UInt8;
+    FAtLeast8Bytes: UInt8;
+    FIsFD: UInt8;
+    FIsFDBRS: UInt8;
+    FMaxDLCofFDFrame: UInt8;
+    FSTMin: UInt8;
+    FUserDefinedTxSTMin: UInt8;
+    FTxSTMin: UInt8;
+    FFCDelayMs: UInt32;
+    FBlockSize: UInt32;
+    FMaxLength: UInt32;
+  end;
+
   TCProcedure = procedure; cdecl;
   TCANQueueEvent_API = procedure(const AData: PlibCAN) of object; stdcall;
   TGPSQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PLibGPSData); stdcall;
