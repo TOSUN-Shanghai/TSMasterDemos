@@ -1371,6 +1371,18 @@ typedef enum {
     N_ETH_RESERVED1 = 251,
 }ISO_TP_RESAULT, *PSO_TP_RESAULT;
 typedef enum {
+    tldt_CAN = 0,
+    tldt_LIN = 1,
+    tldt_FR = 2,
+    tldt_Eth = 3,
+    tldt_AI = 4,
+    tldt_AO = 5,
+    tldt_DI = 6,
+    tldt_DO = 7,
+    tldt_GPS = 8,
+    tldt_Undef = 9,
+}TLinkedDataChnType, *PLinkedDataChnType;
+typedef enum {
     IPADDR_TYPE_V4 = 0,
     IPADDR_TYPE_V6 = 6,
     IPADDR_TYPE_ANY = 46,
@@ -1905,6 +1917,22 @@ typedef void(__stdcall*TSSocketReceiveEventV3_Win32)(const ps32 AObj,const s32 A
 // Arg[3] AData
 // Arg[4] ASize
 typedef void(__stdcall*TSSocketTransmitEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
+// Arg[0] AIdxChn
+// Arg[1] ATimestamp
+// Arg[2] APackCmd
+// Arg[3] AParameter
+// Arg[4] AParameterLength
+// Arg[5] AData
+// Arg[6] ADataLength
+typedef void(__stdcall*TDatapackageProcessEvent)(const u8 AIdxChn,const s64 ATimestamp,const u16 APackCmd,const pu8 AParameter,const u16 AParameterLength,const pu8 AData,const s32 ADataLength);
+// Arg[0] AIdxChn
+// Arg[1] ATimestamp
+// Arg[2] APackCmd
+// Arg[3] AParameter
+// Arg[4] AParameterLength
+// Arg[5] AData
+// Arg[6] ADataLength
+typedef void(__stdcall*TDatapackageProcessEvent_Win32)(const u8 AIdxChn,const s64 ATimestamp,const u16 APackCmd,const pu8 AParameter,const u16 AParameterLength,const pu8 AData,const s32 ADataLength);
 // Arg[0] AObj
 // Arg[1] AProgress100
 typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);

@@ -484,6 +484,20 @@ class _ISO_TP_RESAULT(CEnum):
 ISO_TP_RESAULT = c_int32
 PSO_TP_RESAULT = ps32
 
+class _TLinkedDataChnType(CEnum):
+    tldt_CAN = 0
+    tldt_LIN = 1
+    tldt_FR = 2
+    tldt_Eth = 3
+    tldt_AI = 4
+    tldt_AO = 5
+    tldt_DI = 6
+    tldt_DO = 7
+    tldt_GPS = 8
+    tldt_Undef = 9
+TLinkedDataChnType = c_int32
+PLinkedDataChnType = ps32
+
 class _lwip_ip_addr_type(CEnum):
     IPADDR_TYPE_V4 = 0
     IPADDR_TYPE_V6 = 6

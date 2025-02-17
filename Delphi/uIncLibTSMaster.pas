@@ -66,6 +66,22 @@ const
   MAX_SUPPORT_LOGGER_FILE_NUM  = 128;
   READ_LOGGER_FILE_NUM_ONCE_TIME = 30;
 
+  //DataPackage Command Definition
+  IDX_DATAPACK_UDS_TX  = $00;
+  IDX_DATAPACK_UDS_TC  = $01;
+  IDX_DATAPACK_UDS_RC  = $02;
+  MAX_DATAPACK_CMD_NUM = $03;
+
+  {Flexray Commands}
+  FLEXRAY_CMD_STOP_NET             = 0;    //0:停止flexray
+  FLEXRAY_CMD_START_NET            = 1;    //1：启动flexray
+  FLEXRAY_CMD_CLEAR_CONFIGURATION  = 2;    //2擦除控制器和报文配置
+  FLEXRAY_CMD_SEND_WAKEUP_PATTERN  = 3;    //3强制发送WAKEUP
+  FLEXRAY_CMD_CHANGE_TRIGGER_STATE = 4;    //4改变Trigger状态
+  FLEXRAY_CMD_READ_REGISTER        = 5;    //5读取寄存器
+  FLEXRAY_CMD_WRITE_REGISTER       = 6;    //6写入寄存器
+  FLEXRAY_CMD_MODIFY_HEADER_CRC    = 7;    //7修改HeaderCRC
+
 
 type
   pInt32 = ^Int32;
@@ -689,9 +705,18 @@ type
     FSTMin: UInt8;
     FUserDefinedTxSTMin: UInt8;
     FTxSTMin: UInt8;
+    N_WFTmax: UInt8;
+	  FReserved01: UInt8;
+	  FReserved02: UInt16;
     FFCDelayMs: UInt32;
     FBlockSize: UInt32;
     FMaxLength: UInt32;
+    N_As: UInt16;  //Maximum time for the sender to transmit data to the receiver, default 1000
+		N_Ar: UInt16;  //Maximum time for the receiver to transmit flow control to the sender, default 1000
+		N_Bs: UInt16;  //The maximum time that the sender receives a flow controll frame after successfully sending the first frame, 1000 by default.
+		N_Br: UInt16;  //Maximum time between receiving end and sending flow control after receiving the first frame
+		N_Cs: UInt16;  //Maximum time that the receiving end controls the sending flow to the receiving end
+		N_Cr: UInt16;  //The maximum time from sending successful flow control to receiving continuous frames, 1000 by default.
   end;
 
   TCProcedure = procedure; cdecl;
@@ -728,6 +753,8 @@ type
   TSSocketReceiveEventV2_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ARemoteEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
   TSSocketReceiveEventV3_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const ADstEndPoint: PAnsiChar; const ASrcEndPoint: PAnsiChar; const AData: PByte; const ASize: integer); stdcall;
   TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
+  TDatapackageProcessEvent = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer) of object; stdcall;
+  TDatapackageProcessEvent_Win32 = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer); stdcall;
 
 {$Z4}
   // for c type
@@ -1208,6 +1235,7 @@ type
       , N_ETH_RESERVED0                      = 250
       , N_ETH_RESERVED1                      = 251
   );
+  TLinkedDataChnType = (tldt_CAN, tldt_LIN, tldt_FR, tldt_Eth, tldt_AI, tldt_AO, tldt_DI, tldt_DO, tldt_GPS, tldt_Undef);
   //TS CAN Diagnostic basic function type
   Ttsdiag_can_create = function(const  pDiagModuleIndex: PInteger;
                       const AChnIndex: UInt32;
@@ -1225,24 +1253,23 @@ type
   Ttstp_can_request_and_get_response = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
   Ttstp_can_request_and_get_response_functional = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
 
-  N_USData_RevData_Recall_Obj = procedure(const ATpModuleIndex:Integer;
-                                       const AChn:Integer) of object; stdcall;
+  N_USData_RevData_Recall_Obj = procedure(const ATpModuleIndex: Integer; const AChn: Integer) of object; stdcall;
 
-  N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex:Integer;
-                                       const AChn:Integer;
+  N_USData_TranslateCompleted_Recall_Obj = procedure(const ATpModuleIndex: Integer;
+                                       const AChn: Integer;
                                        const ABusType: byte;
                                        const ANAD: Integer; //byte->UInt16;
                                        const AIdentifier: Integer;
                                        const ATimeStamp: UInt64;
-                                       const APayLoad:PByte; const ASize:UInt32;
+                                       const APayLoad: PByte; const ASize: UInt32;
                                        const AError: ISO_TP_RESAULT) of object; stdcall;//Reporting Received TP Data to Upper layer
 
-  N_USData_TranslateCompleted_Recall = procedure(const ATpModuleIndex:Integer;
-                                       const AChn:Integer;
-                                       const ATimeStamp:UInt64;
-                                       const APayLoad:PByte;
-                                       const ASize:UInt32;
-                                       const AError:ISO_TP_RESAULT);stdcall;//Reporting Received TP Data to Upper layer
+  N_USData_TranslateCompleted_Recall = procedure(const ATpModuleIndex: Integer;
+                                       const AChn: Integer;
+                                       const ATimeStamp: UInt64;
+                                       const APayLoad: PByte;
+                                       const ASize: UInt32;
+                                       const AError: ISO_TP_RESAULT); stdcall;//Reporting Received TP Data to Upper layer
 
 const
   BUS_TOOL_DEVICE_TYPE_COUNT = 15;
@@ -2616,9 +2643,9 @@ function tsdiag_can_read_data_by_identifier(const ADiagModuleIndex: Integer; con
      const AReturnArraySize: PInteger): integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 {Internal for delphi dev}
 function tstp_can_register_tx_completed_recall_internal(const ADiagModuleIndex: Integer;
-           const ATxcompleted: N_USData_TranslateCompleted_Recall_Obj): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+           const ATxcompleted: N_USData_TranslateCompleted_Recall_Obj): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_can_register_rx_completed_recall_internal(const ADiagModuleIndex: Integer;
-           const ARxcompleted: N_USData_TranslateCompleted_Recall_Obj): Integer;stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+           const ARxcompleted: N_USData_TranslateCompleted_Recall_Obj): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 
 //Logger
 {Data Log}
