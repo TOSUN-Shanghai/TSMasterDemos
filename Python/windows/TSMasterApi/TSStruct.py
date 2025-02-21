@@ -494,7 +494,7 @@ class TLIBEthernetHeader(Structure):
             self.FEthernetDataAddr[i] = 0xFF  
 PLIBEthernetHeader = POINTER(TLIBEthernetHeader)
 
-class TFlexrayFrameTrigger(Structure):
+class TLIBFlexrayFrameTrigger(Structure):
     _pack_ = 1
     _fields_ =[('slot_id',u16),
 ('frame_idx',u8),
@@ -502,9 +502,9 @@ class TFlexrayFrameTrigger(Structure):
 ('config_byte',u8),
 ('rev',u8),
 ]
-PFlexrayFrameTrigger = POINTER(TFlexrayFrameTrigger)
+PLIBFlexrayFrameTrigger = POINTER(TLIBFlexrayFrameTrigger)
 
-class TFlexrayConfigurationPara(Structure):
+class TLIBFlexrayConfigurationPara(Structure):
     _pack_ = 1
     _fields_ =[('NETWORK_MANAGEMENT_VECTOR_LENGTH',u8),
 ('PAYLOAD_LENGTH_STATIC',u8),
@@ -522,7 +522,7 @@ class TFlexrayConfigurationPara(Structure):
 ('channelAConnectedNode',u8),
 ('channelBConnectedNode',u8),
 ]
-PFlexrayConfigurationPara = POINTER(TFlexrayConfigurationPara)
+PLIBFlexrayConfigurationPara = POINTER(TLIBFlexrayConfigurationPara)
 
 class TLIBEthernetMAX(Structure):
     _pack_ = 1

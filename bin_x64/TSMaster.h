@@ -1387,15 +1387,15 @@ typedef enum {
     IPADDR_TYPE_V6 = 6,
     IPADDR_TYPE_ANY = 46,
 }lwip_ip_addr_type, *Pwip_ip_addr_type;
-typedef struct _TFlexrayFrameTrigger{
+typedef struct _TLIBFlexrayFrameTrigger{
     u16 slot_id;
     u8 frame_idx;
     u8 cycle_code;
     u8 config_byte;
     u8 rev;
-}TFlexrayFrameTrigger, *PFlexrayFrameTrigger;
+}TLIBFlexrayFrameTrigger, *PLIBFlexrayFrameTrigger;
 
-typedef struct _TFlexrayConfigurationPara{
+typedef struct _TLIBFlexrayConfigurationPara{
     u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;
     u8 PAYLOAD_LENGTH_STATIC;
     u16 Reserved;
@@ -1411,7 +1411,7 @@ typedef struct _TFlexrayConfigurationPara{
     u8 WAKE_UP_SYMBOL_TX_LOW;
     u8 channelAConnectedNode;
     u8 channelBConnectedNode;
-}TFlexrayConfigurationPara, *PFlexrayConfigurationPara;
+}TLIBFlexrayConfigurationPara, *PLIBFlexrayConfigurationPara;
 
 typedef struct _TLIBEthernetMAX{
     TLIBEthernetHeader FHeader;
@@ -1796,7 +1796,7 @@ typedef void(__stdcall*TLIBTSMasterLogger)(const char* AStr,const s32 ALevel);
 // Arg[0] AOpaque
 // Arg[1] AStatus
 // Arg[2] APercentage100
-typedef void(__stdcall*TFirmwareUpdateCallback)(const void* AOpaque,const u32 AStatus,const float APercentage100);
+typedef void(__stdcall*TFirmwareUpdateCallback_Win32)(const void* AOpaque,const u32 AStatus,const float APercentage100);
 // Arg[0] APointer
 // Arg[1] ASize
 typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);

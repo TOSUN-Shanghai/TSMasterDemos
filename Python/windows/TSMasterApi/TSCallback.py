@@ -26,7 +26,7 @@ TLIBTSMasterLogger = WINFUNCTYPE(None,pchar,s32)
 # Arg[0] AOpaque
 # Arg[1] AStatus
 # Arg[2] APercentage100
-TFirmwareUpdateCallback = WINFUNCTYPE(None,pvoid,u32,single)
+TFirmwareUpdateCallback_Win32 = WINFUNCTYPE(None,pvoid,u32,single)
 # Arg[0] APointer
 # Arg[1] ASize
 TOnIoIPData = WINFUNCTYPE(None,ps32,s32)

@@ -67,10 +67,12 @@ const
   READ_LOGGER_FILE_NUM_ONCE_TIME = 30;
 
   //DataPackage Command Definition
-  IDX_DATAPACK_UDS_TX  = $00;
-  IDX_DATAPACK_UDS_TC  = $01;
-  IDX_DATAPACK_UDS_RC  = $02;
-  MAX_DATAPACK_CMD_NUM = $03;
+  IDX_DP_API_NUM          = 1;
+  IDX_DP_API_UDS_TX       = $00;
+
+  IDX_HW_API_NUM          = 2;
+  IDX_HW_API_UDS_TC       = $00;
+  IDX_HW_API_UDS_RC       = $01;
 
   {Flexray Commands}
   FLEXRAY_CMD_STOP_NET             = 0;    //0:停止flexray
@@ -218,8 +220,8 @@ type
     property IsErrorFrame: boolean read GetIsErrorFrame;
   end;
 
-  PFlexrayFrameTrigger = ^TFlexrayFrameTrigger;
-  TFlexrayFrameTrigger = packed record
+  PLibFlexrayFrameTrigger = ^TLibFlexrayFrameTrigger;
+  TLibFlexrayFrameTrigger = packed record
     slot_id: UInt16;
     frame_idx: UInt8;
     cycle_code: UInt8;    //BASE-CYCLE + CYCLE-REPETITION
@@ -227,8 +229,8 @@ type
     rev: UInt8;
   end;
   {flexray}
-  PFlexrayConfigurationPara = ^TFlexrayConfigurationPara;
-  TFlexrayConfigurationPara = packed record
+  PLibFlexrayConfigurationPara = ^TLibFlexrayConfigurationPara;
+  TLibFlexrayConfigurationPara = packed record
 	 NETWORK_MANAGEMENT_VECTOR_LENGTH: UInt8;
 	 PAYLOAD_LENGTH_STATIC: UInt8;
    //
@@ -728,7 +730,7 @@ type
   TEthernetQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibEthernetHeader); stdcall;
   TLINQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PlibLIN); stdcall;
   TLIBTSMasterLogger = procedure(const AStr: PAnsiChar; const ALevel: Integer); stdcall;
-  TFirmwareUpdateCallback = procedure(const AOpaque: TObject; const AStatus: UInt32; const APercentage100: Single); stdcall;
+  TFirmwareUpdateCallback_Win32 = procedure(const AOpaque: TObject; const AStatus: UInt32; const APercentage100: Single); stdcall;
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
   TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
@@ -2111,7 +2113,7 @@ function tsapp_transmit_lin_gotosleep_async(const AIdxChn: Integer): Integer; st
 function tsapp_transmit_can_sync(const ACAN: PLIBCAN; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_transmit_canfd_sync(const ACANfd: PLIBCANfd; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_transmit_lin_sync(const ALIN: PLIBLIN; const ATimeoutMS: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsapp_upgrade_firmware(const AChn: byte; const AFirmwareFile: string; const AOpaque: tobject; const ACallback: TFirmwareUpdateCallback): integer; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_upgrade_firmware(const AChn: byte; const AFirmwareFile: string; const AOpaque: tobject; const ACallback: TFirmwareUpdateCallback_Win32): integer; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // communication receive functions
 procedure tsfifo_enable_receive_fifo; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tsfifo_disable_receive_fifo; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
