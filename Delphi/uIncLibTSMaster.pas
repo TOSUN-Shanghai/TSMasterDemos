@@ -689,7 +689,6 @@ type
     function RecordString:string;
     function GetSlibingNode(AIndex:Integer):PEMMC_RECORD_NODE;
   end;   //8bytes, means max support
-
   PDiagConfigParameter = ^TDiagConfigParameter;
   TDiagConfigParameter = record
     FReqID: UInt32;
@@ -704,12 +703,13 @@ type
     FIsFD: UInt8;
     FIsFDBRS: UInt8;
     FMaxDLCofFDFrame: UInt8;
-    FSTMin: UInt8;
-    FUserDefinedTxSTMin: UInt8;
-    FTxSTMin: UInt8;
     N_WFTmax: UInt8;
-	  FReserved01: UInt8;
-	  FReserved02: UInt16;
+    FReserved01: UInt16;
+    FSTMin: UInt32;
+    FReserved02: UInt16;
+    FUserDefinedTxSTMin: UInt8;
+    FUserDefinedFCDelay: UInt8;
+    FTxSTMin: UInt32;
     FFCDelayMs: UInt32;
     FBlockSize: UInt32;
     FMaxLength: UInt32;
@@ -720,7 +720,6 @@ type
 		N_Cs: UInt16;  //Maximum time that the receiving end controls the sending flow to the receiving end
 		N_Cr: UInt16;  //The maximum time from sending successful flow control to receiving continuous frames, 1000 by default.
   end;
-
   TCProcedure = procedure; cdecl;
   TCANQueueEvent_API = procedure(const AData: PlibCAN) of object; stdcall;
   TGPSQueueEvent_Win32 = procedure(const AObj: Pointer; const AData: PLibGPSData); stdcall;
@@ -2586,9 +2585,9 @@ function tsdiag_set_response_id(const ADiagModuleIndex: Integer; const ARequestI
 function tsdiag_set_function_id(const ADiagModuleIndex: Integer; const ARequestID: Integer; const AIsStandard: Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_stmin(const ADiagModuleIndex: Integer; const ASTMin: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_tx_stmin(const ADiagModuleIndex: Integer; const ATxSTMinUserDefined: boolean; const ATxSTMin: integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_set_blocksize(const ADiagModuleIndex: Integer; const ABlockSize:Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_set_maxlength(const ADiagModuleIndex: Integer; const AMaxLength:Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdiag_set_fcdelay(const ADiagModuleIndex: Integer; const AFCDelay:Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_blocksize(const ADiagModuleIndex: Integer; const ABlockSize: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_maxlength(const ADiagModuleIndex: Integer; const AMaxLength: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_fcdelay(const ADiagModuleIndex: Integer; const AFCDelay: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_filled_byte(const ADiagModuleIndex: Integer; const AFilledByte: Byte): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_p2_timeout(const ADiagModuleIndex: Integer; const ATimeMs: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_p2_extended(const ADiagModuleIndex: Integer; const ATimeMs: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
