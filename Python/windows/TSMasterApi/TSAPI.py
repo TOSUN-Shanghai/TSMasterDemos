@@ -388,6 +388,11 @@ tsapp_transmit_lin_gotosleep_async = dll.tsapp_transmit_lin_gotosleep_async
 tsapp_transmit_lin_gotosleep_async.restype = s32
 tsapp_transmit_lin_gotosleep_async.argtypes = [s32]
 
+#arg[0] AFlexRay
+tsapp_transmit_flexray_async = dll.tsapp_transmit_flexray_async
+tsapp_transmit_flexray_async.restype = s32
+tsapp_transmit_flexray_async.argtypes = [PLIBFlexRay]
+
 #arg[0] ACAN
 #arg[1] ATimeoutMS
 tsapp_transmit_can_sync = dll.tsapp_transmit_can_sync

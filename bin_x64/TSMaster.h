@@ -1793,10 +1793,6 @@ typedef void(__stdcall*TLINQueueEvent_Win32)(const ps32 AObj,const PLIBLIN AData
 // Arg[0] AStr
 // Arg[1] ALevel
 typedef void(__stdcall*TLIBTSMasterLogger)(const char* AStr,const s32 ALevel);
-// Arg[0] AOpaque
-// Arg[1] AStatus
-// Arg[2] APercentage100
-typedef void(__stdcall*TFirmwareUpdateCallback_Win32)(const void* AOpaque,const u32 AStatus,const float APercentage100);
 // Arg[0] APointer
 // Arg[1] ASize
 typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);
@@ -2140,6 +2136,8 @@ TSAPI(s32)tsapp_transmit_fastlin_async(const PLIBLIN ALIN);
 TSAPI(s32)tsapp_transmit_lin_wakeup_async(const s32 AIdxChn,const s32 AWakeupLength,const s32 AWakeupIntervalTime,const s32 AWakeupTimes);
 
 TSAPI(s32)tsapp_transmit_lin_gotosleep_async(const s32 AIdxChn);
+
+TSAPI(s32)tsapp_transmit_flexray_async(const PLIBFlexRay AFlexRay);
 
 TSAPI(s32)tsapp_transmit_can_sync(const PLIBCAN ACAN,const s32 ATimeoutMS);
 
