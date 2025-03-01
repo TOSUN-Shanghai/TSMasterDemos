@@ -313,6 +313,7 @@ type
   end;
 
   // FlexRay Frame 300 B
+  PLIBFlexRay = ^TLIBFlexRay;
   TLIBFlexRay = packed record
 	  FIdxChn: byte;                // channel index starting from 0
 	  FChannelMask: byte;           // 0: reserved, 1: A, 2: B, 3: AB
@@ -348,8 +349,8 @@ type
 	  FReserved2: UInt64;           // 8 reserved bytes
 	  FTimeUs: UInt64;              // timestamp in us
 	  FData: array[0..253] of Byte; // 254 data bytes
+    procedure CopyData(const ASrc: PLIBFlexRay);
   end;
-  PLIBFlexRay = ^TLIBFlexRay;
 
   // Ethernet Frame 24 B
   TLibEthernetHeader = packed record
@@ -389,6 +390,7 @@ type
   TLIBEthernetMAX = packed record
     FHeader: TLIBEthernetHeader;
     FBytes: array[0..1612-1] of byte;        // starting by destination MAC, source MAC, ethernet type, payload...
+    procedure CopyFrom(const ASrc: PLIBEthernetHeader);
   end;
   PLIBEthernetMAX = ^TLIBEthernetMAX;
 
@@ -3212,6 +3214,14 @@ begin
 
 end;
 
+procedure TLIBEthernetMAX.CopyFrom(const ASrc: PLIBEthernetHeader);
+begin
+  FHeader := ASrc^;
+  FHeader.FEthernetDataPointer := @FBytes[0];
+  CopyMemory(FHeader.FEthernetDataPointer, ASrc.FEthernetDataPointer, ASrc.FEthernetPayloadLength); //need recheck Eric_X:0301
+
+end;
+
 {TLibGPSData}
 function TLibGPSData.GetLatitudeReal: single;
 var
@@ -4085,6 +4095,29 @@ begin
       result := 0;
     end;
   end;
+
+end;
+
+procedure TLIBFlexRay.CopyData(const ASrc: PLIBFlexRay);
+begin
+  FIdxChn := ASrc.FIdxChn;                // channel index starting from 0
+  FChannelMask := ASrc.FChannelMask;           // 0: reserved, 1: A, 2: B, 3: AB
+  FDir := ASrc.FDir;                   // 0: Rx, 1: Tx, 2: Tx Request
+  FPayloadLength := ASrc.FPayloadLength;         // payload length in bytes
+  FActualPayloadLength := ASrc.FActualPayloadLength;   // actual data bytes
+  FCycleNumber := ASrc.FCycleNumber;           // cycle number: 0~63
+  FCCType := ASrc.FCCType;                // 0 = Architecture independent, 1 = Invalid CC type, 2 = Cyclone I, 3 = BUSDOCTOR, 4 = Cyclone II, 5 = Vector VN interface, 6 = VN - Sync - Pulse(only in Status Event, for debugging purposes only)
+  FReserved0 := ASrc.FReserved0;  //8           // 1 reserved byte
+  FHeaderCRCA := ASrc.FHeaderCRCA;          // header crc A
+  FHeaderCRCB := ASrc.FHeaderCRCB;          // header crc B
+  FFrameStateInfo := ASrc.FFrameStateInfo;      // bit 0~15, error flags
+  FSlotId := ASrc.FSlotId;  //8            // static seg: 0~1023
+  FFrameFlags := ASrc.FFrameFlags;          // bit 0~22
+  FFrameCRC := ASrc.FFrameCRC;   //8         // frame crc
+  FReserved1 := ASrc.FReserved1;           // 8 reserved bytes
+  FReserved2 := ASrc.FReserved2;           // 8 reserved bytes
+  FTimeUs := ASrc.FTimeUs;     //24         // timestamp in us
+  CopyMemory(@FData[0], @ASrc.FData[0], {48}ASrc.FActualPayloadLength);
 
 end;
 
