@@ -695,7 +695,7 @@ type
   TDiagConfigParameter = record
     FReqID: UInt32;
     FResID: UInt32;
-    FFunctionalID: UInt32;
+    FFunctionalID: UInt32;       //12 = 12
     FIsReqIDStandard: UInt8;
     FIsResIDStandard: UInt8;
     FIsFunctionalIDStandard: UInt8;
@@ -706,15 +706,15 @@ type
     FIsFDBRS: UInt8;
     FMaxDLCofFDFrame: UInt8;
     N_WFTmax: UInt8;
-    FReserved01: UInt16;
-    FSTMin: UInt32;
+    FReserved01: UInt16;         //12  = 24
+    FSTMin: single;              //4   = 28
     FReserved02: UInt16;
     FUserDefinedTxSTMin: UInt8;
-    FUserDefinedFCDelay: UInt8;
-    FTxSTMin: UInt32;
-    FFCDelayMs: UInt32;
+    FUserDefinedFCDelay: UInt8;  //4   = 32
+    FTxSTMin: single;            //4
+    FFCDelayMs: single;          //4   = 40
     FBlockSize: UInt32;
-    FMaxLength: UInt32;
+    FMaxLength: UInt32;          //8   = 48 + 12 = 60
     N_As: UInt16;  //Maximum time for the sender to transmit data to the receiver, default 1000
 		N_Ar: UInt16;  //Maximum time for the receiver to transmit flow control to the sender, default 1000
 		N_Bs: UInt16;  //The maximum time that the sender receives a flow controll frame after successfully sending the first frame, 1000 by default.
