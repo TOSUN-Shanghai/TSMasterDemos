@@ -923,8 +923,10 @@ class Tts_msghdr(Structure):
     _pack_ = 1
     _fields_ =[('msg_name',ps32),
 ('msg_namelen',u32),
+('reserved0',u32),
 ('msg_iov',Pts_iovec),
 ('msg_iovlen',s32),
+('reserved1',u32),
 ('msg_control',ps32),
 ('msg_controllen',u32),
 ('msg_flags',s32),

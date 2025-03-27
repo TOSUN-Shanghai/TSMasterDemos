@@ -1663,8 +1663,10 @@ type
   tts_msghdr = packed record
     msg_name: Pointer;
     msg_namelen: tts_socklen_t;
+    reserved0: UInt32;
     msg_iov: Pts_iovec;
     msg_iovlen: integer;    //received package num
+    reserved1: UInt32;
     msg_control: Pointer;
     msg_controllen: tts_socklen_t;
     msg_flags: integer;   //set internal

@@ -1751,8 +1751,10 @@ typedef struct _Tts_pollfd{
 typedef struct _Tts_msghdr{
     ps32 msg_name;
     u32 msg_namelen;
+    u32 reserved0;
     Pts_iovec msg_iov;
     s32 msg_iovlen;
+    u32 reserved1;
     ps32 msg_control;
     u32 msg_controllen;
     s32 msg_flags;
