@@ -11,6 +11,29 @@ class CEnum(IntEnum):
         if not isinstance(self, cls):
             raise TypeError
         return self    
+class _TLIBMBDDataType(CEnum):
+    dtInherit = 0
+    dtDouble = 1
+    dtSingle = 2
+    dtHalf = 3
+    dtInt8 = 4
+    dtUInt8 = 5
+    dtInt16 = 6
+    dtUInt16 = 7
+    dtInt32 = 8
+    dtUInt32 = 9
+    dtInt64 = 10
+    dtUInt64 = 11
+    dtBoolean = 12
+    dtString = 13
+    dtFixDt = 14
+    dtEnum = 15
+    dtBus = 16
+    dtValueType = 17
+    dtImage = 18
+TLIBMBDDataType = c_int32
+PLIBMBDDataType = ps32
+
 class _TLIBBusToolDeviceType(CEnum):
     BUS_UNKNOWN_TYPE = 0
     TS_TCP_DEVICE = 1

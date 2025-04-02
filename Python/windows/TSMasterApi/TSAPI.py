@@ -1541,6 +1541,21 @@ tslog_set_online_replay_config = dll.tslog_set_online_replay_config
 tslog_set_online_replay_config.restype = s32
 tslog_set_online_replay_config.argtypes = [s32,pchar,pchar,cbool,cbool,TLIBOnlineReplayTimingMode,s32,cbool,cbool,pchar]
 
+#arg[0] AIndex
+#arg[1] AName
+#arg[2] AFileName
+#arg[3] AAutoStart
+#arg[4] AIsRepetitiveMode
+#arg[5] AStartTimingMode
+#arg[6] AStartDelayTimeMs
+#arg[7] ASendTx
+#arg[8] ASendRx
+#arg[9] AMappings
+#arg[10] AForceReplay
+tslog_set_online_replay_config_verbose = dll.tslog_set_online_replay_config_verbose
+tslog_set_online_replay_config_verbose.restype = s32
+tslog_set_online_replay_config_verbose.argtypes = [s32,pchar,pchar,cbool,cbool,TLIBOnlineReplayTimingMode,s32,cbool,cbool,pchar,cbool]
+
 #arg[0] ACount
 tslog_get_online_replay_count = dll.tslog_get_online_replay_count
 tslog_get_online_replay_count.restype = s32
@@ -1559,6 +1574,21 @@ tslog_get_online_replay_count.argtypes = [POINTER(s32)]
 tslog_get_online_replay_config = dll.tslog_get_online_replay_config
 tslog_get_online_replay_config.restype = s32
 tslog_get_online_replay_config.argtypes = [s32,ppchar,ppchar,POINTER(cbool),POINTER(cbool),POINTER(TLIBOnlineReplayTimingMode),POINTER(s32),POINTER(cbool),POINTER(cbool),ppchar]
+
+#arg[0] AIndex
+#arg[1] AName
+#arg[2] AFileName
+#arg[3] AAutoStart
+#arg[4] AIsRepetitiveMode
+#arg[5] AStartTimingMode
+#arg[6] AStartDelayTimeMs
+#arg[7] ASendTx
+#arg[8] ASendRx
+#arg[9] AMappings
+#arg[10] AForceReplay
+tslog_get_online_replay_config_verbose = dll.tslog_get_online_replay_config_verbose
+tslog_get_online_replay_config_verbose.restype = s32
+tslog_get_online_replay_config_verbose.argtypes = [s32,ppchar,ppchar,POINTER(cbool),POINTER(cbool),POINTER(TLIBOnlineReplayTimingMode),POINTER(s32),POINTER(cbool),POINTER(cbool),ppchar,POINTER(cbool)]
 
 #arg[0] AIndex
 tslog_del_online_replay_config = dll.tslog_del_online_replay_config
@@ -2503,6 +2533,25 @@ tsdiag_set_blocksize.argtypes = [s32,s32]
 tsdiag_set_maxlength = dll.tsdiag_set_maxlength
 tsdiag_set_maxlength.restype = s32
 tsdiag_set_maxlength.argtypes = [s32,s32]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AValue
+tsdiag_set_n_wft_max = dll.tsdiag_set_n_wft_max
+tsdiag_set_n_wft_max.restype = s32
+tsdiag_set_n_wft_max.argtypes = [s32,u8]
+
+#arg[0] ADiagModuleIndex
+#arg[1] ATxSTMinUserDefined
+#arg[2] ATxSTMin
+tsdiag_set_fcdelay_verbose = dll.tsdiag_set_fcdelay_verbose
+tsdiag_set_fcdelay_verbose.restype = s32
+tsdiag_set_fcdelay_verbose.argtypes = [s32,cbool,single]
+
+#arg[0] ADiagModuleIndex
+#arg[1] AIs8Bytes
+tsdiag_set_at_least_8bytes = dll.tsdiag_set_at_least_8bytes
+tsdiag_set_at_least_8bytes.restype = s32
+tsdiag_set_at_least_8bytes.argtypes = [s32,s32]
 
 #arg[0] ADiagModuleIndex
 #arg[1] AFCDelay
@@ -5589,4 +5638,26 @@ eth_rbs_get_signal_value_by_address.argtypes = [pchar,pdouble]
 eth_rbs_set_signal_value_by_address = dll.eth_rbs_set_signal_value_by_address
 eth_rbs_set_signal_value_by_address.restype = s32
 eth_rbs_set_signal_value_by_address.argtypes = [pchar,double]
+
+#arg[0] ADiagramName
+#arg[1] AInCnt
+#arg[2] AOutCnt
+#arg[3] AInTypes
+#arg[4] AOutTypes
+#arg[5] AHandle
+call_model_initialization = dll.call_model_initialization
+call_model_initialization.restype = s32
+call_model_initialization.argtypes = [pchar,s32,s32,PLIBMBDDataType,PLIBMBDDataType,ps32]
+
+#arg[0] AHandle
+#arg[1] AInValues
+#arg[2] AOutValues
+call_model_step = dll.call_model_step
+call_model_step.restype = s32
+call_model_step.argtypes = [s32,ps32,ps32]
+
+#arg[0] AHandle
+call_model_finalization = dll.call_model_finalization
+call_model_finalization.restype = s32
+call_model_finalization.argtypes = [s32]
 

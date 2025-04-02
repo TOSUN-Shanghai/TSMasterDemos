@@ -907,7 +907,7 @@ Pts_timeval = POINTER(Tts_timeval)
 
 class Tts_fd_set(Structure):
     _pack_ = 1
-    _fields_ =[('fd_bits',u8*2),
+    _fields_ =[('fd_bits',u8*32),
 ]
 Pts_fd_set = POINTER(Tts_fd_set)
 
