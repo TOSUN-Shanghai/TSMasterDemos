@@ -760,6 +760,28 @@ type
 
 {$Z4}
   // for c type
+  TLIBMBDDataType = (
+    dtInherit,     // Inherit: auto
+    dtDouble,      // double
+    dtSingle,      // single
+    dtHalf,        // half
+    dtInt8,        // int8
+    dtUInt8,       // uint8
+    dtInt16,       // int16
+    dtUInt16,      // uint16
+    dtInt32,       // int32
+    dtUInt32,      // uint32
+    dtInt64,       // int64
+    dtUInt64,      // uint64
+    dtBoolean,     // boolean
+    dtString,      // string
+    dtFixDt,       // fixdt(...)
+    dtEnum,        // Enum: <class name>
+    dtBus,         // Bus: <object name>
+    dtValueType,   // ValueType: <object name>
+    dtImage        // Simulink.ImageType
+  );
+  PLIBMBDDataType = ^TLIBMBDDataType;
   PLIBBusToolDeviceType = ^TLIBBusToolDeviceType;
   TLIBBusToolDeviceType = (
     BUS_UNKNOWN_TYPE           = 0,
@@ -3108,6 +3130,9 @@ function eth_rbs_get_signal_value_by_element(const AIdxChn: int32; const ANetwor
 function eth_rbs_set_signal_value_by_element(const AIdxChn: int32; const ANetworkName: pansichar; ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_model_initialization(const ADiagramName: pansichar; const AInCnt: int32; const AOutCnt: int32; const AInTypes: PlibMBDDataType; const AOutTypes: PlibMBDDataType; AHandle: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_model_step(const AHandle: int32; const AInValues: Pointer; AOutValues: Pointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_model_finalization(const AHandle: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
