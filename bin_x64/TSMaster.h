@@ -3720,11 +3720,11 @@ TSAPI(s32)eth_rbs_get_signal_value_by_address(const char* ASymbolAddress,const p
 
 TSAPI(s32)eth_rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
 
-TSAPI(s32)call_model_initialization(const char* ADiagramName,const s32 AInCnt,const s32 AOutCnt,const PLIBMBDDataType AInTypes,const PLIBMBDDataType AOutTypes,const ps32 AHandle);
+TSAPI(s32)call_model_initialization(const char* ADiagramName,const s32 AInCnt,const s32 AOutCnt,const PLIBMBDDataType AInTypes,const PLIBMBDDataType AOutTypes,const psize_t AHandle);
 
-TSAPI(s32)call_model_step(const s32 AHandle,const ps32 AInValues,const ps32 AOutValues);
+TSAPI(s32)call_model_step(const size_t AHandle,const s64 ATimeUs,const ps32 AInValues,const ps32 AOutValues);
 
-TSAPI(s32)call_model_finalization(const s32 AHandle);
+TSAPI(s32)call_model_finalization(const size_t AHandle);
 
 #if defined ( __cplusplus )
 }

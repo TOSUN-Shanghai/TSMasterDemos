@@ -5647,17 +5647,18 @@ eth_rbs_set_signal_value_by_address.argtypes = [pchar,double]
 #arg[5] AHandle
 call_model_initialization = dll.call_model_initialization
 call_model_initialization.restype = s32
-call_model_initialization.argtypes = [pchar,s32,s32,PLIBMBDDataType,PLIBMBDDataType,ps32]
+call_model_initialization.argtypes = [pchar,s32,s32,PLIBMBDDataType,PLIBMBDDataType,psize_t]
 
 #arg[0] AHandle
-#arg[1] AInValues
-#arg[2] AOutValues
+#arg[1] ATimeUs
+#arg[2] AInValues
+#arg[3] AOutValues
 call_model_step = dll.call_model_step
 call_model_step.restype = s32
-call_model_step.argtypes = [s32,ps32,ps32]
+call_model_step.argtypes = [size_t,s64,ps32,ps32]
 
 #arg[0] AHandle
 call_model_finalization = dll.call_model_finalization
 call_model_finalization.restype = s32
-call_model_finalization.argtypes = [s32]
+call_model_finalization.argtypes = [size_t]
 
