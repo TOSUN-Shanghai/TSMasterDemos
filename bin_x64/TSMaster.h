@@ -962,6 +962,27 @@ typedef struct _TLIBFlexray_controller_config
 }TLIBFlexray_controller_config, *PLIBFlexray_controller_config;
 
 typedef enum {
+    dtInherit = 0,
+    dtDouble = 1,
+    dtSingle = 2,
+    dtHalf = 3,
+    dtInt8 = 4,
+    dtUInt8 = 5,
+    dtInt16 = 6,
+    dtUInt16 = 7,
+    dtInt32 = 8,
+    dtUInt32 = 9,
+    dtInt64 = 10,
+    dtUInt64 = 11,
+    dtBoolean = 12,
+    dtString = 13,
+    dtFixDt = 14,
+    dtEnum = 15,
+    dtBus = 16,
+    dtValueType = 17,
+    dtImage = 18,
+}TLIBMBDDataType, *PLIBMBDDataType;
+typedef enum {
     BUS_UNKNOWN_TYPE = 0,
     TS_TCP_DEVICE = 1,
     XL_USB_DEVICE = 2,
@@ -1739,7 +1760,7 @@ typedef struct _Tts_timeval{
 }Tts_timeval, *Pts_timeval;
 
 typedef struct _Tts_fd_set{
-    u8 fd_bits[2];
+    u8 fd_bits[32];
 }Tts_fd_set, *Pts_fd_set;
 
 typedef struct _Tts_pollfd{
@@ -2493,9 +2514,13 @@ TSAPI(s32)tslog_add_online_replay_config(const char* AFileName,s32* AIndex);
 
 TSAPI(s32)tslog_set_online_replay_config(const s32 AIndex,const char* AName,const char* AFileName,const bool AAutoStart,const bool AIsRepetitiveMode,const TLIBOnlineReplayTimingMode AStartTimingMode,const s32 AStartDelayTimeMs,const bool ASendTx,const bool ASendRx,const char* AMappings);
 
+TSAPI(s32)tslog_set_online_replay_config_verbose(const s32 AIndex,const char* AName,const char* AFileName,const bool AAutoStart,const bool AIsRepetitiveMode,const TLIBOnlineReplayTimingMode AStartTimingMode,const s32 AStartDelayTimeMs,const bool ASendTx,const bool ASendRx,const char* AMappings,const bool AForceReplay);
+
 TSAPI(s32)tslog_get_online_replay_count(s32* ACount);
 
 TSAPI(s32)tslog_get_online_replay_config(const s32 AIndex,const ppchar AName,const ppchar AFileName,bool* AAutoStart,bool* AIsRepetitiveMode,TLIBOnlineReplayTimingMode* AStartTimingMode,s32* AStartDelayTimeMs,bool* ASendTx,bool* ASendRx,const ppchar AMappings);
+
+TSAPI(s32)tslog_get_online_replay_config_verbose(const s32 AIndex,const ppchar AName,const ppchar AFileName,bool* AAutoStart,bool* AIsRepetitiveMode,TLIBOnlineReplayTimingMode* AStartTimingMode,s32* AStartDelayTimeMs,bool* ASendTx,bool* ASendRx,const ppchar AMappings,bool* AForceReplay);
 
 TSAPI(s32)tslog_del_online_replay_config(const s32 AIndex);
 
@@ -2778,6 +2803,12 @@ TSAPI(s32)tsdiag_set_tx_stmin(const s32 ADiagModuleIndex,const bool ATxSTMinUser
 TSAPI(s32)tsdiag_set_blocksize(const s32 ADiagModuleIndex,const s32 ABlockSize);
 
 TSAPI(s32)tsdiag_set_maxlength(const s32 ADiagModuleIndex,const s32 AMaxLength);
+
+TSAPI(s32)tsdiag_set_n_wft_max(const s32 ADiagModuleIndex,const u8 AValue);
+
+TSAPI(s32)tsdiag_set_fcdelay_verbose(const s32 ADiagModuleIndex,const bool ATxSTMinUserDefined,const float ATxSTMin);
+
+TSAPI(s32)tsdiag_set_at_least_8bytes(const s32 ADiagModuleIndex,const s32 AIs8Bytes);
 
 TSAPI(s32)tsdiag_set_fcdelay(const s32 ADiagModuleIndex,const s32 AFCDelay);
 
@@ -3688,6 +3719,12 @@ TSAPI(s32)eth_rbs_set_signal_value_by_element(const s32 AIdxChn,const char* ANet
 TSAPI(s32)eth_rbs_get_signal_value_by_address(const char* ASymbolAddress,const pdouble AValue);
 
 TSAPI(s32)eth_rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
+
+TSAPI(s32)call_model_initialization(const char* ADiagramName,const s32 AInCnt,const s32 AOutCnt,const PLIBMBDDataType AInTypes,const PLIBMBDDataType AOutTypes,const ps32 AHandle);
+
+TSAPI(s32)call_model_step(const s32 AHandle,const ps32 AInValues,const ps32 AOutValues);
+
+TSAPI(s32)call_model_finalization(const s32 AHandle);
 
 #if defined ( __cplusplus )
 }

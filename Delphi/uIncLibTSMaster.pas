@@ -2392,8 +2392,20 @@ function tsdb_get_signal_value_canfd(const ACANfd: PLIBCANfd; const AMsgName: PA
 function tslog_reload_settings(out ALoadedEngineCount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_add_online_replay_config(const AFileName: PAnsiChar; out AIndex: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_set_online_replay_config(const AIndex: Integer; const AName: PAnsiChar; const AFileName: PAnsiChar; const AAutoStart: Boolean; const AIsRepetitiveMode: boolean; const AStartTimingMode: TLIBOnlineReplayTimingMode; const AStartDelayTimeMs: integer; const ASendTx: Boolean; const ASendRx: boolean; const AMappings: PAnsiChar): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_set_online_replay_config_verbose(
+  const AIndex: Integer;
+  const AName: PAnsiChar; const AFileName: PAnsiChar;
+  const AAutoStart: Boolean;
+  const AIsRepetitiveMode: boolean;
+  const AStartTimingMode: TLIBOnlineReplayTimingMode;
+  const AStartDelayTimeMs: integer;
+  const ASendTx: Boolean;
+  const ASendRx: boolean;
+  const AMappings: PAnsiChar;
+  const AForceReplay: boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_get_online_replay_count(out ACount: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_get_online_replay_config(const AIndex: Integer; AName: PPAnsiChar; AFileName: PPAnsiChar; out AAutoStart: Boolean; out AIsRepetitiveMode: boolean; out AStartTimingMode: TLIBOnlineReplayTimingMode; out AStartDelayTimeMs: integer; out ASendTx: Boolean; out ASendRx: boolean; AMappings: PPAnsiChar): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tslog_get_online_replay_config_verbose(const AIndex: Integer; AName: PPAnsiChar; AFileName: PPAnsiChar; out AAutoStart: Boolean; out AIsRepetitiveMode: boolean; out AStartTimingMode: TLIBOnlineReplayTimingMode; out AStartDelayTimeMs: integer; out ASendTx: Boolean; out ASendRx: boolean; AMappings: PPAnsiChar; out AForceReplay: Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_del_online_replay_config(const AIndex: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_del_online_replay_configs(): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tslog_start_online_replay(const AIndex: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -2612,6 +2624,9 @@ function tsdiag_set_stmin(const ADiagModuleIndex: Integer; const ASTMin: Integer
 function tsdiag_set_tx_stmin(const ADiagModuleIndex: Integer; const ATxSTMinUserDefined: boolean; const ATxSTMin: integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_blocksize(const ADiagModuleIndex: Integer; const ABlockSize: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_maxlength(const ADiagModuleIndex: Integer; const AMaxLength: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_n_wft_max(const ADiagModuleIndex: Integer; const AValue: byte): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_fcdelay_verbose(const ADiagModuleIndex: Integer; const ATxSTMinUserDefined: boolean; const ATxSTMin: single): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_at_least_8bytes(const ADiagModuleIndex: Integer; const AIs8Bytes: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_fcdelay(const ADiagModuleIndex: Integer; const AFCDelay: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_filled_byte(const ADiagModuleIndex: Integer; const AFilledByte: Byte): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_p2_timeout(const ADiagModuleIndex: Integer; const ATimeMs: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -3130,7 +3145,7 @@ function eth_rbs_get_signal_value_by_element(const AIdxChn: int32; const ANetwor
 function eth_rbs_set_signal_value_by_element(const AIdxChn: int32; const ANetworkName: pansichar; ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function call_model_initialization(const ADiagramName: pansichar; const AInCnt: int32; const AOutCnt: int32; const AInTypes: PlibMBDDataType; const AOutTypes: PlibMBDDataType; AHandle: pnativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_model_initialization(const ADiagramName: pansichar; const AInCnt: int32; const AOutCnt: int32; const AInTypes: PLIBMBDDataType; const AOutTypes: PLIBMBDDataType; AHandle: pnativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function call_model_step(const AHandle: nativeint; const ATimeUs: int64; const AInValues: Pointer; AOutValues: Pointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function call_model_finalization(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
