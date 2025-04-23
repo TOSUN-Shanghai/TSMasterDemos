@@ -1956,6 +1956,9 @@ typedef void(__stdcall*TDatapackageProcessEvent_Win32)(const u8 AIdxChn,const s6
 // Arg[1] AProgress100
 typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
 // Arg[0] AObj
+// Arg[1] AProgress
+typedef s32 (__cdecl*TSeekTimeProgressCallback)(const ps32 AObj,const float AProgress);
+// Arg[0] AObj
 // Arg[1] AComment
 // Arg[2] AToTerminate
 typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const ps32 AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);

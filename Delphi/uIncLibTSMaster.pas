@@ -874,6 +874,7 @@ type
   // BLF
   TReadTimeCallback = procedure(const AObj: pointer; const ATime: PSystemTime{SystemTimeToDateTime}); stdcall;
   TReadProgressCallback = procedure(const AObj: pointer; const AProgress100: Double); stdcall;
+  TSeekTimeProgressCallback = function(const AObj: Pointer; const AProgress: Single): Int32; cdecl;
   PSupportedObjType = ^TSupportedObjType; // TSupportedObjType must be 4 bytes aligned
   TSupportedObjType = (sotCAN = 0, sotLIN, sotCANFD, sotRealtimeComment, sotSystemVar, sotFlexRay, sotEthernet, sotUnknown = $FFFFFFF);
   Trealtime_comment_t = packed record

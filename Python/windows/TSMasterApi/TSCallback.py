@@ -163,6 +163,9 @@ TDatapackageProcessEvent_Win32 = WINFUNCTYPE(None,u8,s64,u16,pu8,u16,pu8,s32)
 # Arg[1] AProgress100
 TReadProgressCallback = WINFUNCTYPE(None,ps32,double)
 # Arg[0] AObj
+# Arg[1] AProgress
+TSeekTimeProgressCallback = CFUNCTYPE(s32,ps32,single)
+# Arg[0] AObj
 # Arg[1] AComment
 # Arg[2] AToTerminate
 TReadBLFRealtimeCommentCallback = WINFUNCTYPE(None,ps32,Prealtime_comment_t,pbool)
