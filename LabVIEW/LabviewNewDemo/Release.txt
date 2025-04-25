@@ -1,0 +1,383 @@
+TSCAN_LB2019_V1.41_20220310
+1 Add tsd_reload_can.dbs function to TSCAN_LoadCANDBC.VI
+
+2024-07-19 15-02-41
+1. Rename demo vi, not limited to a specific device model
+
+ 2. The method of loading DLL files has been changed from the original application directory retrieval to manual import to avoid errors in loading DLL files
+
+2024-07-29 11-00-29
+
+1.Classify the functions in the original Subvi folder into the TSMaster API folder and set relevant file classifications, such as Demo, typedef, etc
+
+2024-07-29 11-51-44
+
+   1.Add QMH framework demo
+
+2024-08-01 09-19-16
+
+1. Lin Master demo creation completed
+
+2024-08-01 18-05-44
+
+1. All CLN nodes are set to multi-threaded running mode
+
+2024-08-02 09-40-37
+
+1. Add an unorganized vi folder and add several unorganized vi files
+
+2024-08-07 17-31-17
+     1.  Solved the bug where CANFD messages could not be sent during transmission and reception;
+     Reason : The data segment baud rate parameter was mistakenly passed in, 
+      which resulted in the inability to configure the data segment baud rate correctly, thus preventing the transmission of CANFD messages.
+
+2024-08-08 10-27-49
+
+1.Fixed the issue of incomplete hardware list in CAN/CANFD dmeo
+
+2. Fixed the issue of message length conversion in CANFD message display
+
+2024-08-13 10-51-41
+
+1.Change all vi explanations to English format and add explanations for call locations, return values, etc
+
+2. Unified return value port output
+
+2024-08-14 18-11-15
+
+1.Complete the asynchronous calling function of config vi on multiple replicas of process vi
+
+2.Complete the asynchronous calling function of LIN config sub window
+
+
+2024-08-19 14-22-23
+
+1. Add message function to LIN demo scheduling table.
+2. Add LIN Demo scheduling table clearing function.
+
+2024-08-19 18-37-02
+
+1. CAN/CANFD Demo completed preliminary framework construction
+
+2024-08-21 15-23-32
+
+1.Complete the integration of message sending and receiving functions for CAN/CANFD Demo
+
+2024-08-23 17-22-42
+
+1. Complete the DBC function integration of CAN/CANFD demo
+
+2024-08-26 15-45-21
+
+1.Fixed a bug in LIN DEMO where the DLL file path was not loaded during the control initialization process
+
+2024-08-27 09-50-02
+	
+1. Complete the multi-channel configuration function of LIN_demo
+
+2024-08-27 14-50-46
+
+1. Complete the multi-channel setting function of CAN/CANFD demo
+2. Encapsulate several functions of LIN LDF database
+
+
+2024-08-27 18-42-24
+
+1. Add error code query function
+
+2024-08-30 15-17-51
+
+1. Add CAN/CANFD message data filtering function
+
+2024-09-03 14-05-44
+
+1. Delete the lib folder in the project
+
+2024-09-03 16-27-11
+
+1. Disable LIN LDF related controls
+
+2024-09-04 09-53-21
+
+1. Open the device serial number interface for mapping function
+
+
+2024-09-04 13-36-34
+	
+1. Fixed the bug in CAN DEMO where CANFD failed to send messages
+
+2024-09-04 18-59-36
+
+1. Add the function of periodic sending function in CAN/CANFD demo
+
+2024-09-05 13-58-44
+
+1. Add ID filtering function to CAN/CANFD demo
+
+2024-09-06 10-58-52
+
+1. Modify the filtering function window style of CAN/CANFD DEMO
+
+2024-09-06 16-14-45
+
+1. Add CAN/CANFD FIFO count related functions
+
+2024-09-06 17-30-35
+
+1. Add the function of clearing FIFO cache during the initialization process of CAN/CANFD DEMO
+2. Add buffer count function
+
+2024-09-10 18-13-16
+
+1. Encapsulate the bus statistics function
+
+2024-09-12 10-16-14
+
+1. Fixed bug where filtering through ID function cannot be used
+
+2024-09-14 17-57-22
+
+1. Add sampling point configuration option function to CAN/CANFD demo
+
+2024-09-19 11-42-26
+
+2. Add differentiation function for the same device serial number in CAN/CANFD and LIN Demo
+
+2024-09-20 14-43-48
+
+1. Fixed a bug in the multifunctional CAN/CANFD demo where channel mapping failed. 
+2. Fixed a bug in the CANFFD demo where channels 2, 3, and 4 failed to send messages
+
+2024-09-23 12-39-29
+
+1. Fix the bug that the decimal system is not converted to hexadecimal system in the dispatch table message in LIN demo
+
+2024-09-23 17-05-55
+
+1. Fix the bug that the scheduling table cannot send multiple frames in LIN DEMO
+
+2024-10-08 16-55-28
+
+1. Add hardware sub index numbers and hardware type numbers for TC1054pro
+2. Add several LIN database parsing functions
+
+2024-10-10 09-42-36
+
+1. Fixed bug in CAN DEMO where device serial numbers were not distinguished
+
+2024-10-22 14-57-42
+
+1. Add log module to CAN demo/LIN demo
+2. Delete the "Not organized vi" folder
+
+2024-10-23 10-55-12
+
+1. CAN demo/LIN demo adds device quantity detection and device model detection functions
+
+2024-10-23 15-20-05
+
+1.Add BLF log message recording function in CAN Demo/LIN Demo
+
+2024-10-24 14-55-20
+
+1. CAN demo adds DBC message parsing and signal parsing functions
+
+2024-10-29 15-47-12
+
+1. Add the function of publishing source code to user libraries
+
+2024-11-01 10-48-55
+
+1. Add the tsapp_sthow_mardware_comfigured window function to map channels; Implement support for TC1054pro CAN message transmission and reception
+
+2024-11-06 10-55-43
+
+1. CAN/LIN demo adds the function of disabling message receiving FIFO.
+2. CAN/LIN demo fixes the bug of coupling between the message receiving channel and the sending channel.
+
+2024-11-06 17-05-55
+
+1. Modify the project directory structure, add the Demo folder, and transfer the CAN demo and LIN demo to the Demo folder
+2. Remove CAN_Simple demo and CANFD_Simple demo from the CAN demo
+
+2024-11-08 11-27-32
+
+1. Adjust the position of certain controls
+
+2024-11-08 15-01-40
+
+1. Fixed the bug where the control did not update after importing the file
+
+2024-11-12 17-56-50
+
+1. Add TSMaster API LabVIEW usage documentation
+2. Fix individual bugs
+
+2024-11-22 10-28-56
+
+1.In the scheduling table configuration of LIN DEMO, 
+the function of clearing the scheduling table has been improved, 
+and the function of clearing designated channels has been added.
+
+2024-11-22 16-16-19
+
+1. Add UDS diagnostic module function to CAN/CANFD DEMO
+
+2024-11-25 11-48-14
+
+1. Add DBC sending module to CAN/CANFD demo
+
+2024-11-25 14-13-49
+
+1. CAN/CANFD demo adds the function of folding messages to read the message list.
+
+2024-11-25 17-52-31
+
+1. CAN/CANFD Trace window completes DBC real-time data parsing function
+
+2024-11-26 16-47-16
+
+1. After adding DBC signal parsing to the CAN/CANFD module, it can send messages according to the signal value
+
+2024-11-28 18-32-25
+
+1. Add PRC module
+2. Add TSMaster project to read and write system variables in RPC module
+
+2024-11-29 17-54-08
+
+1. Fix bugs in PRC write system functionality
+
+2024-12-02 18-09-21
+
+1. Add several VIs to the RPC module
+
+2024-12-03 09-40-20
+
+1. Add several VIs to the RPC module——2
+
+2024-12-03 11-00-17
+
+1.	Fix the bug in the CAN CANFD module where the table is displayed
+
+2024-12-03 15-00-49
+
+1. Add CAN/CANFD Simple Demo
+
+2024-12-04 11-28-32
+
+1. LIN DEMO sets CAN/CANFD channel to 0 during channel mapping, and CAN/CANFD DEMO sets LIN channel to 0 during channel mapping
+
+2024-12-04 14-46-20
+
+1. Add CAN/LIN DEMO
+
+2024-12-05 13-44-00
+
+1. Fixed a bug in the CAN/CANFD demo where the cycle message was sent with a cycle display
+
+2024-12-16 11-09-47
+
+1. Fixed the bug in CAN/CANFD demo where the configuration of UDS could not be loaded
+
+2024-12-26 18-08-51
+
+1. Add several FlexRay database parsing functions
+2. Add several FlexRay related functions
+
+2025-01-06 14-35-28
+
+1. Complete the FlexRay message sending and receiving demo
+
+2025-01-08 17-03-34
+
+1.	Complete the development of CAN_LIN-AsynCall demo
+
+2025-01-09 12-02-35
+
+1. Complete the CAN_LIN_FlexRay_SynCall demo
+2. LIN demo adds master-slave node setting button
+
+2025-01-09 13-49-20
+
+1. FlexRay demo adds the function of TS_mapping
+2. CAN_LINFlexRay_SynCall demo adds TS_Mapping functionality
+
+2025-01-10 11-57-21
+
+1. FlexRay demo adds channel mapping display window
+2. Add channel mapping display window to CAN_LINFlexRay_SynCall Demo
+
+2025-01-15 16-43-00
+
+1. CAN/CANFD demo adds CHMapping channel mapping window display function
+2. LIN Demo adds the function of displaying the CHMapping channel mapping window
+
+2025-01-16 10-48-31
+
+1. Add the function of executing arbitrary requests and collecting responses to the UDS diagnostic module in CAN/CANFD Demo
+
+2025-01-16 12-13-32
+
+1. Add asynchronous calling function of UDS diagnostic module in CAN/CANFD Demo
+
+
+2025-01-19 20-58-00
+
+1. Complete the parsing of LDF's database array, node array, message frame array, and signal array
+2.	Confirm the parsing parameters of each database and the structure
+
+2025-01-22 19-18-52
+
+1. Complete the traversal of LDF database, ECU, message frames, and signals
+
+2025-02-06 11-59-17
+
+1. Complete the LDF database parsing function in LIN demo
+
+2025-02-07 15-24-15
+
+1. Complete the function of real-time parsing of message signals during the process of reading original messages.
+
+2025-02-11 12-36-27
+
+1. Complete the parsing of messages and signals in the FlexRay database.
+2. Complete real-time content analysis of FlexRay messages and signals.
+
+2025-02-13 18-09-55
+
+1. LIN Demo completes the function of decompiling signals from LDF database into original messages
+2. Add Trace message folding function to LIN Demo
+
+2025-02-14 12-36-40
+
+1. FlexRay DEMO completes the function of converting message signals back into original messages
+2.	Fix several bugs
+
+2025-02-14 17-24-38
+
+1. Fixed the bug in FlexRay demo where the initialization demo database data was not cleared
+
+2025-02-17 14-43-16
+
+1. Optimize the problem of cluster structure occupying too much memory in LDF/XML database parsing to improve the compilation speed of the project
+
+2025-02-17 18-09-33
+
+1. Add CAN_Semo_Template
+2. Add LIN_Semo_Template
+3. Add FlexRay_Semo_Template
+4. Add CAN_LIN-Demo_Template
+5. Add CAN_LIN-FlexRay_Demo_Template
+
+2025-02-18 10-04-00
+
+1.Add RPC-Demo_Template
+
+2025-02-18 11-38-12
+
+1. Update the HardwareType and Hardware Subtype index lists
+
+2025-02-24 15-06-53
+
+1. Improve TSMaster API_LabVEIW manual
