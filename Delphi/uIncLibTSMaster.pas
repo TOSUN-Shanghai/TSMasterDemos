@@ -996,7 +996,14 @@ type
     TC1034Pro           = 43,
     TC1018Pro           = 44,
     TC1038Pro           = 45,
-    TS_DEV_END          = 46
+    TC1014Pro           = 46,
+    TC1034ProPlus       = 47,
+    TA1038              = 48,
+    TC1055Pro           = 49,
+    TC1056Pro           = 50,
+    TC1057Pro           = 51,
+    TC4016              = 52,
+    TS_DEV_END          = 52
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (
