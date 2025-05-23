@@ -3736,6 +3736,8 @@ TSAPI(s32)call_model_step(const size_t AHandle,const s64 ATimeUs,const ps32 AInV
 
 TSAPI(s32)call_model_finalization(const size_t AHandle);
 
+TSAPI(s32)lin_rbs_update_frame_by_id(const s32 AChnIdx,const u8 AId);
+
 #if defined ( __cplusplus )
 }
 #endif

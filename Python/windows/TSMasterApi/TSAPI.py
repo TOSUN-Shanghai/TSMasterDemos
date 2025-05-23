@@ -5662,3 +5662,9 @@ call_model_finalization = dll.call_model_finalization
 call_model_finalization.restype = s32
 call_model_finalization.argtypes = [size_t]
 
+#arg[0] AChnIdx
+#arg[1] AId
+lin_rbs_update_frame_by_id = dll.lin_rbs_update_frame_by_id
+lin_rbs_update_frame_by_id.restype = s32
+lin_rbs_update_frame_by_id.argtypes = [s32,u8]
+
