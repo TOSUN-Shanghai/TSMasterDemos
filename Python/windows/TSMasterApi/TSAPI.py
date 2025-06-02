@@ -5668,3 +5668,15 @@ lin_rbs_update_frame_by_id = dll.lin_rbs_update_frame_by_id
 lin_rbs_update_frame_by_id.restype = s32
 lin_rbs_update_frame_by_id.argtypes = [s32,u8]
 
+#arg[0] AChnIdx
+#arg[1] AId
+lin_rbs_register_force_refresh_frame_by_id = dll.lin_rbs_register_force_refresh_frame_by_id
+lin_rbs_register_force_refresh_frame_by_id.restype = s32
+lin_rbs_register_force_refresh_frame_by_id.argtypes = [s32,u8]
+
+#arg[0] AChnIdx
+#arg[1] AId
+lin_rbs_unregister_force_refresh_frame_by_id = dll.lin_rbs_unregister_force_refresh_frame_by_id
+lin_rbs_unregister_force_refresh_frame_by_id.restype = s32
+lin_rbs_unregister_force_refresh_frame_by_id.argtypes = [s32,u8]
+

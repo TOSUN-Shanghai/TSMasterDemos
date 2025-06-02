@@ -3157,6 +3157,8 @@ function call_model_initialization(const ADiagramName: pansichar; const AInCnt: 
 function call_model_step(const AHandle: nativeint; const ATimeUs: int64; const AInValues: Pointer; AOutValues: Pointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function call_model_finalization(const AHandle: nativeint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function lin_rbs_update_frame_by_id(const AChnIdx: int32; const AId: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_rbs_register_force_refresh_frame_by_id(const AChnIdx: int32; const AId: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_rbs_unregister_force_refresh_frame_by_id(const AChnIdx: int32; const AId: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

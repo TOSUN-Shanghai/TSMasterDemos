@@ -3738,6 +3738,10 @@ TSAPI(s32)call_model_finalization(const size_t AHandle);
 
 TSAPI(s32)lin_rbs_update_frame_by_id(const s32 AChnIdx,const u8 AId);
 
+TSAPI(s32)lin_rbs_register_force_refresh_frame_by_id(const s32 AChnIdx,const u8 AId);
+
+TSAPI(s32)lin_rbs_unregister_force_refresh_frame_by_id(const s32 AChnIdx,const u8 AId);
+
 #if defined ( __cplusplus )
 }
 #endif
