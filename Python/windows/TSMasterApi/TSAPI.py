@@ -5680,3 +5680,25 @@ lin_rbs_unregister_force_refresh_frame_by_id = dll.lin_rbs_unregister_force_refr
 lin_rbs_unregister_force_refresh_frame_by_id.restype = s32
 lin_rbs_unregister_force_refresh_frame_by_id.argtypes = [s32,u8]
 
+#arg[0] ARpcName
+#arg[1] AIsMaster
+#arg[2] ABufferSizeBytes
+#arg[3] ARxEvent
+#arg[4] AHandle
+rpc_data_channel_create = dll.rpc_data_channel_create
+rpc_data_channel_create.restype = s32
+rpc_data_channel_create.argtypes = [pchar,s32,size_t,TOnRpcData,psize_t]
+
+#arg[0] AHandle
+rpc_data_channel_delete = dll.rpc_data_channel_delete
+rpc_data_channel_delete.restype = s32
+rpc_data_channel_delete.argtypes = [size_t]
+
+#arg[0] AHandle
+#arg[1] AAddr
+#arg[2] ASizeBytes
+#arg[3] ATimeOutMs
+rpc_data_channel_transmit = dll.rpc_data_channel_transmit
+rpc_data_channel_transmit.restype = s32
+rpc_data_channel_transmit.argtypes = [size_t,pu8,size_t,s32]
+

@@ -3742,6 +3742,12 @@ TSAPI(s32)lin_rbs_register_force_refresh_frame_by_id(const s32 AChnIdx,const u8 
 
 TSAPI(s32)lin_rbs_unregister_force_refresh_frame_by_id(const s32 AChnIdx,const u8 AId);
 
+TSAPI(s32)rpc_data_channel_create(const char* ARpcName,const s32 AIsMaster,const size_t ABufferSizeBytes,const TOnRpcData ARxEvent,const psize_t AHandle);
+
+TSAPI(s32)rpc_data_channel_delete(const size_t AHandle);
+
+TSAPI(s32)rpc_data_channel_transmit(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes,const s32 ATimeOutMs);
+
 #if defined ( __cplusplus )
 }
 #endif
