@@ -1577,6 +1577,40 @@ const
  AF_MAX          = 22;
 *)
 
+{** Whether the network interface is 'up'. This is
+ * a software flag used to control whether this network
+ * interface is enabled and processes traffic.
+ * It must be set by the startup code before this netif can be used
+ * (also for dhcp/autoip).
+ *}
+ NETIF_FLAG_UP          = $01;
+{** If set, the netif has broadcast capability.
+ * Set by the netif driver in its init function. *}
+ NETIF_FLAG_BROADCAST   = $02;
+{** If set, the interface has an active link
+ *  (set by the network interface driver).
+ * Either set by the netif driver in its init function (if the link
+ * is up at that time) or at a later point once the link comes up
+ * (if link detection is supported by the hardware). *}
+ NETIF_FLAG_LINK_UP     = $04;
+{** If set, the netif is an ethernet device using ARP.
+ * Set by the netif driver in its init function.
+ * Used to check input packet types and use of DHCP. *}
+ NETIF_FLAG_ETHARP      = $08;
+{** If set, the netif is an ethernet device. It might not use
+ * ARP or TCP/IP if it is used for PPPoE only.
+ *}
+ NETIF_FLAG_ETHERNET    = $10;
+{** If set, the netif has IGMP capability.
+ * Set by the netif driver in its init function. *}
+ NETIF_FLAG_IGMP        = $20;
+{** If set, the netif has MLD6 capability.
+ * Set by the netif driver in its init function. *}
+ NETIF_FLAG_MLD6        = $40;
+
+ LWIP_IPV6_NUM_ADDRESSES = 3;
+
+
 //----start define type------
 type
   ssize_t = NativeInt;
@@ -1598,6 +1632,47 @@ type
 	  addr: array[0..5] of UInt8;
   end;
 
+//  pts_sockaddr = ^tts_sockaddr;
+//  tts_sockaddr = packed record
+//    sa_len: UInt8;
+//    sa_family: ts_sa_family_t;   //u8
+//    sa_data: array[0..13] of ansichar;
+//  end;
+
+  pts_sockaddr = ^tts_sockaddr_private;
+  {IS_SOCK_ADDR_ALIGNED: should 4 bytes align
+  tts_sockaddr_private: The keyword Packet was used, resulting in single byte alignment
+                        instead of four direct alignments}
+  tts_sockaddr_private = packed record
+	  sa_len: UInt8;
+	  sa_family: ts_sa_family_t;
+	  sa_data: array[0..13] of ansichar;
+  end;
+
+ pts_addrinfo = ^tts_addrinfo;
+ tts_addrinfo = packed record
+    ai_flags: Int32;      { Input flags. }
+    ai_family: Int32;     { Address family of socket. }
+    ai_socktype: Int32;   { Socket type. }
+    ai_protocol: Int32;   { Protocol of socket. }
+    ai_addrlen: tts_socklen_t;   { Length of socket address. }
+    ai_addr: pts_sockaddr;       { Socket address of socket. }
+    ai_canonname: PAnsichar;     { Canonical name of service location. }
+    ai_next: pts_addrinfo;       { Pointer to next in list. }
+ end;
+
+ ppts_hostent = ^pts_hostent;
+ pts_hostent = ^tts_hostent;
+ tts_hostent = packed record
+    h_name: PAnsichar;       { Official name of the host. }
+    h_aliases: PPAnsichar;   { A pointer to an array of pointers to alternative host names, }
+                              { terminated by a null pointer. }
+    h_addrtype: Int32;       { Address type. }
+    h_length: Int32;         { The length, in bytes, of the address. }
+    h_addr_list: PPAnsichar; { A pointer to an array of pointers to network addresses (in }
+                             { network byte order) for the host, terminated by a null pointer. }
+    //#define h_addr h_addr_list[0] { for backward compatibility }
+ end;
 
 {$DEFINE  LWIP_IPV6_SCOPES}
   pip6_addr_t = ^tip6_addr_t;
@@ -1607,6 +1682,23 @@ type
    zone: UInt32;
 {$endif}
   end;
+
+ //以下1字节对齐
+ ppts_net_device = ^pts_net_device;
+ pts_net_device = ^tts_net_device;
+ tts_net_device = packed record
+   ip_addr: tip4_addr_t;
+   netmask: tip4_addr_t;
+   gw: tip4_addr_t;
+   ip6_addr: array[0..LWIP_IPV6_NUM_ADDRESSES-1] of tip6_addr_t;
+   mtu: UInt16;
+   mtu6: UInt16;
+   vlan: UInt16;
+   hwaddr: array[0..5] of UInt8;
+   flags: UInt8;    //见下方解释
+   index: UInt8;
+ end;
+
 
   lwip_ip_addr_type =(
     { IPv4 }
@@ -1623,16 +1715,6 @@ type
     FType: UInt32;  //lwip_ip_addr_type
     function ipv4: pip4_addr_t;
     function ipv6: pip6_addr_t;
-  end ;
-
-  pts_sockaddr = ^tts_sockaddr_private;
-  {IS_SOCK_ADDR_ALIGNED: should 4 bytes align
-  tts_sockaddr_private: The keyword Packet was used, resulting in single byte alignment
-                        instead of four direct alignments}
-  tts_sockaddr_private = packed record
-	  sa_len: UInt8;
-	  sa_family: ts_sa_family_t;
-	  sa_data: array[0..13] of ansichar;
   end;
 
   ts_in_addr  = packed record
@@ -2745,6 +2827,11 @@ function rawsocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readse
 function rawsocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getaddrinfo(const ANetworkIndex: integer; const nodename: PAnsichar; const servname: PAnsichar; const hints: pts_addrinfo; res: ppts_hostent): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_freeaddrinfo(const ANetworkIndex: integer; ai: pts_addrinfo): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_gethostname(const ANetworkIndex: integer; const name: PAnsichar; const AHostent: ppts_hostent): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getalldevices(const ANetworkIndex: integer; devs: ppts_net_device): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_freedevices(const ANetworkIndex: integer; devs: pts_net_device): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //socket API
 //The socket created by tssocket must be closed using tssocket_close
 //The socket created by tssocket_tcp must be closed using tssocket_tcp_close
