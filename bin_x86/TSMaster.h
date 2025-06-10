@@ -1421,7 +1421,7 @@ typedef struct _TLIBFlexrayFrameTrigger{
     u8 cycle_code;
     u8 config_byte;
     u8 rev;
-}TLIBFlexrayFrameTrigger, *PLIBFlexrayFrameTrigger;
+}TLIBFlexrayFrameTrigger, *PLIBFlexrayFrameTrigger, *pLIBFlexrayFrameTrigger, **PPLIBFlexrayFrameTrigger, **ppLIBFlexrayFrameTrigger;
 
 typedef struct _TLIBFlexrayConfigurationPara{
     u8 NETWORK_MANAGEMENT_VECTOR_LENGTH;
@@ -1439,12 +1439,12 @@ typedef struct _TLIBFlexrayConfigurationPara{
     u8 WAKE_UP_SYMBOL_TX_LOW;
     u8 channelAConnectedNode;
     u8 channelBConnectedNode;
-}TLIBFlexrayConfigurationPara, *PLIBFlexrayConfigurationPara;
+}TLIBFlexrayConfigurationPara, *PLIBFlexrayConfigurationPara, *pLIBFlexrayConfigurationPara, **PPLIBFlexrayConfigurationPara, **ppLIBFlexrayConfigurationPara;
 
 typedef struct _TLIBEthernetMAX{
     TLIBEthernetHeader FHeader;
     u8 FBytes[1612];
-}TLIBEthernetMAX, *PLIBEthernetMAX;
+}TLIBEthernetMAX, *PLIBEthernetMAX, *pLIBEthernetMAX, **PPLIBEthernetMAX, **ppLIBEthernetMAX;
 
 typedef struct _TLIBFlexRayClusterParameters{
     char FShortName[32];
@@ -1490,7 +1490,7 @@ typedef struct _TLIBFlexRayClusterParameters{
     s32 FOffsetCorrectionStart_MT;
     s32 FMaxWithoutClockCorrectionFatal;
     s32 FMaxWithoutClockCorrectionPassive;
-}TLIBFlexRayClusterParameters, *PLIBFlexRayClusterParameters;
+}TLIBFlexRayClusterParameters, *PLIBFlexRayClusterParameters, *pLIBFlexRayClusterParameters, **PPLIBFlexRayClusterParameters, **ppLIBFlexRayClusterParameters;
 
 typedef struct _TLIBFlexRayControllerParameters{
     char FShortName[32];
@@ -1524,7 +1524,7 @@ typedef struct _TLIBFlexRayControllerParameters{
     s32 FAllowPassivToActive;
     s32 FLatestTx;
     s32 FMaxDynamicPayloadLength;
-}TLIBFlexRayControllerParameters, *PLIBFlexRayControllerParameters;
+}TLIBFlexRayControllerParameters, *PLIBFlexRayControllerParameters, *pLIBFlexRayControllerParameters, **PPLIBFlexRayControllerParameters, **ppLIBFlexRayControllerParameters;
 
 typedef struct _TLIBTrigger_def{
     u16 slot_id;
@@ -1532,7 +1532,7 @@ typedef struct _TLIBTrigger_def{
     u8 cycle_code;
     u8 config_byte;
     u8 rev;
-}TLIBTrigger_def, *PLIBTrigger_def;
+}TLIBTrigger_def, *PLIBTrigger_def, *pLIBTrigger_def, **PPLIBTrigger_def, **ppLIBTrigger_def;
 
 typedef struct _TLIBGPSData{
     u64 FTimeUS;
@@ -1547,7 +1547,7 @@ typedef struct _TLIBGPSData{
     u8 E_W;
     u8 Satellite;
     u8 FIdxChn;
-}TLIBGPSData, *PLIBGPSData;
+}TLIBGPSData, *PLIBGPSData, *pLIBGPSData, **PPLIBGPSData, **ppLIBGPSData;
 
 typedef struct _TLIBEth_CMD_config{
     u8 eth_config0;
@@ -1560,7 +1560,7 @@ typedef struct _TLIBEth_CMD_config{
     u64 filter_perfect0;
     u64 filter_perfect1;
     u64 rev[6];
-}TLIBEth_CMD_config, *PLIBEth_CMD_config;
+}TLIBEth_CMD_config, *PLIBEth_CMD_config, *pLIBEth_CMD_config, **PPLIBEth_CMD_config, **ppLIBEth_CMD_config;
 
 typedef struct _TEMMC_RECORD_DATA{
     u32 FUTCDate;
@@ -1568,7 +1568,7 @@ typedef struct _TEMMC_RECORD_DATA{
     u32 FStartSector;
     u32 FSectorSize;
     u32 FOffSetMiniSecond;
-}TEMMC_RECORD_DATA, *PEMMC_RECORD_DATA;
+}TEMMC_RECORD_DATA, *PEMMC_RECORD_DATA, *pEMMC_RECORD_DATA, **PPEMMC_RECORD_DATA, **ppEMMC_RECORD_DATA;
 
 typedef struct _Trealtime_comment_t{
     s64 FTimeUs;
@@ -1576,7 +1576,7 @@ typedef struct _Trealtime_comment_t{
     u32 FCapacity;
     char* FComment;
     u32 FPadding;
-}Trealtime_comment_t, *Prealtime_comment_t;
+}Trealtime_comment_t, *Prealtime_comment_t, *prealtime_comment_t, **PPrealtime_comment_t, **pprealtime_comment_t;
 
 typedef struct _TLIBSystemVar{
     s64 FTimeUs;
@@ -1586,7 +1586,7 @@ typedef struct _TLIBSystemVar{
     char* FName;
     pu8 FData;
     s64 FPadding;
-}TLIBSystemVar, *PLIBSystemVar;
+}TLIBSystemVar, *PLIBSystemVar, *pLIBSystemVar, **PPLIBSystemVar, **ppLIBSystemVar;
 
 typedef struct _TLIBSystemVarDef{
     char FName[32];
@@ -1597,7 +1597,7 @@ typedef struct _TLIBSystemVarDef{
     double FValueMin;
     double FValueMax;
     char FUnit[32];
-}TLIBSystemVarDef, *PLIBSystemVarDef;
+}TLIBSystemVarDef, *PLIBSystemVarDef, *pLIBSystemVarDef, **PPLIBSystemVarDef, **ppLIBSystemVarDef;
 
 typedef struct _TMPCANSignal{
     u8 FCANSgnType;
@@ -1606,7 +1606,7 @@ typedef struct _TMPCANSignal{
     s32 FLength;
     double FFactor;
     double FOffset;
-}TMPCANSignal, *PMPCANSignal;
+}TMPCANSignal, *PMPCANSignal, *pMPCANSignal, **PPMPCANSignal, **ppMPCANSignal;
 
 typedef struct _TMPLINSignal{
     u8 FLINSgnType;
@@ -1615,7 +1615,7 @@ typedef struct _TMPLINSignal{
     s32 FLength;
     double FFactor;
     double FOffset;
-}TMPLINSignal, *PMPLINSignal;
+}TMPLINSignal, *PMPLINSignal, *pMPLINSignal, **PPMPLINSignal, **ppMPLINSignal;
 
 typedef struct _TMPFlexRaySignal{
     u8 FFRSgnType;
@@ -1629,7 +1629,7 @@ typedef struct _TMPFlexRaySignal{
     double FOffset;
     s32 FActualStartBit;
     s32 FActualUpdateBit;
-}TMPFlexRaySignal, *PMPFlexRaySignal;
+}TMPFlexRaySignal, *PMPFlexRaySignal, *pMPFlexRaySignal, **PPMPFlexRaySignal, **ppMPFlexRaySignal;
 
 typedef struct _TMPDBProperties{
     s32 FDBIndex;
@@ -1641,7 +1641,7 @@ typedef struct _TMPDBProperties{
     char FComment[512];
     u32 FFlags;
     u32 FDBId;
-}TMPDBProperties, *PMPDBProperties;
+}TMPDBProperties, *PMPDBProperties, *pMPDBProperties, **PPMPDBProperties, **ppMPDBProperties;
 
 typedef struct _TMPDBECUProperties{
     s32 FDBIndex;
@@ -1650,7 +1650,7 @@ typedef struct _TMPDBECUProperties{
     s32 FRxFrameCount;
     char FName[512];
     char FComment[512];
-}TMPDBECUProperties, *PMPDBECUProperties;
+}TMPDBECUProperties, *PMPDBECUProperties, *pMPDBECUProperties, **PPMPDBECUProperties, **ppMPDBECUProperties;
 
 typedef struct _TMPDBFrameProperties{
     s32 FDBIndex;
@@ -1679,7 +1679,7 @@ typedef struct _TMPDBFrameProperties{
     s32 FSignalCount;
     char FName[512];
     char FComment[512];
-}TMPDBFrameProperties, *PMPDBFrameProperties;
+}TMPDBFrameProperties, *PMPDBFrameProperties, *pMPDBFrameProperties, **PPMPDBFrameProperties, **ppMPDBFrameProperties;
 
 typedef struct _TMPDBSignalProperties{
     s32 FDBIndex;
@@ -1698,7 +1698,7 @@ typedef struct _TMPDBSignalProperties{
     double FInitValue;
     char FName[512];
     char FComment[512];
-}TMPDBSignalProperties, *PMPDBSignalProperties;
+}TMPDBSignalProperties, *PMPDBSignalProperties, *pMPDBSignalProperties, **PPMPDBSignalProperties, **ppMPDBSignalProperties;
 
 typedef struct _TLIBHWInfo{
     TLIBBusToolDeviceType FDeviceType;
@@ -1706,7 +1706,7 @@ typedef struct _TLIBHWInfo{
     char FVendorName[32];
     char FDeviceName[32];
     char FSerialString[64];
-}TLIBHWInfo, *PLIBHWInfo;
+}TLIBHWInfo, *PLIBHWInfo, *pLIBHWInfo, **PPLIBHWInfo, **ppLIBHWInfo;
 
 typedef struct _TLIBTSMapping{
     char FAppName[32];
@@ -1718,35 +1718,67 @@ typedef struct _TLIBTSMapping{
     s32 FHWDeviceSubType;
     char FHWDeviceName[32];
     bool FMappingDisabled;
-}TLIBTSMapping, *PLIBTSMapping;
+}TLIBTSMapping, *PLIBTSMapping, *pLIBTSMapping, **PPLIBTSMapping, **ppLIBTSMapping;
 
 typedef struct _Tip4_addr_t{
     u32 addr;
-}Tip4_addr_t, *Pip4_addr_t;
+}Tip4_addr_t, *Pip4_addr_t, *pip4_addr_t, **PPip4_addr_t, **ppip4_addr_t;
 
 typedef struct _Teth_addr_t{
     u8 addr[6];
-}Teth_addr_t, *Peth_addr_t;
-
-typedef struct _Tip6_addr_t{
-    u32 addr[4];
-    u32 zone;
-}Tip6_addr_t, *Pip6_addr_t;
-
-typedef struct _Tip_addr_t{
-    Tip6_addr_t ip4Or6;
-    u32 FType;
-}Tip_addr_t, *Pip_addr_t;
+}Teth_addr_t, *Peth_addr_t, *peth_addr_t, **PPeth_addr_t, **ppeth_addr_t;
 
 typedef struct _Tts_sockaddr{
     u8 sa_len;
     u8 sa_family;
     char sa_data[14];
-}Tts_sockaddr, *Pts_sockaddr;
+}Tts_sockaddr, *Pts_sockaddr, *pts_sockaddr, **PPts_sockaddr, **ppts_sockaddr;
+
+typedef struct _Tts_addrinfo{
+    s32 ai_flags;
+    s32 ai_family;
+    s32 ai_socktype;
+    s32 ai_protocol;
+    u32 ai_addrlen;
+    Pts_sockaddr ai_addr;
+    char* ai_canonname;
+    Pts_addrinfo ai_next;
+}Tts_addrinfo, *Pts_addrinfo, *pts_addrinfo, **PPts_addrinfo, **ppts_addrinfo;
+
+typedef struct _Tts_hostent{
+    char* h_name;
+    ppchar h_aliases;
+    s32 h_addrtype;
+    s32 h_length;
+    ppchar h_addr_list;
+}Tts_hostent, *Pts_hostent, *pts_hostent, **PPts_hostent, **ppts_hostent;
+
+typedef struct _Tip6_addr_t{
+    u32 addr[4];
+    u32 zone;
+}Tip6_addr_t, *Pip6_addr_t, *pip6_addr_t, **PPip6_addr_t, **ppip6_addr_t;
+
+typedef struct _Tts_net_device{
+    Tip4_addr_t ip_addr;
+    Tip4_addr_t netmask;
+    Tip4_addr_t gw;
+    Tip6_addr_t ip6_addr[3];
+    u16 mtu;
+    u16 mtu6;
+    u16 vlan;
+    u8 hwaddr[6];
+    u8 flags;
+    u8 index;
+}Tts_net_device, *Pts_net_device, *pts_net_device, **PPts_net_device, **ppts_net_device;
+
+typedef struct _Tip_addr_t{
+    Tip6_addr_t ip4Or6;
+    u32 FType;
+}Tip_addr_t, *Pip_addr_t, *pip_addr_t, **PPip_addr_t, **ppip_addr_t;
 
 typedef struct _Ts_in_addr{
     u32 ts_addr;
-}Ts_in_addr, *Ps_in_addr;
+}Ts_in_addr, *Ps_in_addr, *ps_in_addr, **PPs_in_addr, **pps_in_addr;
 
 typedef struct _Tts_sockaddr_in{
     u8 sin_len;
@@ -1754,27 +1786,27 @@ typedef struct _Tts_sockaddr_in{
     u16 sin_port;
     Ts_in_addr sin_addr;
     char sin_zero[8];
-}Tts_sockaddr_in, *Pts_sockaddr_in;
+}Tts_sockaddr_in, *Pts_sockaddr_in, *pts_sockaddr_in, **PPts_sockaddr_in, **ppts_sockaddr_in;
 
 typedef struct _Tts_iovec{
     ps32 iov_base;
     size_t iov_len;
-}Tts_iovec, *Pts_iovec;
+}Tts_iovec, *Pts_iovec, *pts_iovec, **PPts_iovec, **ppts_iovec;
 
 typedef struct _Tts_timeval{
     s32 tv_sec;
     s32 tv_usec;
-}Tts_timeval, *Pts_timeval;
+}Tts_timeval, *Pts_timeval, *pts_timeval, **PPts_timeval, **ppts_timeval;
 
 typedef struct _Tts_fd_set{
     u8 fd_bits[32];
-}Tts_fd_set, *Pts_fd_set;
+}Tts_fd_set, *Pts_fd_set, *pts_fd_set, **PPts_fd_set, **ppts_fd_set;
 
 typedef struct _Tts_pollfd{
     s32 fd;
     s16 events;
     s16 revents;
-}Tts_pollfd, *Pts_pollfd;
+}Tts_pollfd, *Pts_pollfd, *pts_pollfd, **PPts_pollfd, **ppts_pollfd;
 
 typedef struct _Tts_msghdr{
     ps32 msg_name;
@@ -1786,18 +1818,18 @@ typedef struct _Tts_msghdr{
     ps32 msg_control;
     u32 msg_controllen;
     s32 msg_flags;
-}Tts_msghdr, *Pts_msghdr;
+}Tts_msghdr, *Pts_msghdr, *pts_msghdr, **PPts_msghdr, **ppts_msghdr;
 
 typedef struct _Tts_cmsghdr{
     u32 cmsg_len;
     s32 cmsg_level;
     s32 cmsg_type;
-}Tts_cmsghdr, *Pts_cmsghdr;
+}Tts_cmsghdr, *Pts_cmsghdr, *pts_cmsghdr, **PPts_cmsghdr, **ppts_cmsghdr;
 
 typedef struct _Tts_in_pktinfo{
     u32 ipi_ifindex;
     Ts_in_addr ipi_addr;
-}Tts_in_pktinfo, *Pts_in_pktinfo;
+}Tts_in_pktinfo, *Pts_in_pktinfo, *pts_in_pktinfo, **PPts_in_pktinfo, **ppts_in_pktinfo;
 
 typedef void(__cdecl*TCProcedure)();
 // Arg[0] AData
@@ -2965,6 +2997,16 @@ TSAPI(s32)rawsocket_dhcp_start(const s32 ANetworkIndex);
 TSAPI(s32)rawsocket_select(const s32 ANetworkIndex,const s32 maxfdp1,const Pts_fd_set readset,const Pts_fd_set writeset,const Pts_fd_set exceptset,const Pts_timeval timeout);
 
 TSAPI(s32)rawsocket_poll(const s32 ANetworkIndex,const Pts_pollfd fds,const size_t nfds,const s32 timeout);
+
+TSAPI(s32)tssocket_getaddrinfo(const s32 ANetworkIndex,const char* nodename,const char* servname,const Pts_addrinfo hints,const PPts_hostent res);
+
+TSAPI(s32)tssocket_freeaddrinfo(const s32 ANetworkIndex,const Pts_addrinfo ai);
+
+TSAPI(s32)tssocket_gethostname(const s32 ANetworkIndex,const char* name,const PPts_hostent AHostent);
+
+TSAPI(s32)tssocket_getalldevices(const s32 ANetworkIndex,const PPts_net_device devs);
+
+TSAPI(s32)tssocket_freedevices(const s32 ANetworkIndex,const Pts_net_device devs);
 
 TSAPI(s32)rawsocket(const s32 ANetworkIndex,const s32 domain,const s32 atype,const s32 protocol,const tosun_recv_callback recv_cb,const tosun_tcp_presend_callback presend_cb,const tosun_tcp_ack_callback send_cb);
 

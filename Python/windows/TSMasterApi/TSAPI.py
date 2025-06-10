@@ -3072,6 +3072,40 @@ rawsocket_poll.restype = s32
 rawsocket_poll.argtypes = [s32,Pts_pollfd,size_t,s32]
 
 #arg[0] ANetworkIndex
+#arg[1] nodename
+#arg[2] servname
+#arg[3] hints
+#arg[4] res
+tssocket_getaddrinfo = dll.tssocket_getaddrinfo
+tssocket_getaddrinfo.restype = s32
+tssocket_getaddrinfo.argtypes = [s32,pchar,pchar,Pts_addrinfo,PPts_hostent]
+
+#arg[0] ANetworkIndex
+#arg[1] ai
+tssocket_freeaddrinfo = dll.tssocket_freeaddrinfo
+tssocket_freeaddrinfo.restype = s32
+tssocket_freeaddrinfo.argtypes = [s32,Pts_addrinfo]
+
+#arg[0] ANetworkIndex
+#arg[1] name
+#arg[2] AHostent
+tssocket_gethostname = dll.tssocket_gethostname
+tssocket_gethostname.restype = s32
+tssocket_gethostname.argtypes = [s32,pchar,PPts_hostent]
+
+#arg[0] ANetworkIndex
+#arg[1] devs
+tssocket_getalldevices = dll.tssocket_getalldevices
+tssocket_getalldevices.restype = s32
+tssocket_getalldevices.argtypes = [s32,PPts_net_device]
+
+#arg[0] ANetworkIndex
+#arg[1] devs
+tssocket_freedevices = dll.tssocket_freedevices
+tssocket_freedevices.restype = s32
+tssocket_freedevices.argtypes = [s32,Pts_net_device]
+
+#arg[0] ANetworkIndex
 #arg[1] domain
 #arg[2] atype
 #arg[3] protocol
