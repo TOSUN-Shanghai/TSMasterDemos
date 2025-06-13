@@ -1742,7 +1742,7 @@ typedef struct _Tts_addrinfo{
     u32 ai_addrlen;
     Pts_sockaddr ai_addr;
     char* ai_canonname;
-    Pts_addrinfo ai_next;
+    struct _Tts_addrinfo* ai_next;
 }Tts_addrinfo, *Pts_addrinfo, *pts_addrinfo, **PPts_addrinfo, **ppts_addrinfo;
 
 typedef struct _Tts_hostent{
