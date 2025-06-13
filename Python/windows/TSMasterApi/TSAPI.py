@@ -3078,7 +3078,7 @@ rawsocket_poll.argtypes = [s32,Pts_pollfd,size_t,s32]
 #arg[4] res
 tssocket_getaddrinfo = dll.tssocket_getaddrinfo
 tssocket_getaddrinfo.restype = s32
-tssocket_getaddrinfo.argtypes = [s32,pchar,pchar,Pts_addrinfo,PPts_hostent]
+tssocket_getaddrinfo.argtypes = [s32,pchar,pchar,Pts_addrinfo,PPts_addrinfo]
 
 #arg[0] ANetworkIndex
 #arg[1] ai

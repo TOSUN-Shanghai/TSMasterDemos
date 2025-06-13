@@ -1649,6 +1649,7 @@ type
 	  sa_data: array[0..13] of ansichar;
   end;
 
+ ppts_addrinfo = ^pts_addrinfo;
  pts_addrinfo = ^tts_addrinfo;
  tts_addrinfo = packed record
     ai_flags: Int32;      { Input flags. }
@@ -1666,7 +1667,7 @@ type
  tts_hostent = packed record
     h_name: PAnsichar;       { Official name of the host. }
     h_aliases: PPAnsichar;   { A pointer to an array of pointers to alternative host names, }
-                              { terminated by a null pointer. }
+                             { terminated by a null pointer. }
     h_addrtype: Int32;       { Address type. }
     h_length: Int32;         { The length, in bytes, of the address. }
     h_addr_list: PPAnsichar; { A pointer to an array of pointers to network addresses (in }
@@ -2827,7 +2828,7 @@ function rawsocket_select(const ANetworkIndex: Integer; maxfdp1: integer; readse
 function rawsocket_poll(const ANetworkIndex: Integer; fds: Pts_pollfd; nfds: ts_nfds_t; timeout: integer): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping4(const ANetworkIndex: Integer; const ping_addr: Pip4_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tssocket_ping6(const ANetworkIndex: Integer; const ping_addr: pip6_addr_t; repeatcnt: integer; interval_ms: UInt32; timeout_ms: UInt32); stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tssocket_getaddrinfo(const ANetworkIndex: integer; const nodename: PAnsichar; const servname: PAnsichar; const hints: pts_addrinfo; res: ppts_hostent): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_getaddrinfo(const ANetworkIndex: integer; const nodename: PAnsichar; const servname: PAnsichar; const hints: pts_addrinfo; res: ppts_addrinfo): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_freeaddrinfo(const ANetworkIndex: integer; ai: pts_addrinfo): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_gethostname(const ANetworkIndex: integer; const name: PAnsichar; const AHostent: ppts_hostent): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_getalldevices(const ANetworkIndex: integer; devs: ppts_net_device): Int32; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}

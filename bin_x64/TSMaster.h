@@ -2998,7 +2998,7 @@ TSAPI(s32)rawsocket_select(const s32 ANetworkIndex,const s32 maxfdp1,const Pts_f
 
 TSAPI(s32)rawsocket_poll(const s32 ANetworkIndex,const Pts_pollfd fds,const size_t nfds,const s32 timeout);
 
-TSAPI(s32)tssocket_getaddrinfo(const s32 ANetworkIndex,const char* nodename,const char* servname,const Pts_addrinfo hints,const PPts_hostent res);
+TSAPI(s32)tssocket_getaddrinfo(const s32 ANetworkIndex,const char* nodename,const char* servname,const Pts_addrinfo hints,const PPts_addrinfo res);
 
 TSAPI(s32)tssocket_freeaddrinfo(const s32 ANetworkIndex,const Pts_addrinfo ai);
 
