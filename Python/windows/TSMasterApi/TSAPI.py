@@ -5736,3 +5736,10 @@ rpc_data_channel_transmit = dll.rpc_data_channel_transmit
 rpc_data_channel_transmit.restype = s32
 rpc_data_channel_transmit.argtypes = [size_t,pu8,size_t,s32]
 
+#arg[0] ANetworkIndex
+#arg[1] AIPAddress
+#arg[2] AHostName
+tssocket_set_host_name = dll.tssocket_set_host_name
+tssocket_set_host_name.restype = s32
+tssocket_set_host_name.argtypes = [s32,pchar,pchar]
+

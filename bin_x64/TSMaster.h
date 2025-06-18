@@ -3790,6 +3790,8 @@ TSAPI(s32)rpc_data_channel_delete(const size_t AHandle);
 
 TSAPI(s32)rpc_data_channel_transmit(const size_t AHandle,const pu8 AAddr,const size_t ASizeBytes,const s32 ATimeOutMs);
 
+TSAPI(s32)tssocket_set_host_name(const s32 ANetworkIndex,const char* AIPAddress,const char* AHostName);
+
 #if defined ( __cplusplus )
 }
 #endif
