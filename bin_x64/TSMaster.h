@@ -2838,9 +2838,9 @@ TSAPI(s32)tsdiag_set_response_id(const s32 ADiagModuleIndex,const s32 ARequestID
 
 TSAPI(s32)tsdiag_set_function_id(const s32 ADiagModuleIndex,const s32 ARequestID,const bool AIsStandard);
 
-TSAPI(s32)tsdiag_set_stmin(const s32 ADiagModuleIndex,const s32 ASTMin);
+TSAPI(s32)tsdiag_set_stmin(const s32 ADiagModuleIndex,const float ASTMin);
 
-TSAPI(s32)tsdiag_set_tx_stmin(const s32 ADiagModuleIndex,const bool ATxSTMinUserDefined,const s32 ATxSTMin);
+TSAPI(s32)tsdiag_set_tx_stmin(const s32 ADiagModuleIndex,const bool ATxSTMinUserDefined,const float ATxSTMin);
 
 TSAPI(s32)tsdiag_set_blocksize(const s32 ADiagModuleIndex,const s32 ABlockSize);
 
@@ -2852,7 +2852,7 @@ TSAPI(s32)tsdiag_set_fcdelay_verbose(const s32 ADiagModuleIndex,const bool ATxST
 
 TSAPI(s32)tsdiag_set_at_least_8bytes(const s32 ADiagModuleIndex,const s32 AIs8Bytes);
 
-TSAPI(s32)tsdiag_set_fcdelay(const s32 ADiagModuleIndex,const s32 AFCDelay);
+TSAPI(s32)tsdiag_set_fcdelay(const s32 ADiagModuleIndex,const float AFCDelay);
 
 TSAPI(s32)tsdiag_set_filled_byte(const s32 ADiagModuleIndex,const u8 AFilledByte);
 

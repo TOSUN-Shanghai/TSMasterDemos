@@ -2513,14 +2513,14 @@ tsdiag_set_function_id.argtypes = [s32,s32,cbool]
 #arg[1] ASTMin
 tsdiag_set_stmin = dll.tsdiag_set_stmin
 tsdiag_set_stmin.restype = s32
-tsdiag_set_stmin.argtypes = [s32,s32]
+tsdiag_set_stmin.argtypes = [s32,single]
 
 #arg[0] ADiagModuleIndex
 #arg[1] ATxSTMinUserDefined
 #arg[2] ATxSTMin
 tsdiag_set_tx_stmin = dll.tsdiag_set_tx_stmin
 tsdiag_set_tx_stmin.restype = s32
-tsdiag_set_tx_stmin.argtypes = [s32,cbool,s32]
+tsdiag_set_tx_stmin.argtypes = [s32,cbool,single]
 
 #arg[0] ADiagModuleIndex
 #arg[1] ABlockSize
@@ -2557,7 +2557,7 @@ tsdiag_set_at_least_8bytes.argtypes = [s32,s32]
 #arg[1] AFCDelay
 tsdiag_set_fcdelay = dll.tsdiag_set_fcdelay
 tsdiag_set_fcdelay.restype = s32
-tsdiag_set_fcdelay.argtypes = [s32,s32]
+tsdiag_set_fcdelay.argtypes = [s32,single]
 
 #arg[0] ADiagModuleIndex
 #arg[1] AFilledByte
