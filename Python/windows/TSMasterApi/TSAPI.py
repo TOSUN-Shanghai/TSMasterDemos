@@ -5743,3 +5743,16 @@ tssocket_set_host_name = dll.tssocket_set_host_name
 tssocket_set_host_name.restype = s32
 tssocket_set_host_name.argtypes = [s32,pchar,pchar]
 
+#arg[0] AChn
+#arg[1] ADuty
+#arg[2] AFrequency
+tsdio_set_pwm_output_async = dll.tsdio_set_pwm_output_async
+tsdio_set_pwm_output_async.restype = s32
+tsdio_set_pwm_output_async.argtypes = [s32,double,double]
+
+#arg[0] AChn
+#arg[1] AIOStatus
+tsdio_set_vlevel_output_async = dll.tsdio_set_vlevel_output_async
+tsdio_set_vlevel_output_async.restype = s32
+tsdio_set_vlevel_output_async.argtypes = [s32,s32]
+

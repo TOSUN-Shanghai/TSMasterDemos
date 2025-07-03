@@ -3251,6 +3251,8 @@ function rpc_data_channel_create(const ARpcName: pansichar; const AIsMaster: int
 function rpc_data_channel_delete(AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_data_channel_transmit(AHandle: NativeInt; AAddr: pbyte; ASizeBytes: NativeInt; ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_set_host_name(const ANetworkIndex: int32; const AIPAddress: pansichar; const AHostName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdio_set_pwm_output_async(const AChn: int32; ADuty: double; AFrequency: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdio_set_vlevel_output_async(const AChn: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

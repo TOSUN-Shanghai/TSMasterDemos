@@ -3792,6 +3792,10 @@ TSAPI(s32)rpc_data_channel_transmit(const size_t AHandle,const pu8 AAddr,const s
 
 TSAPI(s32)tssocket_set_host_name(const s32 ANetworkIndex,const char* AIPAddress,const char* AHostName);
 
+TSAPI(s32)tsdio_set_pwm_output_async(const s32 AChn,const double ADuty,const double AFrequency);
+
+TSAPI(s32)tsdio_set_vlevel_output_async(const s32 AChn,const s32 AIOStatus);
+
 #if defined ( __cplusplus )
 }
 #endif
