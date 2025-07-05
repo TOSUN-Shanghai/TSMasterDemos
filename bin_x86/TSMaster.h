@@ -2186,6 +2186,8 @@ TSAPI(s32)tsapp_configure_baudrate_can(const s32 AIdxChn,const float ABaudrateKb
 
 TSAPI(s32)tsapp_configure_baudrate_canfd(const s32 AIdxChn,const float AArbRateKbps,const float  ADataRateKbps,const TLIBCANFDControllerType AControllerType,const TLIBCANFDControllerMode AControllerMode,const bool AInstallTermResistor120Ohm);
 
+TSAPI(s32)tsapp_configure_ethernet_parameter(const s32 AIdxChn,const s32 AEnabled,const s32 APhyType,const s32 AIsMaster,const s32 AIsAutoNegotiation,const s32 ASpeedType,const s32 ALoopModeType,const s32 AByPassMode,const char* AMacAddress);
+
 TSAPI(s32)tsapp_configure_can_regs(const s32 AIdxChn,const float ABaudrateKbps,const s32 ASEG1,const s32  ASEG2,const s32  APrescaler,const s32  ASJW,const s32 AOnlyListen,const s32 A120OhmConnected);
 
 TSAPI(s32)tsapp_configure_canfd_regs(const s32 AIdxChn,const float AArbBaudrate,const s32 AArbSEG1,const s32  AArbSEG2,const s32  AArbPrescaler,const s32  AArbSJW,const float ADataBaudrate,const s32 ADataSEG1,const s32  ADataSEG2,const s32  ADataPrescaler,const s32  ADataSJW,const TLIBCANFDControllerType AControllerType,const TLIBCANFDControllerMode AControllerMode,const s32 A120OhmConnected);

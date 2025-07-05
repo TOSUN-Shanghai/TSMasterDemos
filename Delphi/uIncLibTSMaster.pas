@@ -2201,6 +2201,16 @@ function tsapp_get_vendor_detect_preferences(out AScanTOSUN, AScanVector, AScanP
 function tsapp_configure_baudrate_lin(const AIdxChn: Integer;const ABaudrateKbps: Single; const AProtocol:Integer): Integer; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}{Bps:such as 19200 bps}
 function tsapp_configure_baudrate_can(const AIdxChn: integer; const ABaudrateKbps: Single; const AListenOnly: boolean; const AInstallTermResistor120Ohm: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_configure_baudrate_canfd(const AIdxChn: integer; const AArbRateKbps, ADataRateKbps: Single; const AControllerType: TLIBCANFDControllerType; const AControllerMode: TLIBCANFDControllerMode; const AInstallTermResistor120Ohm: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_configure_ethernet_parameter(
+                  const AIdxChn: Integer;
+                  const AEnabled: Integer;
+                  const APhyType: Integer;
+                  const AIsMaster: Integer;
+                  const AIsAutoNegotiation: Integer;
+                  const ASpeedType: Integer;
+                  const ALoopModeType: Integer;
+                  const AByPassMode: Integer;
+                  const AMacAddress: PAnsichar): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_configure_can_regs(
       const AIdxChn: Integer;
       const ABaudrateKbps: Single;

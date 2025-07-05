@@ -326,6 +326,19 @@ tsapp_configure_baudrate_canfd.restype = s32
 tsapp_configure_baudrate_canfd.argtypes = [s32,single,single,TLIBCANFDControllerType,TLIBCANFDControllerMode,cbool]
 
 #arg[0] AIdxChn
+#arg[1] AEnabled
+#arg[2] APhyType
+#arg[3] AIsMaster
+#arg[4] AIsAutoNegotiation
+#arg[5] ASpeedType
+#arg[6] ALoopModeType
+#arg[7] AByPassMode
+#arg[8] AMacAddress
+tsapp_configure_ethernet_parameter = dll.tsapp_configure_ethernet_parameter
+tsapp_configure_ethernet_parameter.restype = s32
+tsapp_configure_ethernet_parameter.argtypes = [s32,s32,s32,s32,s32,s32,s32,s32,pchar]
+
+#arg[0] AIdxChn
 #arg[1] ABaudrateKbps
 #arg[2] ASEG1
 #arg[3] ASEG2
