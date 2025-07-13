@@ -757,6 +757,8 @@ type
   TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
   TDatapackageProcessEvent = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer) of object; stdcall;
   TDatapackageProcessEvent_Win32 = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer); stdcall;
+  TAutoSARPDUQueueEvent_Win32 = procedure(const AChnIdx: integer; const ATimestamp: UInt64; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
+  TAutoSARPDUPreTxEvent_Win32 = function(const AChnIdx: integer; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
 
 {$Z4}
   // for c type
