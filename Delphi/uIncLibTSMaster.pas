@@ -734,6 +734,8 @@ type
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
   TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
+  TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
+  TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
   TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
@@ -757,8 +759,6 @@ type
   TSSocketTransmitEvent_Win32 = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AData: PByte; const ASize: integer); stdcall;
   TDatapackageProcessEvent = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer) of object; stdcall;
   TDatapackageProcessEvent_Win32 = procedure(const AIdxChn: UInt8; const ATimestamp: Int64; const APackCmd: Uint16; const AParameter: PByte; const AParameterLength: UInt16; const AData: PByte; const ADataLength: integer); stdcall;
-  TAutoSARPDUQueueEvent_Win32 = procedure(const AChnIdx: integer; const ATimestamp: UInt64; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
-  TAutoSARPDUPreTxEvent_Win32 = function(const AChnIdx: integer; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
 
 {$Z4}
   // for c type
@@ -3265,6 +3265,10 @@ function rpc_data_channel_transmit(AHandle: NativeInt; AAddr: pbyte; ASizeBytes:
 function tssocket_set_host_name(const ANetworkIndex: int32; const AIPAddress: pansichar; const AHostName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdio_set_pwm_output_async(const AChn: int32; ADuty: double; AFrequency: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdio_set_vlevel_output_async(const AChn: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_register_autosar_pdu_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_unregister_autosar_pdu_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_register_autosar_pdu_pretx_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_unregister_autosar_pdu_pretx_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

@@ -5769,3 +5769,31 @@ tsdio_set_vlevel_output_async = dll.tsdio_set_vlevel_output_async
 tsdio_set_vlevel_output_async.restype = s32
 tsdio_set_vlevel_output_async.argtypes = [s32,s32]
 
+#arg[0] AChn
+#arg[1] AID
+#arg[2] AEvent
+can_il_register_autosar_pdu_event = dll.can_il_register_autosar_pdu_event
+can_il_register_autosar_pdu_event.restype = s32
+can_il_register_autosar_pdu_event.argtypes = [s32,s32,TOnAutoSARPDUQueueEvent]
+
+#arg[0] AChn
+#arg[1] AID
+#arg[2] AEvent
+can_il_unregister_autosar_pdu_event = dll.can_il_unregister_autosar_pdu_event
+can_il_unregister_autosar_pdu_event.restype = s32
+can_il_unregister_autosar_pdu_event.argtypes = [s32,s32,TOnAutoSARPDUQueueEvent]
+
+#arg[0] AChn
+#arg[1] AID
+#arg[2] AEvent
+can_il_register_autosar_pdu_pretx_event = dll.can_il_register_autosar_pdu_pretx_event
+can_il_register_autosar_pdu_pretx_event.restype = s32
+can_il_register_autosar_pdu_pretx_event.argtypes = [s32,s32,TOnAutoSARPDUPreTxEvent]
+
+#arg[0] AChn
+#arg[1] AID
+#arg[2] AEvent
+can_il_unregister_autosar_pdu_pretx_event = dll.can_il_unregister_autosar_pdu_pretx_event
+can_il_unregister_autosar_pdu_pretx_event.restype = s32
+can_il_unregister_autosar_pdu_pretx_event.argtypes = [s32,s32,TOnAutoSARPDUPreTxEvent]
+

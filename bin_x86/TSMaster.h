@@ -1865,6 +1865,20 @@ typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
 // Arg[1] ADataId
 // Arg[2] AValue
 typedef void(__stdcall*TOnAutoSARE2ECanEvt)(const PLIBCANFD ACAN,const u32 ADataId,const pu64 AValue);
+// Arg[0] AChnIdx
+// Arg[1] ATimestamp
+// Arg[2] AIsTx
+// Arg[3] AID
+// Arg[4] ADataLength
+// Arg[5] AData
+typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const u64 ATimestamp,const u8 AIsTx,const u32 AID,const u32 ADataLength,const pu8 AData);
+// Arg[0] AChnIdx
+// Arg[1] AID
+// Arg[2] ASrcDataLength
+// Arg[3] ASrcData
+// Arg[4] ADestDataLength
+// Arg[5] ADestData
+typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
 // Arg[0] AVidPid
 // Arg[1] ASerial
 typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);
@@ -1991,19 +2005,6 @@ typedef void(__stdcall*TDatapackageProcessEvent)(const u8 AIdxChn,const s64 ATim
 // Arg[5] AData
 // Arg[6] ADataLength
 typedef void(__stdcall*TDatapackageProcessEvent_Win32)(const u8 AIdxChn,const s64 ATimestamp,const u16 APackCmd,const pu8 AParameter,const u16 AParameterLength,const pu8 AData,const s32 ADataLength);
-// Arg[0] AChnIdx
-// Arg[1] ATimestamp
-// Arg[2] AID
-// Arg[3] ADataLength
-// Arg[4] AData
-typedef void(__stdcall*TAutoSARPDUQueueEvent_Win32)(const s32 AChnIdx,const u64 ATimestamp,const u32 AID,const u32 ADataLength,const pu8 AData);
-// Arg[0] AChnIdx
-// Arg[1] AID
-// Arg[2] ASrcDataLength
-// Arg[3] ASrcData
-// Arg[4] ADestDataLength
-// Arg[5] ADestData
-typedef s32 (__stdcall*TAutoSARPDUPreTxEvent_Win32)(const s32 AChnIdx,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
 // Arg[0] AObj
 // Arg[1] AProgress100
 typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
@@ -3810,6 +3811,14 @@ TSAPI(s32)tssocket_set_host_name(const s32 ANetworkIndex,const char* AIPAddress,
 TSAPI(s32)tsdio_set_pwm_output_async(const s32 AChn,const double ADuty,const double AFrequency);
 
 TSAPI(s32)tsdio_set_vlevel_output_async(const s32 AChn,const s32 AIOStatus);
+
+TSAPI(s32)can_il_register_autosar_pdu_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUQueueEvent AEvent);
+
+TSAPI(s32)can_il_unregister_autosar_pdu_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUQueueEvent AEvent);
+
+TSAPI(s32)can_il_register_autosar_pdu_pretx_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUPreTxEvent AEvent);
+
+TSAPI(s32)can_il_unregister_autosar_pdu_pretx_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUPreTxEvent AEvent);
 
 #if defined ( __cplusplus )
 }
