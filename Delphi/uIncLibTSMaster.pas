@@ -1005,7 +1005,9 @@ type
     TC1056Pro           = 50,
     TC1057Pro           = 51,
     TC4016              = 52,
-    TS_DEV_END          = 52
+    GW2208              = 53,
+    TS_DEV_END          = 54
+  // the table need to updated in time, otherwise cause problem to recognizing the device
   );
   // Vector XL device type
   TLIB_XL_Device_Sub_Type = (

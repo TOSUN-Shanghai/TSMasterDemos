@@ -394,7 +394,8 @@ class _TLIB_TS_Device_Sub_Type(CEnum):
     TC1056Pro = 50
     TC1057Pro = 51
     TC4016 = 52
-    TS_DEV_END = 52
+    GW2208 = 53
+    TS_DEV_END = 54
 TLIB_TS_Device_Sub_Type = c_int32
 PLIB_TS_Device_Sub_Type = ps32
 
