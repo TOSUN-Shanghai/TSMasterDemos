@@ -1781,6 +1781,10 @@ typedef struct _Ts_in_addr{
     u32 ts_addr;
 }Ts_in_addr, *Ps_in_addr, *ps_in_addr, **PPs_in_addr, **pps_in_addr;
 
+typedef struct _Ts_in6_addr{
+    u32 u32_addr[4];
+}Ts_in6_addr, *Ps_in6_addr, *ps_in6_addr, **PPs_in6_addr, **pps_in6_addr;
+
 typedef struct _Tts_sockaddr_in{
     u8 sin_len;
     u8 sin_family;
@@ -1788,6 +1792,15 @@ typedef struct _Tts_sockaddr_in{
     Ts_in_addr sin_addr;
     char sin_zero[8];
 }Tts_sockaddr_in, *Pts_sockaddr_in, *pts_sockaddr_in, **PPts_sockaddr_in, **ppts_sockaddr_in;
+
+typedef struct _Tts_sockaddr_in6{
+    u8 sin6_len;
+    u8 sin6_family;
+    u16 sin6_port;
+    u32 sin6_flowinfo;
+    Ts_in6_addr sin6_addr;
+    u32 sin6_scope_id;
+}Tts_sockaddr_in6, *Pts_sockaddr_in6, *pts_sockaddr_in6, **PPts_sockaddr_in6, **ppts_sockaddr_in6;
 
 typedef struct _Tts_iovec{
     ps32 iov_base;
@@ -1867,19 +1880,21 @@ typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
 // Arg[2] AValue
 typedef void(__stdcall*TOnAutoSARE2ECanEvt)(const PLIBCANFD ACAN,const u32 ADataId,const pu64 AValue);
 // Arg[0] AChnIdx
-// Arg[1] ATimestamp
-// Arg[2] AIsTx
-// Arg[3] AID
-// Arg[4] ADataLength
-// Arg[5] AData
-typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const u64 ATimestamp,const u8 AIsTx,const u32 AID,const u32 ADataLength,const pu8 AData);
+// Arg[1] APDUName
+// Arg[2] ATimestamp
+// Arg[3] AIsTx
+// Arg[4] AID
+// Arg[5] ADataLength
+// Arg[6] AData
+typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const char* APDUName,const u64 ATimestamp,const u8 AIsTx,const u32 AID,const u32 ADataLength,const pu8 AData);
 // Arg[0] AChnIdx
-// Arg[1] AID
-// Arg[2] ASrcDataLength
-// Arg[3] ASrcData
-// Arg[4] ADestDataLength
-// Arg[5] ADestData
-typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
+// Arg[1] APDUName
+// Arg[2] AID
+// Arg[3] ASrcDataLength
+// Arg[4] ASrcData
+// Arg[5] ADestDataLength
+// Arg[6] ADestData
+typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
 // Arg[0] AVidPid
 // Arg[1] ASerial
 typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);

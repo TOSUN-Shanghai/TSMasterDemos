@@ -1010,6 +1010,15 @@ ps_in_addr = POINTER(Ts_in_addr)
 PPs_in_addr = POINTER(POINTER(Ts_in_addr))
 pps_in_addr = POINTER(POINTER(Ts_in_addr))
 
+class Ts_in6_addr(Structure):
+    _pack_ = 1
+    _fields_ =[('u32_addr',u32*4),
+]
+Ps_in6_addr = POINTER(Ts_in6_addr)
+ps_in6_addr = POINTER(Ts_in6_addr)
+PPs_in6_addr = POINTER(POINTER(Ts_in6_addr))
+pps_in6_addr = POINTER(POINTER(Ts_in6_addr))
+
 class Tts_sockaddr_in(Structure):
     _pack_ = 1
     _fields_ =[('sin_len',u8),
@@ -1022,6 +1031,20 @@ Pts_sockaddr_in = POINTER(Tts_sockaddr_in)
 pts_sockaddr_in = POINTER(Tts_sockaddr_in)
 PPts_sockaddr_in = POINTER(POINTER(Tts_sockaddr_in))
 ppts_sockaddr_in = POINTER(POINTER(Tts_sockaddr_in))
+
+class Tts_sockaddr_in6(Structure):
+    _pack_ = 1
+    _fields_ =[('sin6_len',u8),
+('sin6_family',u8),
+('sin6_port',u16),
+('sin6_flowinfo',u32),
+('sin6_addr',Ts_in6_addr),
+('sin6_scope_id',u32),
+]
+Pts_sockaddr_in6 = POINTER(Tts_sockaddr_in6)
+pts_sockaddr_in6 = POINTER(Tts_sockaddr_in6)
+PPts_sockaddr_in6 = POINTER(POINTER(Tts_sockaddr_in6))
+ppts_sockaddr_in6 = POINTER(POINTER(Tts_sockaddr_in6))
 
 class Tts_iovec(Structure):
     _pack_ = 1

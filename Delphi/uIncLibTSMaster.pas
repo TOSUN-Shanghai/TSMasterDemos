@@ -734,8 +734,8 @@ type
   TOnIoIPData = procedure(const APointer: Pointer; const ASize: Integer); stdcall;
   TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
-  TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
-  TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
+  TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const APDUName: PAnsichar; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
+  TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const APDUName: PAnsichar; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
   TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
@@ -1614,6 +1614,8 @@ const
 
  LWIP_IPV6_NUM_ADDRESSES = 3;
 
+ MAX_SIZE_OF_IP_ADDRESS = 7;
+
 
 //----start define type------
 type
@@ -1636,13 +1638,7 @@ type
 	  addr: array[0..5] of UInt8;
   end;
 
-//  pts_sockaddr = ^tts_sockaddr;
-//  tts_sockaddr = packed record
-//    sa_len: UInt8;
-//    sa_family: ts_sa_family_t;   //u8
-//    sa_data: array[0..13] of ansichar;
-//  end;
-
+  {Eric_X}
   pts_sockaddr = ^tts_sockaddr_private;
   {IS_SOCK_ADDR_ALIGNED: should 4 bytes align
   tts_sockaddr_private: The keyword Packet was used, resulting in single byte alignment
@@ -1726,12 +1722,16 @@ type
     ts_addr: ts_in_addr_t;
   end;
 
+  ts_in6_addr = packed record
+    u32_addr: array[0..3] of UInt32;
+  end;
+
   {IS_SOCK_ADDR_ALIGNED:
   ts_sockaddr_in: should 4 bytes align
   tts_sockaddr_in_private: The keyword Packet was used, resulting in single byte alignment
                         instead of four direct alignments}
   pts_sockaddr_in = ^tts_sockaddr_in_private;
-  tts_sockaddr_in_private  = packed record  //16bytes
+  tts_sockaddr_in_private = packed record  //16bytes
     sin_len: UInt8;
     sin_family: ts_sa_family_t;
     sin_port: ts_in_port_t;
@@ -1746,9 +1746,28 @@ type
     property Port: UInt16 read GetPort write SetPort;
     property IPEndPoint: AnsiString read GetIPEndPoint;
   end;
+  pts_sockaddr_in6 = ^tts_sockaddr_in6;
+  tts_sockaddr_in6 = packed record
+    sin6_len: UInt8;              { length of this structure    }
+    sin6_family: ts_sa_family_t;  {  AF_INET6                    }
+    sin6_port: ts_in_port_t;      {  Transport layer port #      }
+    sin6_flowinfo: UInt32;        {  IPv6 flow information      }
+    sin6_addr: ts_in6_addr;       {  IPv6 address                }
+    sin6_scope_id: UInt32;        {  Set of interfaces for scope }
+    //function GetIPAddress: ansistring;
+    //function GetIPEndPoint: ansistring;
+    //procedure SetIPAddress(const AValue: ansistring);
+    function GetPort: UInt16;
+    procedure SetPort(const AValue: UInt16);
+    //property IPAddress: ansistring read GetIPAddress write SetIPAddress;
+    property Port: UInt16 read GetPort write SetPort;
+    //property IPEndPoint: AnsiString read GetIPEndPoint;
+  end;   //1 + 1 + 4 + 1
+
   {//Four byte alignment, cannot use Packet}
-  ts_sockaddr_in_union = record  //16bytes
-    FData:array[0..3] of Uint32;
+  pts_sockaddr_in_union = ^ts_sockaddr_in_union;
+  ts_sockaddr_in_union = record
+    FData: array[0..MAX_SIZE_OF_IP_ADDRESS-1] of Uint32;
     function stringValue: string;
   end;
 
@@ -4438,7 +4457,7 @@ var
   i: integer;
 begin
   result := '';
-  for i := 0 to 3 do begin
+  for i := 0 to MAX_SIZE_OF_IP_ADDRESS - 1 do begin
     if result <> '' then begin
       result := result + '.';
     end;
@@ -4446,6 +4465,41 @@ begin
   end;
 
 end;
+
+{tts_sockaddr_in6}
+{function tts_sockaddr_in6.GetIPAddress: ansistring;
+begin
+  Result := ansistring(inet6_ntoa(in_addr(sin_addr.ts_addr)));
+
+end;
+
+procedure tts_sockaddr_in6.SetIPAddress(const AValue: ansistring);
+begin
+  //rawsocket_aton6(PAnsiChar(ansistring(AIPV6List[i].FIP)), @ipaddr[i]);
+  inet_pton(AF_INET6, PAnsiChar(AValue), @sin6_addr.ts_addr); //return 1: successs
+
+end;
+
+function tts_sockaddr_in6.GetIPEndPoint: ansistring;
+begin
+  result := IPAddress + ansistring(':' + Port.ToString);
+
+end;}
+
+function tts_sockaddr_in6.GetPort: UInt16;
+begin
+  result := UInt8(UInt16(sin6_port));
+  result := (UInt16(sin6_port) shr 8) + (result shl 8);
+
+end;
+
+procedure tts_sockaddr_in6.SetPort(const AValue: UInt16);
+begin
+  sin6_port := UInt8(UInt16(AValue));
+  sin6_port := (UInt16(AValue) shr 8) + (sin6_port shl 8);
+
+end;
+
 
 function tts_sockaddr_in_private.GetIPAddress: ansistring;
 begin
