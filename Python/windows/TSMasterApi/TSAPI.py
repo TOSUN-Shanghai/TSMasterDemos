@@ -5836,3 +5836,16 @@ can_rbs_fault_inject_disturb_updatebit = dll.can_rbs_fault_inject_disturb_update
 can_rbs_fault_inject_disturb_updatebit.restype = s32
 can_rbs_fault_inject_disturb_updatebit.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32]
 
+#arg[0] AFilesizeType
+#arg[1] ASizeValue
+start_log_verbose = dll.start_log_verbose
+start_log_verbose.restype = s32
+start_log_verbose.argtypes = [s32,s64]
+
+#arg[0] AFileName
+#arg[1] AFilesizeType
+#arg[2] ASizeValue
+start_log_w_filename_verbose = dll.start_log_w_filename_verbose
+start_log_w_filename_verbose.restype = s32
+start_log_w_filename_verbose.argtypes = [pchar,s32,s64]
+
