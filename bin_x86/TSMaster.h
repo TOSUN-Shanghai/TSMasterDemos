@@ -3836,6 +3836,12 @@ TSAPI(s32)can_il_register_autosar_pdu_pretx_event(const s32 AChn,const s32 AID,c
 
 TSAPI(s32)can_il_unregister_autosar_pdu_pretx_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUPreTxEvent AEvent);
 
+TSAPI(s32)can_rbs_fault_inject_disturb_sequencecounter(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalGroupName,const s32 atype,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue,const s32 continueMode);
+
+TSAPI(s32)can_rbs_fault_inject_disturb_checksum(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalGroupName,const s32 atype,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue);
+
+TSAPI(s32)can_rbs_fault_inject_disturb_updatebit(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalGroupName,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue);
+
 #if defined ( __cplusplus )
 }
 #endif

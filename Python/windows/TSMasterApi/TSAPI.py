@@ -5797,3 +5797,42 @@ can_il_unregister_autosar_pdu_pretx_event = dll.can_il_unregister_autosar_pdu_pr
 can_il_unregister_autosar_pdu_pretx_event.restype = s32
 can_il_unregister_autosar_pdu_pretx_event.argtypes = [s32,s32,TOnAutoSARPDUPreTxEvent]
 
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalGroupName
+#arg[5] atype
+#arg[6] disturbanceMode
+#arg[7] disturbanceCount
+#arg[8] disturbanceValue
+#arg[9] continueMode
+can_rbs_fault_inject_disturb_sequencecounter = dll.can_rbs_fault_inject_disturb_sequencecounter
+can_rbs_fault_inject_disturb_sequencecounter.restype = s32
+can_rbs_fault_inject_disturb_sequencecounter.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32,s32,s32]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalGroupName
+#arg[5] atype
+#arg[6] disturbanceMode
+#arg[7] disturbanceCount
+#arg[8] disturbanceValue
+can_rbs_fault_inject_disturb_checksum = dll.can_rbs_fault_inject_disturb_checksum
+can_rbs_fault_inject_disturb_checksum.restype = s32
+can_rbs_fault_inject_disturb_checksum.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32,s32]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalGroupName
+#arg[5] disturbanceMode
+#arg[6] disturbanceCount
+#arg[7] disturbanceValue
+can_rbs_fault_inject_disturb_updatebit = dll.can_rbs_fault_inject_disturb_updatebit
+can_rbs_fault_inject_disturb_updatebit.restype = s32
+can_rbs_fault_inject_disturb_updatebit.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32]
+
