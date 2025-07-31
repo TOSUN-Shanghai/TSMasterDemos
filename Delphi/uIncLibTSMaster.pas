@@ -784,6 +784,12 @@ type
     dtImage        // Simulink.ImageType
   );
   PLIBMBDDataType = ^TLIBMBDDataType;
+  TMBD_PriorityKind = (
+    mpkPriority = 0,
+    mpkFirst = 1,
+    mpkLast = 2
+  );
+  PMBD_PriorityKind = ^TMBD_PriorityKind;
   PLIBBusToolDeviceType = ^TLIBBusToolDeviceType;
   TLIBBusToolDeviceType = (
     BUS_UNKNOWN_TYPE           = 0,
