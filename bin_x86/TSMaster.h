@@ -983,6 +983,11 @@ typedef enum {
     dtImage = 18,
 }TLIBMBDDataType, *PLIBMBDDataType;
 typedef enum {
+    mpkPriority = 0,
+    mpkFirst = 1,
+    mpkLast = 2,
+}TMBD_PriorityKind, *PMBD_PriorityKind;
+typedef enum {
     BUS_UNKNOWN_TYPE = 0,
     TS_TCP_DEVICE = 1,
     XL_USB_DEVICE = 2,

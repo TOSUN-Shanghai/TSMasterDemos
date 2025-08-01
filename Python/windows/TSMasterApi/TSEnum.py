@@ -34,6 +34,13 @@ class _TLIBMBDDataType(CEnum):
 TLIBMBDDataType = c_int32
 PLIBMBDDataType = ps32
 
+class _TMBD_PriorityKind(CEnum):
+    mpkPriority = 0
+    mpkFirst = 1
+    mpkLast = 2
+TMBD_PriorityKind = c_int32
+PMBD_PriorityKind = ps32
+
 class _TLIBBusToolDeviceType(CEnum):
     BUS_UNKNOWN_TYPE = 0
     TS_TCP_DEVICE = 1
