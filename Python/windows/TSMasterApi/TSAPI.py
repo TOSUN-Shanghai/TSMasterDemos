@@ -5877,3 +5877,25 @@ tsdo_config_sync = dll.tsdo_config_sync
 tsdo_config_sync.restype = s32
 tsdo_config_sync.argtypes = [s32,s32,double,s32,s32,s32,s32]
 
+#arg[0] AECUName
+#arg[1] AA2LFile
+#arg[2] ATPLayer
+#arg[3] AChnIdx
+#arg[4] AEnabled
+cal_add_xcp_ecu = dll.cal_add_xcp_ecu
+cal_add_xcp_ecu.restype = s32
+cal_add_xcp_ecu.argtypes = [pchar,pchar,s32,s32,s32]
+
+#arg[0] AECUName
+#arg[1] AA2LFile
+#arg[2] AChnIdx
+#arg[3] AEnabled
+cal_add_ccp_ecu = dll.cal_add_ccp_ecu
+cal_add_ccp_ecu.restype = s32
+cal_add_ccp_ecu.argtypes = [pchar,pchar,s32,s32]
+
+#arg[0] AECUName
+cal_remove_ecu = dll.cal_remove_ecu
+cal_remove_ecu.restype = s32
+cal_remove_ecu.argtypes = [pchar]
+

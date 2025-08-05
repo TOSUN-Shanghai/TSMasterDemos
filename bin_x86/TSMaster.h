@@ -3864,6 +3864,12 @@ TSAPI(s32)tsdi_config_sync(const s32 AChn,const double ASampleRate,const s32 AIn
 
 TSAPI(s32)tsdo_config_sync(const s32 AChn,const s32 AEnableReport,const double ASampleRate,const s32 AOutputLevel,const s32 AOutputMode,const s32 AOutputType,const s32 ATimeoutMs);
 
+TSAPI(s32)cal_add_xcp_ecu(const char* AECUName,const char* AA2LFile,const s32 ATPLayer,const s32 AChnIdx,const s32 AEnabled);
+
+TSAPI(s32)cal_add_ccp_ecu(const char* AECUName,const char* AA2LFile,const s32 AChnIdx,const s32 AEnabled);
+
+TSAPI(s32)cal_remove_ecu(const char* AECUName);
+
 #if defined ( __cplusplus )
 }
 #endif

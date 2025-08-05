@@ -3385,6 +3385,9 @@ function tsio_start_configuration(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL
 function tsio_end_configuration(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdi_config_sync(const AChn: int32; const ASampleRate: double; const AInputThrsholdMv: int32; const AReportPWMFreq: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdo_config_sync(const AChn: int32; const AEnableReport: int32; const ASampleRate: double; const AOutputLevel: int32; const AOutputMode: int32; const AOutputType: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_add_xcp_ecu(const AECUName: pansichar; const AA2LFile: pansichar; const ATPLayer: int32; const AChnIdx: int32; const AEnabled: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_add_ccp_ecu(const AECUName: pansichar; const AA2LFile: pansichar; const AChnIdx: int32; const AEnabled: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_remove_ecu(const AECUName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
