@@ -809,11 +809,17 @@ type
     TS_USB_IF_DEVICE           = 14,
     BUS_DEV_TYPE_COUNT         = 15
   );
+
   TLIBApplicationChannelType = (
     APP_CAN = 0,
     APP_LIN = 1,
     APP_FlexRay = 2,
-    APP_Ethernet = 3
+    APP_Ethernet = 3,
+    APP_AI = 4,
+    APP_AO = 5,
+    APP_DI = 6,
+    APP_DO = 7,
+    APP_GPS = 8
   );
   TSignalType = (stCANSignal = 0, stLINSignal, stSystemVar, stFlexRay, stEthernet);
   TTimeRangeTestMode = (trmRelativeMode, trmTriggeredMode, trmAbsoluteMode);
@@ -2158,7 +2164,81 @@ const
   IDX_ERR_NOT_IMPLEMENTED                     = 313;
   IDX_ERR_OPERATION_PENDING                   = 314;
   IDX_ERR_COMPILE_FAILED                      = 315;
-  ERR_CODE_COUNT                              = 316;
+  IDX_ERR_RPC_SERVER_RUN_FAILED               = 316;
+  IDX_ERR_RPC_COMMAND_INVALID                 = 317;
+  IDX_ERR_INIT_SIMULATION_FAILED              = 318;
+  IDX_ERR_SIM_RUN_TO_END                      = 319;
+  IDX_ERR_SIM_VAR_INVALID                     = 320;
+  IDX_ERR_COM_SERVER_FAILED                   = 321;
+  IDX_ERR_APP_NOT_CONNECTED                   = 322;
+  IDX_ERR_LOGIN_FAILED                        = 323;
+  IDX_ERR_SIGNAL_NOT_INITIALIZED              = 324;
+  IDX_ERR_DIR_SHOULD_BE_EMPTY                 = 325;
+  IDX_ERR_FMIL_LOAD_DLL_FAILED                = 326;
+  IDX_ERR_FMIL_GET_PROC_ADDRESS_FAILED        = 327;
+  IDX_ERR_FMIL_UNLOAD_DLL_FAILED              = 328;
+  IDX_ERR_FMIL_API_NOT_IMPL                   = 329;
+  IDX_ERR_FMIL_FMI_VERSION_UNKNOWN            = 330;
+  IDX_ERR_FMIL_FMI_VERSION_UNSUPPORTED        = 331;
+  IDX_ERR_FMIL_FMI_IMPORT_UNEXPECTED          = 332;
+  IDX_ERR_FMIL_FMI_FMU_ALREADY_LOADED         = 333;
+  IDX_ERR_FMIL_FMI_RESERVED1                  = 334;
+  IDX_ERR_FMIL_FMI_RESERVED2                  = 335;
+  IDX_ERR_FMIL_FMI_RESERVED3                  = 336;
+  IDX_ERR_TSMASTER_RPC_IP_PLUGIN_NOT_LOADED   = 337;
+  IDX_ERR_REQUIRE_GP_NOT_RUNNING              = 338;
+  IDX_ERROR_JAVA_JVM_RUN_FAILED               = 339;
+  IDX_ERROR_JAVA_CLASS_NOT_FOUND              = 340;
+  IDX_ERROR_JAVA_JVM_NOT_RUNNING              = 341;
+  IDX_ERROR_JAVA_JVM_ATTACH_THREAD_FAILED     = 342;
+  IDX_ERROR_JAVA_CREATION_METHOD_NOT_FOUND    = 343;
+  IDX_ERROR_JAVA_OBJ_METHOD_NOT_FOUND         = 344;
+  IDX_ERROR_JAVA_STATIC_METHOD_NOT_FOUND      = 345;
+  IDX_ERROR_JAVA_API_NOT_VALID                = 346;
+  IDX_ERROR_JAVA_API_ARG_COUNT_DIFFER         = 347;
+  IDX_ERROR_JAVA_API_ARG_INVALID              = 348;
+  IDX_ERROR_JAVA_API_OBJ_CREATE_FAILED        = 349;
+  IDX_ERROR_JAVA_API_RETN_NOT_SUPPORTED       = 350;
+  IDX_ERROR_JAVA_API_ACCESS_VIOLATION         = 351;
+  IDX_ERROR_JAVA_RESERVED1                    = 352;
+  IDX_ERROR_JAVA_RESERVED2                    = 353;
+  IDX_ERROR_JAVA_RESERVED3                    = 354;
+  IDX_ERROR_JAVA_RESERVED4                    = 355;
+  IDX_ERROR_JAVA_RESERVED5                    = 356;
+  IDX_ERROR_JAVA_RESERVED6                    = 357;
+  IDX_ERROR_JAVA_RESERVED7                    = 358;
+  IDX_ERROR_JAVA_RESERVED8                    = 359;
+  IDX_ERROR_PREREQUISITE_NOT_SATISFIED        = 360;
+  IDX_ERROR_SWITCH_HW_DIAG_MODE_FIRST         = 361;
+  IDX_ERR_MBD_NOT_LOADED                      = 362;
+  IDX_ERR_MODEL_IS_ALREADY_RUNNING            = 363;
+  IDX_ERR_INVALID_MODEL_CONFIG                = 364;
+  IDX_ERR_INVALID_DATA_TYPE                   = 365;
+  IDX_ERR_MODEL_INIT_FAILED                   = 366;
+  IDX_ERR_MODEL_STEP_FAILED                   = 367;
+  IDX_ERR_MODEL_NOT_FOUND                     = 368;
+  IDX_ERR_MODEL_STOP_FAILED                   = 369;
+  IDX_ERR_MODEL_SET_INPUT_FAILED              = 370;
+  IDX_ERR_MODEL_GET_OUTPUT_FAILED             = 371;
+  IDX_ERR_FEATURE_NOT_SUPPORTED_IN_CUR_CONFIG = 372;
+  IDX_ERR_RPC_LOCAL_RX_SHARED_MEM_OPEN_FAIL1  = 373;
+  IDX_ERR_RPC_LOCAL_RX_SHARED_MEM_OPEN_FAIL2  = 374;
+  IDX_ERR_RPC_LOCAL_RX_SHARED_MEM_OPEN_FAIL3  = 375;
+  IDX_ERR_RPC_LOCAL_RX_SHARED_MEM_OPEN_FAIL4  = 376;
+  IDX_ERR_RPC_LOCAL_RX_SHARED_MEM_OPEN_FAIL5  = 377;
+  IDX_ERR_RPC_LOCAL_TX_SHARED_MEM_OPEN_FAIL1  = 378;
+  IDX_ERR_RPC_LOCAL_TX_SHARED_MEM_OPEN_FAIL2  = 379;
+  IDX_ERR_RPC_LOCAL_TX_SHARED_MEM_OPEN_FAIL3  = 380;
+  IDX_ERR_RPC_LOCAL_TX_SHARED_MEM_OPEN_FAIL4  = 381;
+  IDX_ERR_RPC_LOCAL_TX_SHARED_MEM_OPEN_FAIL5  = 382;
+  IDX_ERR_MBD_BLOCK_NOT_FOUND                 = 383;
+  IDX_ERR_MBD_BLOCK_CANNOT_BE_ADDED_TWICE     = 384;
+  IDX_ERR_MBD_BLOCK_TYPE_NOT_SUPPORTED        = 385;
+  IDX_ERR_MBD_BLOCK_PROPERTY_NOT_SUPPORTED    = 386;
+  IDX_ERR_MBD_BLOCK_NOT_IN_SAME_DIAGRAM       = 387;
+  IDX_ERR_MBD_BLOCK_IO_ALREADY_CONNECTED      = 388;
+  IDX_ERR_SET_HW_CONFIG_MODE_FIRST            = 389;
+  ERR_CODE_COUNT                              = 390;
 // Note: Should also update C API!!!
 
 // library initialization and finalization
@@ -2183,15 +2263,15 @@ function tsapp_get_can_channel_count(out ACount: Integer): integer; stdcall; {$I
 function tsapp_get_lin_channel_count(out ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_get_flexray_channel_count(out ACount: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_mapping(const AMapping: PLIBTSMapping): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsapp_set_mapping_verbose(const AAppName:PAnsiChar;
-                                   const AAppChannelType:TLIBApplicationChannelType;
-                                   const AAppChannel:Integer;  //APP_CHANNEL
-                                   const AHardwareName:PAnsiChar;
-                                   const AHardwareType:TLIBBusToolDeviceType;
-                                   const AHardwareSubType:Integer;
-                                   const AHardwareIndex:Integer;
-                                   const AHardwareChannel:Integer;  //HARDWARE_CHANNEL
-                                   const AEnableMapping:Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsapp_set_mapping_verbose(const AAppName: PAnsiChar;
+                                   const AAppChannelType: TLIBApplicationChannelType;
+                                   const AAppChannel: Integer;  //APP_CHANNEL
+                                   const AHardwareName: PAnsiChar;
+                                   const AHardwareType: TLIBBusToolDeviceType;
+                                   const AHardwareSubType: Integer;
+                                   const AHardwareIndex: Integer;
+                                   const AHardwareChannel: Integer;  //HARDWARE_CHANNEL
+                                   const AEnableMapping: Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_get_mapping(const AMapping: PLIBTSMapping): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_del_mapping(const AMapping: PLIBTSMapping): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_del_mapping_verbose(const AAppName:PAnsiChar;
@@ -3290,8 +3370,8 @@ function rpc_data_channel_create(const ARpcName: pansichar; const AIsMaster: int
 function rpc_data_channel_delete(AHandle: NativeInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_data_channel_transmit(AHandle: NativeInt; AAddr: pbyte; ASizeBytes: NativeInt; ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_set_host_name(const ANetworkIndex: int32; const AIPAddress: pansichar; const AHostName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdio_set_pwm_output_async(const AChn: int32; ADuty: double; AFrequency: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsdio_set_vlevel_output_async(const AChn: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdo_set_pwm_output_async(const AChn: int32; ADuty: double; AFrequency: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdo_set_vlevel_output_async(const AChn: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_register_autosar_pdu_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_unregister_autosar_pdu_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_register_autosar_pdu_pretx_event(const AChn: int32; const AID: int32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -3301,6 +3381,10 @@ function can_rbs_fault_inject_disturb_checksum(const AChn: int32; const ANetwork
 function can_rbs_fault_inject_disturb_updatebit(const AChn: int32; const ANetworkName: pansichar; const ANodeName: pansichar; const AMessageName: pansichar; const ASignalGroupName: pansichar; const disturbanceMode: int32; const disturbanceCount: int32; const disturbanceValue: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function start_log_verbose(AFilesizeType: int32; ASizeValue: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function start_log_w_filename_verbose(AFileName: pansichar; AFilesizeType: int32; ASizeValue: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsio_start_configuration(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsio_end_configuration(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdi_config_sync(const AChn: int32; const ASampleRate: double; const AInputThrsholdMv: int32; const AReportPWMFreq: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdo_config_sync(const AChn: int32; const AEnableReport: int32; const ASampleRate: double; const AOutputLevel: int32; const AOutputMode: int32; const AOutputType: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

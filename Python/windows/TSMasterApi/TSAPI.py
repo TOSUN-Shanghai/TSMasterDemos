@@ -5759,15 +5759,15 @@ tssocket_set_host_name.argtypes = [s32,pchar,pchar]
 #arg[0] AChn
 #arg[1] ADuty
 #arg[2] AFrequency
-tsdio_set_pwm_output_async = dll.tsdio_set_pwm_output_async
-tsdio_set_pwm_output_async.restype = s32
-tsdio_set_pwm_output_async.argtypes = [s32,double,double]
+tsdo_set_pwm_output_async = dll.tsdo_set_pwm_output_async
+tsdo_set_pwm_output_async.restype = s32
+tsdo_set_pwm_output_async.argtypes = [s32,double,double]
 
 #arg[0] AChn
 #arg[1] AIOStatus
-tsdio_set_vlevel_output_async = dll.tsdio_set_vlevel_output_async
-tsdio_set_vlevel_output_async.restype = s32
-tsdio_set_vlevel_output_async.argtypes = [s32,s32]
+tsdo_set_vlevel_output_async = dll.tsdo_set_vlevel_output_async
+tsdo_set_vlevel_output_async.restype = s32
+tsdo_set_vlevel_output_async.argtypes = [s32,s32]
 
 #arg[0] AChn
 #arg[1] AID
@@ -5848,4 +5848,32 @@ start_log_verbose.argtypes = [s32,s64]
 start_log_w_filename_verbose = dll.start_log_w_filename_verbose
 start_log_w_filename_verbose.restype = s32
 start_log_w_filename_verbose.argtypes = [pchar,s32,s64]
+
+tsio_start_configuration = dll.tsio_start_configuration
+tsio_start_configuration.restype = s32
+tsio_start_configuration.argtypes = []
+
+tsio_end_configuration = dll.tsio_end_configuration
+tsio_end_configuration.restype = s32
+tsio_end_configuration.argtypes = []
+
+#arg[0] AChn
+#arg[1] ASampleRate
+#arg[2] AInputThrsholdMv
+#arg[3] AReportPWMFreq
+#arg[4] ATimeoutMs
+tsdi_config_sync = dll.tsdi_config_sync
+tsdi_config_sync.restype = s32
+tsdi_config_sync.argtypes = [s32,double,s32,s32,s32]
+
+#arg[0] AChn
+#arg[1] AEnableReport
+#arg[2] ASampleRate
+#arg[3] AOutputLevel
+#arg[4] AOutputMode
+#arg[5] AOutputType
+#arg[6] ATimeoutMs
+tsdo_config_sync = dll.tsdo_config_sync
+tsdo_config_sync.restype = s32
+tsdo_config_sync.argtypes = [s32,s32,double,s32,s32,s32,s32]
 

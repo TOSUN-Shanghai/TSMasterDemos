@@ -1010,6 +1010,11 @@ typedef enum {
     APP_LIN = 1,
     APP_FlexRay = 2,
     APP_Ethernet = 3,
+    APP_AI = 4,
+    APP_AO = 5,
+    APP_DI = 6,
+    APP_DO = 7,
+    APP_GPS = 8,
 }TLIBApplicationChannelType, *PLIBApplicationChannelType;
 typedef enum {
     stCANSignal = 0,
@@ -3829,9 +3834,9 @@ TSAPI(s32)rpc_data_channel_transmit(const size_t AHandle,const pu8 AAddr,const s
 
 TSAPI(s32)tssocket_set_host_name(const s32 ANetworkIndex,const char* AIPAddress,const char* AHostName);
 
-TSAPI(s32)tsdio_set_pwm_output_async(const s32 AChn,const double ADuty,const double AFrequency);
+TSAPI(s32)tsdo_set_pwm_output_async(const s32 AChn,const double ADuty,const double AFrequency);
 
-TSAPI(s32)tsdio_set_vlevel_output_async(const s32 AChn,const s32 AIOStatus);
+TSAPI(s32)tsdo_set_vlevel_output_async(const s32 AChn,const s32 AIOStatus);
 
 TSAPI(s32)can_il_register_autosar_pdu_event(const s32 AChn,const s32 AID,const TOnAutoSARPDUQueueEvent AEvent);
 
@@ -3850,6 +3855,14 @@ TSAPI(s32)can_rbs_fault_inject_disturb_updatebit(const s32 AChn,const char* ANet
 TSAPI(s32)start_log_verbose(const s32 AFilesizeType,const s64 ASizeValue);
 
 TSAPI(s32)start_log_w_filename_verbose(const char* AFileName,const s32 AFilesizeType,const s64 ASizeValue);
+
+TSAPI(s32)tsio_start_configuration();
+
+TSAPI(s32)tsio_end_configuration();
+
+TSAPI(s32)tsdi_config_sync(const s32 AChn,const double ASampleRate,const s32 AInputThrsholdMv,const s32 AReportPWMFreq,const s32 ATimeoutMs);
+
+TSAPI(s32)tsdo_config_sync(const s32 AChn,const s32 AEnableReport,const double ASampleRate,const s32 AOutputLevel,const s32 AOutputMode,const s32 AOutputType,const s32 ATimeoutMs);
 
 #if defined ( __cplusplus )
 }

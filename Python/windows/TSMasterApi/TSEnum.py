@@ -66,6 +66,11 @@ class _TLIBApplicationChannelType(CEnum):
     APP_LIN = 1
     APP_FlexRay = 2
     APP_Ethernet = 3
+    APP_AI = 4
+    APP_AO = 5
+    APP_DI = 6
+    APP_DO = 7
+    APP_GPS = 8
 TLIBApplicationChannelType = c_int32
 PLIBApplicationChannelType = ps32
 
