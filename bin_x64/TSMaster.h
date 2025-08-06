@@ -3870,6 +3870,22 @@ TSAPI(s32)cal_add_ccp_ecu(const char* AECUName,const char* AA2LFile,const s32 AC
 
 TSAPI(s32)cal_remove_ecu(const char* AECUName);
 
+TSAPI(s32)set_di_channel_count(const s32 ACount);
+
+TSAPI(s32)set_do_channel_count(const s32 ACount);
+
+TSAPI(s32)set_ao_channel_count(const s32 ACount);
+
+TSAPI(s32)set_ai_channel_count(const s32 ACount);
+
+TSAPI(s32)get_ai_channel_count(const ps32 ACount);
+
+TSAPI(s32)get_ao_channel_count(const ps32 ACount);
+
+TSAPI(s32)get_do_channel_count(const ps32 ACount);
+
+TSAPI(s32)get_di_channel_count(const ps32 ACount);
+
 #if defined ( __cplusplus )
 }
 #endif

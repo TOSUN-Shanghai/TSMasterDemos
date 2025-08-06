@@ -5899,3 +5899,43 @@ cal_remove_ecu = dll.cal_remove_ecu
 cal_remove_ecu.restype = s32
 cal_remove_ecu.argtypes = [pchar]
 
+#arg[0] ACount
+set_di_channel_count = dll.set_di_channel_count
+set_di_channel_count.restype = s32
+set_di_channel_count.argtypes = [s32]
+
+#arg[0] ACount
+set_do_channel_count = dll.set_do_channel_count
+set_do_channel_count.restype = s32
+set_do_channel_count.argtypes = [s32]
+
+#arg[0] ACount
+set_ao_channel_count = dll.set_ao_channel_count
+set_ao_channel_count.restype = s32
+set_ao_channel_count.argtypes = [s32]
+
+#arg[0] ACount
+set_ai_channel_count = dll.set_ai_channel_count
+set_ai_channel_count.restype = s32
+set_ai_channel_count.argtypes = [s32]
+
+#arg[0] ACount
+get_ai_channel_count = dll.get_ai_channel_count
+get_ai_channel_count.restype = s32
+get_ai_channel_count.argtypes = [ps32]
+
+#arg[0] ACount
+get_ao_channel_count = dll.get_ao_channel_count
+get_ao_channel_count.restype = s32
+get_ao_channel_count.argtypes = [ps32]
+
+#arg[0] ACount
+get_do_channel_count = dll.get_do_channel_count
+get_do_channel_count.restype = s32
+get_do_channel_count.argtypes = [ps32]
+
+#arg[0] ACount
+get_di_channel_count = dll.get_di_channel_count
+get_di_channel_count.restype = s32
+get_di_channel_count.argtypes = [ps32]
+
