@@ -3886,6 +3886,10 @@ TSAPI(s32)get_do_channel_count(const ps32 ACount);
 
 TSAPI(s32)get_di_channel_count(const ps32 ACount);
 
+TSAPI(s32)cal_get_var_property(const char* AECUName,const char* AVarName,const ppchar ADataType,const pdouble ALowerValue,const pdouble AUpperValue,const pdouble AStepValue);
+
+TSAPI(s32)cal_get_measurement_list(const char* AECUName,const ppchar AMeasurementList);
+
 #if defined ( __cplusplus )
 }
 #endif

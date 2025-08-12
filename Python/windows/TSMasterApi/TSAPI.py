@@ -5939,3 +5939,19 @@ get_di_channel_count = dll.get_di_channel_count
 get_di_channel_count.restype = s32
 get_di_channel_count.argtypes = [ps32]
 
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] ADataType
+#arg[3] ALowerValue
+#arg[4] AUpperValue
+#arg[5] AStepValue
+cal_get_var_property = dll.cal_get_var_property
+cal_get_var_property.restype = s32
+cal_get_var_property.argtypes = [pchar,pchar,ppchar,pdouble,pdouble,pdouble]
+
+#arg[0] AECUName
+#arg[1] AMeasurementList
+cal_get_measurement_list = dll.cal_get_measurement_list
+cal_get_measurement_list.restype = s32
+cal_get_measurement_list.argtypes = [pchar,ppchar]
+

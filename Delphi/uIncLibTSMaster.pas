@@ -3396,6 +3396,8 @@ function get_ai_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF 
 function get_ao_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_do_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_di_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_get_var_property(const AECUName: pansichar; const AVarName: pansichar; ADataType: PPAnsiChar; ALowerValue: pdouble; AUpperValue: pdouble; AStepValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_get_measurement_list(const AECUName: pansichar; AMeasurementList: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
