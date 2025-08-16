@@ -762,6 +762,29 @@ type
 
 {$Z4}
   // for c type
+  TMPTacDebugger = Pointer;
+  TMPTacValue = Pointer;
+  TMPTacBreakpoint = Pointer;
+  TMPTacValueType = (
+    TAC_TYPE_NULL,
+    TAC_TYPE_INTEGER,
+    TAC_TYPE_FLOAT,
+    TAC_TYPE_BOOLEAN,
+    TAC_TYPE_STRING,
+    TAC_TYPE_ARRAY,
+    TAC_TYPE_STRUCT,
+    TAC_TYPE_FUNCTION,
+    TAC_TYPE_UNKNOWN
+  );
+  TMPTacDebugEvent = (
+    TAC_EVENT_BREAKPOINT_HIT,
+    TAC_EVENT_PAUSED,
+    TAC_EVENT_STEP_COMPLETE,
+    TAC_EVENT_SCRIPT_END,
+    TAC_EVENT_RUNTIME_ERROR,
+    TAC_EVENT_TERMINATED
+  );
+  TMPTacDebugCallback = function(const debugger: TMPTacDebugger; const event: TMPTacDebugEvent; const file_name: PAnsiChar; const line: int32; const user_data: pointer): integer; stdcall;
   TLIBMBDDataType = (
     dtInherit,     // Inherit: auto
     dtDouble,      // double
@@ -2238,7 +2261,32 @@ const
   IDX_ERR_MBD_BLOCK_NOT_IN_SAME_DIAGRAM       = 387;
   IDX_ERR_MBD_BLOCK_IO_ALREADY_CONNECTED      = 388;
   IDX_ERR_SET_HW_CONFIG_MODE_FIRST            = 389;
-  ERR_CODE_COUNT                              = 390;
+  IDX_ERR_TAC_GENERIC_ERROR                   = 390;
+  IDX_ERR_TAC_INVALID_HANDLE                  = 391;
+  IDX_ERR_TAC_INVALID_ARG                     = 392;
+  IDX_ERR_TAC_MEMORY_ALLOCATION_FAILED        = 393;
+  IDX_ERR_TAC_SYNTAX_ERROR                    = 394;
+  IDX_ERR_TAC_RUNTIME_ERROR                   = 395;
+  IDX_ERR_TAC_NOT_PAUSED                      = 396;
+  IDX_ERR_TAC_IS_RUNNING                      = 397;
+  IDX_ERR_TAC_BREAKPOINT_NOT_FOUND            = 398;
+  IDX_ERR_TAC_TERMINATED                      = 399;
+  IDX_ERR_TAC_RESERVED1                       = 400;
+  IDX_ERR_TAC_RESERVED2                       = 401;
+  IDX_ERR_TAC_RESERVED3                       = 402;
+  IDX_ERR_TAC_RESERVED4                       = 403;
+  IDX_ERR_TAC_RESERVED5                       = 404;
+  IDX_ERR_TAC_RESERVED6                       = 405;
+  IDX_ERR_TAC_RESERVED7                       = 406;
+  IDX_ERR_TAC_RESERVED8                       = 407;
+  IDX_ERR_TAC_RESERVED9                       = 408;
+  IDX_ERR_TAC_RESERVED10                      = 409;
+  IDX_ERR_TAC_RESERVED11                      = 410;
+  IDX_ERR_TAC_RESERVED12                      = 411;
+  IDX_ERR_TAC_RESERVED13                      = 412;
+  IDX_ERR_TAC_RESERVED14                      = 413;
+  IDX_ERR_TAC_RESERVED15                      = 414;
+  ERR_CODE_COUNT                              = 415;
 // Note: Should also update C API!!!
 
 // library initialization and finalization
@@ -3398,6 +3446,9 @@ function get_do_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF 
 function get_di_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_var_property(const AECUName: pansichar; const AVarName: pansichar; ADataType: PPAnsiChar; ALowerValue: pdouble; AUpperValue: pdouble; AStepValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_measurement_list(const AECUName: pansichar; AMeasurementList: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_create(const ACallback: TMPTacDebugEvent; const AUserData: Pointer; const ADebuggerPtr: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_destroy(const ADebugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_terminate(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
