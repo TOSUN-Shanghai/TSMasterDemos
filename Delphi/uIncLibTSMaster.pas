@@ -3451,7 +3451,7 @@ function get_do_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF 
 function get_di_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_var_property(const AECUName: pansichar; const AVarName: pansichar; ADataType: PPAnsiChar; ALowerValue: pdouble; AUpperValue: pdouble; AStepValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_measurement_list(const AECUName: pansichar; AMeasurementList: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tac_debugger_create(const ACallback: TMPTacDebugEvent; const AUserData: Pointer; ADebuggerPtr: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_create(const ACallback: TMPTacDebugCallback; const AUserData: Pointer; ADebuggerPtr: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_debugger_destroy(const ADebugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_debugger_terminate(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_debugger_register_struct_from_json(const debugger: TMPTacDebugger; const type_name: pansichar; const json_definition: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
