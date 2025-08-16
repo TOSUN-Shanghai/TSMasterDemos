@@ -765,6 +765,9 @@ type
   TMPTacDebugger = Pointer;
   TMPTacValue = Pointer;
   TMPTacBreakpoint = Pointer;
+  PMPTacDebugger = ^TMPTacDebugger;
+  PMPTacValue = ^TMPTacValue;
+  PMPTacBreakpoint = ^TMPTacBreakpoint;
   TMPTacValueType = (
     TAC_TYPE_NULL,
     TAC_TYPE_INTEGER,
@@ -776,6 +779,7 @@ type
     TAC_TYPE_FUNCTION,
     TAC_TYPE_UNKNOWN
   );
+  PMPTacValueType = ^TMPTacValueType;
   TMPTacDebugEvent = (
     TAC_EVENT_BREAKPOINT_HIT,
     TAC_EVENT_PAUSED,
@@ -784,6 +788,7 @@ type
     TAC_EVENT_RUNTIME_ERROR,
     TAC_EVENT_TERMINATED
   );
+  PMPTacDebugEvent = ^TMPTacDebugEvent;
   TMPTacDebugCallback = function(const debugger: TMPTacDebugger; const event: TMPTacDebugEvent; const file_name: PAnsiChar; const line: int32; const user_data: pointer): integer; stdcall;
   TLIBMBDDataType = (
     dtInherit,     // Inherit: auto
@@ -3446,9 +3451,37 @@ function get_do_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF 
 function get_di_channel_count(const ACount: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_var_property(const AECUName: pansichar; const AVarName: pansichar; ADataType: PPAnsiChar; ALowerValue: pdouble; AUpperValue: pdouble; AStepValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_get_measurement_list(const AECUName: pansichar; AMeasurementList: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tac_debugger_create(const ACallback: TMPTacDebugEvent; const AUserData: Pointer; const ADebuggerPtr: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_create(const ACallback: TMPTacDebugEvent; const AUserData: Pointer; ADebuggerPtr: PPointer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_debugger_destroy(const ADebugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_debugger_terminate(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_register_struct_from_json(const debugger: TMPTacDebugger; const type_name: pansichar; const json_definition: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_last_error(const debugger: TMPTacDebugger; message: pansichar; message_size: pInt32; afile: pansichar; file_size: pInt32; line: pInt32; column: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_run_script(const debugger: TMPTacDebugger; const script_content: pansichar; const script_name: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_run_file(const debugger: TMPTacDebugger; const file_path: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_is_running(const debugger: TMPTacDebugger; is_running: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_set_breakpoint(const debugger: TMPTacDebugger; const afile: pansichar; line: int32; breakpoint_ptr: PMPTacBreakpoint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_remove_breakpoint(const debugger: TMPTacDebugger; const breakpoint: TMPTacBreakpoint): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_clear_breakpoints(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_breakpoints(const debugger: TMPTacDebugger; breakpoints_array: PMPTacBreakpoint; count: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_has_breakpoint_at(const debugger: TMPTacDebugger; const afile: pansichar; line: int32; exists: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_breakpoint_get_info(const breakpoint: TMPTacBreakpoint; file_buffer: pansichar; const file_buffer_size: int32; line_ptr: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_pause(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_continue(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_step_over(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_step_into(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_step_out(const debugger: TMPTacDebugger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_call_stack_count(const debugger: TMPTacDebugger; frame_count: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_call_stack_item(const debugger: TMPTacDebugger; const frame_index: int32; item: pansichar; item_buffer_cnt: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_local_variables_count(const debugger: TMPTacDebugger; const frame_index: int32; variable_cnt: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_get_local_variable(const debugger: TMPTacDebugger; const frame_index: int32; const var_index: int32; variable: PMPTacValue): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_debugger_evaluate_expression(const debugger: TMPTacDebugger; frame_index: int32; const expression: pansichar; result_value: PMPTacValue): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_destroy(const value: TMPTacValue): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_get_type(const value: TMPTacValue; type_out: PMPTacValueType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_get_name(const value: TMPTacValue; name_buffer: pansichar; const buffer_size: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_to_string(const value: TMPTacValue; str_buffer: pansichar; const buffer_size: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_integer(const value: TMPTacValue; out: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_float(const value: TMPTacValue; out: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_boolean(const value: TMPTacValue; out: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
