@@ -789,7 +789,7 @@ type
     TAC_EVENT_TERMINATED
   );
   PMPTacDebugEvent = ^TMPTacDebugEvent;
-  TMPTacDebugCallback = function(const debugger: TMPTacDebugger; const event: TMPTacDebugEvent; const file_name: PAnsiChar; const line: int32; const user_data: pointer): integer; stdcall;
+  TMPTacDebugCallback = function(const debugger: TMPTacDebugger; const AEvent: TMPTacDebugEvent; const file_name: PAnsiChar; const line: int32; const user_data: pointer): integer; stdcall;
   TLIBMBDDataType = (
     dtInherit,     // Inherit: auto
     dtDouble,      // double
@@ -3479,9 +3479,9 @@ function tac_value_destroy(const value: TMPTacValue): integer; stdcall; {$IFNDEF
 function tac_value_get_type(const value: TMPTacValue; type_out: PMPTacValueType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_value_get_name(const value: TMPTacValue; name_buffer: pansichar; const buffer_size: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_value_to_string(const value: TMPTacValue; str_buffer: pansichar; const buffer_size: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tac_value_as_integer(const value: TMPTacValue; out: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tac_value_as_float(const value: TMPTacValue; out: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tac_value_as_boolean(const value: TMPTacValue; out: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_integer(const value: TMPTacValue; AOut: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_float(const value: TMPTacValue; AOut: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tac_value_as_boolean(const value: TMPTacValue; AOut: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

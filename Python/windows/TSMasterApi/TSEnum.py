@@ -11,6 +11,29 @@ class CEnum(IntEnum):
         if not isinstance(self, cls):
             raise TypeError
         return self    
+class _TMPTacValueType(CEnum):
+    TAC_TYPE_NULL = 0
+    TAC_TYPE_INTEGER = 1
+    TAC_TYPE_FLOAT = 2
+    TAC_TYPE_BOOLEAN = 3
+    TAC_TYPE_STRING = 4
+    TAC_TYPE_ARRAY = 5
+    TAC_TYPE_STRUCT = 6
+    TAC_TYPE_FUNCTION = 7
+    TAC_TYPE_UNKNOWN = 8
+TMPTacValueType = c_int32
+PMPTacValueType = ps32
+
+class _TMPTacDebugEvent(CEnum):
+    TAC_EVENT_BREAKPOINT_HIT = 0
+    TAC_EVENT_PAUSED = 1
+    TAC_EVENT_STEP_COMPLETE = 2
+    TAC_EVENT_SCRIPT_END = 3
+    TAC_EVENT_RUNTIME_ERROR = 4
+    TAC_EVENT_TERMINATED = 5
+TMPTacDebugEvent = c_int32
+PMPTacDebugEvent = ps32
+
 class _TLIBMBDDataType(CEnum):
     dtInherit = 0
     dtDouble = 1

@@ -5955,3 +5955,204 @@ cal_get_measurement_list = dll.cal_get_measurement_list
 cal_get_measurement_list.restype = s32
 cal_get_measurement_list.argtypes = [pchar,ppchar]
 
+#arg[0] ACallback
+#arg[1] AUserData
+#arg[2] ADebuggerPtr
+tac_debugger_create = dll.tac_debugger_create
+tac_debugger_create.restype = s32
+tac_debugger_create.argtypes = [TMPTacDebugCallback,ps32,pps32]
+
+#arg[0] ADebugger
+tac_debugger_destroy = dll.tac_debugger_destroy
+tac_debugger_destroy.restype = s32
+tac_debugger_destroy.argtypes = [pvoid]
+
+#arg[0] debugger
+tac_debugger_terminate = dll.tac_debugger_terminate
+tac_debugger_terminate.restype = s32
+tac_debugger_terminate.argtypes = [pvoid]
+
+#arg[0] debugger
+#arg[1] type_name
+#arg[2] json_definition
+tac_debugger_register_struct_from_json = dll.tac_debugger_register_struct_from_json
+tac_debugger_register_struct_from_json.restype = s32
+tac_debugger_register_struct_from_json.argtypes = [pvoid,pchar,pchar]
+
+#arg[0] debugger
+#arg[1] message
+#arg[2] message_size
+#arg[3] afile
+#arg[4] file_size
+#arg[5] line
+#arg[6] column
+tac_debugger_get_last_error = dll.tac_debugger_get_last_error
+tac_debugger_get_last_error.restype = s32
+tac_debugger_get_last_error.argtypes = [pvoid,pchar,ps32,pchar,ps32,ps32,ps32]
+
+#arg[0] debugger
+#arg[1] script_content
+#arg[2] script_name
+tac_debugger_run_script = dll.tac_debugger_run_script
+tac_debugger_run_script.restype = s32
+tac_debugger_run_script.argtypes = [pvoid,pchar,pchar]
+
+#arg[0] debugger
+#arg[1] file_path
+tac_debugger_run_file = dll.tac_debugger_run_file
+tac_debugger_run_file.restype = s32
+tac_debugger_run_file.argtypes = [pvoid,pchar]
+
+#arg[0] debugger
+#arg[1] is_running
+tac_debugger_is_running = dll.tac_debugger_is_running
+tac_debugger_is_running.restype = s32
+tac_debugger_is_running.argtypes = [pvoid,pbool]
+
+#arg[0] debugger
+#arg[1] afile
+#arg[2] line
+#arg[3] breakpoint_ptr
+tac_debugger_set_breakpoint = dll.tac_debugger_set_breakpoint
+tac_debugger_set_breakpoint.restype = s32
+tac_debugger_set_breakpoint.argtypes = [pvoid,pchar,s32,ppvoid]
+
+#arg[0] debugger
+#arg[1] breakpoint
+tac_debugger_remove_breakpoint = dll.tac_debugger_remove_breakpoint
+tac_debugger_remove_breakpoint.restype = s32
+tac_debugger_remove_breakpoint.argtypes = [pvoid,pvoid]
+
+#arg[0] debugger
+tac_debugger_clear_breakpoints = dll.tac_debugger_clear_breakpoints
+tac_debugger_clear_breakpoints.restype = s32
+tac_debugger_clear_breakpoints.argtypes = [pvoid]
+
+#arg[0] debugger
+#arg[1] breakpoints_array
+#arg[2] count
+tac_debugger_get_breakpoints = dll.tac_debugger_get_breakpoints
+tac_debugger_get_breakpoints.restype = s32
+tac_debugger_get_breakpoints.argtypes = [pvoid,ppvoid,ps32]
+
+#arg[0] debugger
+#arg[1] afile
+#arg[2] line
+#arg[3] exists
+tac_debugger_has_breakpoint_at = dll.tac_debugger_has_breakpoint_at
+tac_debugger_has_breakpoint_at.restype = s32
+tac_debugger_has_breakpoint_at.argtypes = [pvoid,pchar,s32,pbool]
+
+#arg[0] breakpoint
+#arg[1] file_buffer
+#arg[2] file_buffer_size
+#arg[3] line_ptr
+tac_breakpoint_get_info = dll.tac_breakpoint_get_info
+tac_breakpoint_get_info.restype = s32
+tac_breakpoint_get_info.argtypes = [pvoid,pchar,s32,ps32]
+
+#arg[0] debugger
+tac_debugger_pause = dll.tac_debugger_pause
+tac_debugger_pause.restype = s32
+tac_debugger_pause.argtypes = [pvoid]
+
+#arg[0] debugger
+tac_debugger_continue = dll.tac_debugger_continue
+tac_debugger_continue.restype = s32
+tac_debugger_continue.argtypes = [pvoid]
+
+#arg[0] debugger
+tac_debugger_step_over = dll.tac_debugger_step_over
+tac_debugger_step_over.restype = s32
+tac_debugger_step_over.argtypes = [pvoid]
+
+#arg[0] debugger
+tac_debugger_step_into = dll.tac_debugger_step_into
+tac_debugger_step_into.restype = s32
+tac_debugger_step_into.argtypes = [pvoid]
+
+#arg[0] debugger
+tac_debugger_step_out = dll.tac_debugger_step_out
+tac_debugger_step_out.restype = s32
+tac_debugger_step_out.argtypes = [pvoid]
+
+#arg[0] debugger
+#arg[1] frame_count
+tac_debugger_get_call_stack_count = dll.tac_debugger_get_call_stack_count
+tac_debugger_get_call_stack_count.restype = s32
+tac_debugger_get_call_stack_count.argtypes = [pvoid,ps32]
+
+#arg[0] debugger
+#arg[1] frame_index
+#arg[2] item
+#arg[3] item_buffer_cnt
+tac_debugger_get_call_stack_item = dll.tac_debugger_get_call_stack_item
+tac_debugger_get_call_stack_item.restype = s32
+tac_debugger_get_call_stack_item.argtypes = [pvoid,s32,pchar,ps32]
+
+#arg[0] debugger
+#arg[1] frame_index
+#arg[2] variable_cnt
+tac_debugger_get_local_variables_count = dll.tac_debugger_get_local_variables_count
+tac_debugger_get_local_variables_count.restype = s32
+tac_debugger_get_local_variables_count.argtypes = [pvoid,s32,ps32]
+
+#arg[0] debugger
+#arg[1] frame_index
+#arg[2] var_index
+#arg[3] variable
+tac_debugger_get_local_variable = dll.tac_debugger_get_local_variable
+tac_debugger_get_local_variable.restype = s32
+tac_debugger_get_local_variable.argtypes = [pvoid,s32,s32,ppvoid]
+
+#arg[0] debugger
+#arg[1] frame_index
+#arg[2] expression
+#arg[3] result_value
+tac_debugger_evaluate_expression = dll.tac_debugger_evaluate_expression
+tac_debugger_evaluate_expression.restype = s32
+tac_debugger_evaluate_expression.argtypes = [pvoid,s32,pchar,ppvoid]
+
+#arg[0] value
+tac_value_destroy = dll.tac_value_destroy
+tac_value_destroy.restype = s32
+tac_value_destroy.argtypes = [pvoid]
+
+#arg[0] value
+#arg[1] type_out
+tac_value_get_type = dll.tac_value_get_type
+tac_value_get_type.restype = s32
+tac_value_get_type.argtypes = [pvoid,PMPTacValueType]
+
+#arg[0] value
+#arg[1] name_buffer
+#arg[2] buffer_size
+tac_value_get_name = dll.tac_value_get_name
+tac_value_get_name.restype = s32
+tac_value_get_name.argtypes = [pvoid,pchar,s32]
+
+#arg[0] value
+#arg[1] str_buffer
+#arg[2] buffer_size
+tac_value_to_string = dll.tac_value_to_string
+tac_value_to_string.restype = s32
+tac_value_to_string.argtypes = [pvoid,pchar,s32]
+
+#arg[0] value
+#arg[1] AOut
+tac_value_as_integer = dll.tac_value_as_integer
+tac_value_as_integer.restype = s32
+tac_value_as_integer.argtypes = [pvoid,ps64]
+
+#arg[0] value
+#arg[1] AOut
+tac_value_as_float = dll.tac_value_as_float
+tac_value_as_float.restype = s32
+tac_value_as_float.argtypes = [pvoid,pdouble]
+
+#arg[0] value
+#arg[1] AOut
+tac_value_as_boolean = dll.tac_value_as_boolean
+tac_value_as_boolean.restype = s32
+tac_value_as_boolean.argtypes = [pvoid,pbool]
+

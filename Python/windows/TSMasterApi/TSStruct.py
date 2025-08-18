@@ -494,6 +494,12 @@ class TLIBEthernetHeader(Structure):
             self.FEthernetDataAddr[i] = 0xFF  
 PLIBEthernetHeader = POINTER(TLIBEthernetHeader)
 
+TMPTacDebugger = pvoid
+PMPTacDebugger = ppvoid
+TMPTacValue = pvoid
+PMPTacValue = ppvoid
+TMPTacBreakpoint = pvoid
+PMPTacBreakpoint = ppvoid
 class TLIBFlexrayFrameTrigger(Structure):
     _pack_ = 1
     _fields_ =[('slot_id',u16),

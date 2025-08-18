@@ -961,6 +961,31 @@ typedef struct _TLIBFlexray_controller_config
     u8 config_byte;//Memory Align //bit0: 1：启用cha上终端电阻  0：不启用 //bit1: 1：启用chb上终端电阻  0：不启用 //bit2: 1：启用接收FIFO    0：不启用 //bit4: 1：cha桥接使能             0：不使能 //bit5: 1：chb桥接使能             0：不使能
 }TLIBFlexray_controller_config, *PLIBFlexray_controller_config;
 
+typedef pvoid TMPTacDebugger;
+typedef TMPTacDebugger* PMPTacDebugger;
+typedef pvoid TMPTacValue;
+typedef TMPTacValue* PMPTacValue;
+typedef pvoid TMPTacBreakpoint;
+typedef TMPTacBreakpoint* PMPTacBreakpoint;
+typedef enum {
+    TAC_TYPE_NULL = 0,
+    TAC_TYPE_INTEGER = 1,
+    TAC_TYPE_FLOAT = 2,
+    TAC_TYPE_BOOLEAN = 3,
+    TAC_TYPE_STRING = 4,
+    TAC_TYPE_ARRAY = 5,
+    TAC_TYPE_STRUCT = 6,
+    TAC_TYPE_FUNCTION = 7,
+    TAC_TYPE_UNKNOWN = 8,
+}TMPTacValueType, *PMPTacValueType;
+typedef enum {
+    TAC_EVENT_BREAKPOINT_HIT = 0,
+    TAC_EVENT_PAUSED = 1,
+    TAC_EVENT_STEP_COMPLETE = 2,
+    TAC_EVENT_SCRIPT_END = 3,
+    TAC_EVENT_RUNTIME_ERROR = 4,
+    TAC_EVENT_TERMINATED = 5,
+}TMPTacDebugEvent, *PMPTacDebugEvent;
 typedef enum {
     dtInherit = 0,
     dtDouble = 1,
@@ -2031,6 +2056,12 @@ typedef void(__stdcall*TDatapackageProcessEvent)(const u8 AIdxChn,const s64 ATim
 // Arg[5] AData
 // Arg[6] ADataLength
 typedef void(__stdcall*TDatapackageProcessEvent_Win32)(const u8 AIdxChn,const s64 ATimestamp,const u16 APackCmd,const pu8 AParameter,const u16 AParameterLength,const pu8 AData,const s32 ADataLength);
+// Arg[0] debugger
+// Arg[1] AEvent
+// Arg[2] file_name
+// Arg[3] line
+// Arg[4] user_data
+typedef s32 (__stdcall*TMPTacDebugCallback)(const pvoid debugger,const TMPTacDebugEvent AEvent,const char* file_name,const s32 line,const ps32 user_data);
 // Arg[0] AObj
 // Arg[1] AProgress100
 typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
@@ -3889,6 +3920,68 @@ TSAPI(s32)get_di_channel_count(const ps32 ACount);
 TSAPI(s32)cal_get_var_property(const char* AECUName,const char* AVarName,const ppchar ADataType,const pdouble ALowerValue,const pdouble AUpperValue,const pdouble AStepValue);
 
 TSAPI(s32)cal_get_measurement_list(const char* AECUName,const ppchar AMeasurementList);
+
+TSAPI(s32)tac_debugger_create(const TMPTacDebugCallback ACallback,const ps32 AUserData,const pps32 ADebuggerPtr);
+
+TSAPI(s32)tac_debugger_destroy(const pvoid ADebugger);
+
+TSAPI(s32)tac_debugger_terminate(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_register_struct_from_json(const pvoid debugger,const char* type_name,const char* json_definition);
+
+TSAPI(s32)tac_debugger_get_last_error(const pvoid debugger,const char* message,const ps32 message_size,const char* afile,const ps32 file_size,const ps32 line,const ps32 column);
+
+TSAPI(s32)tac_debugger_run_script(const pvoid debugger,const char* script_content,const char* script_name);
+
+TSAPI(s32)tac_debugger_run_file(const pvoid debugger,const char* file_path);
+
+TSAPI(s32)tac_debugger_is_running(const pvoid debugger,const pbool is_running);
+
+TSAPI(s32)tac_debugger_set_breakpoint(const pvoid debugger,const char* afile,const s32 line,const pvoid* breakpoint_ptr);
+
+TSAPI(s32)tac_debugger_remove_breakpoint(const pvoid debugger,const pvoid breakpoint);
+
+TSAPI(s32)tac_debugger_clear_breakpoints(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_get_breakpoints(const pvoid debugger,const pvoid* breakpoints_array,const ps32 count);
+
+TSAPI(s32)tac_debugger_has_breakpoint_at(const pvoid debugger,const char* afile,const s32 line,const pbool exists);
+
+TSAPI(s32)tac_breakpoint_get_info(const pvoid breakpoint,const char* file_buffer,const s32 file_buffer_size,const ps32 line_ptr);
+
+TSAPI(s32)tac_debugger_pause(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_continue(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_step_over(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_step_into(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_step_out(const pvoid debugger);
+
+TSAPI(s32)tac_debugger_get_call_stack_count(const pvoid debugger,const ps32 frame_count);
+
+TSAPI(s32)tac_debugger_get_call_stack_item(const pvoid debugger,const s32 frame_index,const char* item,const ps32 item_buffer_cnt);
+
+TSAPI(s32)tac_debugger_get_local_variables_count(const pvoid debugger,const s32 frame_index,const ps32 variable_cnt);
+
+TSAPI(s32)tac_debugger_get_local_variable(const pvoid debugger,const s32 frame_index,const s32 var_index,const pvoid* variable);
+
+TSAPI(s32)tac_debugger_evaluate_expression(const pvoid debugger,const s32 frame_index,const char* expression,const pvoid* result_value);
+
+TSAPI(s32)tac_value_destroy(const pvoid value);
+
+TSAPI(s32)tac_value_get_type(const pvoid value,const PMPTacValueType type_out);
+
+TSAPI(s32)tac_value_get_name(const pvoid value,const char* name_buffer,const s32 buffer_size);
+
+TSAPI(s32)tac_value_to_string(const pvoid value,const char* str_buffer,const s32 buffer_size);
+
+TSAPI(s32)tac_value_as_integer(const pvoid value,const ps64 AOut);
+
+TSAPI(s32)tac_value_as_float(const pvoid value,const pdouble AOut);
+
+TSAPI(s32)tac_value_as_boolean(const pvoid value,const pbool AOut);
 
 #if defined ( __cplusplus )
 }

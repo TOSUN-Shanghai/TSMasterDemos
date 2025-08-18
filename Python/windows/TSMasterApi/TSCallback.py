@@ -175,6 +175,12 @@ TDatapackageProcessEvent = WINFUNCTYPE(None,u8,s64,u16,pu8,u16,pu8,s32)
 # Arg[5] AData
 # Arg[6] ADataLength
 TDatapackageProcessEvent_Win32 = WINFUNCTYPE(None,u8,s64,u16,pu8,u16,pu8,s32)
+# Arg[0] debugger
+# Arg[1] AEvent
+# Arg[2] file_name
+# Arg[3] line
+# Arg[4] user_data
+TMPTacDebugCallback = WINFUNCTYPE(s32,pvoid,TMPTacDebugEvent,pchar,s32,ps32)
 # Arg[0] AObj
 # Arg[1] AProgress100
 TReadProgressCallback = WINFUNCTYPE(None,ps32,double)
