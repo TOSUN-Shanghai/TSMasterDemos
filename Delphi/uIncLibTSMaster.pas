@@ -3498,6 +3498,8 @@ function tac_value_to_string(const value: TMPTacValue; str_buffer: pansichar; co
 function tac_value_as_integer(const value: TMPTacValue; AOut: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_value_as_float(const value: TMPTacValue; AOut: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_value_as_boolean(const value: TMPTacValue; AOut: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function run_script_sync(const script_content: pansichar; const script_name: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function run_file_sync(const file_path: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
