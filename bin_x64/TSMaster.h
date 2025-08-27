@@ -3983,6 +3983,10 @@ TSAPI(s32)tac_value_as_float(const pvoid value,const pdouble AOut);
 
 TSAPI(s32)tac_value_as_boolean(const pvoid value,const pbool AOut);
 
+TSAPI(s32)tac_run_script_sync(const char* script_content,const char* script_name);
+
+TSAPI(s32)tac_run_file_sync(const char* file_path);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -6156,3 +6156,14 @@ tac_value_as_boolean = dll.tac_value_as_boolean
 tac_value_as_boolean.restype = s32
 tac_value_as_boolean.argtypes = [pvoid,pbool]
 
+#arg[0] script_content
+#arg[1] script_name
+tac_run_script_sync = dll.tac_run_script_sync
+tac_run_script_sync.restype = s32
+tac_run_script_sync.argtypes = [pchar,pchar]
+
+#arg[0] file_path
+tac_run_file_sync = dll.tac_run_file_sync
+tac_run_file_sync.restype = s32
+tac_run_file_sync.argtypes = [pchar]
+
