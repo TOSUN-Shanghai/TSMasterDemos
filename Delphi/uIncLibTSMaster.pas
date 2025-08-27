@@ -3500,6 +3500,7 @@ function tac_value_as_float(const value: TMPTacValue; AOut: pdouble): integer; s
 function tac_value_as_boolean(const value: TMPTacValue; AOut: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_run_script_sync(const script_content: pansichar; const script_name: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tac_run_file_sync(const file_path: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_set_global_timeout(const ATimeOutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
