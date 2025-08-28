@@ -3987,6 +3987,8 @@ TSAPI(s32)tac_run_script_sync(const char* script_content,const char* script_name
 
 TSAPI(s32)tac_run_file_sync(const char* file_path);
 
+TSAPI(s32)rpc_set_global_timeout(const s32 ATimeOutMs);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -6167,3 +6167,8 @@ tac_run_file_sync = dll.tac_run_file_sync
 tac_run_file_sync.restype = s32
 tac_run_file_sync.argtypes = [pchar]
 
+#arg[0] ATimeOutMs
+rpc_set_global_timeout = dll.rpc_set_global_timeout
+rpc_set_global_timeout.restype = s32
+rpc_set_global_timeout.argtypes = [s32]
+
