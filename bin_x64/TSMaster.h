@@ -3993,6 +3993,12 @@ TSAPI(s32)tsdi_get_vlevel_input_sync(const s32 AChnIdx,const ps32 AIOStatus,cons
 
 TSAPI(s32)tsdi_get_pwm_input_sync(const s32 AChnIdx,const pdouble ADuty,const pdouble AFreq,const s32 ATimeoutMs);
 
+TSAPI(s32)cal_get_ecu_a2l_list(const ppchar AECUsAndA2Ls);
+
+TSAPI(s32)cal_set_all_datas_by_value(const char* AECUName,const char* AVarName,const double AValue,const u8 AImmediateDownload);
+
+TSAPI(s32)cal_set_all_datas_by_offset(const char* AECUName,const char* AVarName,const double AOffset,const u8 AImmediateDownload);
+
 #if defined ( __cplusplus )
 }
 #endif

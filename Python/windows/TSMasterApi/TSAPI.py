@@ -6187,3 +6187,24 @@ tsdi_get_pwm_input_sync = dll.tsdi_get_pwm_input_sync
 tsdi_get_pwm_input_sync.restype = s32
 tsdi_get_pwm_input_sync.argtypes = [s32,pdouble,pdouble,s32]
 
+#arg[0] AECUsAndA2Ls
+cal_get_ecu_a2l_list = dll.cal_get_ecu_a2l_list
+cal_get_ecu_a2l_list.restype = s32
+cal_get_ecu_a2l_list.argtypes = [ppchar]
+
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] AValue
+#arg[3] AImmediateDownload
+cal_set_all_datas_by_value = dll.cal_set_all_datas_by_value
+cal_set_all_datas_by_value.restype = s32
+cal_set_all_datas_by_value.argtypes = [pchar,pchar,double,u8]
+
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] AOffset
+#arg[3] AImmediateDownload
+cal_set_all_datas_by_offset = dll.cal_set_all_datas_by_offset
+cal_set_all_datas_by_offset.restype = s32
+cal_set_all_datas_by_offset.argtypes = [pchar,pchar,double,u8]
+
