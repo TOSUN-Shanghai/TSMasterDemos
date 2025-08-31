@@ -6172,3 +6172,18 @@ rpc_set_global_timeout = dll.rpc_set_global_timeout
 rpc_set_global_timeout.restype = s32
 rpc_set_global_timeout.argtypes = [s32]
 
+#arg[0] AChnIdx
+#arg[1] AIOStatus
+#arg[2] ATimeoutMs
+tsdi_get_vlevel_input_sync = dll.tsdi_get_vlevel_input_sync
+tsdi_get_vlevel_input_sync.restype = s32
+tsdi_get_vlevel_input_sync.argtypes = [s32,ps32,s32]
+
+#arg[0] AChnIdx
+#arg[1] ADuty
+#arg[2] AFreq
+#arg[3] ATimeoutMs
+tsdi_get_pwm_input_sync = dll.tsdi_get_pwm_input_sync
+tsdi_get_pwm_input_sync.restype = s32
+tsdi_get_pwm_input_sync.argtypes = [s32,pdouble,pdouble,s32]
+

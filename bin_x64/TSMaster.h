@@ -3989,6 +3989,10 @@ TSAPI(s32)tac_run_file_sync(const char* file_path);
 
 TSAPI(s32)rpc_set_global_timeout(const s32 ATimeOutMs);
 
+TSAPI(s32)tsdi_get_vlevel_input_sync(const s32 AChnIdx,const ps32 AIOStatus,const s32 ATimeoutMs);
+
+TSAPI(s32)tsdi_get_pwm_input_sync(const s32 AChnIdx,const pdouble ADuty,const pdouble AFreq,const s32 ATimeoutMs);
+
 #if defined ( __cplusplus )
 }
 #endif
