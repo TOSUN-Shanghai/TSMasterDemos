@@ -6232,3 +6232,13 @@ cal_set_datas_by_value = dll.cal_set_datas_by_value
 cal_set_datas_by_value.restype = s32
 cal_set_datas_by_value.argtypes = [pchar,pchar,s32,s32,s32,s32,double,u8]
 
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] AXPointsNum
+#arg[3] AYPointsNum
+#arg[4] AAdress
+#arg[5] AExtAddress
+cal_get_axisnum_and_address = dll.cal_get_axisnum_and_address
+cal_get_axisnum_and_address.restype = s32
+cal_get_axisnum_and_address.argtypes = [pchar,pchar,ps32,ps32,pu32,pu32]
+

@@ -3508,6 +3508,7 @@ function cal_set_all_datas_by_value(const AECUName: pansichar; const AVarName: p
 function cal_set_all_datas_by_offset(const AECUName: pansichar; const AVarName: pansichar; AOffset: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_set_datas_by_offset(const AECUName: pansichar; const AVarName: pansichar; const AStartX: int32; const AStartY: int32; const AXPointsNum: int32; const AYPointsNum: int32; AOffset: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_set_datas_by_value(const AECUName: pansichar; const AVarName: pansichar; const AStartX: int32; const AStartY: int32; const AXPointsNum: int32; const AYPointsNum: int32; AValue: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_get_axisnum_and_address(const AECUName: pansichar; const AVarName: pansichar; AXPointsNum: pInt32; AYPointsNum: pInt32; AAdress: PUint32; AExtAddress: PUint32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
