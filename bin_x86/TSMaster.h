@@ -3999,6 +3999,10 @@ TSAPI(s32)cal_set_all_datas_by_value(const char* AECUName,const char* AVarName,c
 
 TSAPI(s32)cal_set_all_datas_by_offset(const char* AECUName,const char* AVarName,const double AOffset,const u8 AImmediateDownload);
 
+TSAPI(s32)cal_set_datas_by_offset(const char* AECUName,const char* AVarName,const s32 AStartX,const s32 AStartY,const s32 AXPointsNum,const s32 AYPointsNum,const double AOffset,const u8 AImmediateDownload);
+
+TSAPI(s32)cal_set_datas_by_value(const char* AECUName,const char* AVarName,const s32 AStartX,const s32 AStartY,const s32 AXPointsNum,const s32 AYPointsNum,const double AValue,const u8 AImmediateDownload);
+
 #if defined ( __cplusplus )
 }
 #endif

@@ -3506,6 +3506,8 @@ function tsdi_get_pwm_input_sync(const AChnIdx: int32; ADuty: pdouble; AFreq: pd
 function cal_get_ecu_a2l_list(AECUsAndA2Ls: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_set_all_datas_by_value(const AECUName: pansichar; const AVarName: pansichar; AValue: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function cal_set_all_datas_by_offset(const AECUName: pansichar; const AVarName: pansichar; AOffset: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_set_datas_by_offset(const AECUName: pansichar; const AVarName: pansichar; const AStartX: int32; const AStartY: int32; const AXPointsNum: int32; const AYPointsNum: int32; AOffset: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_set_datas_by_value(const AECUName: pansichar; const AVarName: pansichar; const AStartX: int32; const AStartY: int32; const AXPointsNum: int32; const AYPointsNum: int32; AValue: double; AImmediateDownload: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

@@ -6208,3 +6208,27 @@ cal_set_all_datas_by_offset = dll.cal_set_all_datas_by_offset
 cal_set_all_datas_by_offset.restype = s32
 cal_set_all_datas_by_offset.argtypes = [pchar,pchar,double,u8]
 
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] AStartX
+#arg[3] AStartY
+#arg[4] AXPointsNum
+#arg[5] AYPointsNum
+#arg[6] AOffset
+#arg[7] AImmediateDownload
+cal_set_datas_by_offset = dll.cal_set_datas_by_offset
+cal_set_datas_by_offset.restype = s32
+cal_set_datas_by_offset.argtypes = [pchar,pchar,s32,s32,s32,s32,double,u8]
+
+#arg[0] AECUName
+#arg[1] AVarName
+#arg[2] AStartX
+#arg[3] AStartY
+#arg[4] AXPointsNum
+#arg[5] AYPointsNum
+#arg[6] AValue
+#arg[7] AImmediateDownload
+cal_set_datas_by_value = dll.cal_set_datas_by_value
+cal_set_datas_by_value.restype = s32
+cal_set_datas_by_value.argtypes = [pchar,pchar,s32,s32,s32,s32,double,u8]
+
