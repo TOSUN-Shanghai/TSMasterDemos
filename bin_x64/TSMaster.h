@@ -4005,6 +4005,38 @@ TSAPI(s32)cal_set_datas_by_value(const char* AECUName,const char* AVarName,const
 
 TSAPI(s32)cal_get_axisnum_and_address(const char* AECUName,const char* AVarName,const ps32 AXPointsNum,const ps32 AYPointsNum,const pu32 AAdress,const pu32 AExtAddress);
 
+TSAPI(s32)crypto_encrypt_aes_128_ecb(const pu8 key,const size_t key_length,const pu8 plaintext,const size_t plaintext_length,const pu8 ciphertext,const psize_t ciphertext_length);
+
+TSAPI(s32)crypto_decrypt_aes_128_ecb(const pu8 key,const size_t key_length,const pu8 ciphertext,const size_t ciphertext_length,const pu8 plaintext,const psize_t plaintext_length);
+
+TSAPI(s32)crypto_decrypt_aes_128_cbc(const pu8 key,const size_t key_length,const pu8 ciphertext,const size_t ciphertext_length,const pu8 iv,const size_t iv_length,const pu8 plaintext,const psize_t plaintext_length);
+
+TSAPI(s32)crypto_decrypt_aes_256_cbc(const pu8 key,const size_t key_length,const pu8 ciphertext,const size_t ciphertext_length,const pu8 iv,const size_t iv_length,const pu8 plaintext,const psize_t plaintext_length);
+
+TSAPI(s32)crypto_decrypt_rsa(const u8 key_coding,const pu8 private_key,const size_t key_length,const pu8 ciphertext,const size_t ciphertext_length,const pu8 plaintext,const psize_t plaintext_length,const u8 padding_mode);
+
+TSAPI(s32)crypto_encrypt_rsa(const u8 key_coding,const pu8 public_key,const size_t key_length,const pu8 plaintext,const size_t plaintext_length,const pu8 ciphertext,const psize_t ciphertext_length,const u8 padding_mode);
+
+TSAPI(s32)crypto_encrypt_aes_128_cbc(const pu8 key,const size_t key_length,const pu8 plaintext,const size_t plaintext_length,const pu8 iv,const size_t iv_length,const pu8 ciphertext,const psize_t ciphertext_length);
+
+TSAPI(s32)crypto_encrypt_aes_256_cbc(const pu8 key,const size_t key_length,const pu8 plaintext,const size_t plaintext_length,const pu8 iv,const size_t iv_length,const pu8 ciphertext,const psize_t ciphertext_length);
+
+TSAPI(s32)crypto_digest_sha2_256(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+
+TSAPI(s32)crypto_digest_sha2_512(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+
+TSAPI(s32)crypto_digest_sha3_512(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+
+TSAPI(s32)crypto_digest_sha3_256(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+
+TSAPI(s32)crypto_digest_md5(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+
+TSAPI(s32)crypto_generate_cmac(const pu8 key,const size_t key_length,const pu8 data,const size_t data_length,const pu8 cmac,const psize_t cmac_length);
+
+TSAPI(s32)crypto_generate_random_bytes(const pu8 data,const s32 data_length);
+
+TSAPI(s32)crypto_crypt_aes_128_ctr(const pu8 key,const size_t key_length,const pu8 plaintext,const pu8 ciphertext,const size_t text_length,const pu8 nonce,const size_t noncelength);
+
 #if defined ( __cplusplus )
 }
 #endif

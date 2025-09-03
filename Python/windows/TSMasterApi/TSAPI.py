@@ -6242,3 +6242,162 @@ cal_get_axisnum_and_address = dll.cal_get_axisnum_and_address
 cal_get_axisnum_and_address.restype = s32
 cal_get_axisnum_and_address.argtypes = [pchar,pchar,ps32,ps32,pu32,pu32]
 
+#arg[0] key
+#arg[1] key_length
+#arg[2] plaintext
+#arg[3] plaintext_length
+#arg[4] ciphertext
+#arg[5] ciphertext_length
+crypto_encrypt_aes_128_ecb = dll.crypto_encrypt_aes_128_ecb
+crypto_encrypt_aes_128_ecb.restype = s32
+crypto_encrypt_aes_128_ecb.argtypes = [pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] ciphertext
+#arg[3] ciphertext_length
+#arg[4] plaintext
+#arg[5] plaintext_length
+crypto_decrypt_aes_128_ecb = dll.crypto_decrypt_aes_128_ecb
+crypto_decrypt_aes_128_ecb.restype = s32
+crypto_decrypt_aes_128_ecb.argtypes = [pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] ciphertext
+#arg[3] ciphertext_length
+#arg[4] iv
+#arg[5] iv_length
+#arg[6] plaintext
+#arg[7] plaintext_length
+crypto_decrypt_aes_128_cbc = dll.crypto_decrypt_aes_128_cbc
+crypto_decrypt_aes_128_cbc.restype = s32
+crypto_decrypt_aes_128_cbc.argtypes = [pu8,size_t,pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] ciphertext
+#arg[3] ciphertext_length
+#arg[4] iv
+#arg[5] iv_length
+#arg[6] plaintext
+#arg[7] plaintext_length
+crypto_decrypt_aes_256_cbc = dll.crypto_decrypt_aes_256_cbc
+crypto_decrypt_aes_256_cbc.restype = s32
+crypto_decrypt_aes_256_cbc.argtypes = [pu8,size_t,pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] key_coding
+#arg[1] private_key
+#arg[2] key_length
+#arg[3] ciphertext
+#arg[4] ciphertext_length
+#arg[5] plaintext
+#arg[6] plaintext_length
+#arg[7] padding_mode
+crypto_decrypt_rsa = dll.crypto_decrypt_rsa
+crypto_decrypt_rsa.restype = s32
+crypto_decrypt_rsa.argtypes = [u8,pu8,size_t,pu8,size_t,pu8,psize_t,u8]
+
+#arg[0] key_coding
+#arg[1] public_key
+#arg[2] key_length
+#arg[3] plaintext
+#arg[4] plaintext_length
+#arg[5] ciphertext
+#arg[6] ciphertext_length
+#arg[7] padding_mode
+crypto_encrypt_rsa = dll.crypto_encrypt_rsa
+crypto_encrypt_rsa.restype = s32
+crypto_encrypt_rsa.argtypes = [u8,pu8,size_t,pu8,size_t,pu8,psize_t,u8]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] plaintext
+#arg[3] plaintext_length
+#arg[4] iv
+#arg[5] iv_length
+#arg[6] ciphertext
+#arg[7] ciphertext_length
+crypto_encrypt_aes_128_cbc = dll.crypto_encrypt_aes_128_cbc
+crypto_encrypt_aes_128_cbc.restype = s32
+crypto_encrypt_aes_128_cbc.argtypes = [pu8,size_t,pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] plaintext
+#arg[3] plaintext_length
+#arg[4] iv
+#arg[5] iv_length
+#arg[6] ciphertext
+#arg[7] ciphertext_length
+crypto_encrypt_aes_256_cbc = dll.crypto_encrypt_aes_256_cbc
+crypto_encrypt_aes_256_cbc.restype = s32
+crypto_encrypt_aes_256_cbc.argtypes = [pu8,size_t,pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+#arg[2] hash
+#arg[3] hash_length
+crypto_digest_sha2_256 = dll.crypto_digest_sha2_256
+crypto_digest_sha2_256.restype = s32
+crypto_digest_sha2_256.argtypes = [ps32,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+#arg[2] hash
+#arg[3] hash_length
+crypto_digest_sha2_512 = dll.crypto_digest_sha2_512
+crypto_digest_sha2_512.restype = s32
+crypto_digest_sha2_512.argtypes = [ps32,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+#arg[2] hash
+#arg[3] hash_length
+crypto_digest_sha3_512 = dll.crypto_digest_sha3_512
+crypto_digest_sha3_512.restype = s32
+crypto_digest_sha3_512.argtypes = [ps32,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+#arg[2] hash
+#arg[3] hash_length
+crypto_digest_sha3_256 = dll.crypto_digest_sha3_256
+crypto_digest_sha3_256.restype = s32
+crypto_digest_sha3_256.argtypes = [ps32,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+#arg[2] hash
+#arg[3] hash_length
+crypto_digest_md5 = dll.crypto_digest_md5
+crypto_digest_md5.restype = s32
+crypto_digest_md5.argtypes = [ps32,size_t,pu8,psize_t]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] data
+#arg[3] data_length
+#arg[4] cmac
+#arg[5] cmac_length
+crypto_generate_cmac = dll.crypto_generate_cmac
+crypto_generate_cmac.restype = s32
+crypto_generate_cmac.argtypes = [pu8,size_t,pu8,size_t,pu8,psize_t]
+
+#arg[0] data
+#arg[1] data_length
+crypto_generate_random_bytes = dll.crypto_generate_random_bytes
+crypto_generate_random_bytes.restype = s32
+crypto_generate_random_bytes.argtypes = [pu8,s32]
+
+#arg[0] key
+#arg[1] key_length
+#arg[2] plaintext
+#arg[3] ciphertext
+#arg[4] text_length
+#arg[5] nonce
+#arg[6] noncelength
+crypto_crypt_aes_128_ctr = dll.crypto_crypt_aes_128_ctr
+crypto_crypt_aes_128_ctr.restype = s32
+crypto_crypt_aes_128_ctr.argtypes = [pu8,size_t,pu8,pu8,size_t,pu8,size_t]
+
