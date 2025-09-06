@@ -1,2 +1,2 @@
 from .TSAPI import *
-__version__ = 'v2025.9.3.1621'
+__version__ = 'v2025.9.7.1627'

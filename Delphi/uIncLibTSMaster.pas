@@ -1046,7 +1046,10 @@ type
     TC1057Pro           = 51,
     TC4016              = 52,
     GW2208              = 53,
-    TS_DEV_END          = 54
+    TLog1039            = 54,
+    GW1040              = 55,
+    TC3014              = 56,
+    TS_DEV_END          = 57
   // the table need to updated in time, otherwise cause problem to recognizing the device
   );
   // Vector XL device type
