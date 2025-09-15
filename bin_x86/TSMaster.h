@@ -4040,6 +4040,16 @@ TSAPI(s32)crypto_generate_random_bytes(const pu8 data,const s32 data_length);
 
 TSAPI(s32)crypto_crypt_aes_128_ctr(const pu8 key,const size_t key_length,const pu8 plaintext,const pu8 ciphertext,const size_t text_length,const pu8 nonce,const size_t noncelength);
 
+TSAPI(s32)can_rbs_transmit_pdu(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const pu8 AData,const s32 ADataLength);
+
+TSAPI(s32)can_rbs_get_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const pdouble AValue);
+
+TSAPI(s32)can_rbs_set_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const double AValue);
+
+TSAPI(s32)flexray_rbs_set_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const double AValue);
+
+TSAPI(s32)flexray_rbs_get_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const pdouble AValue);
+
 #if defined ( __cplusplus )
 }
 #endif

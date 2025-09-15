@@ -3528,6 +3528,11 @@ function crypto_digest_md5(data: Pointer; data_length: NativeUInt; hash: pbyte; 
 function crypto_generate_cmac(key: pbyte; key_length: NativeUInt; data: pbyte; data_length: NativeUInt; cmac: pbyte; cmac_length: PNativeUInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function crypto_generate_random_bytes(data: pbyte; data_length: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function crypto_crypt_aes_128_ctr(key: pbyte; key_length: NativeUInt; plaintext: pbyte; ciphertext: pbyte; text_length: NativeUInt; nonce: pbyte; noncelength: NativeUInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_transmit_pdu(AChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; AData: pbyte; ADataLength: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_get_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_rbs_set_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function flexray_rbs_get_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

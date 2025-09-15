@@ -6401,3 +6401,58 @@ crypto_crypt_aes_128_ctr = dll.crypto_crypt_aes_128_ctr
 crypto_crypt_aes_128_ctr.restype = s32
 crypto_crypt_aes_128_ctr.argtypes = [pu8,size_t,pu8,pu8,size_t,pu8,size_t]
 
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] AData
+#arg[6] ADataLength
+can_rbs_transmit_pdu = dll.can_rbs_transmit_pdu
+can_rbs_transmit_pdu.restype = s32
+can_rbs_transmit_pdu.argtypes = [s32,pchar,pchar,pchar,pchar,pu8,s32]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AValue
+can_rbs_get_signal_value_by_element_verbose = dll.can_rbs_get_signal_value_by_element_verbose
+can_rbs_get_signal_value_by_element_verbose.restype = s32
+can_rbs_get_signal_value_by_element_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,pdouble]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AValue
+can_rbs_set_signal_value_by_element_verbose = dll.can_rbs_set_signal_value_by_element_verbose
+can_rbs_set_signal_value_by_element_verbose.restype = s32
+can_rbs_set_signal_value_by_element_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,double]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AValue
+flexray_rbs_set_signal_value_by_element_verbose = dll.flexray_rbs_set_signal_value_by_element_verbose
+flexray_rbs_set_signal_value_by_element_verbose.restype = s32
+flexray_rbs_set_signal_value_by_element_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,double]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AValue
+flexray_rbs_get_signal_value_by_element_verbose = dll.flexray_rbs_get_signal_value_by_element_verbose
+flexray_rbs_get_signal_value_by_element_verbose.restype = s32
+flexray_rbs_get_signal_value_by_element_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,pdouble]
+
