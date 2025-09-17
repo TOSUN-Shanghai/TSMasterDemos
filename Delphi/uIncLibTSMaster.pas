@@ -736,6 +736,7 @@ type
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
   TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const APDUName: PAnsichar; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
   TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const APDUName: PAnsichar; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
+  TOnSignalEvent = procedure(const ASignalName: PAnsichar; const ARawValue: UInt64; const APhyValue: double); stdcall;
   TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;
@@ -3533,6 +3534,8 @@ function can_rbs_get_signal_value_by_element_verbose(AIdxChn: int32; ANetworkNam
 function can_rbs_set_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function flexray_rbs_set_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function flexray_rbs_get_signal_value_by_element_verbose(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_register_signal_event(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; ATriggerOnlyChanged: int32; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_il_unregister_signal_event(AIdxChn: int32; ANetworkName: pansichar; ANodeName: pansichar; AMessageName: pansichar; APDUName: pansichar; ASignalName: pansichar; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

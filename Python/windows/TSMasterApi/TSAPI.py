@@ -6456,3 +6456,26 @@ flexray_rbs_get_signal_value_by_element_verbose = dll.flexray_rbs_get_signal_val
 flexray_rbs_get_signal_value_by_element_verbose.restype = s32
 flexray_rbs_get_signal_value_by_element_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,pdouble]
 
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] ATriggerOnlyChanged
+#arg[7] AEvent
+can_il_register_signal_event = dll.can_il_register_signal_event
+can_il_register_signal_event.restype = s32
+can_il_register_signal_event.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,s32,TOnSignalEvent]
+
+#arg[0] AIdxChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AEvent
+can_il_unregister_signal_event = dll.can_il_unregister_signal_event
+can_il_unregister_signal_event.restype = s32
+can_il_unregister_signal_event.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,TOnSignalEvent]
+

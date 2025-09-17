@@ -1933,6 +1933,10 @@ typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const char* AP
 // Arg[5] ADestDataLength
 // Arg[6] ADestData
 typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
+// Arg[0] ASignalName
+// Arg[1] ARawValue
+// Arg[2] APhyValue
+typedef void(__stdcall*TOnSignalEvent)(const char* ASignalName,const u64 ARawValue,const double APhyValue);
 // Arg[0] AVidPid
 // Arg[1] ASerial
 typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);
@@ -4049,6 +4053,10 @@ TSAPI(s32)can_rbs_set_signal_value_by_element_verbose(const s32 AIdxChn,const ch
 TSAPI(s32)flexray_rbs_set_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const double AValue);
 
 TSAPI(s32)flexray_rbs_get_signal_value_by_element_verbose(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const pdouble AValue);
+
+TSAPI(s32)can_il_register_signal_event(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const s32 ATriggerOnlyChanged,const TOnSignalEvent AEvent);
+
+TSAPI(s32)can_il_unregister_signal_event(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const TOnSignalEvent AEvent);
 
 #if defined ( __cplusplus )
 }
