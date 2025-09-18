@@ -6479,3 +6479,30 @@ can_il_unregister_signal_event = dll.can_il_unregister_signal_event
 can_il_unregister_signal_event.restype = s32
 can_il_unregister_signal_event.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,TOnSignalEvent]
 
+#arg[0] AEnableTimeMonitor
+#arg[1] ATimeoutMs
+#arg[2] AEnableCyclicPeriodRate
+#arg[3] ACyclicPeriodRateValue
+can_rbs_time_monitor_config = dll.can_rbs_time_monitor_config
+can_rbs_time_monitor_config.restype = s32
+can_rbs_time_monitor_config.argtypes = [cbool,s32,cbool,s32]
+
+#arg[0] AIdxChn
+#arg[1] AFrameID
+#arg[2] APDUID
+#arg[3] ASignalName
+#arg[4] ATriggerOnlyChanged
+#arg[5] AEvent
+can_il_register_signal_event_by_id = dll.can_il_register_signal_event_by_id
+can_il_register_signal_event_by_id.restype = s32
+can_il_register_signal_event_by_id.argtypes = [s32,s32,u32,pchar,s32,TOnSignalEvent]
+
+#arg[0] AIdxChn
+#arg[1] AFrameID
+#arg[2] APDUID
+#arg[3] ASignalName
+#arg[4] AEvent
+can_il_unregister_signal_event_by_id = dll.can_il_unregister_signal_event_by_id
+can_il_unregister_signal_event_by_id.restype = s32
+can_il_unregister_signal_event_by_id.argtypes = [s32,s32,u32,pchar,TOnSignalEvent]
+

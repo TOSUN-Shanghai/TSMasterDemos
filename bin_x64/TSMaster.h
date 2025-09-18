@@ -4058,6 +4058,12 @@ TSAPI(s32)can_il_register_signal_event(const s32 AIdxChn,const char* ANetworkNam
 
 TSAPI(s32)can_il_unregister_signal_event(const s32 AIdxChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const TOnSignalEvent AEvent);
 
+TSAPI(s32)can_rbs_time_monitor_config(const bool AEnableTimeMonitor,const s32 ATimeoutMs,const bool AEnableCyclicPeriodRate,const s32 ACyclicPeriodRateValue);
+
+TSAPI(s32)can_il_register_signal_event_by_id(const s32 AIdxChn,const s32 AFrameID,const u32 APDUID,const char* ASignalName,const s32 ATriggerOnlyChanged,const TOnSignalEvent AEvent);
+
+TSAPI(s32)can_il_unregister_signal_event_by_id(const s32 AIdxChn,const s32 AFrameID,const u32 APDUID,const char* ASignalName,const TOnSignalEvent AEvent);
+
 #if defined ( __cplusplus )
 }
 #endif
