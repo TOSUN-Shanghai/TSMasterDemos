@@ -1936,7 +1936,7 @@ typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* AP
 // Arg[0] ASignalName
 // Arg[1] ARawValue
 // Arg[2] APhyValue
-typedef void(__stdcall*TOnSignalEvent)(const char* ASignalName,const u64 ARawValue,const double APhyValue);
+typedef void(__stdcall*TOnSignalEvent)(const char* ASignalName,const s64 ARawValue,const double APhyValue);
 // Arg[0] AVidPid
 // Arg[1] ASerial
 typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);

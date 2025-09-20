@@ -736,7 +736,7 @@ type
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
   TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const APDUName: PAnsichar; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
   TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const APDUName: PAnsichar; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcData: PByte; const ADestDataLength: PUint32; const ADestData: PByte): integer; stdcall;
-  TOnSignalEvent = procedure(const ASignalName: PAnsichar; const ARawValue: UInt64; const APhyValue: double); stdcall;
+  TOnSignalEvent = procedure(const ASignalName: PAnsichar; const ARawValue: Int64; const APhyValue: double); stdcall;
   TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
   TOnIoIPConnection = procedure(const AIPAddress: pansichar; const APort: Integer); stdcall;

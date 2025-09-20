@@ -52,7 +52,7 @@ TOnAutoSARPDUPreTxEvent = WINFUNCTYPE(s32,s32,pchar,u32,u32,pu8,pu32,pu8)
 # Arg[0] ASignalName
 # Arg[1] ARawValue
 # Arg[2] APhyValue
-TOnSignalEvent = WINFUNCTYPE(None,pchar,u64,double)
+TOnSignalEvent = WINFUNCTYPE(None,pchar,s64,double)
 # Arg[0] AVidPid
 # Arg[1] ASerial
 TOnUSBPlugEvent = WINFUNCTYPE(None,pchar,pchar)
