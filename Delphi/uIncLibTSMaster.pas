@@ -3539,6 +3539,7 @@ function can_il_unregister_signal_event(const AIdxChn: int32; const ANetworkName
 function can_rbs_time_monitor_config(const AEnableTimeMonitor: boolean; const ATimeoutMs: int32; const AEnableCyclicPeriodRate: boolean; const ACyclicPeriodRateValue: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_register_signal_event_by_id(const AIdxChn: int32; const AFrameID: int32; const APDUID: uint32; const ASignalName: pansichar; const ATriggerOnlyChanged: int32; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_unregister_signal_event_by_id(const AIdxChn: int32; const AFrameID: int32; const APDUID: uint32; const ASignalName: pansichar; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function crypto_signature_rsa(const key_coding: byte; const hash_method: byte; const rsa_padding_mode: byte; const data: pbyte; const datalength: NativeUInt; const privatekey: pbyte; const keylength: NativeUInt; const signature: pbyte; const signaturelength: PNativeUInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

@@ -4064,6 +4064,8 @@ TSAPI(s32)can_il_register_signal_event_by_id(const s32 AIdxChn,const s32 AFrameI
 
 TSAPI(s32)can_il_unregister_signal_event_by_id(const s32 AIdxChn,const s32 AFrameID,const u32 APDUID,const char* ASignalName,const TOnSignalEvent AEvent);
 
+TSAPI(s32)crypto_signature_rsa(const u8 key_coding,const u8 hash_method,const u8 rsa_padding_mode,const pu8 data,const size_t datalength,const pu8 privatekey,const size_t keylength,const pu8 signature,const psize_t signaturelength);
+
 #if defined ( __cplusplus )
 }
 #endif

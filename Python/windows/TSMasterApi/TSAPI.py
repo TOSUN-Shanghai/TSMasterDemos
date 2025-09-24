@@ -6506,3 +6506,16 @@ can_il_unregister_signal_event_by_id = dll.can_il_unregister_signal_event_by_id
 can_il_unregister_signal_event_by_id.restype = s32
 can_il_unregister_signal_event_by_id.argtypes = [s32,s32,u32,pchar,TOnSignalEvent]
 
+#arg[0] key_coding
+#arg[1] hash_method
+#arg[2] rsa_padding_mode
+#arg[3] data
+#arg[4] datalength
+#arg[5] privatekey
+#arg[6] keylength
+#arg[7] signature
+#arg[8] signaturelength
+crypto_signature_rsa = dll.crypto_signature_rsa
+crypto_signature_rsa.restype = s32
+crypto_signature_rsa.argtypes = [u8,u8,u8,pu8,size_t,pu8,size_t,pu8,psize_t]
+
