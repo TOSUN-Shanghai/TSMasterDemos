@@ -13,158 +13,7 @@ using System.Runtime.Remoting;
 
 namespace TSMasterAPI_CSharp
 {
-    public class TCANHardwareInfo
-    {
-        public const int BUS_TOOL_DEVICE_TYPE_COUNT = 9;
-        public static string[] BUS_TOOL_DEVICE_NAMES = new string[BUS_TOOL_DEVICE_TYPE_COUNT] {
-            "Unknown bus tool",
-            "TS Virtual Device",
-            "Vector",
-            "TOSUN",
-            "PEAK",
-            "Kvaser",
-            "ZLG",
-            "IntrepidCS",
-            "TOSUN TC1005"
-        };
-        public const int TS_HWTYPE_MAX_CNT = 16;
-        public static string[] TS_HWTYPE_NAMES = new string[TS_HWTYPE_MAX_CNT] {
-            "Unknown",
-            "TS.CAN Pro",
-            "TS.CAN Lite1",
-            "TC1001", //"TS.CAN Mini",
-            "TL1001", //"TS.LIN Mini",
-            "TC1011", //"TS.CAN FD Mini",
-            "TS.LIN IO",
-            "TC1002", //"TS.CAN Lite2",
-            "TC1014",  //"TS.CAN.LIN"
-            "TS.CAN FD 2517",
-            "TC1026",  //TC1026 = 10,
-            "TC1016",  //TC1016 = 11,
-            "TC1012",  //TC1012 = 12,
-            "TC1013",  //TC1013 = 13
-            "TC7012",  //TC1013 = 14
-            "TC1034"
-        };
-        public const int XL_HWTYPE_MAX_CNT = 114;
-        public static string[] XL_HWTYPE_NAMES = new string[XL_HWTYPE_MAX_CNT]{
-            "None",             // 0
-            "VIRTUAL",             // 1
-            "CANCARDX",             // 2
-            "None",             // 3
-            "None",             // 4
-            "None",             // 5
-            "CANAC2PCI",             // 6
-            "None",             // 7
-            "None",             // 8
-            "None",             // 9
-            "None",             // 10
-            "None",             // 11
-            "CANCARDY",             // 12
-            "None",             // 13
-            "None",             // 14
-            "CANCARDXL",             // 15
-            "None",             // 16
-            "None",             // 17
-            "None",             // 18
-            "None",             // 19
-            "None",             // 20
-            "CANCASEXL",             // 21
-            "None",             // 22
-            "CANCASEXL_LOG_OBSOLETE",             // 23
-            "None",             // 24
-            "CANBOARDXL",             // 25
-            "None",             // 26
-            "CANBOARDXL_PXI",             // 27
-            "None",             // 28
-            "VN2600",             // 29
-            "None",             // 30
-            "None",             // 31
-            "None",             // 32
-            "None",             // 33
-            "None",             // 34
-            "None",             // 35
-            "None",             // 36
-            "VN3300",             // 37
-            "None",             // 38
-            "VN3600",             // 39
-            "None",             // 40
-            "VN7600",             // 41
-            "None",             // 42
-            "CANCARDXLE",             // 43
-            "None",             // 44
-            "VN8900",             // 45
-            "None",             // 46
-            "VN8950",             // 47
-            "None",             // 48
-            "None",             // 49
-            "None",             // 50
-            "None",             // 51
-            "None",             // 52
-            "VN2640",             // 53
-            "None",             // 54
-            "VN1610",             // 55
-            "None",             // 56
-            "VN1630",             // 57
-            "None",             // 58
-            "VN1640",             // 59
-            "None",             // 60
-            "VN8970",             // 61
-            "None",             // 62
-            "VN1611",             // 63
-            "None",             // 64
-            "VN5610",             // 65
-            "VN5620",             // 66
-            "VN7570",             // 67
-            "None",             // 68
-            "IPCLIENT",             // 69
-            "None",             // 70
-            "IPSERVER",             // 71
-            "None",             // 72
-            "VX1121",             // 73
-            "None",             // 74
-            "VX1131",             // 75
-            "None",             // 76
-            "VT6204",             // 77
-            "None",             // 78
-            "VN1630_LOG",             // 79
-            "None",             // 80
-            "VN7610",             // 81
-            "None",             // 82
-            "VN7572",             // 83
-            "None",             // 84
-            "VN8972",             // 85
-            "None",             // 86
-            "VN0601",             // 87
-            "None",             // 88
-            "VN5640",             // 89
-            "None",             // 90
-            "VX0312",             // 91
-            "None",             // 92
-            "None",             // 93
-            "VH6501",             // 94
-            "VN8800",             // 95
-            "IPCL8800",             // 96
-            "IPSRV8800",             // 97
-            "CSMCAN",             // 98
-            "None",             // 99
-            "None",             // 100
-            "VN5610A",             // 101
-            "VN7640",             // 102
-            "None",             // 103
-            "VX1135",             // 104
-            "VN4610",             // 105
-            "None",             // 106
-            "VT6306",             // 107
-            "VT6104A",             // 108
-            "VN5430",             // 109
-            "None",             // 110
-            "None",             // 111
-            "VN1530",             // 112
-            "VN1531"             // 113
-            };
-    }
-
+    
     public partial class frmMain : Form
     {
         public frmMain()
@@ -190,7 +39,7 @@ namespace TSMasterAPI_CSharp
             vCANFDQueueEventObj += new TCANFDQueueEvent_Win32(OnCANFDRxEvent);
             vLINQueueEventObj += new TLINQueueEvent_Win32(OnLINRxEvent);
             //注册接收回调函数：在每一次的回调函数vCANQueueEventObj中刷新数据段
-            if (TsMasterApi.tsapp_register_event_can(ref obj, vCANQueueEventObj) != 0x00)
+            if (TsMasterApi.tsapp_register_event_can((IntPtr)0, vCANQueueEventObj) != 0x00)
             {
                 Log("Register CANRx Failed!");
             }
@@ -360,22 +209,21 @@ namespace TSMasterAPI_CSharp
         private static TCANQueueEvent_Win32   vCANQueueEventObj;
         private static TCANFDQueueEvent_Win32 vCANFDQueueEventObj;
         private static TLINQueueEvent_Win32 vLINQueueEventObj;
-        int obj = 0;
         private void InternalUnregisterEvents()
         {
-            TsMasterApi.tsapp_unregister_event_can(ref obj, vCANQueueEventObj);
-            TsMasterApi.tsapp_unregister_event_canfd(ref obj, vCANFDQueueEventObj);         
-            TsMasterApi.tsapp_unregister_event_lin(ref obj, vLINQueueEventObj);
+            TsMasterApi.tsapp_unregister_event_can((IntPtr)0, vCANQueueEventObj);
+            TsMasterApi.tsapp_unregister_event_canfd((IntPtr)0, vCANFDQueueEventObj);         
+            TsMasterApi.tsapp_unregister_event_lin((IntPtr)0, vLINQueueEventObj);
         }
         private void InternalRegisterEvents()
         {
             // register only one of them: CAN or CANFD
-            TsMasterApi.tsapp_register_event_can(ref obj, vCANQueueEventObj);
-            TsMasterApi.tsapp_register_event_canfd(ref obj, vCANFDQueueEventObj);
-            TsMasterApi.tsapp_register_event_lin(ref obj, vLINQueueEventObj);
+            TsMasterApi.tsapp_register_event_can((IntPtr)0, vCANQueueEventObj);
+            TsMasterApi.tsapp_register_event_canfd((IntPtr)0, vCANFDQueueEventObj);
+            TsMasterApi.tsapp_register_event_lin((IntPtr)0, vLINQueueEventObj);
         }
         double testSignalValue = 0;
-        private void OnCANRxEvent(ref int AObj, ref TLIBCAN AData)
+        private void OnCANRxEvent(IntPtr AObj, ref TLIBCAN AData)
         {
             if (AData.FIsTx)
             {
@@ -400,13 +248,13 @@ namespace TSMasterAPI_CSharp
             }
         }
 
-        private void OnCANFDRxEvent(ref int AObj, ref TLIBCANFD AData)
+        private void OnCANFDRxEvent(IntPtr AObj, ref TLIBCANFD AData)
         {
             //
 
         }
 
-        private void OnLINRxEvent(ref int AObj, ref TLIBLIN AData)
+        private void OnLINRxEvent(IntPtr AObj, ref TLIBLIN AData)
         {
             //frm:= TfrmTestLibTSMaster(aobj);
             //c:= adata ^;
@@ -1075,7 +923,6 @@ namespace TSMasterAPI_CSharp
         private void btnGetDeviceNum_Click(object sender, EventArgs e)
         {
             int hardwareNum = 0;
-            TLIBHWInfo tmp = new TLIBHWInfo();
             int retMessage = TsMasterApi.tsapp_enumerate_hw_devices(ref hardwareNum);
             if (retMessage == 0)
             {
@@ -1431,4 +1278,157 @@ namespace TSMasterAPI_CSharp
             TsMasterApi.tsapp_ethernet_channel_compress_mode(0, chkEtherCompressedMode.Checked);
         }
     }
+
+    public class TCANHardwareInfo
+    {
+        public const int BUS_TOOL_DEVICE_TYPE_COUNT = 9;
+        public static string[] BUS_TOOL_DEVICE_NAMES = new string[BUS_TOOL_DEVICE_TYPE_COUNT] {
+            "Unknown bus tool",
+            "TS Virtual Device",
+            "Vector",
+            "TOSUN",
+            "PEAK",
+            "Kvaser",
+            "ZLG",
+            "IntrepidCS",
+            "TOSUN TC1005"
+        };
+        public const int TS_HWTYPE_MAX_CNT = 16;
+        public static string[] TS_HWTYPE_NAMES = new string[TS_HWTYPE_MAX_CNT] {
+            "Unknown",
+            "TS.CAN Pro",
+            "TS.CAN Lite1",
+            "TC1001", //"TS.CAN Mini",
+            "TL1001", //"TS.LIN Mini",
+            "TC1011", //"TS.CAN FD Mini",
+            "TS.LIN IO",
+            "TC1002", //"TS.CAN Lite2",
+            "TC1014",  //"TS.CAN.LIN"
+            "TS.CAN FD 2517",
+            "TC1026",  //TC1026 = 10,
+            "TC1016",  //TC1016 = 11,
+            "TC1012",  //TC1012 = 12,
+            "TC1013",  //TC1013 = 13
+            "TC7012",  //TC1013 = 14
+            "TC1034"
+        };
+        public const int XL_HWTYPE_MAX_CNT = 114;
+        public static string[] XL_HWTYPE_NAMES = new string[XL_HWTYPE_MAX_CNT]{
+            "None",             // 0
+            "VIRTUAL",             // 1
+            "CANCARDX",             // 2
+            "None",             // 3
+            "None",             // 4
+            "None",             // 5
+            "CANAC2PCI",             // 6
+            "None",             // 7
+            "None",             // 8
+            "None",             // 9
+            "None",             // 10
+            "None",             // 11
+            "CANCARDY",             // 12
+            "None",             // 13
+            "None",             // 14
+            "CANCARDXL",             // 15
+            "None",             // 16
+            "None",             // 17
+            "None",             // 18
+            "None",             // 19
+            "None",             // 20
+            "CANCASEXL",             // 21
+            "None",             // 22
+            "CANCASEXL_LOG_OBSOLETE",             // 23
+            "None",             // 24
+            "CANBOARDXL",             // 25
+            "None",             // 26
+            "CANBOARDXL_PXI",             // 27
+            "None",             // 28
+            "VN2600",             // 29
+            "None",             // 30
+            "None",             // 31
+            "None",             // 32
+            "None",             // 33
+            "None",             // 34
+            "None",             // 35
+            "None",             // 36
+            "VN3300",             // 37
+            "None",             // 38
+            "VN3600",             // 39
+            "None",             // 40
+            "VN7600",             // 41
+            "None",             // 42
+            "CANCARDXLE",             // 43
+            "None",             // 44
+            "VN8900",             // 45
+            "None",             // 46
+            "VN8950",             // 47
+            "None",             // 48
+            "None",             // 49
+            "None",             // 50
+            "None",             // 51
+            "None",             // 52
+            "VN2640",             // 53
+            "None",             // 54
+            "VN1610",             // 55
+            "None",             // 56
+            "VN1630",             // 57
+            "None",             // 58
+            "VN1640",             // 59
+            "None",             // 60
+            "VN8970",             // 61
+            "None",             // 62
+            "VN1611",             // 63
+            "None",             // 64
+            "VN5610",             // 65
+            "VN5620",             // 66
+            "VN7570",             // 67
+            "None",             // 68
+            "IPCLIENT",             // 69
+            "None",             // 70
+            "IPSERVER",             // 71
+            "None",             // 72
+            "VX1121",             // 73
+            "None",             // 74
+            "VX1131",             // 75
+            "None",             // 76
+            "VT6204",             // 77
+            "None",             // 78
+            "VN1630_LOG",             // 79
+            "None",             // 80
+            "VN7610",             // 81
+            "None",             // 82
+            "VN7572",             // 83
+            "None",             // 84
+            "VN8972",             // 85
+            "None",             // 86
+            "VN0601",             // 87
+            "None",             // 88
+            "VN5640",             // 89
+            "None",             // 90
+            "VX0312",             // 91
+            "None",             // 92
+            "None",             // 93
+            "VH6501",             // 94
+            "VN8800",             // 95
+            "IPCL8800",             // 96
+            "IPSRV8800",             // 97
+            "CSMCAN",             // 98
+            "None",             // 99
+            "None",             // 100
+            "VN5610A",             // 101
+            "VN7640",             // 102
+            "None",             // 103
+            "VX1135",             // 104
+            "VN4610",             // 105
+            "None",             // 106
+            "VT6306",             // 107
+            "VT6104A",             // 108
+            "VN5430",             // 109
+            "None",             // 110
+            "None",             // 111
+            "VN1530",             // 112
+            "VN1531"             // 113
+            };
+    }
+
 }
