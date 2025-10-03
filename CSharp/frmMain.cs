@@ -1277,6 +1277,53 @@ namespace TSMasterAPI_CSharp
         {
             TsMasterApi.tsapp_ethernet_channel_compress_mode(0, chkEtherCompressedMode.Checked);
         }
+
+        private IntPtr FClientHandle;
+
+        private void btnCreateRPCClient_Click(object sender, EventArgs e)
+        {
+            if (0 == TsMasterApi.rpc_tsmaster_create_client("TSMaster", ref FClientHandle))
+            {
+               Log("Add client success: " + FClientHandle.ToString());
+                TsMasterApi.rpc_tsmaster_activate_client(FClientHandle, true);
+            }
+        }
+
+        private void btnRemoveRPCClient_Click(object sender, EventArgs e)
+        {
+            if (0 == TsMasterApi.rpc_tsmaster_delete_client(FClientHandle))
+            {
+                Log("Remove client success: " + FClientHandle.ToString());
+            }
+        }
+
+        private void btnCallSystemAPI_Click(object sender, EventArgs e)
+        {
+            byte[] ret = new byte[2056];
+            unsafe
+            {
+                fixed (byte* pArg = &ret[0])
+                {
+                    TsMasterApi.rpc_tsmaster_call_system_api(FClientHandle, "com.cal_get_ecu_a2l_list", 1, 2056, (IntPtr)(&pArg));
+                    string msg = Encoding.UTF8.GetString(ret);
+                    MessageBox.Show(msg);
+                }
+            }
+        }
+
+        private void btnCallSystemAPI1_Click(object sender, EventArgs e)
+        {
+            byte[] ret = new byte[2056];
+            unsafe
+            {
+                fixed (byte* pArg = &ret[0])
+                {
+                    TsMasterApi.rpc_tsmaster_call_system_api(FClientHandle, "app.get_configuration_file_path", 1, 2056, (IntPtr)(&pArg));
+                    string msg = Encoding.UTF8.GetString(ret);
+                    MessageBox.Show(msg);
+                }
+            }
+        }
     }
 
     public class TCANHardwareInfo

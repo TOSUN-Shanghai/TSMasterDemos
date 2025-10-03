@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.MM = new System.Windows.Forms.TextBox();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -167,11 +166,16 @@
             this.btnDeletePreciseCyclicMessage = new System.Windows.Forms.Button();
             this.btnAddPreciseCyclicMessage = new System.Windows.Forms.Button();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.chkEtherCompressedMode = new System.Windows.Forms.CheckBox();
+            this.btnEthernetCompressedMode = new System.Windows.Forms.Button();
             this.btnTransmitData = new System.Windows.Forms.Button();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.btnRemoveRPCClient = new System.Windows.Forms.Button();
+            this.btnCreateRPCClient = new System.Windows.Forms.Button();
+            this.btnCallSystemAPI = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.btnEthernetCompressedMode = new System.Windows.Forms.Button();
-            this.chkEtherCompressedMode = new System.Windows.Forms.CheckBox();
+            this.btnCallSystemAPI1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -185,6 +189,7 @@
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.SuspendLayout();
             // 
             // MM
@@ -215,6 +220,7 @@
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage8);
+            this.tabControl1.Controls.Add(this.tabPage9);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -1617,7 +1623,6 @@
             this.tBQueryResult.Name = "tBQueryResult";
             this.tBQueryResult.Size = new System.Drawing.Size(1267, 206);
             this.tBQueryResult.TabIndex = 9;
-            //this.tBQueryResult.Text = resources.GetString("tBQueryResult.Text");
             // 
             // label22
             // 
@@ -1915,6 +1920,28 @@
             this.tabPage8.Text = "Ethernet";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // chkEtherCompressedMode
+            // 
+            this.chkEtherCompressedMode.AutoSize = true;
+            this.chkEtherCompressedMode.Checked = true;
+            this.chkEtherCompressedMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkEtherCompressedMode.Location = new System.Drawing.Point(309, 39);
+            this.chkEtherCompressedMode.Name = "chkEtherCompressedMode";
+            this.chkEtherCompressedMode.Size = new System.Drawing.Size(120, 16);
+            this.chkEtherCompressedMode.TabIndex = 2;
+            this.chkEtherCompressedMode.Text = "IsCompressedMode";
+            this.chkEtherCompressedMode.UseVisualStyleBackColor = true;
+            // 
+            // btnEthernetCompressedMode
+            // 
+            this.btnEthernetCompressedMode.Location = new System.Drawing.Point(128, 35);
+            this.btnEthernetCompressedMode.Name = "btnEthernetCompressedMode";
+            this.btnEthernetCompressedMode.Size = new System.Drawing.Size(156, 23);
+            this.btnEthernetCompressedMode.TabIndex = 1;
+            this.btnEthernetCompressedMode.Text = "Set Compressed Mode";
+            this.btnEthernetCompressedMode.UseVisualStyleBackColor = true;
+            this.btnEthernetCompressedMode.Click += new System.EventHandler(this.btnEthernetCompressedMode_Click);
+            // 
             // btnTransmitData
             // 
             this.btnTransmitData.Location = new System.Drawing.Point(128, 87);
@@ -1924,6 +1951,49 @@
             this.btnTransmitData.Text = "TransmitData";
             this.btnTransmitData.UseVisualStyleBackColor = true;
             this.btnTransmitData.Click += new System.EventHandler(this.button4_Click_2);
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.Controls.Add(this.btnCallSystemAPI1);
+            this.tabPage9.Controls.Add(this.btnRemoveRPCClient);
+            this.tabPage9.Controls.Add(this.btnCreateRPCClient);
+            this.tabPage9.Controls.Add(this.btnCallSystemAPI);
+            this.tabPage9.Location = new System.Drawing.Point(4, 22);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Size = new System.Drawing.Size(1273, 598);
+            this.tabPage9.TabIndex = 8;
+            this.tabPage9.Text = "RPC";
+            this.tabPage9.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveRPCClient
+            // 
+            this.btnRemoveRPCClient.Location = new System.Drawing.Point(67, 138);
+            this.btnRemoveRPCClient.Name = "btnRemoveRPCClient";
+            this.btnRemoveRPCClient.Size = new System.Drawing.Size(160, 23);
+            this.btnRemoveRPCClient.TabIndex = 2;
+            this.btnRemoveRPCClient.Text = "Remove RPC Client";
+            this.btnRemoveRPCClient.UseVisualStyleBackColor = true;
+            this.btnRemoveRPCClient.Click += new System.EventHandler(this.btnRemoveRPCClient_Click);
+            // 
+            // btnCreateRPCClient
+            // 
+            this.btnCreateRPCClient.Location = new System.Drawing.Point(67, 89);
+            this.btnCreateRPCClient.Name = "btnCreateRPCClient";
+            this.btnCreateRPCClient.Size = new System.Drawing.Size(160, 23);
+            this.btnCreateRPCClient.TabIndex = 1;
+            this.btnCreateRPCClient.Text = "Create RPC Client";
+            this.btnCreateRPCClient.UseVisualStyleBackColor = true;
+            this.btnCreateRPCClient.Click += new System.EventHandler(this.btnCreateRPCClient_Click);
+            // 
+            // btnCallSystemAPI
+            // 
+            this.btnCallSystemAPI.Location = new System.Drawing.Point(407, 89);
+            this.btnCallSystemAPI.Name = "btnCallSystemAPI";
+            this.btnCallSystemAPI.Size = new System.Drawing.Size(278, 23);
+            this.btnCallSystemAPI.TabIndex = 0;
+            this.btnCallSystemAPI.Text = "Call System API";
+            this.btnCallSystemAPI.UseVisualStyleBackColor = true;
+            this.btnCallSystemAPI.Click += new System.EventHandler(this.btnCallSystemAPI_Click);
             // 
             // timer1
             // 
@@ -1936,27 +2006,15 @@
             this.timer2.Enabled = true;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // btnEthernetCompressedMode
+            // btnCallSystemAPI1
             // 
-            this.btnEthernetCompressedMode.Location = new System.Drawing.Point(128, 35);
-            this.btnEthernetCompressedMode.Name = "btnEthernetCompressedMode";
-            this.btnEthernetCompressedMode.Size = new System.Drawing.Size(156, 23);
-            this.btnEthernetCompressedMode.TabIndex = 1;
-            this.btnEthernetCompressedMode.Text = "Set Compressed Mode";
-            this.btnEthernetCompressedMode.UseVisualStyleBackColor = true;
-            this.btnEthernetCompressedMode.Click += new System.EventHandler(this.btnEthernetCompressedMode_Click);
-            // 
-            // chkEtherCompressedMode
-            // 
-            this.chkEtherCompressedMode.AutoSize = true;
-            this.chkEtherCompressedMode.Checked = true;
-            this.chkEtherCompressedMode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEtherCompressedMode.Location = new System.Drawing.Point(309, 39);
-            this.chkEtherCompressedMode.Name = "chkEtherCompressedMode";
-            this.chkEtherCompressedMode.Size = new System.Drawing.Size(120, 16);
-            this.chkEtherCompressedMode.TabIndex = 2;
-            this.chkEtherCompressedMode.Text = "IsCompressedMode";
-            this.chkEtherCompressedMode.UseVisualStyleBackColor = true;
+            this.btnCallSystemAPI1.Location = new System.Drawing.Point(407, 138);
+            this.btnCallSystemAPI1.Name = "btnCallSystemAPI1";
+            this.btnCallSystemAPI1.Size = new System.Drawing.Size(278, 23);
+            this.btnCallSystemAPI1.TabIndex = 3;
+            this.btnCallSystemAPI1.Text = "Call System API1";
+            this.btnCallSystemAPI1.UseVisualStyleBackColor = true;
+            this.btnCallSystemAPI1.Click += new System.EventHandler(this.btnCallSystemAPI1_Click);
             // 
             // frmMain
             // 
@@ -1991,6 +2049,7 @@
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2140,6 +2199,11 @@
         private System.Windows.Forms.Button btnTransmitData;
         private System.Windows.Forms.Button btnEthernetCompressedMode;
         private System.Windows.Forms.CheckBox chkEtherCompressedMode;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Button btnCallSystemAPI;
+        private System.Windows.Forms.Button btnCreateRPCClient;
+        private System.Windows.Forms.Button btnRemoveRPCClient;
+        private System.Windows.Forms.Button btnCallSystemAPI1;
     }
 }
 

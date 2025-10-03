@@ -117,29 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="tBQueryResult.Text" xml:space="preserve">
-    <value>取第0个数据库第3个节点发送的第4条报文DLC:
-[1] 首先取得报文在报文总列表中的索引 idx
-if 0 = tsdb_get_can_db_info(
-  0,   // 第0个数据库
-  DT_INT_Node_List_TX_Message_List_Message_Index, // 节点列表中的发送报文列表的item属性
-  3,   // 第3个节点
-  4,   // 第4条报文
-  @p   // 返回值，均是字符串
-) then begin
-  idx := strtointdef(string(ansistring(p)), -1);
-  // [2] 再到报文列表中取出位于idx索引处的报文DLC属性
-  if DBCToolkit_GetDBC(
-    0,     // 第0个数据库
-    DT_INT_Message_List_DLC, // 报文列表中的item属性
-    idx,   // 第idx个报文
-    -1,    // 此参数无用
-    @p     // 返回值，均是字符串
-  ) begin
-    dlc := strtointdef(string(ansistring(p)), -1);
-  end;
-end;</value>
-  </data>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
