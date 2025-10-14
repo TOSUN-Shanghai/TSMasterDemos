@@ -2380,7 +2380,7 @@ function tsapp_get_hw_info_by_index_verbose(const AIndex: Integer;
                                       ): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_set_vendor_detect_preferences(const AScanTOSUN, AScanVector, AScanPeak, AScanKvaser, AScanZLG, ADetectIntrepidcs, ADetectCANable: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_get_vendor_detect_preferences(out AScanTOSUN, AScanVector, AScanPeak, AScanKvaser, AScanZLG, ADetectIntrepidcs, ADetectCANable: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function tsapp_configure_baudrate_lin(const AIdxChn: Integer;const ABaudrateKbps: Single; const AProtocol:Integer): Integer; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}{Bps:such as 19200 bps}
+function tsapp_configure_baudrate_lin(const AIdxChn: Integer; const ABaudrateKbps: Single; const AProtocol: Integer): Integer; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF} {Bps:such as 19200 bps}
 function tsapp_configure_baudrate_can(const AIdxChn: integer; const ABaudrateKbps: Single; const AListenOnly: boolean; const AInstallTermResistor120Ohm: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_configure_baudrate_canfd(const AIdxChn: integer; const AArbRateKbps, ADataRateKbps: Single; const AControllerType: TLIBCANFDControllerType; const AControllerMode: TLIBCANFDControllerMode; const AInstallTermResistor120Ohm: Boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsapp_configure_ethernet_parameter(
@@ -3540,6 +3540,11 @@ function can_rbs_time_monitor_config(const AEnableTimeMonitor: boolean; const AT
 function can_il_register_signal_event_by_id(const AIdxChn: int32; const AFrameID: int32; const APDUID: uint32; const ASignalName: pansichar; const ATriggerOnlyChanged: int32; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function can_il_unregister_signal_event_by_id(const AIdxChn: int32; const AFrameID: int32; const APDUID: uint32; const ASignalName: pansichar; AEvent: TOnSignalEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function crypto_signature_rsa(const key_coding: byte; const hash_method: byte; const rsa_padding_mode: byte; const data: pbyte; const datalength: NativeUInt; const privatekey: pbyte; const keylength: NativeUInt; const signature: pbyte; const signaturelength: PNativeUInt): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_il_register_autosar_pdu_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_il_unregister_autosar_pdu_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUQueueEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_il_register_autosar_pdu_pretx_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function eth_il_unregister_autosar_pdu_pretx_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function configure_lin_baudrate(const AChn: int32; const ABaudrateKbps: single; const AProtocol: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

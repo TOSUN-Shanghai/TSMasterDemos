@@ -6519,3 +6519,38 @@ crypto_signature_rsa = dll.crypto_signature_rsa
 crypto_signature_rsa.restype = s32
 crypto_signature_rsa.argtypes = [u8,u8,u8,pu8,size_t,pu8,size_t,pu8,psize_t]
 
+#arg[0] AChn
+#arg[1] AHeaderID
+#arg[2] AEvent
+eth_il_register_autosar_pdu_event = dll.eth_il_register_autosar_pdu_event
+eth_il_register_autosar_pdu_event.restype = s32
+eth_il_register_autosar_pdu_event.argtypes = [s32,u32,TOnAutoSARPDUQueueEvent]
+
+#arg[0] AChn
+#arg[1] AHeaderID
+#arg[2] AEvent
+eth_il_unregister_autosar_pdu_event = dll.eth_il_unregister_autosar_pdu_event
+eth_il_unregister_autosar_pdu_event.restype = s32
+eth_il_unregister_autosar_pdu_event.argtypes = [s32,u32,TOnAutoSARPDUQueueEvent]
+
+#arg[0] AChn
+#arg[1] AHeaderID
+#arg[2] AEvent
+eth_il_register_autosar_pdu_pretx_event = dll.eth_il_register_autosar_pdu_pretx_event
+eth_il_register_autosar_pdu_pretx_event.restype = s32
+eth_il_register_autosar_pdu_pretx_event.argtypes = [s32,u32,TOnAutoSARPDUPreTxEvent]
+
+#arg[0] AChn
+#arg[1] AHeaderID
+#arg[2] AEvent
+eth_il_unregister_autosar_pdu_pretx_event = dll.eth_il_unregister_autosar_pdu_pretx_event
+eth_il_unregister_autosar_pdu_pretx_event.restype = s32
+eth_il_unregister_autosar_pdu_pretx_event.argtypes = [s32,u32,TOnAutoSARPDUPreTxEvent]
+
+#arg[0] AChn
+#arg[1] ABaudrateKbps
+#arg[2] AProtocol
+configure_lin_baudrate = dll.configure_lin_baudrate
+configure_lin_baudrate.restype = s32
+configure_lin_baudrate.argtypes = [s32,single,s32]
+

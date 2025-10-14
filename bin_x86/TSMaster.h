@@ -4066,6 +4066,16 @@ TSAPI(s32)can_il_unregister_signal_event_by_id(const s32 AIdxChn,const s32 AFram
 
 TSAPI(s32)crypto_signature_rsa(const u8 key_coding,const u8 hash_method,const u8 rsa_padding_mode,const pu8 data,const size_t datalength,const pu8 privatekey,const size_t keylength,const pu8 signature,const psize_t signaturelength);
 
+TSAPI(s32)eth_il_register_autosar_pdu_event(const s32 AChn,const u32 AHeaderID,const TOnAutoSARPDUQueueEvent AEvent);
+
+TSAPI(s32)eth_il_unregister_autosar_pdu_event(const s32 AChn,const u32 AHeaderID,const TOnAutoSARPDUQueueEvent AEvent);
+
+TSAPI(s32)eth_il_register_autosar_pdu_pretx_event(const s32 AChn,const u32 AHeaderID,const TOnAutoSARPDUPreTxEvent AEvent);
+
+TSAPI(s32)eth_il_unregister_autosar_pdu_pretx_event(const s32 AChn,const u32 AHeaderID,const TOnAutoSARPDUPreTxEvent AEvent);
+
+TSAPI(s32)configure_lin_baudrate(const s32 AChn,const float ABaudrateKbps,const s32 AProtocol);
+
 #if defined ( __cplusplus )
 }
 #endif
