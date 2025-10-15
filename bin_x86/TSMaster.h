@@ -1929,10 +1929,12 @@ typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const char* AP
 // Arg[1] APDUName
 // Arg[2] AID
 // Arg[3] ASrcDataLength
-// Arg[4] ASrcData
-// Arg[5] ADestDataLength
-// Arg[6] ADestData
-typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const pu8 ASrcData,const pu32 ADestDataLength,const pu8 ADestData);
+// Arg[4] ASrcSecuredDataLength
+// Arg[5] ASrcData
+// Arg[6] AIsCopyToNewBuffer
+// Arg[7] ANewBufferDataLength
+// Arg[8] ANewBuffer
+typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const u32 ASrcSecuredDataLength,const pu8 ASrcData,const pu8 AIsCopyToNewBuffer,const pu32 ANewBufferDataLength,const pu8 ANewBuffer);
 // Arg[0] ASignalName
 // Arg[1] ARawValue
 // Arg[2] APhyValue
