@@ -3545,6 +3545,11 @@ function eth_il_unregister_autosar_pdu_event(const AChn: int32; const AHeaderID:
 function eth_il_register_autosar_pdu_pretx_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function eth_il_unregister_autosar_pdu_pretx_event(const AChn: int32; const AHeaderID: uint32; const AEvent: TOnAutoSARPDUPreTxEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function configure_lin_baudrate(const AChn: int32; const ABaudrateKbps: single; const AProtocol: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function simulate_can_async(const ACAN: PLIBCAN; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function simulate_canfd_async(const ACANFD: PLIBCANFD; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function simulate_lin_async(const ALIN: PLIBLIN; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function simulate_flexray_async(const AFlexRay: PLIBFlexRay; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function simulate_ethernet_async(const AEthernetHeader: PLIBEthernetHeader; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

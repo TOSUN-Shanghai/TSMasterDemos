@@ -6554,3 +6554,33 @@ configure_lin_baudrate = dll.configure_lin_baudrate
 configure_lin_baudrate.restype = s32
 configure_lin_baudrate.argtypes = [s32,single,s32]
 
+#arg[0] ACAN
+#arg[1] AIsTx
+simulate_can_async = dll.simulate_can_async
+simulate_can_async.restype = s32
+simulate_can_async.argtypes = [PLIBCAN,u8]
+
+#arg[0] ACANFD
+#arg[1] AIsTx
+simulate_canfd_async = dll.simulate_canfd_async
+simulate_canfd_async.restype = s32
+simulate_canfd_async.argtypes = [PLIBCANFD,u8]
+
+#arg[0] ALIN
+#arg[1] AIsTx
+simulate_lin_async = dll.simulate_lin_async
+simulate_lin_async.restype = s32
+simulate_lin_async.argtypes = [PLIBLIN,u8]
+
+#arg[0] AFlexRay
+#arg[1] AIsTx
+simulate_flexray_async = dll.simulate_flexray_async
+simulate_flexray_async.restype = s32
+simulate_flexray_async.argtypes = [PLIBFlexRay,u8]
+
+#arg[0] AEthernetHeader
+#arg[1] AIsTx
+simulate_ethernet_async = dll.simulate_ethernet_async
+simulate_ethernet_async.restype = s32
+simulate_ethernet_async.argtypes = [PLIBEthernetHeader,u8]
+

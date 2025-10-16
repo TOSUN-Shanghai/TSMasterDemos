@@ -4078,6 +4078,16 @@ TSAPI(s32)eth_il_unregister_autosar_pdu_pretx_event(const s32 AChn,const u32 AHe
 
 TSAPI(s32)configure_lin_baudrate(const s32 AChn,const float ABaudrateKbps,const s32 AProtocol);
 
+TSAPI(s32)simulate_can_async(const PLIBCAN ACAN,const u8 AIsTx);
+
+TSAPI(s32)simulate_canfd_async(const PLIBCANFD ACANFD,const u8 AIsTx);
+
+TSAPI(s32)simulate_lin_async(const PLIBLIN ALIN,const u8 AIsTx);
+
+TSAPI(s32)simulate_flexray_async(const PLIBFlexRay AFlexRay,const u8 AIsTx);
+
+TSAPI(s32)simulate_ethernet_async(const PLIBEthernetHeader AEthernetHeader,const u8 AIsTx);
+
 #if defined ( __cplusplus )
 }
 #endif
