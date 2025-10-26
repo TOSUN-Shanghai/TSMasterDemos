@@ -47,10 +47,7 @@ TOnAutoSARPDUQueueEvent = WINFUNCTYPE(None,s32,pchar,u64,u8,u32,u32,pu8)
 # Arg[3] ASrcDataLength
 # Arg[4] ASrcSecuredDataLength
 # Arg[5] ASrcData
-# Arg[6] AIsCopyToNewBuffer
-# Arg[7] ANewBufferDataLength
-# Arg[8] ANewBuffer
-TOnAutoSARPDUPreTxEvent = WINFUNCTYPE(s32,s32,pchar,u32,u32,u32,pu8,pu8,pu32,pu8)
+TOnAutoSARPDUPreTxEvent = WINFUNCTYPE(s32,s32,pchar,u32,u32,u32,pu8)
 # Arg[0] ASignalName
 # Arg[1] ARawValue
 # Arg[2] APhyValue

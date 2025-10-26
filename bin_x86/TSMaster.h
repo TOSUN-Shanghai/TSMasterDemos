@@ -1931,10 +1931,7 @@ typedef void(__stdcall*TOnAutoSARPDUQueueEvent)(const s32 AChnIdx,const char* AP
 // Arg[3] ASrcDataLength
 // Arg[4] ASrcSecuredDataLength
 // Arg[5] ASrcData
-// Arg[6] AIsCopyToNewBuffer
-// Arg[7] ANewBufferDataLength
-// Arg[8] ANewBuffer
-typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const u32 ASrcSecuredDataLength,const pu8 ASrcData,const pu8 AIsCopyToNewBuffer,const pu32 ANewBufferDataLength,const pu8 ANewBuffer);
+typedef s32 (__stdcall*TOnAutoSARPDUPreTxEvent)(const s32 AChnIdx,const char* APDUName,const u32 AID,const u32 ASrcDataLength,const u32 ASrcSecuredDataLength,const pu8 ASrcData);
 // Arg[0] ASignalName
 // Arg[1] ARawValue
 // Arg[2] APhyValue
@@ -3151,6 +3148,10 @@ TSAPI(s32)tssocket_tcp_close(const s32 s);
 TSAPI(s32)tssocket_tcp_close_v2(const s32 s,const s32 AForceExitTimeWait);
 
 TSAPI(s32)tssocket_tcp_send(const s32 s,const pu8 AData,const s32 ASize);
+
+TSAPI(s32)tssocket_tcp_send_sync(const s32 s,const pu8 AData,const s32 ASize);
+
+TSAPI(s32)tssocket_tcp_send_async(const s32 s,const pu8 AData,const s32 ASize);
 
 TSAPI(s32)tssocket_tcp_sendto_client(const s32 s,const char* AIPEndPoint,const pu8 AData,const s32 ASize);
 

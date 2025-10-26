@@ -3339,6 +3339,20 @@ tssocket_tcp_send.restype = s32
 tssocket_tcp_send.argtypes = [s32,pu8,s32]
 
 #arg[0] s
+#arg[1] AData
+#arg[2] ASize
+tssocket_tcp_send_sync = dll.tssocket_tcp_send_sync
+tssocket_tcp_send_sync.restype = s32
+tssocket_tcp_send_sync.argtypes = [s32,pu8,s32]
+
+#arg[0] s
+#arg[1] AData
+#arg[2] ASize
+tssocket_tcp_send_async = dll.tssocket_tcp_send_async
+tssocket_tcp_send_async.restype = s32
+tssocket_tcp_send_async.argtypes = [s32,pu8,s32]
+
+#arg[0] s
 #arg[1] AIPEndPoint
 #arg[2] AData
 #arg[3] ASize

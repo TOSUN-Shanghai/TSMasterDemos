@@ -735,7 +735,7 @@ type
   TOnRpcData = procedure(const APointer: Pointer; const ASize: NativeInt); stdcall;
   TOnAutoSARE2ECanEvt = procedure(const ACAN: PlibCANFD; const ADataId: UInt32; AValue: PUInt64); stdcall;
   TOnAutoSARPDUQueueEvent = procedure(const AChnIdx: integer; const APDUName: PAnsichar; const ATimestamp: UInt64; const AIsTx: UInt8; const AID: UInt32; const ADataLength: UInt32; const AData: PByte); stdcall;
-  TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const APDUName: PAnsichar; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcSecuredDataLength: UInt32; const ASrcData: PByte; const AIsCopyToNewBuffer: PByte; const ANewBufferDataLength: PUint32; const ANewBuffer: PByte): integer; stdcall;
+  TOnAutoSARPDUPreTxEvent = function(const AChnIdx: integer; const APDUName: PAnsichar; const AID: UInt32; const ASrcDataLength: UInt32; const ASrcSecuredDataLength: UInt32; const ASrcData: PByte{; const AIsCopyToNewBuffer: PByte; const ANewBufferDataLength: PUint32; const ANewBuffer: PByte}): integer; stdcall;
   TOnSignalEvent = procedure(const ASignalName: PAnsichar; const ARawValue: Int64; const APhyValue: double); stdcall;
   TOnUSBPlugEvent = procedure(const AVidPid: pansichar; const ASerial: pansichar); stdcall;
   TOnIoIPData_API = procedure(const APointer: Pointer; const ASize: Integer) of object; stdcall;
@@ -3063,6 +3063,8 @@ function tssocket_tcp_connect(const s: Integer; const AIPEndPoint: PAnsichar): i
 function tssocket_tcp_close(const s: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_close_v2(const s: Integer; const AForceExitTimeWait: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_send(const s: Integer; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_send_sync(const s: Integer; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tssocket_tcp_send_async(const s: Integer; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tssocket_tcp_sendto_client(const s: Integer; const AIPEndPoint: PAnsiChar; const AData: PByte; const ASize: integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 //function tssocket_udp
 function tssocket_udp(const ANetworkIndex: Integer; const AIPEndPoint: PAnsichar; const ASocketHandle: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
