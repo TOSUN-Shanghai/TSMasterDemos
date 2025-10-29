@@ -3552,6 +3552,9 @@ function simulate_canfd_async(const ACANFD: PLIBCANFD; const AIsTx: byte): integ
 function simulate_lin_async(const ALIN: PLIBLIN; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function simulate_flexray_async(const AFlexRay: PLIBFlexRay; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function simulate_ethernet_async(const AEthernetHeader: PLIBEthernetHeader; const AIsTx: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_rbs_set_signal_raw_by_address(const ASymbolAddress: pansichar; const ARaw: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_rbs_set_signal_raw_by_address(const ASymbolAddress: pansichar; const ARaw: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function lin_rbs_get_signal_raw_by_address(const ASymbolAddress: pansichar; ARaw: puint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

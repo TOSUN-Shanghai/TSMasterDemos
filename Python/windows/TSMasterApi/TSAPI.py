@@ -6598,3 +6598,21 @@ simulate_ethernet_async = dll.simulate_ethernet_async
 simulate_ethernet_async.restype = s32
 simulate_ethernet_async.argtypes = [PLIBEthernetHeader,u8]
 
+#arg[0] ASymbolAddress
+#arg[1] ARaw
+can_rbs_set_signal_raw_by_address = dll.can_rbs_set_signal_raw_by_address
+can_rbs_set_signal_raw_by_address.restype = s32
+can_rbs_set_signal_raw_by_address.argtypes = [pchar,u64]
+
+#arg[0] ASymbolAddress
+#arg[1] ARaw
+lin_rbs_set_signal_raw_by_address = dll.lin_rbs_set_signal_raw_by_address
+lin_rbs_set_signal_raw_by_address.restype = s32
+lin_rbs_set_signal_raw_by_address.argtypes = [pchar,u64]
+
+#arg[0] ASymbolAddress
+#arg[1] ARaw
+lin_rbs_get_signal_raw_by_address = dll.lin_rbs_get_signal_raw_by_address
+lin_rbs_get_signal_raw_by_address.restype = s32
+lin_rbs_get_signal_raw_by_address.argtypes = [pchar,pu64]
+

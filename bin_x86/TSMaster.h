@@ -4089,6 +4089,12 @@ TSAPI(s32)simulate_flexray_async(const PLIBFlexRay AFlexRay,const u8 AIsTx);
 
 TSAPI(s32)simulate_ethernet_async(const PLIBEthernetHeader AEthernetHeader,const u8 AIsTx);
 
+TSAPI(s32)can_rbs_set_signal_raw_by_address(const char* ASymbolAddress,const u64 ARaw);
+
+TSAPI(s32)lin_rbs_set_signal_raw_by_address(const char* ASymbolAddress,const u64 ARaw);
+
+TSAPI(s32)lin_rbs_get_signal_raw_by_address(const char* ASymbolAddress,const pu64 ARaw);
+
 #if defined ( __cplusplus )
 }
 #endif
