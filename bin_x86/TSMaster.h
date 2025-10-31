@@ -71,6 +71,9 @@ typedef unsigned __int32** ppu32;
 typedef signed __int32** pps32;
 typedef unsigned __int64** ppu64;
 typedef signed __int64** pps64;
+typedef size_t native_int;
+typedef size_t* pnative_int;
+typedef size_t** ppnative_int;
 
 typedef float  single;
 typedef float* psingle;
@@ -1841,7 +1844,7 @@ typedef struct _Tts_sockaddr_in6{
 }Tts_sockaddr_in6, *Pts_sockaddr_in6, *pts_sockaddr_in6, **PPts_sockaddr_in6, **ppts_sockaddr_in6;
 
 typedef struct _Tts_iovec{
-    ps32 iov_base;
+    pnative_int iov_base;
     size_t iov_len;
 }Tts_iovec, *Pts_iovec, *pts_iovec, **PPts_iovec, **ppts_iovec;
 
@@ -1861,13 +1864,13 @@ typedef struct _Tts_pollfd{
 }Tts_pollfd, *Pts_pollfd, *pts_pollfd, **PPts_pollfd, **ppts_pollfd;
 
 typedef struct _Tts_msghdr{
-    ps32 msg_name;
+    pnative_int msg_name;
     u32 msg_namelen;
     u32 reserved0;
     Pts_iovec msg_iov;
     s32 msg_iovlen;
     u32 reserved1;
-    ps32 msg_control;
+    pnative_int msg_control;
     u32 msg_controllen;
     s32 msg_flags;
 }Tts_msghdr, *Pts_msghdr, *pts_msghdr, **PPts_msghdr, **ppts_msghdr;
@@ -1888,31 +1891,31 @@ typedef void(__cdecl*TCProcedure)();
 typedef void(__stdcall*TCANQueueEvent_API)(const PLIBCAN AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TGPSQueueEvent_Win32)(const ps32 AObj,const PLIBGPSData AData);
+typedef void(__stdcall*TGPSQueueEvent_Win32)(const pnative_int AObj,const PLIBGPSData AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TCANQueueEvent_Win32)(const ps32 AObj,const PLIBCAN AData);
+typedef void(__stdcall*TCANQueueEvent_Win32)(const pnative_int AObj,const PLIBCAN AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TCANFDQueueEvent_Win32)(const ps32 AObj,const PLIBCANFD AData);
+typedef void(__stdcall*TCANFDQueueEvent_Win32)(const pnative_int AObj,const PLIBCANFD AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TFlexRayQueueEvent_Win32)(const ps32 AObj,const PLIBFlexRay AData);
+typedef void(__stdcall*TFlexRayQueueEvent_Win32)(const pnative_int AObj,const PLIBFlexRay AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TEthernetQueueEvent_Win32)(const ps32 AObj,const PLIBEthernetHeader AData);
+typedef void(__stdcall*TEthernetQueueEvent_Win32)(const pnative_int AObj,const PLIBEthernetHeader AData);
 // Arg[0] AObj
 // Arg[1] AData
-typedef void(__stdcall*TLINQueueEvent_Win32)(const ps32 AObj,const PLIBLIN AData);
+typedef void(__stdcall*TLINQueueEvent_Win32)(const pnative_int AObj,const PLIBLIN AData);
 // Arg[0] AStr
 // Arg[1] ALevel
 typedef void(__stdcall*TLIBTSMasterLogger)(const char* AStr,const s32 ALevel);
 // Arg[0] APointer
 // Arg[1] ASize
-typedef void(__stdcall*TOnIoIPData)(const ps32 APointer,const s32 ASize);
+typedef void(__stdcall*TOnIoIPData)(const pnative_int APointer,const s32 ASize);
 // Arg[0] APointer
 // Arg[1] ASize
-typedef void(__stdcall*TOnRpcData)(const ps32 APointer,const size_t ASize);
+typedef void(__stdcall*TOnRpcData)(const pnative_int APointer,const size_t ASize);
 // Arg[0] ACAN
 // Arg[1] ADataId
 // Arg[2] AValue
@@ -1941,7 +1944,7 @@ typedef void(__stdcall*TOnSignalEvent)(const char* ASignalName,const s64 ARawVal
 typedef void(__stdcall*TOnUSBPlugEvent)(const char* AVidPid,const char* ASerial);
 // Arg[0] APointer
 // Arg[1] ASize
-typedef void(__stdcall*TOnIoIPData_API)(const ps32 APointer,const s32 ASize);
+typedef void(__stdcall*TOnIoIPData_API)(const pnative_int APointer,const s32 ASize);
 // Arg[0] AIPAddress
 // Arg[1] APort
 typedef void(__stdcall*TOnIoIPConnection)(const char* AIPAddress,const s32 APort);
@@ -1954,7 +1957,7 @@ typedef void(__stdcall*TOnIoIPConnection_API)(const char* AIPAddress,const s32 A
 // Arg[3] ADesc
 // Arg[4] AExample
 // Arg[5] AParaCount
-typedef void(__stdcall*TLIBWriteAPIDocumentFunc)(const ps32 AObj,const char* AName,const char* AGroup,const char* ADesc,const char* AExample,const s32 AParaCount);
+typedef void(__stdcall*TLIBWriteAPIDocumentFunc)(const pnative_int AObj,const char* AName,const char* AGroup,const char* ADesc,const char* AExample,const s32 AParaCount);
 // Arg[0] AObj
 // Arg[1] AIdx
 // Arg[2] AAPIName
@@ -1962,11 +1965,11 @@ typedef void(__stdcall*TLIBWriteAPIDocumentFunc)(const ps32 AObj,const char* ANa
 // Arg[4] AIsConst
 // Arg[5] AParaType
 // Arg[6] ADesc
-typedef void(__stdcall*TLIBWriteAPIParaFunc)(const ps32 AObj,const s32 AIdx,const char* AAPIName,const char* AParaName,const bool AIsConst,const char* AParaType,const char* ADesc);
+typedef void(__stdcall*TLIBWriteAPIParaFunc)(const pnative_int AObj,const s32 AIdx,const char* AAPIName,const char* AParaName,const bool AIsConst,const char* AParaType,const char* ADesc);
 // Arg[0] AObj
 // Arg[1] AWriteDoc
 // Arg[2] AWritePara
-typedef void(__stdcall*TLIBWriteAPIDocument)(const ps32 AObj,const TLIBWriteAPIDocumentFunc AWriteDoc,const TLIBWriteAPIParaFunc AWritePara);
+typedef void(__stdcall*TLIBWriteAPIDocument)(const pnative_int AObj,const TLIBWriteAPIDocumentFunc AWriteDoc,const TLIBWriteAPIParaFunc AWritePara);
 typedef bool (__stdcall*TLIBCheckResult)();
 // Arg[0] ACompleteName
 typedef void(__stdcall*TLIBOnSysVarChange)(const char* ACompleteName);
@@ -1974,11 +1977,11 @@ typedef void(__stdcall*TLIBOnSysVarChange)(const char* ACompleteName);
 // Arg[1] ASocket
 // Arg[2] AClientSocket
 // Arg[3] AResult
-typedef void(__stdcall*TSSocketListenEvent)(const ps32 AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
+typedef void(__stdcall*TSSocketListenEvent)(const pnative_int AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
-typedef void(__stdcall*TSSocketNotifyEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult);
+typedef void(__stdcall*TSSocketNotifyEvent)(const pnative_int AObj,const s32 ASocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -1986,14 +1989,14 @@ typedef void(__stdcall*TSSocketNotifyEvent)(const ps32 AObj,const s32 ASocket,co
 // Arg[4] APort
 // Arg[5] AData
 // Arg[6] ASize
-typedef void(__stdcall*TSSocketReceiveEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEvent)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] ARemoteEndPoint
 // Arg[4] AData
 // Arg[5] ASize
-typedef void(__stdcall*TSSocketReceiveEventV2)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEventV2)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -2001,22 +2004,22 @@ typedef void(__stdcall*TSSocketReceiveEventV2)(const ps32 AObj,const s32 ASocket
 // Arg[4] ASrcEndPoint
 // Arg[5] AData
 // Arg[6] ASize
-typedef void(__stdcall*TSSocketReceiveEventV3)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEventV3)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] AData
 // Arg[4] ASize
-typedef void(__stdcall*TSSocketTransmitEvent)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketTransmitEvent)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AClientSocket
 // Arg[3] AResult
-typedef void(__stdcall*TSSocketListenEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
+typedef void(__stdcall*TSSocketListenEvent_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AClientSocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
-typedef void(__stdcall*TSSocketNotifyEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult);
+typedef void(__stdcall*TSSocketNotifyEvent_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AResult);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -2024,14 +2027,14 @@ typedef void(__stdcall*TSSocketNotifyEvent_Win32)(const ps32 AObj,const s32 ASoc
 // Arg[4] APort
 // Arg[5] AData
 // Arg[6] ASize
-typedef void(__stdcall*TSSocketReceiveEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEvent_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const u32 AAddr,const u32 APort,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] ARemoteEndPoint
 // Arg[4] AData
 // Arg[5] ASize
-typedef void(__stdcall*TSSocketReceiveEventV2_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEventV2_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const char* ARemoteEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
@@ -2039,13 +2042,13 @@ typedef void(__stdcall*TSSocketReceiveEventV2_Win32)(const ps32 AObj,const s32 A
 // Arg[4] ASrcEndPoint
 // Arg[5] AData
 // Arg[6] ASize
-typedef void(__stdcall*TSSocketReceiveEventV3_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketReceiveEventV3_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const char* ADstEndPoint,const char* ASrcEndPoint,const pu8 AData,const s32 ASize);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AResult
 // Arg[3] AData
 // Arg[4] ASize
-typedef void(__stdcall*TSSocketTransmitEvent_Win32)(const ps32 AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
+typedef void(__stdcall*TSSocketTransmitEvent_Win32)(const pnative_int AObj,const s32 ASocket,const s32 AResult,const pu8 AData,const s32 ASize);
 // Arg[0] AIdxChn
 // Arg[1] ATimestamp
 // Arg[2] APackCmd
@@ -2067,23 +2070,23 @@ typedef void(__stdcall*TDatapackageProcessEvent_Win32)(const u8 AIdxChn,const s6
 // Arg[2] file_name
 // Arg[3] line
 // Arg[4] user_data
-typedef s32 (__stdcall*TMPTacDebugCallback)(const pvoid debugger,const TMPTacDebugEvent AEvent,const char* file_name,const s32 line,const ps32 user_data);
+typedef s32 (__stdcall*TMPTacDebugCallback)(const pvoid debugger,const TMPTacDebugEvent AEvent,const char* file_name,const s32 line,const pnative_int user_data);
 // Arg[0] AObj
 // Arg[1] AProgress100
-typedef void(__stdcall*TReadProgressCallback)(const ps32 AObj,const double AProgress100);
+typedef void(__stdcall*TReadProgressCallback)(const pnative_int AObj,const double AProgress100);
 // Arg[0] AObj
 // Arg[1] AProgress
-typedef s32 (__cdecl*TSeekTimeProgressCallback)(const ps32 AObj,const float AProgress);
+typedef s32 (__cdecl*TSeekTimeProgressCallback)(const pnative_int AObj,const float AProgress);
 // Arg[0] AObj
 // Arg[1] AComment
 // Arg[2] AToTerminate
-typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const ps32 AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);
+typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const pnative_int AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);
 // Arg[0] AObj
 // Arg[1] ASysVar
 // Arg[2] AToTerminate
-typedef void(__stdcall*TReadBLFSystemVarCallback)(const ps32 AObj,const PLIBSystemVar ASysVar,const pbool AToTerminate);
+typedef void(__stdcall*TReadBLFSystemVarCallback)(const pnative_int AObj,const PLIBSystemVar ASysVar,const pbool AToTerminate);
 // Arg[0] AObj
-typedef void(__stdcall*TReadUnsupportedCallback)(const ps32 AObj);
+typedef void(__stdcall*TReadUnsupportedCallback)(const pnative_int AObj);
 // Arg[0] pDiagModuleIndex
 // Arg[1] AChnIndex
 // Arg[2] ASupportFDCAN
@@ -2141,18 +2144,18 @@ typedef void(__stdcall*TLogDebuggingInfo_t)(const char* AMsg,const s32 ALevel);
 // Arg[0] sock
 // Arg[1] p
 // Arg[2] len
-typedef void(__cdecl*tosun_recv_callback)(const s32 sock,const ps32 p,const u16 len);
+typedef void(__cdecl*tosun_recv_callback)(const s32 sock,const pnative_int p,const u16 len);
 // Arg[0] sock
 // Arg[1] p
 // Arg[2] src
 // Arg[3] dest
 // Arg[4] ttl
 // Arg[5] tos
-typedef void(__cdecl*tosun_tcp_presend_callback)(const s32 sock,const ps32 p,const Pip_addr_t src,const Pip_addr_t dest,const u8 ttl,const u8 tos);
+typedef void(__cdecl*tosun_tcp_presend_callback)(const s32 sock,const pnative_int p,const Pip_addr_t src,const Pip_addr_t dest,const u8 ttl,const u8 tos);
 // Arg[0] sock
 // Arg[1] p
 // Arg[2] len
-typedef void(__cdecl*tosun_tcp_ack_callback)(const s32 sock,const ps32 p,const u16 len);
+typedef void(__cdecl*tosun_tcp_ack_callback)(const s32 sock,const pnative_int p,const u16 len);
 #if defined ( __cplusplus )
 extern  "C"
 {
@@ -2371,81 +2374,81 @@ TSAPI(s32)tsapp_get_fps_canfd(const s32 AIdxChn,const s32 AIdentifier,s32* AFPS)
 
 TSAPI(s32)tsapp_get_fps_lin(const s32 AIdxChn,const s32 AIdentifier,s32* AFPS);
 
-TSAPI(s32)tsapp_register_event_can(const ps32 AObj,const TCANQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_event_can(const pnative_int AObj,const TCANQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_event_can(const ps32 AObj,const TCANQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_event_can(const pnative_int AObj,const TCANQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_event_canfd(const ps32 AObj,const TCANFDQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_event_canfd(const pnative_int AObj,const TCANFDQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_event_canfd(const ps32 AObj,const TCANFDQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_event_canfd(const pnative_int AObj,const TCANFDQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_event_lin(const ps32 AObj,const TLINQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_event_lin(const pnative_int AObj,const TLINQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_event_lin(const ps32 AObj,const TLINQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_event_lin(const pnative_int AObj,const TLINQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_event_flexray(const ps32 AObj,const TFlexRayQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_event_flexray(const pnative_int AObj,const TFlexRayQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_event_flexray(const ps32 AObj,const TFlexRayQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_event_flexray(const pnative_int AObj,const TFlexRayQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_events_flexray(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_flexray(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_events_can(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_can(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_events_lin(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_lin(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_events_canfd(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_canfd(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_events_all(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_all(const pnative_int AObj);
 
-TSAPI(s32)tsapp_register_pretx_event_can(const ps32 AObj,const TCANQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_pretx_event_can(const pnative_int AObj,const TCANQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_event_can(const ps32 AObj,const TCANQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_pretx_event_can(const pnative_int AObj,const TCANQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_pretx_event_canfd(const ps32 AObj,const TCANFDQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_pretx_event_canfd(const pnative_int AObj,const TCANFDQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_event_canfd(const ps32 AObj,const TCANFDQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_pretx_event_canfd(const pnative_int AObj,const TCANFDQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_pretx_event_lin(const ps32 AObj,const TLINQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_pretx_event_lin(const pnative_int AObj,const TLINQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_event_lin(const ps32 AObj,const TLINQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_pretx_event_lin(const pnative_int AObj,const TLINQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_register_pretx_event_flexray(const ps32 AObj,const TFlexRayQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_pretx_event_flexray(const pnative_int AObj,const TFlexRayQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_event_flexray(const ps32 AObj,const TFlexRayQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_pretx_event_flexray(const pnative_int AObj,const TFlexRayQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_events_flexray(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_flexray(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_pretx_events_can(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_can(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_pretx_events_lin(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_lin(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_pretx_events_canfd(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_canfd(const pnative_int AObj);
 
-TSAPI(s32)tsapp_unregister_pretx_events_all(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_all(const pnative_int AObj);
 
 TSAPI(s32)tsapp_start_logging(const char* AFileName);
 
 TSAPI(s32)tsapp_stop_logging();
 
-TSAPI(s32)tsapp_excel_load(const char* AFileName,const pps32 AObj);
+TSAPI(s32)tsapp_excel_load(const char* AFileName,const ppnative_int AObj);
 
-TSAPI(s32)tsapp_excel_get_sheet_count(const ps32 AObj,s32* ACount);
+TSAPI(s32)tsapp_excel_get_sheet_count(const pnative_int AObj,s32* ACount);
 
-TSAPI(s32)tsapp_excel_set_sheet_count(const ps32 AObj,const s32 ACount);
+TSAPI(s32)tsapp_excel_set_sheet_count(const pnative_int AObj,const s32 ACount);
 
-TSAPI(s32)tsapp_excel_get_sheet_name(const ps32 AObj,const s32 AIdxSheet,const ppchar AName);
+TSAPI(s32)tsapp_excel_get_sheet_name(const pnative_int AObj,const s32 AIdxSheet,const ppchar AName);
 
-TSAPI(s32)tsapp_excel_set_sheet_name(const ps32 AObj,const s32 AIdxSheet,const char* AName);
+TSAPI(s32)tsapp_excel_set_sheet_name(const pnative_int AObj,const s32 AIdxSheet,const char* AName);
 
-TSAPI(s32)tsapp_excel_get_cell_count(const ps32 AObj,const s32 AIdxSheet,s32* ARowCount,s32* AColCount);
+TSAPI(s32)tsapp_excel_get_cell_count(const pnative_int AObj,const s32 AIdxSheet,s32* ARowCount,s32* AColCount);
 
-TSAPI(s32)tsapp_excel_get_cell_value(const ps32 AObj,const s32 AIdxSheet,const s32 AIdxRow,const s32 AIdxCol,const ppchar AValue);
+TSAPI(s32)tsapp_excel_get_cell_value(const pnative_int AObj,const s32 AIdxSheet,const s32 AIdxRow,const s32 AIdxCol,const ppchar AValue);
 
-TSAPI(s32)tsapp_excel_set_cell_count(const ps32 AObj,const s32 AIdxSheet,const s32 ARowCount,const s32 AColCount);
+TSAPI(s32)tsapp_excel_set_cell_count(const pnative_int AObj,const s32 AIdxSheet,const s32 ARowCount,const s32 AColCount);
 
-TSAPI(s32)tsapp_excel_set_cell_value(const ps32 AObj,const s32 AIdxSheet,const s32 AIdxRow,const s32 AIdxCol,const char* AValue);
+TSAPI(s32)tsapp_excel_set_cell_value(const pnative_int AObj,const s32 AIdxSheet,const s32 AIdxRow,const s32 AIdxCol,const char* AValue);
 
-TSAPI(s32)tsapp_excel_unload(const ps32 AObj);
+TSAPI(s32)tsapp_excel_unload(const pnative_int AObj);
 
 TSAPI(s32)tsapp_system_vars_reload_settings();
 
@@ -2689,9 +2692,9 @@ TSAPI(s32)tslog_blf_read_end(const size_t AHandle);
 
 TSAPI(s32)tslog_blf_seek_object_time(const size_t AHandle,const double AProg100,s64* ATime,s32* AProgressedCnt);
 
-TSAPI(s32)tslog_blf_to_asc(const ps32 AObj,const char* ABLFFileName,const char* AASCFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_blf_to_asc(const pnative_int AObj,const char* ABLFFileName,const char* AASCFileName,const TReadProgressCallback AProgressCallback);
 
-TSAPI(s32)tslog_asc_to_blf(const ps32 AObj,const char* AASCFileName,const char* ABLFFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_asc_to_blf(const pnative_int AObj,const char* AASCFileName,const char* ABLFFileName,const TReadProgressCallback AProgressCallback);
 
 TSAPI(s32)tscom_lin_rbs_reload_settings();
 
@@ -2835,17 +2838,17 @@ TSAPI(s32)tsapp_transmit_ethernet_sync(const PLIBEthernetHeader AEthernetHeader,
 
 TSAPI(s32)tsapp_transmit_ethernet_async(const PLIBEthernetHeader AEthernetHeader);
 
-TSAPI(s32)tsapp_register_event_ethernet(const ps32 AObj,const TEthernetQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_event_ethernet(const pnative_int AObj,const TEthernetQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_event_ethernet(const ps32 AObj,const TEthernetQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_event_ethernet(const pnative_int AObj,const TEthernetQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_events_ethernet(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_events_ethernet(const pnative_int AObj);
 
-TSAPI(s32)tsapp_register_pretx_event_ethernet(const ps32 AObj,const TEthernetQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_register_pretx_event_ethernet(const pnative_int AObj,const TEthernetQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_event_ethernet(const ps32 AObj,const TEthernetQueueEvent_Win32 AEvent);
+TSAPI(s32)tsapp_unregister_pretx_event_ethernet(const pnative_int AObj,const TEthernetQueueEvent_Win32 AEvent);
 
-TSAPI(s32)tsapp_unregister_pretx_events_ethernet(const ps32 AObj);
+TSAPI(s32)tsapp_unregister_pretx_events_ethernet(const pnative_int AObj);
 
 TSAPI(s32)tslin_clear_schedule_tables(const s32 AChnIdx);
 
@@ -3051,9 +3054,9 @@ TSAPI(s32)rawsocket_aton6(const char* cp,const Pip6_addr_t addr);
 
 TSAPI(char*)rawsocket_ntoa6(const Pip6_addr_t addr);
 
-TSAPI(char*)rawsocket_inet_ntop(const s32 af,const ps32 src,const char* dst,const u32 size);
+TSAPI(char*)rawsocket_inet_ntop(const s32 af,const pnative_int src,const char* dst,const u32 size);
 
-TSAPI(s32)rawsocket_inet_pton(const s32 af,const char* src,const ps32 dst);
+TSAPI(s32)rawsocket_inet_pton(const s32 af,const char* src,const pnative_int dst);
 
 TSAPI(s32)tssocket_initialize(const s32 ANetworkIndex);
 
@@ -3099,9 +3102,9 @@ TSAPI(s32)rawsocket_getpeername(const s32 s,const Pts_sockaddr name,const pu32 n
 
 TSAPI(s32)rawsocket_getsockname(const s32 s,const Pts_sockaddr name,const pu32 namelen);
 
-TSAPI(s32)rawsocket_getsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const pu32 optlen);
+TSAPI(s32)rawsocket_getsockopt(const s32 s,const s32 level,const s32 optname,const pnative_int optval,const pu32 optlen);
 
-TSAPI(s32)rawsocket_setsockopt(const s32 s,const s32 level,const s32 optname,const ps32 optval,const u32 optlen);
+TSAPI(s32)rawsocket_setsockopt(const s32 s,const s32 level,const s32 optname,const pnative_int optval,const u32 optlen);
 
 TSAPI(s32)rawsocket_close(const s32 s);
 
@@ -3111,27 +3114,27 @@ TSAPI(s32)rawsocket_connect(const s32 s,const Pts_sockaddr name,const u32 namele
 
 TSAPI(s32)rawsocket_listen(const s32 s,const s32 backlog);
 
-TSAPI(size_t)rawsocket_recv(const s32 s,const ps32 mem,const size_t len,const s32 flags);
+TSAPI(size_t)rawsocket_recv(const s32 s,const pnative_int mem,const size_t len,const s32 flags);
 
-TSAPI(size_t)rawsocket_read(const s32 s,const ps32 mem,const size_t len);
+TSAPI(size_t)rawsocket_read(const s32 s,const pnative_int mem,const size_t len);
 
 TSAPI(size_t)rawsocket_readv(const s32 s,const Pts_iovec iov,const s32 iovcnt);
 
-TSAPI(size_t)rawsocket_recvfrom(const s32 s,const ps32 mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
+TSAPI(size_t)rawsocket_recvfrom(const s32 s,const pnative_int mem,const size_t len,const s32 flags,const Pts_sockaddr from,const pu32 fromlen);
 
 TSAPI(size_t)rawsocket_recvmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
 
-TSAPI(size_t)rawsocket_send(const s32 s,const ps32 dataptr,const size_t size,const s32 flags);
+TSAPI(size_t)rawsocket_send(const s32 s,const pnative_int dataptr,const size_t size,const s32 flags);
 
 TSAPI(size_t)rawsocket_sendmsg(const s32 s,const Pts_msghdr Amessage,const s32 flags);
 
-TSAPI(size_t)rawsocket_sendto(const s32 s,const ps32 dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
+TSAPI(size_t)rawsocket_sendto(const s32 s,const pnative_int dataptr,const size_t size,const s32 flags,const Pts_sockaddr ato,const u32 tolen);
 
-TSAPI(size_t)rawsocket_write(const s32 s,const ps32 dataptr,const size_t size);
+TSAPI(size_t)rawsocket_write(const s32 s,const pnative_int dataptr,const size_t size);
 
 TSAPI(size_t)rawsocket_writev(const s32 s,const Pts_iovec iov,const s32 iovcnt);
 
-TSAPI(s32)rawsocket_ioctl(const s32 s,const long cmd,const ps32 argp);
+TSAPI(s32)rawsocket_ioctl(const s32 s,const long cmd,const pnative_int argp);
 
 TSAPI(s32)rawsocket_fcntl(const s32 s,const s32 cmd,const s32 val);
 
@@ -3457,19 +3460,19 @@ TSAPI(s32)signal_tester_run_item_by_index(const s32 AIndex);
 
 TSAPI(s32)signal_tester_stop_item_by_index(const s32 AIndex);
 
-TSAPI(s32)signal_tester_get_item_verdict_by_index(const ps32 AObj,const s32 AIndex,const pbool AIsPass);
+TSAPI(s32)signal_tester_get_item_verdict_by_index(const pnative_int AObj,const s32 AIndex,const pbool AIsPass);
 
-TSAPI(s32)signal_tester_get_item_result_by_name(const ps32 AObj,const char* AName,const pbool AIsPass,const ps64 AEventTimeUs,const ppchar ADescription);
+TSAPI(s32)signal_tester_get_item_result_by_name(const pnative_int AObj,const char* AName,const pbool AIsPass,const ps64 AEventTimeUs,const ppchar ADescription);
 
-TSAPI(s32)signal_tester_get_item_result_by_index(const ps32 AObj,const s32 AIndex,const pbool AIsPass,const ps64 AEventTimeUs,const ppchar ADescription);
+TSAPI(s32)signal_tester_get_item_result_by_index(const pnative_int AObj,const s32 AIndex,const pbool AIsPass,const ps64 AEventTimeUs,const ppchar ADescription);
 
-TSAPI(s32)signal_tester_get_item_verdict_by_name(const ps32 AObj,const char* AName,const pbool AIsPass);
+TSAPI(s32)signal_tester_get_item_verdict_by_name(const pnative_int AObj,const char* AName,const pbool AIsPass);
 
 TSAPI(s32)ini_read_string_wo_quotes(const size_t AHandle,const char* ASection,const char* AKey,const char* AValue,const ps32 AValueCapacity,const char* ADefault);
 
-TSAPI(s32)signal_tester_check_statistics_by_index(const ps32 AObj,const s32 AIndex,const double AMin,const double AMax,const pbool APass,const pdouble AResult,const ppchar AResultRepr);
+TSAPI(s32)signal_tester_check_statistics_by_index(const pnative_int AObj,const s32 AIndex,const double AMin,const double AMax,const pbool APass,const pdouble AResult,const ppchar AResultRepr);
 
-TSAPI(s32)signal_tester_check_statistics_by_name(const ps32 AObj,const char* AItemName,const double AMin,const double AMax,const pbool APass,const pdouble AResult,const ppchar AResultRepr);
+TSAPI(s32)signal_tester_check_statistics_by_name(const pnative_int AObj,const char* AItemName,const double AMin,const double AMax,const pbool APass,const pdouble AResult,const ppchar AResultRepr);
 
 TSAPI(s32)signal_tester_enable_item_by_index(const s32 AIndex,const bool AEnable);
 
@@ -3529,7 +3532,7 @@ TSAPI(s32)signal_tester_set_item_value_range_by_index(const s32 AIdx,const doubl
 
 TSAPI(s32)signal_tester_set_item_value_range_by_name(const char* AName,const double ALow,const double AHigh);
 
-TSAPI(s32)start_log_w_filename(const ps32 AObj,const char* AFileName);
+TSAPI(s32)start_log_w_filename(const pnative_int AObj,const char* AFileName);
 
 TSAPI(s32)convert_blf_to_mat_w_filter(const char* ABlfFile,const char* AMatFile,const char* AFilterConf,const pbool AToTerminate);
 
@@ -3571,13 +3574,13 @@ TSAPI(s32)telnet_set_connection_callback(const size_t AHandle,const TOnIoIPConne
 
 TSAPI(s32)telnet_enable_debug_print(const size_t AHandle,const bool AEnable);
 
-TSAPI(s32)tslog_blf_to_pcap(const ps32 AObj,const char* ABlfFileName,const char* APcapFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_blf_to_pcap(const pnative_int AObj,const char* ABlfFileName,const char* APcapFileName,const TReadProgressCallback AProgressCallback);
 
-TSAPI(s32)tslog_pcap_to_blf(const ps32 AObj,const char* APcapFileName,const char* ABlfFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_pcap_to_blf(const pnative_int AObj,const char* APcapFileName,const char* ABlfFileName,const TReadProgressCallback AProgressCallback);
 
-TSAPI(s32)tslog_pcapng_to_blf(const ps32 AObj,const char* APcapngFileName,const char* ABlfFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_pcapng_to_blf(const pnative_int AObj,const char* APcapngFileName,const char* ABlfFileName,const TReadProgressCallback AProgressCallback);
 
-TSAPI(s32)tslog_blf_to_pcapng(const ps32 AObj,const char* ABlfFileName,const char* APcapngFileName,const TReadProgressCallback AProgressCallback);
+TSAPI(s32)tslog_blf_to_pcapng(const pnative_int AObj,const char* ABlfFileName,const char* APcapngFileName,const TReadProgressCallback AProgressCallback);
 
 TSAPI(s32)enter_critical_section();
 
@@ -3857,7 +3860,7 @@ TSAPI(s32)eth_rbs_set_signal_value_by_address(const char* ASymbolAddress,const d
 
 TSAPI(s32)call_model_initialization(const char* ADiagramName,const s32 AInCnt,const s32 AOutCnt,const PLIBMBDDataType AInTypes,const PLIBMBDDataType AOutTypes,const psize_t AHandle);
 
-TSAPI(s32)call_model_step(const size_t AHandle,const s64 ATimeUs,const ps32 AInValues,const ps32 AOutValues);
+TSAPI(s32)call_model_step(const size_t AHandle,const s64 ATimeUs,const pnative_int AInValues,const pnative_int AOutValues);
 
 TSAPI(s32)call_model_finalization(const size_t AHandle);
 
@@ -3931,7 +3934,7 @@ TSAPI(s32)cal_get_var_property(const char* AECUName,const char* AVarName,const p
 
 TSAPI(s32)cal_get_measurement_list(const char* AECUName,const ppchar AMeasurementList);
 
-TSAPI(s32)tac_debugger_create(const TMPTacDebugCallback ACallback,const ps32 AUserData,const pps32 ADebuggerPtr);
+TSAPI(s32)tac_debugger_create(const TMPTacDebugCallback ACallback,const pnative_int AUserData,const ppnative_int ADebuggerPtr);
 
 TSAPI(s32)tac_debugger_destroy(const pvoid ADebugger);
 
@@ -4031,15 +4034,15 @@ TSAPI(s32)crypto_encrypt_aes_128_cbc(const pu8 key,const size_t key_length,const
 
 TSAPI(s32)crypto_encrypt_aes_256_cbc(const pu8 key,const size_t key_length,const pu8 plaintext,const size_t plaintext_length,const pu8 iv,const size_t iv_length,const pu8 ciphertext,const psize_t ciphertext_length);
 
-TSAPI(s32)crypto_digest_sha2_256(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+TSAPI(s32)crypto_digest_sha2_256(const pnative_int data,const size_t data_length,const pu8 hash,const psize_t hash_length);
 
-TSAPI(s32)crypto_digest_sha2_512(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+TSAPI(s32)crypto_digest_sha2_512(const pnative_int data,const size_t data_length,const pu8 hash,const psize_t hash_length);
 
-TSAPI(s32)crypto_digest_sha3_512(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+TSAPI(s32)crypto_digest_sha3_512(const pnative_int data,const size_t data_length,const pu8 hash,const psize_t hash_length);
 
-TSAPI(s32)crypto_digest_sha3_256(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+TSAPI(s32)crypto_digest_sha3_256(const pnative_int data,const size_t data_length,const pu8 hash,const psize_t hash_length);
 
-TSAPI(s32)crypto_digest_md5(const ps32 data,const size_t data_length,const pu8 hash,const psize_t hash_length);
+TSAPI(s32)crypto_digest_md5(const pnative_int data,const size_t data_length,const pu8 hash,const psize_t hash_length);
 
 TSAPI(s32)crypto_generate_cmac(const pu8 key,const size_t key_length,const pu8 data,const size_t data_length,const pu8 cmac,const psize_t cmac_length);
 
