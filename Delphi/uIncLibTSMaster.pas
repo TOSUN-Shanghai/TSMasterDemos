@@ -669,7 +669,8 @@ type
     //          more bytes of the address.
     //bit0-47:  same as filter_perfect0
     filter_perfect1: UInt64;
-    rev: array[0..5] of UInt64;  //48
+    params: array[0..15] of Byte;   // 16 bytes parameters align with tsdev
+    rev: array[0..3] of UInt64;  // 32 bytes
   end; //9*8 + 6 = 80
   //TSLogger
   PEMMC_RECORD_DATA = ^TEMMC_RECORD_DATA;
@@ -1050,7 +1051,11 @@ type
     TLog1039            = 54,
     GW1040              = 55,
     TC3014              = 56,
-    TS_DEV_END          = 57
+    TP1014              = 57,
+    TA825_4             = 58,
+    TC1013HV            = 59,
+    TC1052              = 60,
+    TS_DEV_END          = 61
   // the table need to updated in time, otherwise cause problem to recognizing the device
   );
   // Vector XL device type

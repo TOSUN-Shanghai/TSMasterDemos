@@ -1330,7 +1330,11 @@ typedef enum {
     TLog1039 = 54,
     GW1040 = 55,
     TC3014 = 56,
-    TS_DEV_END = 57,
+    TP1014 = 57,
+    TA825_4 = 58,
+    TC1013HV = 59,
+    TC1052 = 60,
+    TS_DEV_END = 61,
 }TLIB_TS_Device_Sub_Type, *PLIB_TS_Device_Sub_Type;
 typedef enum {
     XL_NONE = 0,
@@ -1601,7 +1605,8 @@ typedef struct _TLIBEth_CMD_config{
     u64 filter_hash_table;
     u64 filter_perfect0;
     u64 filter_perfect1;
-    u64 rev[6];
+    u8 params[16];
+    u64 rev[4];
 }TLIBEth_CMD_config, *PLIBEth_CMD_config, *pLIBEth_CMD_config, **PPLIBEth_CMD_config, **ppLIBEth_CMD_config;
 
 typedef struct _TEMMC_RECORD_DATA{

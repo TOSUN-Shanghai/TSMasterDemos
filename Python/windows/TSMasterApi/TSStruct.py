@@ -680,7 +680,8 @@ class TLIBEth_CMD_config(Structure):
 ('filter_hash_table',u64),
 ('filter_perfect0',u64),
 ('filter_perfect1',u64),
-('rev',u64*6),
+('params',u8*16),
+('rev',u64*4),
 ]
 PLIBEth_CMD_config = POINTER(TLIBEth_CMD_config)
 pLIBEth_CMD_config = POINTER(TLIBEth_CMD_config)
