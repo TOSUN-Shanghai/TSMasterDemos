@@ -3555,6 +3555,10 @@ function simulate_ethernet_async(const AEthernetHeader: PLIBEthernetHeader; cons
 function can_rbs_set_signal_raw_by_address(const ASymbolAddress: pansichar; const ARaw: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function lin_rbs_set_signal_raw_by_address(const ASymbolAddress: pansichar; const ARaw: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function lin_rbs_get_signal_raw_by_address(const ASymbolAddress: pansichar; ARaw: puint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_can_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_lin_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_flexray_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_ethernet_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

@@ -6616,3 +6616,27 @@ lin_rbs_get_signal_raw_by_address = dll.lin_rbs_get_signal_raw_by_address
 lin_rbs_get_signal_raw_by_address.restype = s32
 lin_rbs_get_signal_raw_by_address.argtypes = [pchar,pu64]
 
+#arg[0] AChn
+#arg[1] ANetworkInfo
+db_get_can_network_info_by_index = dll.db_get_can_network_info_by_index
+db_get_can_network_info_by_index.restype = s32
+db_get_can_network_info_by_index.argtypes = [s32,ppchar]
+
+#arg[0] AChn
+#arg[1] ANetworkInfo
+db_get_lin_network_info_by_index = dll.db_get_lin_network_info_by_index
+db_get_lin_network_info_by_index.restype = s32
+db_get_lin_network_info_by_index.argtypes = [s32,ppchar]
+
+#arg[0] AChn
+#arg[1] ANetworkInfo
+db_get_flexray_network_info_by_index = dll.db_get_flexray_network_info_by_index
+db_get_flexray_network_info_by_index.restype = s32
+db_get_flexray_network_info_by_index.argtypes = [s32,ppchar]
+
+#arg[0] AChn
+#arg[1] ANetworkInfo
+db_get_ethernet_network_info_by_index = dll.db_get_ethernet_network_info_by_index
+db_get_ethernet_network_info_by_index.restype = s32
+db_get_ethernet_network_info_by_index.argtypes = [s32,ppchar]
+

@@ -4098,6 +4098,14 @@ TSAPI(s32)lin_rbs_set_signal_raw_by_address(const char* ASymbolAddress,const u64
 
 TSAPI(s32)lin_rbs_get_signal_raw_by_address(const char* ASymbolAddress,const pu64 ARaw);
 
+TSAPI(s32)db_get_can_network_info_by_index(const s32 AChn,const ppchar ANetworkInfo);
+
+TSAPI(s32)db_get_lin_network_info_by_index(const s32 AChn,const ppchar ANetworkInfo);
+
+TSAPI(s32)db_get_flexray_network_info_by_index(const s32 AChn,const ppchar ANetworkInfo);
+
+TSAPI(s32)db_get_ethernet_network_info_by_index(const s32 AChn,const ppchar ANetworkInfo);
+
 #if defined ( __cplusplus )
 }
 #endif
