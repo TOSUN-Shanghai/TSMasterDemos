@@ -2931,6 +2931,9 @@ function tstp_send_functional(const ADiagModuleIndex: Integer; const AReqDataArr
 function tstp_send_request(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_request_and_get_response(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tstp_request_and_get_response_functional(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer;const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_delete(const ADiagModuleIndex: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+procedure tsdiag_delete_all; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+
 {Commen Diagnostic Service APIs}
 function tsdiag_session_control(const ADiagModuleIndex: Integer; const ASubSession: Byte):Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_routine_control(const ADiagModuleIndex: Integer; const ARoutineControlType: Byte; const ARoutintID: UInt16): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}

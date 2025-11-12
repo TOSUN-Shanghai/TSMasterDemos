@@ -2177,6 +2177,8 @@ TSAPI(void)tsfifo_disable_receive_error_frames();
 
 TSAPI(void)tsdiag_can_delete_all();
 
+TSAPI(void)tsdiag_delete_all();
+
 TSAPI(void)rawsocket_dhcp_stop(const s32 ANetworkIndex);
 
 TSAPI(void)tssocket_ping4(const s32 ANetworkIndex,const Pip4_addr_t ping_addr,const s32 repeatcnt,const u32 interval_ms,const u32 timeout_ms);
@@ -2966,6 +2968,8 @@ TSAPI(s32)tstp_send_request(const s32 ADiagModuleIndex,const pu8 AReqDataArray,c
 TSAPI(s32)tstp_request_and_get_response(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize,const pu8 AResponseDataArray,const ps32 AResponseDataSize);
 
 TSAPI(s32)tstp_request_and_get_response_functional(const s32 ADiagModuleIndex,const pu8 AReqDataArray,const s32 AReqDataSize,const pu8 AResponseDataArray,const ps32 AResponseDataSize);
+
+TSAPI(s32)tsdiag_delete(const s32 ADiagModuleIndex);
 
 TSAPI(s32)tsdiag_session_control(const s32 ADiagModuleIndex,const u8 ASubSession);
 

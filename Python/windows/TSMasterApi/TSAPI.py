@@ -26,6 +26,10 @@ tsdiag_can_delete_all = dll.tsdiag_can_delete_all
 tsdiag_can_delete_all.restype = None
 tsdiag_can_delete_all.argtypes = []
 
+tsdiag_delete_all = dll.tsdiag_delete_all
+tsdiag_delete_all.restype = None
+tsdiag_delete_all.argtypes = []
+
 #arg[0] ANetworkIndex
 rawsocket_dhcp_stop = dll.rawsocket_dhcp_stop
 rawsocket_dhcp_stop.restype = None
@@ -2658,6 +2662,11 @@ tstp_request_and_get_response.argtypes = [s32,pu8,s32,pu8,ps32]
 tstp_request_and_get_response_functional = dll.tstp_request_and_get_response_functional
 tstp_request_and_get_response_functional.restype = s32
 tstp_request_and_get_response_functional.argtypes = [s32,pu8,s32,pu8,ps32]
+
+#arg[0] ADiagModuleIndex
+tsdiag_delete = dll.tsdiag_delete
+tsdiag_delete.restype = s32
+tsdiag_delete.argtypes = [s32]
 
 #arg[0] ADiagModuleIndex
 #arg[1] ASubSession
