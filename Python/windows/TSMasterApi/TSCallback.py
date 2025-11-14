@@ -269,3 +269,17 @@ tosun_tcp_presend_callback = CFUNCTYPE(None,s32,ps32,Pip_addr_t,Pip_addr_t,u8,u8
 # Arg[1] p
 # Arg[2] len
 tosun_tcp_ack_callback = CFUNCTYPE(None,s32,ps32,u16)
+# Arg[0] AIdxChn
+# Arg[1] ATypeName,ATopicName
+# Arg[2] AOriData
+# Arg[3] AOriLength
+# Arg[4] ANewData
+# Arg[5] ANewLength
+Tdds_pre_deserialize_callback = WINFUNCTYPE(s32,u32,pchar,pu8,u32,pu8,pu32)
+# Arg[0] AIdxChn
+# Arg[1] ATypeName,ATopicName
+# Arg[2] AOriData
+# Arg[3] AOriLength
+# Arg[4] ANewData
+# Arg[5] ANewLength
+Tdds_after_serialize_callback = WINFUNCTYPE(s32,u32,pchar,pu8,u32,pu8,pu32)

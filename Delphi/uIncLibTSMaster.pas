@@ -1882,6 +1882,16 @@ will need to increase long long }
   tosun_tcp_presend_callback = procedure(sock: integer; p: Pointer; src: Pip_addr_t; dest: Pip_addr_t; ttl: UInt8; tos: UInt8);
   tosun_tcp_ack_callback = procedure(sock: integer; p: Pointer; len: UInt16);
 
+  // DDS callback
+  Tdds_pre_deserialize_callback = function(const AIdxChn: UInt32;
+            const ATypeName, ATopicName: PAnsiChar; const AOriData: PByte;
+            const AOriLength: UInt32; ANewData: PByte;
+            ANewLength: PUInt32): Int32; stdcall;
+  Tdds_after_serialize_callback = function(const AIdxChn: UInt32;
+            const ATypeName, ATopicName: PAnsiChar; const AOriData: PByte;
+            const AOriLength: UInt32; ANewData: PByte;
+            ANewLength: PUInt32): Int32; stdcall;
+
 {$IFNDEF LIBTSMASTER_IMPL}
 const
   // error code
