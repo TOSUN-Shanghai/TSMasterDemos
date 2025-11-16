@@ -3585,6 +3585,8 @@ function get_system_var_int64_array_element(const ACompleteName: pansichar; cons
 function set_system_var_int64_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_system_var_double_array_element(const ACompleteName: pansichar; const AIdx: int32; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_system_var_double_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
