@@ -3577,6 +3577,14 @@ function db_get_can_network_info_by_index(const AChn: int32; const ANetworkInfo:
 function db_get_lin_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_flexray_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_ethernet_network_info_by_index(const AChn: int32; const ANetworkInfo: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_uint8_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: byte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_uint8_array_element(const ACompleteName: pansichar; const AIdx: int32; AValue: pbyte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_int32_array_element(const ACompleteName: pansichar; const AIdx: int32; AValue: pInt32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int32_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_int64_array_element(const ACompleteName: pansichar; const AIdx: int32; AValue: pint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_int64_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: int64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_double_array_element(const ACompleteName: pansichar; const AIdx: int32; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function set_system_var_double_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
