@@ -6649,3 +6649,71 @@ db_get_ethernet_network_info_by_index = dll.db_get_ethernet_network_info_by_inde
 db_get_ethernet_network_info_by_index.restype = s32
 db_get_ethernet_network_info_by_index.argtypes = [s32,ppchar]
 
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+set_system_var_uint8_array_element = dll.set_system_var_uint8_array_element
+set_system_var_uint8_array_element.restype = s32
+set_system_var_uint8_array_element.argtypes = [pchar,s32,u8]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+get_system_var_uint8_array_element = dll.get_system_var_uint8_array_element
+get_system_var_uint8_array_element.restype = s32
+get_system_var_uint8_array_element.argtypes = [pchar,s32,pu8]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+get_system_var_int32_array_element = dll.get_system_var_int32_array_element
+get_system_var_int32_array_element.restype = s32
+get_system_var_int32_array_element.argtypes = [pchar,s32,ps32]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+set_system_var_int32_array_element = dll.set_system_var_int32_array_element
+set_system_var_int32_array_element.restype = s32
+set_system_var_int32_array_element.argtypes = [pchar,s32,s32]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+get_system_var_int64_array_element = dll.get_system_var_int64_array_element
+get_system_var_int64_array_element.restype = s32
+get_system_var_int64_array_element.argtypes = [pchar,s32,ps64]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+set_system_var_int64_array_element = dll.set_system_var_int64_array_element
+set_system_var_int64_array_element.restype = s32
+set_system_var_int64_array_element.argtypes = [pchar,s32,s64]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+get_system_var_double_array_element = dll.get_system_var_double_array_element
+get_system_var_double_array_element.restype = s32
+get_system_var_double_array_element.argtypes = [pchar,s32,pdouble]
+
+#arg[0] ACompleteName
+#arg[1] AIdx
+#arg[2] AValue
+set_system_var_double_array_element = dll.set_system_var_double_array_element
+set_system_var_double_array_element.restype = s32
+set_system_var_double_array_element.argtypes = [pchar,s32,double]
+
+#arg[0] ASymbolAddress
+#arg[1] AValue
+rbs_get_signal_value_by_address = dll.rbs_get_signal_value_by_address
+rbs_get_signal_value_by_address.restype = s32
+rbs_get_signal_value_by_address.argtypes = [pchar,pdouble]
+
+#arg[0] ASymbolAddress
+#arg[1] AValue
+rbs_set_signal_value_by_address = dll.rbs_set_signal_value_by_address
+rbs_set_signal_value_by_address.restype = s32
+rbs_set_signal_value_by_address.argtypes = [pchar,double]
+

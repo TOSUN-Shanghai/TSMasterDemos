@@ -4129,6 +4129,26 @@ TSAPI(s32)db_get_flexray_network_info_by_index(const s32 AChn,const ppchar ANetw
 
 TSAPI(s32)db_get_ethernet_network_info_by_index(const s32 AChn,const ppchar ANetworkInfo);
 
+TSAPI(s32)set_system_var_uint8_array_element(const char* ACompleteName,const s32 AIdx,const u8 AValue);
+
+TSAPI(s32)get_system_var_uint8_array_element(const char* ACompleteName,const s32 AIdx,const pu8 AValue);
+
+TSAPI(s32)get_system_var_int32_array_element(const char* ACompleteName,const s32 AIdx,const ps32 AValue);
+
+TSAPI(s32)set_system_var_int32_array_element(const char* ACompleteName,const s32 AIdx,const s32 AValue);
+
+TSAPI(s32)get_system_var_int64_array_element(const char* ACompleteName,const s32 AIdx,const ps64 AValue);
+
+TSAPI(s32)set_system_var_int64_array_element(const char* ACompleteName,const s32 AIdx,const s64 AValue);
+
+TSAPI(s32)get_system_var_double_array_element(const char* ACompleteName,const s32 AIdx,const pdouble AValue);
+
+TSAPI(s32)set_system_var_double_array_element(const char* ACompleteName,const s32 AIdx,const double AValue);
+
+TSAPI(s32)rbs_get_signal_value_by_address(const char* ASymbolAddress,const pdouble AValue);
+
+TSAPI(s32)rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
+
 #if defined ( __cplusplus )
 }
 #endif
