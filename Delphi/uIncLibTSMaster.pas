@@ -905,6 +905,7 @@ type
     lsvtInt32 = 0, lsvtUInt32, lsvtInt64, lsvtUInt64, lsvtUInt8Array,
     lsvtInt32Array, lsvtInt64Array, lsvtDouble, lsvtDoubleArray, lsvtString
   );
+  PLIBSystemVarType = ^TLIBSystemVarType;
   TSymbolMappingDirection = (smdBiDirection, smdSgnToSysVar, smdSysVarToSgn);
   // Offline replay
   TReplayPhase = (rppInit = 0, rppReplaying, rppEnded);
@@ -3587,6 +3588,7 @@ function get_system_var_double_array_element(const ACompleteName: pansichar; con
 function set_system_var_double_array_element(const ACompleteName: pansichar; const AIdx: int32; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_system_var_type(const ACompleteName: pansichar; AType: PLIBSystemVarType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
