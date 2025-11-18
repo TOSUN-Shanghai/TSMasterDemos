@@ -4149,6 +4149,8 @@ TSAPI(s32)rbs_get_signal_value_by_address(const char* ASymbolAddress,const pdoub
 
 TSAPI(s32)rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
 
+TSAPI(s32)get_system_var_type(const char* ACompleteName,const PLIBSystemVarType AType);
+
 #if defined ( __cplusplus )
 }
 #endif

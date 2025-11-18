@@ -6717,3 +6717,9 @@ rbs_set_signal_value_by_address = dll.rbs_set_signal_value_by_address
 rbs_set_signal_value_by_address.restype = s32
 rbs_set_signal_value_by_address.argtypes = [pchar,double]
 
+#arg[0] ACompleteName
+#arg[1] AType
+get_system_var_type = dll.get_system_var_type
+get_system_var_type.restype = s32
+get_system_var_type.argtypes = [pchar,PLIBSystemVarType]
+
