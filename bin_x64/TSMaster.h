@@ -3291,15 +3291,15 @@ TSAPI(s32)tslog_disable_online_replay_filter(const s32 AIndex);
 
 TSAPI(s32)tslog_set_online_replay_filter(const s32 AIndex,const bool AIsPassFilter,const s32 ACount,const ps32 AIdxChannels,const ps32 AIdentifiers);
 
-TSAPI(s32)set_can_signal_raw_value(const PMPCANSignal ACANSignal,const pu8 AData,const s64 AValue);
+TSAPI(s32)set_can_signal_raw_value(const PMPCANSignal ACANSignal,const pu8 AData,const u64 AValue);
 
 TSAPI(u64)get_can_signal_raw_value(const PMPCANSignal ACANSignal,const pu8 AData);
 
-TSAPI(s32)set_lin_signal_raw_value(const PMPLINSignal ALINSignal,const pu8 AData,const double AValue);
+TSAPI(s32)set_lin_signal_raw_value(const PMPLINSignal ALINSignal,const pu8 AData,const u64 AValue);
 
 TSAPI(u64)get_lin_signal_raw_value(const PMPLINSignal ALINSignal,const pu8 AData);
 
-TSAPI(s32)set_flexray_signal_raw_value(const PMPFlexRaySignal AFlexRaySignal,const pu8 AData,const double AValue);
+TSAPI(s32)set_flexray_signal_raw_value(const PMPFlexRaySignal AFlexRaySignal,const pu8 AData,const u64 AValue);
 
 TSAPI(u64)get_flexray_signal_raw_value(const PMPFlexRaySignal AFlexRaySignal,const pu8 AData);
 

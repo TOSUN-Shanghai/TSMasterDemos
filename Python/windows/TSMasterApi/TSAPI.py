@@ -3699,7 +3699,7 @@ tslog_set_online_replay_filter.argtypes = [s32,cbool,s32,ps32,ps32]
 #arg[2] AValue
 set_can_signal_raw_value = dll.set_can_signal_raw_value
 set_can_signal_raw_value.restype = s32
-set_can_signal_raw_value.argtypes = [PMPCANSignal,pu8,s64]
+set_can_signal_raw_value.argtypes = [PMPCANSignal,pu8,u64]
 
 #arg[0] ACANSignal
 #arg[1] AData
@@ -3712,7 +3712,7 @@ get_can_signal_raw_value.argtypes = [PMPCANSignal,pu8]
 #arg[2] AValue
 set_lin_signal_raw_value = dll.set_lin_signal_raw_value
 set_lin_signal_raw_value.restype = s32
-set_lin_signal_raw_value.argtypes = [PMPLINSignal,pu8,double]
+set_lin_signal_raw_value.argtypes = [PMPLINSignal,pu8,u64]
 
 #arg[0] ALINSignal
 #arg[1] AData
@@ -3725,7 +3725,7 @@ get_lin_signal_raw_value.argtypes = [PMPLINSignal,pu8]
 #arg[2] AValue
 set_flexray_signal_raw_value = dll.set_flexray_signal_raw_value
 set_flexray_signal_raw_value.restype = s32
-set_flexray_signal_raw_value.argtypes = [PMPFlexRaySignal,pu8,double]
+set_flexray_signal_raw_value.argtypes = [PMPFlexRaySignal,pu8,u64]
 
 #arg[0] AFlexRaySignal
 #arg[1] AData
