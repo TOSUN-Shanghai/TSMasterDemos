@@ -6723,3 +6723,68 @@ get_system_var_type = dll.get_system_var_type
 get_system_var_type.restype = s32
 get_system_var_type.argtypes = [pchar,PLIBSystemVarType]
 
+#arg[0] ABusType
+#arg[1] AIdxChn
+#arg[2] AFrameId
+#arg[3] AIdxStat
+metric_get_frame_interval_stat = dll.metric_get_frame_interval_stat
+metric_get_frame_interval_stat.restype = s32
+metric_get_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64,PTSMetricIntegerSnapshot]
+
+metric_start = dll.metric_start
+metric_start.restype = s32
+metric_start.argtypes = []
+
+metric_stop = dll.metric_stop
+metric_stop.restype = s32
+metric_stop.argtypes = []
+
+#arg[0] AIsRunning
+metric_is_running = dll.metric_is_running
+metric_is_running.restype = s32
+metric_is_running.argtypes = [pbool]
+
+#arg[0] ABusType
+#arg[1] AIdxChn
+#arg[2] AFrameId
+metric_register_can_frame_interval = dll.metric_register_can_frame_interval
+metric_register_can_frame_interval.restype = s32
+metric_register_can_frame_interval.argtypes = [TLIBApplicationChannelType,s32,u64]
+
+#arg[0] ABusType
+#arg[1] AIdxChn
+#arg[2] AFrameId
+metric_unregister_can_frame_interval = dll.metric_unregister_can_frame_interval
+metric_unregister_can_frame_interval.restype = s32
+metric_unregister_can_frame_interval.argtypes = [TLIBApplicationChannelType,s32,u64]
+
+#arg[0] ABusType
+#arg[1] AIdxChn
+#arg[2] AFrameId
+#arg[3] AIdxStat
+metric_get_w_reset_frame_interval_stat = dll.metric_get_w_reset_frame_interval_stat
+metric_get_w_reset_frame_interval_stat.restype = s32
+metric_get_w_reset_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64,PTSMetricIntegerSnapshot]
+
+#arg[0] ABusType
+#arg[1] AIdxChn
+#arg[2] AFrameId
+metric_reset_frame_interval_stat = dll.metric_reset_frame_interval_stat
+metric_reset_frame_interval_stat.restype = s32
+metric_reset_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64]
+
+#arg[0] ABusType
+#arg[1] AIdxChn
+metric_reset_frames_interval_stat_of_channel = dll.metric_reset_frames_interval_stat_of_channel
+metric_reset_frames_interval_stat_of_channel.restype = s32
+metric_reset_frames_interval_stat_of_channel.argtypes = [TLIBApplicationChannelType,s32]
+
+#arg[0] ABusType
+metric_reset_frames_interval_stat_of_bus = dll.metric_reset_frames_interval_stat_of_bus
+metric_reset_frames_interval_stat_of_bus.restype = s32
+metric_reset_frames_interval_stat_of_bus.argtypes = [TLIBApplicationChannelType]
+
+metric_reset_frames_interval_stat_of_all = dll.metric_reset_frames_interval_stat_of_all
+metric_reset_frames_interval_stat_of_all.restype = s32
+metric_reset_frames_interval_stat_of_all.argtypes = []
+

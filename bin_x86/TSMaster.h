@@ -1891,6 +1891,16 @@ typedef struct _Tts_in_pktinfo{
     Ts_in_addr ipi_addr;
 }Tts_in_pktinfo, *Pts_in_pktinfo, *pts_in_pktinfo, **PPts_in_pktinfo, **ppts_in_pktinfo;
 
+typedef struct _TTSMetricIntegerSnapshot{
+    u64 FCount;
+    s64 FMinValue;
+    s64 FMaxValue;
+    s64 FCurrValue;
+    double FMean;
+    double FStdDev;
+    s64 FModifyTimeStamp;
+}TTSMetricIntegerSnapshot, *PTSMetricIntegerSnapshot, *pTSMetricIntegerSnapshot, **PPTSMetricIntegerSnapshot, **ppTSMetricIntegerSnapshot;
+
 typedef void(__cdecl*TCProcedure)();
 // Arg[0] AData
 typedef void(__stdcall*TCANQueueEvent_API)(const PLIBCAN AData);
@@ -4150,6 +4160,28 @@ TSAPI(s32)rbs_get_signal_value_by_address(const char* ASymbolAddress,const pdoub
 TSAPI(s32)rbs_set_signal_value_by_address(const char* ASymbolAddress,const double AValue);
 
 TSAPI(s32)get_system_var_type(const char* ACompleteName,const PLIBSystemVarType AType);
+
+TSAPI(s32)metric_get_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
+
+TSAPI(s32)metric_start();
+
+TSAPI(s32)metric_stop();
+
+TSAPI(s32)metric_is_running(const pbool AIsRunning);
+
+TSAPI(s32)metric_register_can_frame_interval(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId);
+
+TSAPI(s32)metric_unregister_can_frame_interval(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId);
+
+TSAPI(s32)metric_get_w_reset_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
+
+TSAPI(s32)metric_reset_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId);
+
+TSAPI(s32)metric_reset_frames_interval_stat_of_channel(const TLIBApplicationChannelType ABusType,const s32 AIdxChn);
+
+TSAPI(s32)metric_reset_frames_interval_stat_of_bus(const TLIBApplicationChannelType ABusType);
+
+TSAPI(s32)metric_reset_frames_interval_stat_of_all();
 
 #if defined ( __cplusplus )
 }

@@ -1893,6 +1893,18 @@ will need to increase long long }
             const AOriLength: UInt32; ANewData: PByte;
             ANewLength: PUInt32): Int32; stdcall;
 
+  // Metric
+  PTSMetricIntegerSnapshot = ^TTSMetricIntegerSnapshot;
+  TTSMetricIntegerSnapshot = packed record
+    FCount: UInt64;
+    FMinValue: Int64;
+    FMaxValue: Int64;
+    FCurrValue: Int64;
+    FMean: Double;
+    FStdDev: Double;
+    FModifyTimeStamp: Int64;
+  end;
+
 {$IFNDEF LIBTSMASTER_IMPL}
 const
   // error code
@@ -3589,6 +3601,17 @@ function set_system_var_double_array_element(const ACompleteName: pansichar; con
 function rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_system_var_type(const ACompleteName: pansichar; AType: PLIBSystemVarType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_get_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_start(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_stop(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_is_running(AIsRunning: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_register_can_frame_interval(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_unregister_can_frame_interval(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_get_w_reset_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_reset_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_reset_frames_interval_stat_of_channel(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_reset_frames_interval_stat_of_bus(const ABusType: TLIBApplicationChannelType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_reset_frames_interval_stat_of_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

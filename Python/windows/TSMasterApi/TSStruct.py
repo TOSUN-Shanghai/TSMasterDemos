@@ -1131,3 +1131,18 @@ pts_in_pktinfo = POINTER(Tts_in_pktinfo)
 PPts_in_pktinfo = POINTER(POINTER(Tts_in_pktinfo))
 ppts_in_pktinfo = POINTER(POINTER(Tts_in_pktinfo))
 
+class TTSMetricIntegerSnapshot(Structure):
+    _pack_ = 1
+    _fields_ =[('FCount',u64),
+('FMinValue',s64),
+('FMaxValue',s64),
+('FCurrValue',s64),
+('FMean',double),
+('FStdDev',double),
+('FModifyTimeStamp',s64),
+]
+PTSMetricIntegerSnapshot = POINTER(TTSMetricIntegerSnapshot)
+pTSMetricIntegerSnapshot = POINTER(TTSMetricIntegerSnapshot)
+PPTSMetricIntegerSnapshot = POINTER(POINTER(TTSMetricIntegerSnapshot))
+ppTSMetricIntegerSnapshot = POINTER(POINTER(TTSMetricIntegerSnapshot))
+
