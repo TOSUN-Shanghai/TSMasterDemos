@@ -3601,14 +3601,14 @@ function set_system_var_double_array_element(const ACompleteName: pansichar; con
 function rbs_get_signal_value_by_address(const ASymbolAddress: pansichar; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rbs_set_signal_value_by_address(const ASymbolAddress: pansichar; const AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_system_var_type(const ACompleteName: pansichar; AType: PLIBSystemVarType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function metric_get_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_get_can_frame_interval_stat(const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_start(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_stop(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_is_running(AIsRunning: PBoolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_register_can_frame_interval(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_unregister_can_frame_interval(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function metric_get_w_reset_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
-function metric_reset_frame_interval_stat(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_get_w_reset_can_frame_interval_stat(const AIdxChn: int32; const AFrameId: uint64; const AIdxStat: PTSMetricIntegerSnapshot): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function metric_reset_can_frame_interval_stat(const AIdxChn: int32; const AFrameId: uint64): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_reset_frames_interval_stat_of_channel(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_reset_frames_interval_stat_of_bus(const ABusType: TLIBApplicationChannelType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_reset_frames_interval_stat_of_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
