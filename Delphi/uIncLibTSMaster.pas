@@ -3614,6 +3614,10 @@ function metric_reset_can_frame_interval_stat(const AIdxChn: int32; const AFrame
 function metric_reset_frames_interval_stat_of_channel(const ABusType: TLIBApplicationChannelType; const AIdxChn: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_reset_frames_interval_stat_of_bus(const ABusType: TLIBApplicationChannelType): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function metric_reset_frames_interval_stat_of_all(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsai_config_sync(const AChn: int32; const ASampleRate: double; const ASampleBits: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsao_config_sync(const AChn: int32; const AEnableReport: int32; const ASampleRate: double; const AOutputValue: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsai_get_value_input_sync(const AChnIdx: int32; AIOStatus: pInt32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsao_set_value_output_async(const AChnIdx: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
