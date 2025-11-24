@@ -6723,13 +6723,12 @@ get_system_var_type = dll.get_system_var_type
 get_system_var_type.restype = s32
 get_system_var_type.argtypes = [pchar,PLIBSystemVarType]
 
-#arg[0] ABusType
-#arg[1] AIdxChn
-#arg[2] AFrameId
-#arg[3] AIdxStat
-metric_get_frame_interval_stat = dll.metric_get_frame_interval_stat
-metric_get_frame_interval_stat.restype = s32
-metric_get_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64,PTSMetricIntegerSnapshot]
+#arg[0] AIdxChn
+#arg[1] AFrameId
+#arg[2] AIdxStat
+metric_get_can_frame_interval_stat = dll.metric_get_can_frame_interval_stat
+metric_get_can_frame_interval_stat.restype = s32
+metric_get_can_frame_interval_stat.argtypes = [s32,u64,PTSMetricIntegerSnapshot]
 
 metric_start = dll.metric_start
 metric_start.restype = s32
@@ -6758,20 +6757,18 @@ metric_unregister_can_frame_interval = dll.metric_unregister_can_frame_interval
 metric_unregister_can_frame_interval.restype = s32
 metric_unregister_can_frame_interval.argtypes = [TLIBApplicationChannelType,s32,u64]
 
-#arg[0] ABusType
-#arg[1] AIdxChn
-#arg[2] AFrameId
-#arg[3] AIdxStat
-metric_get_w_reset_frame_interval_stat = dll.metric_get_w_reset_frame_interval_stat
-metric_get_w_reset_frame_interval_stat.restype = s32
-metric_get_w_reset_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64,PTSMetricIntegerSnapshot]
+#arg[0] AIdxChn
+#arg[1] AFrameId
+#arg[2] AIdxStat
+metric_get_w_reset_can_frame_interval_stat = dll.metric_get_w_reset_can_frame_interval_stat
+metric_get_w_reset_can_frame_interval_stat.restype = s32
+metric_get_w_reset_can_frame_interval_stat.argtypes = [s32,u64,PTSMetricIntegerSnapshot]
 
-#arg[0] ABusType
-#arg[1] AIdxChn
-#arg[2] AFrameId
-metric_reset_frame_interval_stat = dll.metric_reset_frame_interval_stat
-metric_reset_frame_interval_stat.restype = s32
-metric_reset_frame_interval_stat.argtypes = [TLIBApplicationChannelType,s32,u64]
+#arg[0] AIdxChn
+#arg[1] AFrameId
+metric_reset_can_frame_interval_stat = dll.metric_reset_can_frame_interval_stat
+metric_reset_can_frame_interval_stat.restype = s32
+metric_reset_can_frame_interval_stat.argtypes = [s32,u64]
 
 #arg[0] ABusType
 #arg[1] AIdxChn

@@ -4164,7 +4164,7 @@ TSAPI(s32)rbs_set_signal_value_by_address(const char* ASymbolAddress,const doubl
 
 TSAPI(s32)get_system_var_type(const char* ACompleteName,const PLIBSystemVarType AType);
 
-TSAPI(s32)metric_get_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
+TSAPI(s32)metric_get_can_frame_interval_stat(const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
 
 TSAPI(s32)metric_start();
 
@@ -4176,9 +4176,9 @@ TSAPI(s32)metric_register_can_frame_interval(const TLIBApplicationChannelType AB
 
 TSAPI(s32)metric_unregister_can_frame_interval(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId);
 
-TSAPI(s32)metric_get_w_reset_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
+TSAPI(s32)metric_get_w_reset_can_frame_interval_stat(const s32 AIdxChn,const u64 AFrameId,const PTSMetricIntegerSnapshot AIdxStat);
 
-TSAPI(s32)metric_reset_frame_interval_stat(const TLIBApplicationChannelType ABusType,const s32 AIdxChn,const u64 AFrameId);
+TSAPI(s32)metric_reset_can_frame_interval_stat(const s32 AIdxChn,const u64 AFrameId);
 
 TSAPI(s32)metric_reset_frames_interval_stat_of_channel(const TLIBApplicationChannelType ABusType,const s32 AIdxChn);
 
