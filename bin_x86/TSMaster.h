@@ -2094,14 +2094,17 @@ typedef void(__stdcall*TReadProgressCallback)(const pnative_int AObj,const doubl
 typedef s32 (__cdecl*TSeekTimeProgressCallback)(const pnative_int AObj,const float AProgress);
 // Arg[0] AObj
 // Arg[1] AComment
-// Arg[2] AToTerminate
-typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const pnative_int AObj,const Prealtime_comment_t AComment,const pbool AToTerminate);
+// Arg[2] AProgress100
+// Arg[3] AToTerminate
+typedef void(__stdcall*TReadBLFRealtimeCommentCallback)(const pnative_int AObj,const Prealtime_comment_t AComment,const double AProgress100,const pbool AToTerminate);
 // Arg[0] AObj
 // Arg[1] ASysVar
-// Arg[2] AToTerminate
-typedef void(__stdcall*TReadBLFSystemVarCallback)(const pnative_int AObj,const PLIBSystemVar ASysVar,const pbool AToTerminate);
+// Arg[2] AProgress100
+// Arg[3] AToTerminate
+typedef void(__stdcall*TReadBLFSystemVarCallback)(const pnative_int AObj,const PLIBSystemVar ASysVar,const double AProgress100,const pbool AToTerminate);
 // Arg[0] AObj
-typedef void(__stdcall*TReadUnsupportedCallback)(const pnative_int AObj);
+// Arg[1] AProgress100
+typedef void(__stdcall*TReadUnsupportedCallback)(const pnative_int AObj,const double AProgress100);
 // Arg[0] pDiagModuleIndex
 // Arg[1] AChnIndex
 // Arg[2] ASupportFDCAN

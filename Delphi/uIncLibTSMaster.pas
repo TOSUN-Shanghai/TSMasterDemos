@@ -947,9 +947,9 @@ type
     function TimeS: double;
   end;
   PLibSystemVar = ^TLibSystemVar;
-  TReadBLFRealtimeCommentCallback = procedure (const AObj: pointer; const AComment: Prealtime_comment_t; const AToTerminate: pboolean); stdcall;
-  TReadBLFSystemVarCallback = procedure (const AObj: pointer; const ASysVar: PLibSystemVar; const AToTerminate: pboolean); stdcall;
-  TReadUnsupportedCallback = procedure (const AObj: pointer); stdcall;
+  TReadBLFRealtimeCommentCallback = procedure (const AObj: pointer; const AComment: Prealtime_comment_t; const AProgress100: double; const AToTerminate: pboolean); stdcall;
+  TReadBLFSystemVarCallback = procedure (const AObj: pointer; const ASysVar: PLibSystemVar; const AProgress100: double; const AToTerminate: pboolean); stdcall;
+  TReadUnsupportedCallback = procedure (const AObj: pointer; const AProgress100: double); stdcall;
   // Graphic Program
   TLIBAutomationModuleRunningState = (amrsNotRun, amrsPrepareRun, amrsRunning, amrsPaused, amrsStepping, amrsFinished);
   PLIBAutomationModuleRunningState = ^TLIBAutomationModuleRunningState;
