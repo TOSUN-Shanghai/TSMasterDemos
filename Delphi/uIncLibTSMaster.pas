@@ -1902,7 +1902,9 @@ will need to increase long long }
     FCurrValue: Int64;
     FMean: Double;
     FStdDev: Double;
-    FModifyTimeStamp: Int64;
+    FModifyTimestamp: Int64;
+    FMinEventTimestamp: Int64;
+    FMaxEventTimestamp: Int64;
   end;
 
 {$IFNDEF LIBTSMASTER_IMPL}
