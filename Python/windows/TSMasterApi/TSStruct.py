@@ -1139,7 +1139,9 @@ class TTSMetricIntegerSnapshot(Structure):
 ('FCurrValue',s64),
 ('FMean',double),
 ('FStdDev',double),
-('FModifyTimeStamp',s64),
+('FModifyTimestamp',s64),
+('FMinEventTimestamp',s64),
+('FMaxEventTimestamp',s64),
 ]
 PTSMetricIntegerSnapshot = POINTER(TTSMetricIntegerSnapshot)
 pTSMetricIntegerSnapshot = POINTER(TTSMetricIntegerSnapshot)

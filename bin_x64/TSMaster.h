@@ -1898,7 +1898,9 @@ typedef struct _TTSMetricIntegerSnapshot{
     s64 FCurrValue;
     double FMean;
     double FStdDev;
-    s64 FModifyTimeStamp;
+    s64 FModifyTimestamp;
+    s64 FMinEventTimestamp;
+    s64 FMaxEventTimestamp;
 }TTSMetricIntegerSnapshot, *PTSMetricIntegerSnapshot, *pTSMetricIntegerSnapshot, **PPTSMetricIntegerSnapshot, **ppTSMetricIntegerSnapshot;
 
 typedef void(__cdecl*TCProcedure)();
@@ -4185,6 +4187,14 @@ TSAPI(s32)metric_reset_frames_interval_stat_of_channel(const TLIBApplicationChan
 TSAPI(s32)metric_reset_frames_interval_stat_of_bus(const TLIBApplicationChannelType ABusType);
 
 TSAPI(s32)metric_reset_frames_interval_stat_of_all();
+
+TSAPI(s32)tsai_config_sync(const s32 AChn,const double ASampleRate,const s32 ASampleBits,const s32 ATimeoutMs);
+
+TSAPI(s32)tsao_config_sync(const s32 AChn,const s32 AEnableReport,const double ASampleRate,const s32 AOutputValue,const s32 ATimeoutMs);
+
+TSAPI(s32)tsai_get_value_input_sync(const s32 AChnIdx,const ps32 AIOStatus,const s32 ATimeoutMs);
+
+TSAPI(s32)tsao_set_value_output_async(const s32 AChnIdx,const s32 AIOStatus);
 
 #if defined ( __cplusplus )
 }

@@ -6785,3 +6785,33 @@ metric_reset_frames_interval_stat_of_all = dll.metric_reset_frames_interval_stat
 metric_reset_frames_interval_stat_of_all.restype = s32
 metric_reset_frames_interval_stat_of_all.argtypes = []
 
+#arg[0] AChn
+#arg[1] ASampleRate
+#arg[2] ASampleBits
+#arg[3] ATimeoutMs
+tsai_config_sync = dll.tsai_config_sync
+tsai_config_sync.restype = s32
+tsai_config_sync.argtypes = [s32,double,s32,s32]
+
+#arg[0] AChn
+#arg[1] AEnableReport
+#arg[2] ASampleRate
+#arg[3] AOutputValue
+#arg[4] ATimeoutMs
+tsao_config_sync = dll.tsao_config_sync
+tsao_config_sync.restype = s32
+tsao_config_sync.argtypes = [s32,s32,double,s32,s32]
+
+#arg[0] AChnIdx
+#arg[1] AIOStatus
+#arg[2] ATimeoutMs
+tsai_get_value_input_sync = dll.tsai_get_value_input_sync
+tsai_get_value_input_sync.restype = s32
+tsai_get_value_input_sync.argtypes = [s32,ps32,s32]
+
+#arg[0] AChnIdx
+#arg[1] AIOStatus
+tsao_set_value_output_async = dll.tsao_set_value_output_async
+tsao_set_value_output_async.restype = s32
+tsao_set_value_output_async.argtypes = [s32,s32]
+
