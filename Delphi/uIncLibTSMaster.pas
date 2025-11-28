@@ -3618,6 +3618,10 @@ function tsai_config_sync(const AChn: int32; const ASampleRate: double; const AS
 function tsao_config_sync(const AChn: int32; const AEnableReport: int32; const ASampleRate: double; const AOutputValue: int32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsai_get_value_input_sync(const AChnIdx: int32; AIOStatus: pInt32; const ATimeoutMs: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsao_set_value_output_async(const AChnIdx: int32; AIOStatus: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_system_api_w_serialized_args(const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function call_library_api_w_serialized_args(const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_call_system_api_w_serialized_args(const AHandle: NativeInt; const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function rpc_tsmaster_call_library_api_w_serialized_args(const AHandle: NativeInt; const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
