@@ -6815,3 +6815,37 @@ tsao_set_value_output_async = dll.tsao_set_value_output_async
 tsao_set_value_output_async.restype = s32
 tsao_set_value_output_async.argtypes = [s32,s32]
 
+#arg[0] AAPIName
+#arg[1] ASeparator
+#arg[2] AArgsCapacity
+#arg[3] AArgs
+call_system_api_w_serialized_args = dll.call_system_api_w_serialized_args
+call_system_api_w_serialized_args.restype = s32
+call_system_api_w_serialized_args.argtypes = [pchar,pchar,s32,pchar]
+
+#arg[0] AAPIName
+#arg[1] ASeparator
+#arg[2] AArgsCapacity
+#arg[3] AArgs
+call_library_api_w_serialized_args = dll.call_library_api_w_serialized_args
+call_library_api_w_serialized_args.restype = s32
+call_library_api_w_serialized_args.argtypes = [pchar,pchar,s32,pchar]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] ASeparator
+#arg[3] AArgsCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_system_api_w_serialized_args = dll.rpc_tsmaster_call_system_api_w_serialized_args
+rpc_tsmaster_call_system_api_w_serialized_args.restype = s32
+rpc_tsmaster_call_system_api_w_serialized_args.argtypes = [size_t,pchar,pchar,s32,pchar]
+
+#arg[0] AHandle
+#arg[1] AAPIName
+#arg[2] ASeparator
+#arg[3] AArgsCapacity
+#arg[4] AArgs
+rpc_tsmaster_call_library_api_w_serialized_args = dll.rpc_tsmaster_call_library_api_w_serialized_args
+rpc_tsmaster_call_library_api_w_serialized_args.restype = s32
+rpc_tsmaster_call_library_api_w_serialized_args.argtypes = [size_t,pchar,pchar,s32,pchar]
+

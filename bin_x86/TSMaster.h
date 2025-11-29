@@ -4196,6 +4196,14 @@ TSAPI(s32)tsai_get_value_input_sync(const s32 AChnIdx,const ps32 AIOStatus,const
 
 TSAPI(s32)tsao_set_value_output_async(const s32 AChnIdx,const s32 AIOStatus);
 
+TSAPI(s32)call_system_api_w_serialized_args(const char* AAPIName,const char* ASeparator,const s32 AArgsCapacity,const char* AArgs);
+
+TSAPI(s32)call_library_api_w_serialized_args(const char* AAPIName,const char* ASeparator,const s32 AArgsCapacity,const char* AArgs);
+
+TSAPI(s32)rpc_tsmaster_call_system_api_w_serialized_args(const size_t AHandle,const char* AAPIName,const char* ASeparator,const s32 AArgsCapacity,const char* AArgs);
+
+TSAPI(s32)rpc_tsmaster_call_library_api_w_serialized_args(const size_t AHandle,const char* AAPIName,const char* ASeparator,const s32 AArgsCapacity,const char* AArgs);
+
 #if defined ( __cplusplus )
 }
 #endif
