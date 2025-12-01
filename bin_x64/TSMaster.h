@@ -1334,7 +1334,8 @@ typedef enum {
     TA825_4 = 58,
     TC1013HV = 59,
     TC1052 = 60,
-    TS_DEV_END = 61,
+    TTS1017Pro = 61,
+    TS_DEV_END = 62,
 }TLIB_TS_Device_Sub_Type, *PLIB_TS_Device_Sub_Type;
 typedef enum {
     XL_NONE = 0,

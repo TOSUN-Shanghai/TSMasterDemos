@@ -437,7 +437,8 @@ class _TLIB_TS_Device_Sub_Type(CEnum):
     TA825_4 = 58
     TC1013HV = 59
     TC1052 = 60
-    TS_DEV_END = 61
+    TTS1017Pro = 61
+    TS_DEV_END = 62
 TLIB_TS_Device_Sub_Type = c_int32
 PLIB_TS_Device_Sub_Type = ps32
 
