@@ -438,7 +438,13 @@ class _TLIB_TS_Device_Sub_Type(CEnum):
     TC1013HV = 59
     TC1052 = 60
     TTS1017Pro = 61
-    TS_DEV_END = 62
+    TLog1057 = 62
+    TC1017Pro = 63
+    GW2202 = 64
+    GW2204 = 65
+    GW2212 = 66
+    TA821 = 67
+    TS_DEV_END = 68
 TLIB_TS_Device_Sub_Type = c_int32
 PLIB_TS_Device_Sub_Type = ps32
 
