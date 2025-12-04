@@ -1892,11 +1892,11 @@ will need to increase long long }
 
   // DDS callback
   Tdds_pre_deserialize_callback = function(const AIdxChn: UInt32;
-            const ATypeName, ATopicName: PAnsiChar; const AOriData: PByte;
+            const ATypeName: PAnsiChar; ATopicName: PAnsiChar; const AOriData: PByte;
             const AOriLength: UInt32; ANewData: PByte;
             ANewLength: PUInt32): Int32; stdcall;
   Tdds_after_serialize_callback = function(const AIdxChn: UInt32;
-            const ATypeName, ATopicName: PAnsiChar; const AOriData: PByte;
+            const ATypeName: PAnsiChar; ATopicName: PAnsiChar; const AOriData: PByte;
             const AOriLength: UInt32; ANewData: PByte;
             ANewLength: PUInt32): Int32; stdcall;
 

@@ -2184,19 +2184,21 @@ typedef void(__cdecl*tosun_tcp_presend_callback)(const s32 sock,const pnative_in
 // Arg[2] len
 typedef void(__cdecl*tosun_tcp_ack_callback)(const s32 sock,const pnative_int p,const u16 len);
 // Arg[0] AIdxChn
-// Arg[1] ATypeName,ATopicName
-// Arg[2] AOriData
-// Arg[3] AOriLength
-// Arg[4] ANewData
-// Arg[5] ANewLength
-typedef s32 (__stdcall*Tdds_pre_deserialize_callback)(const u32 AIdxChn,const char* ATypeName,ATopicName,const pu8 AOriData,const u32 AOriLength,const pu8 ANewData,const pu32 ANewLength);
+// Arg[1] ATypeName
+// Arg[2] ATopicName
+// Arg[3] AOriData
+// Arg[4] AOriLength
+// Arg[5] ANewData
+// Arg[6] ANewLength
+typedef s32 (__stdcall*Tdds_pre_deserialize_callback)(const u32 AIdxChn,const char* ATypeName,const char* ATopicName,const pu8 AOriData,const u32 AOriLength,const pu8 ANewData,const pu32 ANewLength);
 // Arg[0] AIdxChn
-// Arg[1] ATypeName,ATopicName
-// Arg[2] AOriData
-// Arg[3] AOriLength
-// Arg[4] ANewData
-// Arg[5] ANewLength
-typedef s32 (__stdcall*Tdds_after_serialize_callback)(const u32 AIdxChn,const char* ATypeName,ATopicName,const pu8 AOriData,const u32 AOriLength,const pu8 ANewData,const pu32 ANewLength);
+// Arg[1] ATypeName
+// Arg[2] ATopicName
+// Arg[3] AOriData
+// Arg[4] AOriLength
+// Arg[5] ANewData
+// Arg[6] ANewLength
+typedef s32 (__stdcall*Tdds_after_serialize_callback)(const u32 AIdxChn,const char* ATypeName,const char* ATopicName,const pu8 AOriData,const u32 AOriLength,const pu8 ANewData,const pu32 ANewLength);
 #if defined ( __cplusplus )
 extern  "C"
 {
