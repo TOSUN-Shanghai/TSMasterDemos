@@ -1016,6 +1016,46 @@ typedef enum {
     mpkLast = 2,
 }TMBD_PriorityKind, *PMBD_PriorityKind;
 typedef enum {
+    AIT_DIAGRAM = 0,
+    AIT_JUNCTION = 1,
+    AIT_GROUP = 2,
+    AIT_STATE = 3,
+    AIT_GRAPHIC_FUNCTION = 4,
+    AIT_DIAGRAM_FUNCTION = 5,
+    AIT_C_FUNCTION = 6,
+    AIT_TRUTH_TABLE = 7,
+    AIT_COMMENT = 8,
+    AIT_IMAGE = 9,
+    AIT_HISTORY_JUNCTION = 10,
+    AIT_DATA = 11,
+    AIT_TRANSITION = 12,
+    AIT_EVENT = 13,
+}TAiFlowObjectType, *PAiFlowObjectType;
+typedef enum {
+    DECOMP_OR = 0,
+    DECOMP_AND = 1,
+    DECOMP_CLUSTER = 2,
+}TAiFlowDecomposition, *PAiFlowDecomposition;
+typedef enum {
+    DRAG_NONE = 0,
+    DRAG_TOP_LEFT = 1,
+    DRAG_TOP_RIGHT = 2,
+    DRAG_BOTTOM_LEFT = 3,
+    DRAG_BOTTOM_RIGHT = 4,
+    DRAG_TOP = 5,
+    DRAG_BOTTOM = 6,
+    DRAG_LEFT = 7,
+    DRAG_RIGHT = 8,
+}TAiFlowDragHandlePosition, *PAiFlowDragHandlePosition;
+typedef enum {
+    ALIGN_LEFT = 0,
+    ALIGN_RIGHT = 1,
+    ALIGN_TOP = 2,
+    ALIGN_BOTTOM = 3,
+    ALIGN_CENTER_H = 4,
+    ALIGN_CENTER_V = 5,
+}TAiFlowAlignMode, *PAiFlowAlignMode;
+typedef enum {
     BUS_UNKNOWN_TYPE = 0,
     TS_TCP_DEVICE = 1,
     XL_USB_DEVICE = 2,
