@@ -3983,10 +3983,6 @@ TSAPI(s32)can_rbs_fault_inject_disturb_checksum(const s32 AChn,const char* ANetw
 
 TSAPI(s32)can_rbs_fault_inject_disturb_updatebit(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalGroupName,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue);
 
-TSAPI(s32)start_log_verbose(const s32 AFilesizeType,const s64 ASizeValue);
-
-TSAPI(s32)start_log_w_filename_verbose(const char* AFileName,const s32 AFilesizeType,const s64 ASizeValue);
-
 TSAPI(s32)tsio_start_configuration();
 
 TSAPI(s32)tsio_end_configuration();
