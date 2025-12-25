@@ -6836,3 +6836,11 @@ rpc_tsmaster_call_library_api_w_serialized_args = dll.rpc_tsmaster_call_library_
 rpc_tsmaster_call_library_api_w_serialized_args.restype = s32
 rpc_tsmaster_call_library_api_w_serialized_args.argtypes = [size_t,pchar,pchar,s32,pchar]
 
+#arg[0] AIdxChn
+#arg[1] AIsEnabled
+#arg[2] ADelayUs
+#arg[3] ATimeoutMS
+can_set_load_balance_control = dll.can_set_load_balance_control
+can_set_load_balance_control.restype = s32
+can_set_load_balance_control.argtypes = [s32,u8,u32,s32]
+

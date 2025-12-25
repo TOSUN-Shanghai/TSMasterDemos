@@ -4249,6 +4249,8 @@ TSAPI(s32)rpc_tsmaster_call_system_api_w_serialized_args(const size_t AHandle,co
 
 TSAPI(s32)rpc_tsmaster_call_library_api_w_serialized_args(const size_t AHandle,const char* AAPIName,const char* ASeparator,const s32 AArgsCapacity,const char* AArgs);
 
+TSAPI(s32)can_set_load_balance_control(const s32 AIdxChn,const u8 AIsEnabled,const u32 ADelayUs,const s32 ATimeoutMS);
+
 #if defined ( __cplusplus )
 }
 #endif
