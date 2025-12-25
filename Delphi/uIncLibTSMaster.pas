@@ -3671,6 +3671,7 @@ function call_system_api_w_serialized_args(const AAPIName: pansichar; const ASep
 function call_library_api_w_serialized_args(const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_call_system_api_w_serialized_args(const AHandle: NativeInt; const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function rpc_tsmaster_call_library_api_w_serialized_args(const AHandle: NativeInt; const AAPIName: pansichar; const ASeparator: pansichar; const AArgsCapacity: int32; AArgs: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function can_set_load_balance_control(const AIdxChn: int32; const AIsEnabled: byte; const ADelayUs: uint32; const ATimeoutMS: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
