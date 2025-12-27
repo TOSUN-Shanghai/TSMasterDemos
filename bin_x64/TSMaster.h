@@ -4251,6 +4251,8 @@ TSAPI(s32)rpc_tsmaster_call_library_api_w_serialized_args(const size_t AHandle,c
 
 TSAPI(s32)can_set_load_balance_control(const s32 AIdxChn,const u8 AIsEnabled,const u32 ADelayUs,const s32 ATimeoutMS);
 
+TSAPI(s32)can_rbs_get_e2e_list_and_save_to_file(const s32 AChnIdx,const char* AFilePath);
+
 #if defined ( __cplusplus )
 }
 #endif

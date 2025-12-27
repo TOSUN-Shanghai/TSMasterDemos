@@ -6844,3 +6844,9 @@ can_set_load_balance_control = dll.can_set_load_balance_control
 can_set_load_balance_control.restype = s32
 can_set_load_balance_control.argtypes = [s32,u8,u32,s32]
 
+#arg[0] AChnIdx
+#arg[1] AFilePath
+can_rbs_get_e2e_list_and_save_to_file = dll.can_rbs_get_e2e_list_and_save_to_file
+can_rbs_get_e2e_list_and_save_to_file.restype = s32
+can_rbs_get_e2e_list_and_save_to_file.argtypes = [s32,pchar]
+
