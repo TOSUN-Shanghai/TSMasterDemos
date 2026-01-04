@@ -3675,6 +3675,7 @@ function can_set_load_balance_control(const AIdxChn: int32; const AIsEnabled: by
 function can_rbs_get_e2e_list_and_save_to_file(const AChnIdx: int32; const AFilePath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_hardware_id_string_upg1(AIDString: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_hardware_id_array_upg1(AArray8B: pbyte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function get_mapping_property(const AMapping: PLIBTSMapping; const AKey: int32; const AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
