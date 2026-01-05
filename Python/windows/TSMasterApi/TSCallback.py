@@ -221,6 +221,9 @@ Ttsdiag_can_create = WINFUNCTYPE(s32,ps32,u32,u8,u8,u32,cbool,u32,cbool,u32,cboo
 Ttsdiag_set_fdmode = WINFUNCTYPE(s32,s32,cbool,cbool,s32)
 # Arg[0] ADiagModuleIndex
 Ttsdiag_can_delete = WINFUNCTYPE(s32,s32)
+# Arg[0] ADiagModuleIndex
+# Arg[1] AIsValid
+TTsdiag_set_is_valid = WINFUNCTYPE(s32,s32,cbool)
 Ttsdiag_can_delete_all = WINFUNCTYPE(None,)
 # Arg[0] ADiagModuleIndex
 # Arg[1] AReqDataArray

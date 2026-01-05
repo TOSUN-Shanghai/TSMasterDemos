@@ -2172,6 +2172,9 @@ typedef s32 (__stdcall*Ttsdiag_can_create)(const ps32 pDiagModuleIndex,const u32
 typedef s32 (__stdcall*Ttsdiag_set_fdmode)(const s32 ADiagModuleIndex,const bool AFDMode,const bool ASupportBRS,const s32 AMaxDLC);
 // Arg[0] ADiagModuleIndex
 typedef s32 (__stdcall*Ttsdiag_can_delete)(const s32 ADiagModuleIndex);
+// Arg[0] ADiagModuleIndex
+// Arg[1] AIsValid
+typedef s32 (__stdcall*TTsdiag_set_is_valid)(const s32 ADiagModuleIndex,const bool AIsValid);
 typedef void(__stdcall*Ttsdiag_can_delete_all)();
 // Arg[0] ADiagModuleIndex
 // Arg[1] AReqDataArray
@@ -2998,6 +3001,8 @@ TSAPI(s32)tsdiag_lin_set_nad(const s32 ADiagModuleIndex,const u8 ANAD);
 TSAPI(s32)tsdiag_set_channel(const s32 ADiagModuleIndex,const s32 AChnIndex);
 
 TSAPI(s32)tsdiag_set_fdmode(const s32 ADiagModuleIndex,const bool AFDMode,const bool ASupportBRS,const s32 AMaxLength);
+
+TSAPI(s32)tsdiag_set_is_valid(const s32 ADiagModuleIndex,const bool AIsValid);
 
 TSAPI(s32)tsdiag_set_request_id(const s32 ADiagModuleIndex,const s32 ARequestID,const bool AIsStandard);
 

@@ -1386,6 +1386,7 @@ type
                       const AFunctionIDIsStd: Boolean): Integer; stdcall;
   Ttsdiag_set_fdmode = function(const ADiagModuleIndex: Integer; const AFDMode: boolean; const ASupportBRS: Boolean; const AMaxDLC: Integer): Integer; stdcall;
   Ttsdiag_can_delete = function(const ADiagModuleIndex: Integer): Integer; stdcall;
+  TTsdiag_set_is_valid = function(const ADiagModuleIndex: Integer; const AIsValid: boolean): integer; stdcall;
   Ttsdiag_can_delete_all = procedure; stdcall;
   Ttstp_can_request_and_get_response = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
   Ttstp_can_request_and_get_response_functional = function(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer; const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall;
@@ -2979,8 +2980,9 @@ function tsdiag_lin_create(const pDiagModuleIndex: PInteger; const AChnIndex: UI
 function tstp_lin_set_run_with_normal_schedule_table(const ADiagModuleIndex: Integer; const ADiagRunWithNormalScheduleTable: boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_lin_set_nad(const ADiagModuleIndex: Integer; const ANAD: byte): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 {Parameter setting}
-function tsdiag_set_channel(const ADiagModuleIndex: Integer; const AChnIndex: Integer): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_channel(const ADiagModuleIndex: Integer; const AChnIndex: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_fdmode(const ADiagModuleIndex: Integer; const AFDMode: boolean; const ASupportBRS: boolean; const AMaxLength: Integer): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function tsdiag_set_is_valid(const ADiagModuleIndex: Integer; const AIsValid: boolean): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_request_id(const ADiagModuleIndex: Integer; const ARequestID: Integer; const AIsStandard: Boolean): Integer;  stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_response_id(const ADiagModuleIndex: Integer; const ARequestID: Integer; const AIsStandard: Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_set_function_id(const ADiagModuleIndex: Integer; const ARequestID: Integer; const AIsStandard: Boolean): Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
@@ -3009,6 +3011,7 @@ function tstp_request_and_get_response(const ADiagModuleIndex: Integer; const AR
 function tstp_request_and_get_response_functional(const ADiagModuleIndex: Integer; const AReqDataArray: PByte; const AReqDataSize: Integer;const AResponseDataArray: PByte; const AResponseDataSize: PInteger): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function tsdiag_delete(const ADiagModuleIndex: Integer): Integer; stdcall;{$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 procedure tsdiag_delete_all; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+
 
 {Commen Diagnostic Service APIs}
 function tsdiag_session_control(const ADiagModuleIndex: Integer; const ASubSession: Byte):Integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}

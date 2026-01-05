@@ -2506,6 +2506,12 @@ tsdiag_set_fdmode.restype = s32
 tsdiag_set_fdmode.argtypes = [s32,cbool,cbool,s32]
 
 #arg[0] ADiagModuleIndex
+#arg[1] AIsValid
+tsdiag_set_is_valid = dll.tsdiag_set_is_valid
+tsdiag_set_is_valid.restype = s32
+tsdiag_set_is_valid.argtypes = [s32,cbool]
+
+#arg[0] ADiagModuleIndex
 #arg[1] ARequestID
 #arg[2] AIsStandard
 tsdiag_set_request_id = dll.tsdiag_set_request_id
