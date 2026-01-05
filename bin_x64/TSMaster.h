@@ -4253,6 +4253,12 @@ TSAPI(s32)can_set_load_balance_control(const s32 AIdxChn,const u8 AIsEnabled,con
 
 TSAPI(s32)can_rbs_get_e2e_list_and_save_to_file(const s32 AChnIdx,const char* AFilePath);
 
+TSAPI(s32)get_hardware_id_string_upg1(const ppchar AIDString);
+
+TSAPI(s32)get_hardware_id_array_upg1(const pu8 AArray8B);
+
+TSAPI(s32)get_mapping_property(const PLIBTSMapping AMapping,const s32 AKey,const ppchar AValue);
+
 #if defined ( __cplusplus )
 }
 #endif

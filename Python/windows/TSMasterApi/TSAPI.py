@@ -6850,3 +6850,20 @@ can_rbs_get_e2e_list_and_save_to_file = dll.can_rbs_get_e2e_list_and_save_to_fil
 can_rbs_get_e2e_list_and_save_to_file.restype = s32
 can_rbs_get_e2e_list_and_save_to_file.argtypes = [s32,pchar]
 
+#arg[0] AIDString
+get_hardware_id_string_upg1 = dll.get_hardware_id_string_upg1
+get_hardware_id_string_upg1.restype = s32
+get_hardware_id_string_upg1.argtypes = [ppchar]
+
+#arg[0] AArray8B
+get_hardware_id_array_upg1 = dll.get_hardware_id_array_upg1
+get_hardware_id_array_upg1.restype = s32
+get_hardware_id_array_upg1.argtypes = [pu8]
+
+#arg[0] AMapping
+#arg[1] AKey
+#arg[2] AValue
+get_mapping_property = dll.get_mapping_property
+get_mapping_property.restype = s32
+get_mapping_property.argtypes = [PLIBTSMapping,s32,ppchar]
+
