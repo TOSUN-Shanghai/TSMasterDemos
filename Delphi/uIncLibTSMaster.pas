@@ -1264,16 +1264,34 @@ type
     FFRSlotId: uint16;
     FFRDLC: uint16;
     FFRCycleMask: uint64;
+    //FPDUCount or signal Count
+    FPDUCount: Int32;
     FSignalCount: int32;
     FName: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
     FComment: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
   end;
   PMPDBFrameProperties = ^TMPDBFrameProperties;
+  // TMPDBFrameProperties for database Frame properties, size = 1088
+  TMPDBPDUProperties = packed record
+    FDBIndex: int32;
+    FECUIndex: int32;
+    FFrameIndex: int32;
+    FPDUIndex: Int32;
+    FIsTx: uint8;
+    FReserved1: uint8;
+    FCycleTimeMs: uint16;
+    FPDUType: TSignalType;
+    FSignalCount: int32;
+    FName: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
+    FComment: array [0..MP_DATABASE_STR_LEN-1] of ansichar;
+  end;
+  PMPDBPDUProperties = ^TMPDBPDUProperties;
   // TMPDBSignalProperties for database signal properties, size = 1144
   TMPDBSignalProperties = packed record
     FDBIndex: int32;
     FECUIndex: int32;
     FFrameIndex: int32;
+    FPDUIndex: Int32;
     FSignalIndex: int32;
     FIsTx: uint8;
     FReserved1: uint8;
@@ -3679,6 +3697,10 @@ function can_rbs_get_e2e_list_and_save_to_file(const AChnIdx: int32; const AFile
 function get_hardware_id_string_upg1(AIDString: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_hardware_id_array_upg1(AArray8B: pbyte): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_mapping_property(const AMapping: PLIBTSMapping; const AKey: int32; const AValue: PPAnsiChar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_can_pdu_properties_by_index(const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_can_pdu_properties_by_address(const AAdress: pansichar; const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_flexray_pdu_properties_by_address(const AAdress: pansichar; const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function db_get_flexray_pdu_properties_by_index(const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

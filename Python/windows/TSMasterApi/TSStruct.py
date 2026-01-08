@@ -848,6 +848,7 @@ class TMPDBFrameProperties(Structure):
 ('FFRSlotId',u16),
 ('FFRDLC',u16),
 ('FFRCycleMask',u64),
+('FPDUCount',s32),
 ('FSignalCount',s32),
 ('FName',char*512),
 ('FComment',char*512),
@@ -857,11 +858,31 @@ pMPDBFrameProperties = POINTER(TMPDBFrameProperties)
 PPMPDBFrameProperties = POINTER(POINTER(TMPDBFrameProperties))
 ppMPDBFrameProperties = POINTER(POINTER(TMPDBFrameProperties))
 
+class TMPDBPDUProperties(Structure):
+    _pack_ = 1
+    _fields_ =[('FDBIndex',s32),
+('FECUIndex',s32),
+('FFrameIndex',s32),
+('FPDUIndex',s32),
+('FIsTx',u8),
+('FReserved1',u8),
+('FCycleTimeMs',u16),
+('FPDUType',TSignalType),
+('FSignalCount',s32),
+('FName',char*512),
+('FComment',char*512),
+]
+PMPDBPDUProperties = POINTER(TMPDBPDUProperties)
+pMPDBPDUProperties = POINTER(TMPDBPDUProperties)
+PPMPDBPDUProperties = POINTER(POINTER(TMPDBPDUProperties))
+ppMPDBPDUProperties = POINTER(POINTER(TMPDBPDUProperties))
+
 class TMPDBSignalProperties(Structure):
     _pack_ = 1
     _fields_ =[('FDBIndex',s32),
 ('FECUIndex',s32),
 ('FFrameIndex',s32),
+('FPDUIndex',s32),
 ('FSignalIndex',s32),
 ('FIsTx',u8),
 ('FReserved1',u8),

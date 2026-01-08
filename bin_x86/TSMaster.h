@@ -1770,15 +1770,31 @@ typedef struct _TMPDBFrameProperties{
     u16 FFRSlotId;
     u16 FFRDLC;
     u64 FFRCycleMask;
+    s32 FPDUCount;
     s32 FSignalCount;
     char FName[512];
     char FComment[512];
 }TMPDBFrameProperties, *PMPDBFrameProperties, *pMPDBFrameProperties, **PPMPDBFrameProperties, **ppMPDBFrameProperties;
 
+typedef struct _TMPDBPDUProperties{
+    s32 FDBIndex;
+    s32 FECUIndex;
+    s32 FFrameIndex;
+    s32 FPDUIndex;
+    u8 FIsTx;
+    u8 FReserved1;
+    u16 FCycleTimeMs;
+    TSignalType FPDUType;
+    s32 FSignalCount;
+    char FName[512];
+    char FComment[512];
+}TMPDBPDUProperties, *PMPDBPDUProperties, *pMPDBPDUProperties, **PPMPDBPDUProperties, **ppMPDBPDUProperties;
+
 typedef struct _TMPDBSignalProperties{
     s32 FDBIndex;
     s32 FECUIndex;
     s32 FFrameIndex;
+    s32 FPDUIndex;
     s32 FSignalIndex;
     u8 FIsTx;
     u8 FReserved1;
@@ -4263,6 +4279,14 @@ TSAPI(s32)get_hardware_id_string_upg1(const ppchar AIDString);
 TSAPI(s32)get_hardware_id_array_upg1(const pu8 AArray8B);
 
 TSAPI(s32)get_mapping_property(const PLIBTSMapping AMapping,const s32 AKey,const ppchar AValue);
+
+TSAPI(s32)db_get_can_pdu_properties_by_index(const PMPDBPDUProperties AValue);
+
+TSAPI(s32)db_get_can_pdu_properties_by_address(const char* AAdress,const PMPDBPDUProperties AValue);
+
+TSAPI(s32)db_get_flexray_pdu_properties_by_address(const char* AAdress,const PMPDBPDUProperties AValue);
+
+TSAPI(s32)db_get_flexray_pdu_properties_by_index(const PMPDBPDUProperties AValue);
 
 #if defined ( __cplusplus )
 }

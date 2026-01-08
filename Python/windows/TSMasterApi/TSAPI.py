@@ -6873,3 +6873,25 @@ get_mapping_property = dll.get_mapping_property
 get_mapping_property.restype = s32
 get_mapping_property.argtypes = [PLIBTSMapping,s32,ppchar]
 
+#arg[0] AValue
+db_get_can_pdu_properties_by_index = dll.db_get_can_pdu_properties_by_index
+db_get_can_pdu_properties_by_index.restype = s32
+db_get_can_pdu_properties_by_index.argtypes = [PMPDBPDUProperties]
+
+#arg[0] AAdress
+#arg[1] AValue
+db_get_can_pdu_properties_by_address = dll.db_get_can_pdu_properties_by_address
+db_get_can_pdu_properties_by_address.restype = s32
+db_get_can_pdu_properties_by_address.argtypes = [pchar,PMPDBPDUProperties]
+
+#arg[0] AAdress
+#arg[1] AValue
+db_get_flexray_pdu_properties_by_address = dll.db_get_flexray_pdu_properties_by_address
+db_get_flexray_pdu_properties_by_address.restype = s32
+db_get_flexray_pdu_properties_by_address.argtypes = [pchar,PMPDBPDUProperties]
+
+#arg[0] AValue
+db_get_flexray_pdu_properties_by_index = dll.db_get_flexray_pdu_properties_by_index
+db_get_flexray_pdu_properties_by_index.restype = s32
+db_get_flexray_pdu_properties_by_index.argtypes = [PMPDBPDUProperties]
+
