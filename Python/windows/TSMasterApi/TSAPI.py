@@ -6895,3 +6895,26 @@ db_get_flexray_pdu_properties_by_index = dll.db_get_flexray_pdu_properties_by_in
 db_get_flexray_pdu_properties_by_index.restype = s32
 db_get_flexray_pdu_properties_by_index.argtypes = [PMPDBPDUProperties]
 
+#arg[0] AECUName
+#arg[1] AChnIdx
+cal_set_logical_channel_index = dll.cal_set_logical_channel_index
+cal_set_logical_channel_index.restype = s32
+cal_set_logical_channel_index.argtypes = [pchar,s32]
+
+#arg[0] AECUName
+#arg[1] AA2LPath
+cal_load_new_a2l = dll.cal_load_new_a2l
+cal_load_new_a2l.restype = s32
+cal_load_new_a2l.argtypes = [pchar,pchar]
+
+#arg[0] AECUName
+#arg[1] ATPLayer
+cal_switch_to_xcp = dll.cal_switch_to_xcp
+cal_switch_to_xcp.restype = s32
+cal_switch_to_xcp.argtypes = [pchar,s32]
+
+#arg[0] AECUName
+cal_switch_to_ccp = dll.cal_switch_to_ccp
+cal_switch_to_ccp.restype = s32
+cal_switch_to_ccp.argtypes = [pchar]
+

@@ -669,7 +669,7 @@ type
     //          more bytes of the address.
     //bit0-47:  same as filter_perfect0
     filter_perfect1: UInt64;
-    params: array[0..15] of Byte;   // 16 bytes parameters align with tsdev
+    Fparams: array[0..15] of Byte;   // 16 bytes parameters align with tsdev
     rev: array[0..3] of UInt64;  // 32 bytes
   end; //9*8 + 6 = 80
   //TSLogger
@@ -1319,7 +1319,7 @@ type
   end;
   // Mapping definition
   TLIBTSMapping = packed record
-    FAppName: array[0..31] of AnsiChar;
+    FAppName: array[0..31] of AnsiChar;    //Real char number of FAppName is 31
     FAppChannelIndex: integer;
     FAppChannelType: TLIBApplicationChannelType;
     FHWDeviceType: TLIBBusToolDeviceType;
@@ -3701,6 +3701,10 @@ function db_get_can_pdu_properties_by_index(const AValue: PMPDBPDUProperties): i
 function db_get_can_pdu_properties_by_address(const AAdress: pansichar; const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_flexray_pdu_properties_by_address(const AAdress: pansichar; const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function db_get_flexray_pdu_properties_by_index(const AValue: PMPDBPDUProperties): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_set_logical_channel_index(const AECUName: pansichar; const AChnIdx: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_load_new_a2l(const AECUName: pansichar; const AA2LPath: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_switch_to_xcp(const AECUName: pansichar; const ATPLayer: int32): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function cal_switch_to_ccp(const AECUName: pansichar): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}
@@ -4482,7 +4486,7 @@ begin
   Result := false;
   if Length(AAppName) >= 32 then exit;
   if Length(AHWDeviceName) >= 32 then exit;
-  System.AnsiStrings.StrPCopy(@FAppName[0], AnsiString(AAppName));
+  System.AnsiStrings.StrPCopy(@FAppName[0], AnsiString(AAppName));  //Always add #0 behind the last char
   FAppChannelIndex := AIdxLogicalChannel;
   FAppChannelType := AChnType;
   FHWDeviceType := AHWDeviceType;

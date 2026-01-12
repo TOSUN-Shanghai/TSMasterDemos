@@ -1652,7 +1652,7 @@ typedef struct _TLIBEth_CMD_config{
     u64 filter_hash_table;
     u64 filter_perfect0;
     u64 filter_perfect1;
-    u8 params[16];
+    u8 Fparams[16];
     u64 rev[4];
 }TLIBEth_CMD_config, *PLIBEth_CMD_config, *pLIBEth_CMD_config, **PPLIBEth_CMD_config, **ppLIBEth_CMD_config;
 
@@ -4287,6 +4287,14 @@ TSAPI(s32)db_get_can_pdu_properties_by_address(const char* AAdress,const PMPDBPD
 TSAPI(s32)db_get_flexray_pdu_properties_by_address(const char* AAdress,const PMPDBPDUProperties AValue);
 
 TSAPI(s32)db_get_flexray_pdu_properties_by_index(const PMPDBPDUProperties AValue);
+
+TSAPI(s32)cal_set_logical_channel_index(const char* AECUName,const s32 AChnIdx);
+
+TSAPI(s32)cal_load_new_a2l(const char* AECUName,const char* AA2LPath);
+
+TSAPI(s32)cal_switch_to_xcp(const char* AECUName,const s32 ATPLayer);
+
+TSAPI(s32)cal_switch_to_ccp(const char* AECUName);
 
 #if defined ( __cplusplus )
 }
