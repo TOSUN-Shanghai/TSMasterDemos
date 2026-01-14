@@ -4296,6 +4296,10 @@ TSAPI(s32)cal_switch_to_xcp(const char* AECUName,const s32 ATPLayer);
 
 TSAPI(s32)cal_switch_to_ccp(const char* AECUName);
 
+TSAPI(s32)can_rbs_fault_inject_disturb_checksum_verbose(const s32 AChnIdx,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalName,const s32 AType,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue);
+
+TSAPI(s32)can_rbs_fault_inject_disturb_sequencecounter_verbose(const s32 AChnIdx,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalName,const s32 AType,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue,const s32 continueMode);
+
 #if defined ( __cplusplus )
 }
 #endif

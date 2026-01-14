@@ -6918,3 +6918,30 @@ cal_switch_to_ccp = dll.cal_switch_to_ccp
 cal_switch_to_ccp.restype = s32
 cal_switch_to_ccp.argtypes = [pchar]
 
+#arg[0] AChnIdx
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalName
+#arg[5] AType
+#arg[6] disturbanceMode
+#arg[7] disturbanceCount
+#arg[8] disturbanceValue
+can_rbs_fault_inject_disturb_checksum_verbose = dll.can_rbs_fault_inject_disturb_checksum_verbose
+can_rbs_fault_inject_disturb_checksum_verbose.restype = s32
+can_rbs_fault_inject_disturb_checksum_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32,s32]
+
+#arg[0] AChnIdx
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalName
+#arg[5] AType
+#arg[6] disturbanceMode
+#arg[7] disturbanceCount
+#arg[8] disturbanceValue
+#arg[9] continueMode
+can_rbs_fault_inject_disturb_sequencecounter_verbose = dll.can_rbs_fault_inject_disturb_sequencecounter_verbose
+can_rbs_fault_inject_disturb_sequencecounter_verbose.restype = s32
+can_rbs_fault_inject_disturb_sequencecounter_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32,s32,s32]
+
