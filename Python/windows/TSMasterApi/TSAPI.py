@@ -6945,3 +6945,95 @@ can_rbs_fault_inject_disturb_sequencecounter_verbose = dll.can_rbs_fault_inject_
 can_rbs_fault_inject_disturb_sequencecounter_verbose.restype = s32
 can_rbs_fault_inject_disturb_sequencecounter_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,s32,s32,s32,s32,s32]
 
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] ACANFD
+#arg[7] AValue
+set_can_signal_value_verbose = dll.set_can_signal_value_verbose
+set_can_signal_value_verbose.restype = s32
+set_can_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,PLIBCANFD,double]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] ACANFD
+#arg[7] AValue
+get_can_signal_value_verbose = dll.get_can_signal_value_verbose
+get_can_signal_value_verbose.restype = s32
+get_can_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,PLIBCANFD,pdouble]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AFlexray
+#arg[7] AValue
+get_flexray_signal_value_verbose = dll.get_flexray_signal_value_verbose
+get_flexray_signal_value_verbose.restype = s32
+get_flexray_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,PLIBFlexRay,pdouble]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] APDUName
+#arg[5] ASignalName
+#arg[6] AFlexray
+#arg[7] AValue
+set_flexray_signal_value_verbose = dll.set_flexray_signal_value_verbose
+set_flexray_signal_value_verbose.restype = s32
+set_flexray_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,pchar,PLIBFlexRay,double]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalName
+#arg[5] ALIN
+#arg[6] AValue
+set_lin_signal_value_verbose = dll.set_lin_signal_value_verbose
+set_lin_signal_value_verbose.restype = s32
+set_lin_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,PLIBLIN,double]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] AMessageName
+#arg[4] ASignalName
+#arg[5] ALIN
+#arg[6] AValue
+get_lin_signal_value_verbose = dll.get_lin_signal_value_verbose
+get_lin_signal_value_verbose.restype = s32
+get_lin_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,PLIBLIN,pdouble]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] APDUName
+#arg[4] ASignalName
+#arg[5] AEthernet
+#arg[6] AValue
+get_ethernet_signal_value_verbose = dll.get_ethernet_signal_value_verbose
+get_ethernet_signal_value_verbose.restype = s32
+get_ethernet_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,PLIBEthernetHeader,pdouble]
+
+#arg[0] AChn
+#arg[1] ANetworkName
+#arg[2] ANodeName
+#arg[3] APDUName
+#arg[4] ASignalName
+#arg[5] AEthernet
+#arg[6] AValue
+set_ethernet_signal_value_verbose = dll.set_ethernet_signal_value_verbose
+set_ethernet_signal_value_verbose.restype = s32
+set_ethernet_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,PLIBEthernetHeader,double]
+

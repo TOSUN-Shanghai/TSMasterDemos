@@ -4300,6 +4300,22 @@ TSAPI(s32)can_rbs_fault_inject_disturb_checksum_verbose(const s32 AChnIdx,const 
 
 TSAPI(s32)can_rbs_fault_inject_disturb_sequencecounter_verbose(const s32 AChnIdx,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalName,const s32 AType,const s32 disturbanceMode,const s32 disturbanceCount,const s32 disturbanceValue,const s32 continueMode);
 
+TSAPI(s32)set_can_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const PLIBCANFD ACANFD,const double AValue);
+
+TSAPI(s32)get_can_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const PLIBCANFD ACANFD,const pdouble AValue);
+
+TSAPI(s32)get_flexray_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const PLIBFlexRay AFlexray,const pdouble AValue);
+
+TSAPI(s32)set_flexray_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* APDUName,const char* ASignalName,const PLIBFlexRay AFlexray,const double AValue);
+
+TSAPI(s32)set_lin_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalName,const PLIBLIN ALIN,const double AValue);
+
+TSAPI(s32)get_lin_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* AMessageName,const char* ASignalName,const PLIBLIN ALIN,const pdouble AValue);
+
+TSAPI(s32)get_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const PLIBEthernetHeader AEthernet,const pdouble AValue);
+
+TSAPI(s32)set_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const PLIBEthernetHeader AEthernet,const double AValue);
+
 #if defined ( __cplusplus )
 }
 #endif
