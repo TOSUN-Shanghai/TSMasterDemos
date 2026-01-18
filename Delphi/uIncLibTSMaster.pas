@@ -747,6 +747,7 @@ type
   TLIBWriteAPIDocument = procedure (const AObj: Pointer; const AWriteDoc: TLIBWriteAPIDocumentFunc; const AWritePara: TLIBWriteAPIParaFunc); stdcall;
   TLIBCheckResult = function: Boolean; stdcall;
   TLIBOnSysVarChange = procedure(const ACompleteName: pansichar); stdcall;
+  TLIBOnSystemVarPreReadEvent = procedure(const ACompletedName: PAnsiChar; const ADataType: integer); stdcall;
   TSSocketListenEvent = procedure(const AObj: Pointer; const ASocket: integer; const AClientSocket: integer; const AResult: integer) of object; stdcall;
   TSSocketNotifyEvent = procedure(const AObj: Pointer; const ASocket: integer; const AResult: integer) of object; stdcall;
   TSSocketReceiveEvent = procedure(const AObj: Pointer; const ASocket: Integer; const AResult: integer; const AAddr: UInt32; const APort: UInt32; const AData: PByte; const ASize: integer) of object; stdcall;
@@ -3715,6 +3716,9 @@ function set_lin_signal_value_verbose(const AChn: int32; const ANetworkName: pan
 function get_lin_signal_value_verbose(const AChn: int32; const ANetworkName: pansichar; const ANodeName: pansichar; const AMessageName: pansichar; const ASignalName: pansichar; const ALIN: PLIBLIN; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function get_ethernet_signal_value_verbose(const AChn: int32; const ANetworkName: pansichar; const ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AEthernet: PLIBEthernetHeader; AValue: pdouble): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 function set_ethernet_signal_value_verbose(const AChn: int32; const ANetworkName: pansichar; const ANodeName: pansichar; const APDUName: pansichar; const ASignalName: pansichar; const AEthernet: PLIBEthernetHeader; AValue: double): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function register_system_var_pre_read_event(const ACompleteName: pansichar; AEvent: TLIBOnSystemVarPreReadEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function unregister_system_var_pre_read_event(const ACompleteName: pansichar; AEvent: TLIBOnSystemVarPreReadEvent): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
+function unregister_system_var_pre_read_events(): integer; stdcall; {$IFNDEF LIBTSMASTER_IMPL} external DLL_LIB_TSMASTER; {$ENDIF}
 // MP DLL function import end (do not modify this line)
 
 {$ENDIF}

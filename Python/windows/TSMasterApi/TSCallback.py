@@ -86,6 +86,9 @@ TLIBWriteAPIDocument = WINFUNCTYPE(None,ps32,TLIBWriteAPIDocumentFunc,TLIBWriteA
 TLIBCheckResult = WINFUNCTYPE(cbool,)
 # Arg[0] ACompleteName
 TLIBOnSysVarChange = WINFUNCTYPE(None,pchar)
+# Arg[0] ACompletedName
+# Arg[1] ADataType
+TLIBOnSystemVarPreReadEvent = WINFUNCTYPE(None,pchar,s32)
 # Arg[0] AObj
 # Arg[1] ASocket
 # Arg[2] AClientSocket

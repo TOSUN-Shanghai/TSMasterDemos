@@ -2053,6 +2053,9 @@ typedef void(__stdcall*TLIBWriteAPIDocument)(const pnative_int AObj,const TLIBWr
 typedef bool (__stdcall*TLIBCheckResult)();
 // Arg[0] ACompleteName
 typedef void(__stdcall*TLIBOnSysVarChange)(const char* ACompleteName);
+// Arg[0] ACompletedName
+// Arg[1] ADataType
+typedef void(__stdcall*TLIBOnSystemVarPreReadEvent)(const char* ACompletedName,const s32 ADataType);
 // Arg[0] AObj
 // Arg[1] ASocket
 // Arg[2] AClientSocket
@@ -4315,6 +4318,12 @@ TSAPI(s32)get_lin_signal_value_verbose(const s32 AChn,const char* ANetworkName,c
 TSAPI(s32)get_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const PLIBEthernetHeader AEthernet,const pdouble AValue);
 
 TSAPI(s32)set_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const PLIBEthernetHeader AEthernet,const double AValue);
+
+TSAPI(s32)register_system_var_pre_read_event(const char* ACompleteName,const TLIBOnSystemVarPreReadEvent AEvent);
+
+TSAPI(s32)unregister_system_var_pre_read_event(const char* ACompleteName,const TLIBOnSystemVarPreReadEvent AEvent);
+
+TSAPI(s32)unregister_system_var_pre_read_events();
 
 #if defined ( __cplusplus )
 }
