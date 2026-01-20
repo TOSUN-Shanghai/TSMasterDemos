@@ -7037,19 +7037,12 @@ set_ethernet_signal_value_verbose = dll.set_ethernet_signal_value_verbose
 set_ethernet_signal_value_verbose.restype = s32
 set_ethernet_signal_value_verbose.argtypes = [s32,pchar,pchar,pchar,pchar,PLIBEthernetHeader,double]
 
-#arg[0] ACompleteName
-#arg[1] AEvent
-register_system_var_pre_read_event = dll.register_system_var_pre_read_event
-register_system_var_pre_read_event.restype = s32
-register_system_var_pre_read_event.argtypes = [pchar,TLIBOnSystemVarPreReadEvent]
-
-#arg[0] ACompleteName
-#arg[1] AEvent
-unregister_system_var_pre_read_event = dll.unregister_system_var_pre_read_event
-unregister_system_var_pre_read_event.restype = s32
-unregister_system_var_pre_read_event.argtypes = [pchar,TLIBOnSystemVarPreReadEvent]
-
-unregister_system_var_pre_read_events = dll.unregister_system_var_pre_read_events
-unregister_system_var_pre_read_events.restype = s32
-unregister_system_var_pre_read_events.argtypes = []
+#arg[0] AIdxChn
+#arg[1] ACANFDs
+#arg[2] AIntervalsUs
+#arg[3] ACount
+#arg[4] AFlags
+transmit_canfd_sequential = dll.transmit_canfd_sequential
+transmit_canfd_sequential.restype = s32
+transmit_canfd_sequential.argtypes = [s32,PLIBCANFD,pu32,s32,u8]
 

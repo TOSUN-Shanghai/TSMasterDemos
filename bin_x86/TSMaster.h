@@ -4319,11 +4319,7 @@ TSAPI(s32)get_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkN
 
 TSAPI(s32)set_ethernet_signal_value_verbose(const s32 AChn,const char* ANetworkName,const char* ANodeName,const char* APDUName,const char* ASignalName,const PLIBEthernetHeader AEthernet,const double AValue);
 
-TSAPI(s32)register_system_var_pre_read_event(const char* ACompleteName,const TLIBOnSystemVarPreReadEvent AEvent);
-
-TSAPI(s32)unregister_system_var_pre_read_event(const char* ACompleteName,const TLIBOnSystemVarPreReadEvent AEvent);
-
-TSAPI(s32)unregister_system_var_pre_read_events();
+TSAPI(s32)transmit_canfd_sequential(const s32 AIdxChn,const PLIBCANFD ACANFDs,const pu32 AIntervalsUs,const s32 ACount,const u8 AFlags);
 
 #if defined ( __cplusplus )
 }
