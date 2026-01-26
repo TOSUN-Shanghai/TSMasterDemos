@@ -492,7 +492,8 @@ class _TLIB_TS_Device_Sub_Type(CEnum):
     GW2204 = 65
     GW2212 = 66
     TA821 = 67
-    TS_DEV_END = 68
+    TX1000 = 68
+    TS_DEV_END = 69
 TLIB_TS_Device_Sub_Type = c_int32
 PLIB_TS_Device_Sub_Type = ps32
 
