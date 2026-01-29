@@ -1502,7 +1502,8 @@ typedef enum {
     tldt_DI = 6,
     tldt_DO = 7,
     tldt_GPS = 8,
-    tldt_Undef = 9,
+    tldt_DAP = 9,
+    tldt_Undef = 10,
 }TLinkedDataChnType, *PLinkedDataChnType;
 typedef enum {
     IPADDR_TYPE_V4 = 0,

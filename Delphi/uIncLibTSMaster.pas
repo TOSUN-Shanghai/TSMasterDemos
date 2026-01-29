@@ -1392,7 +1392,7 @@ type
       , N_ETH_RESERVED0                      = 250
       , N_ETH_RESERVED1                      = 251
   );
-  TLinkedDataChnType = (tldt_CAN, tldt_LIN, tldt_FR, tldt_Eth, tldt_AI, tldt_AO, tldt_DI, tldt_DO, tldt_GPS, tldt_Undef);
+  TLinkedDataChnType = (tldt_CAN, tldt_LIN, tldt_FR, tldt_Eth, tldt_AI, tldt_AO, tldt_DI, tldt_DO, tldt_GPS, tldt_DAP, tldt_Undef);
   //TS CAN Diagnostic basic function type
   Ttsdiag_can_create = function(const  pDiagModuleIndex: PInteger;
                       const AChnIndex: UInt32;

@@ -623,7 +623,8 @@ class _TLinkedDataChnType(CEnum):
     tldt_DI = 6
     tldt_DO = 7
     tldt_GPS = 8
-    tldt_Undef = 9
+    tldt_DAP = 9
+    tldt_Undef = 10
 TLinkedDataChnType = c_int32
 PLinkedDataChnType = ps32
 
